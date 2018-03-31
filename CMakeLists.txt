@@ -23,6 +23,7 @@ if(Boost_FOUND)
   target_link_libraries(replace_args ${Boost_LIBRARIES})
 
   add_executable(preprocess src/scripts/preprocess.cpp
+			    src/scripts/make_relative.h
                             src/scripts/propertybag.h src/scripts/propertybag.cpp
                             src/scripts/hairsimplify.h src/scripts/hairsimplify.cpp)
   target_link_libraries(preprocess ${Boost_LIBRARIES})

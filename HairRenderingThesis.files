@@ -28629,6 +28629,7 @@ ext/pbrt-v3/src/tools/imgtool.cpp
 ext/pbrt-v3/src/tools/obj2pbrt.cpp
 src/scripts/hairsimplify.cpp
 src/scripts/hairsimplify.h
+src/scripts/make_relative.h
 src/scripts/preprocess.cpp
 src/scripts/propertybag.cpp
 src/scripts/propertybag.h

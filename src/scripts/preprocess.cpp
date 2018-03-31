@@ -7,8 +7,11 @@
 
 #include "propertybag.h"
 #include "hairsimplify.h"
+#include "make_relative.h"
+
 using namespace std;
 namespace fs = boost::filesystem;
+
 
 void generatePbrtScene();
 
@@ -88,53 +91,72 @@ void simplifyAndWriteModel(const fs::path& simplifiedModelFilePath) {
   cout << "Generate voxel grid... [todo]" << endl;
 }
 
-void generatePbrtScene() {
+/**
+ * @brief generatePbrtScene Generates a PBRT scene from the template scene, by substituting all variables by the properties specified in the property files.
+ * @param basePath The path to the directory where the PBRT file is to be generated
+ */
+void generatePbrtScene(fs::path basePath, bool deriveSceneFileFromProperties = true) {
   cout << "Generating PBRT scene..." << endl;
 
   // Read and merge properties in property files
   PropertyBag properties;
-  readProperties(scenePropertiesFilePath, properties);
-  readProperties(modelPropertiesFilePath, properties);
-  readProperties(userPropertiesFilePath, properties);
+  readProperties((propertyFilesDirectory / SCENE_PROPERTY_FILE_NAME).string(), properties);
+  readProperties((propertyFilesDirectory / MODEL_PROPERTY_FILE_NAME).string(), properties);
+  readProperties((propertyFilesDirectory / USER_PROPERTY_FILE_NAME).string(), properties);
 
   // Output resulting PBRT file
-  createDirectoriesIfNotExists(sessionResultsDirectory);
-  string pbrtFileName = sceneFilePath.filename().string() + ".pbrt";
-  fs::path pbrtFilePath(sessionResultsDirectory / pbrtFileName);
+  if (deriveSceneFileFromProperties) {
+      sceneFilePath = fs::path(fs::path(properties.getProperty("input_hairmodel_filename")).stem().string() + ".pbrt");
+  }
+
+  cout << "Reading scene file: " << sceneFilePath << endl;
+  string pbrtFileName = sceneFilePath.filename().string();
+  fs::path pbrtFilePath(basePath / pbrtFileName);
+  cout << "PBRT file path: " << pbrtFilePath << endl;
   
   // Replace properties in scene file
+  cout << "replace properties in: " << sceneFilePath << " and writing to: " << pbrtFilePath.string() << endl;
   properties.replacePropertiesInFile(sceneFilePath.string(), pbrtFilePath.string());
   cout << "[done]" << endl;
 }
- 
+
+/**
+ * @brief startProcessing Sets up a test case, by copying property files from original and
+ * possibly simplifying hair models
+ */
 void startProcessing() {
-  cout << "Start processing...";
+  cout << "Start processing..." << endl;
 
   // Create directories
   sessionResultsDirectory = outputDirectory / getCurrentTime();
   propertyFilesDirectory = sessionResultsDirectory / PROPERTY_DIRECTORY_NAME;
   generatedContentDirectory = outputDirectory / GENERATED_DIRECTORY_NAME;
+
   createDirectoriesIfNotExists(sessionResultsDirectory);
   createDirectoriesIfNotExists(propertyFilesDirectory);
   createDirectoriesIfNotExists(generatedContentDirectory);
   
-  // copy files
+  // copy original scene file
   fs::copy_file(sceneFilePath, sessionResultsDirectory/sceneFilePath.filename()); // Copy original scene file
-  //fs::copy_file(scenePropertiesFilePath, propertyFilesDirectory / SCENE_PROPERTY_FILE_NAME);
-  //fs::copy_file(modelPropertiesFilePath, propertyFilesDirectory / MODEL_PROPERTY_FILE_NAME);
-  //fs::copy_file(userPropertiesFilePath, propertyFilesDirectory / USER_PROPERTY_FILE_NAME);
 
    // Read properties
   readProperties(scenePropertiesFilePath, sceneProperties);
   readProperties(modelPropertiesFilePath, modelProperties);
   readProperties(userPropertiesFilePath, userProperties);
   
-  // simplify model and write to destination
+  // simplify model (or use original) and write to properties
+  fs::path originalSceneDirectory = make_relative(sessionResultsDirectory, sceneFilePath.parent_path());
+  sceneProperties.addProperty("currentDirectory", originalSceneDirectory.string());
   if (userRequestSimplifiedModel) {
     string simplifiedModelFileName = modelFilePath.filename().string() + boost::lexical_cast<string>(simplifyPercentage);
     fs::path simplifiedModelFilePath = generatedContentDirectory / simplifiedModelFileName;
     simplifyAndWriteModel(simplifiedModelFilePath.string());
     sceneProperties.addProperty("input_hairmodel_filename", simplifiedModelFilePath.string());
+    cout << "Using generated model at location: " << simplifiedModelFilePath << endl;
+  } else {
+      fs::path relativeModelFilePath = make_relative(sessionResultsDirectory, modelFilePath);
+      cout << "No simplification needed. Using original model: " << relativeModelFilePath << endl;
+      sceneProperties.addProperty("input_hairmodel_filename", relativeModelFilePath.string());
   }
 
   // Write property files
@@ -143,17 +165,26 @@ void startProcessing() {
   userProperties.writePropertiesToFile((propertyFilesDirectory / USER_PROPERTY_FILE_NAME).string());
 
   // generate a pbrt scene
-  generatePbrtScene();
+  createDirectoriesIfNotExists(sessionResultsDirectory);
+  generatePbrtScene(sessionResultsDirectory, false);
 }
 
 int main(int argc, char** argv) {
-
     namespace po = boost::program_options;
+
+    if (argc == 2) {
+        fs::path directory(argv[1]);
+        cout << "Preprocessing in directory: " << directory << endl;
+
+        propertyFilesDirectory = directory / PROPERTY_DIRECTORY_NAME;
+        generatePbrtScene(directory, true);
+        return 0;
+    }
     
     // describe commands the user can enter
     po::options_description desc("Allowed options");
     desc.add_options()
-            ("outputdir", po::value<string>(), "Specify the output directory for generating results")
+            ("output", po::value<string>(), "Specify the output directory for generating results")
             ("scene", po::value<string>(), "scene file")
             ("model", po::value<string>(), "model file to use")
             ("simplify", po::value<int>(), "Percentage of model to be rendered, e.g. 10 to indicate 10 percent of original model")
@@ -165,30 +196,24 @@ int main(int argc, char** argv) {
     po::store(po::parse_command_line(argc, argv, desc), vm);
     po::notify(vm);
     
+    // If no arguments specified, or help is requested, describe options for calling the program
     if (vm.size() == 0 || vm.count("help")) {
         cout << desc << "\n";
         return 1;
     }
 
-    //
-    // Root path
-    //
-    if (vm.count("outputdir")) {
-      outputDirectory = fs::path(vm["outputdir"].as<string>());
+    if (vm.count("output")) {
+      outputDirectory = fs::path(vm["output"].as<string>());
     }
 
-    //
-    // Scene
-    //
     if (vm.count("scene")) {
-      sceneFilePath = boost::filesystem::path(vm["scene"].as<string>());
+      sceneFilePath = fs::path(vm["scene"].as<string>());
       scenePropertiesFilePath = fs::path(sceneFilePath.string() + PROPERTY_SUFFIX);
     } else {
       cout << "Required scene file not provided. Please specify 'scene' argument and run again." << endl;
       return 1;
     }
 
-    // if specified, then add/overwrite default properties from scene
     if (vm.count("propertyfile")) {
       userPropertiesFilePath = fs::path(vm["propertyfile"].as<string>());
     }
@@ -205,23 +230,9 @@ int main(int argc, char** argv) {
       }
       userRequestSimplifiedModel = true;
       simplifyPercentage = vm["simplify"].as<int>();
-      //      simplifiedModelFilePath = OUTPUT_DIRECTORY / GENERATED_DIRECTORY / simplifiedModelFileName;
     }
 
     startProcessing();
-    // copySceneAssets();
-
-    /*cout << "Copying directories in scene folder... ";
-    boost::filesystem::path sceneDirectory(sceneFilePath.parent_path());
-    if(fs::is_directory(sceneDirectory)) {
-        cout << sceneDirectory << " is a directory containing:\n";
-
-        for(auto& entry : boost::make_iterator_range(fs::directory_iterator(sceneDirectory), {})) {
-	  if (fs::is_directory(entry)) {
-	    fs::copy_directory(entry, outputDirectory/ "."); 
-	  }
-	}
-	}*/
 
     return 0;
 }

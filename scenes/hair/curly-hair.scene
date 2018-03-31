@@ -14,6 +14,6 @@ WorldBegin
 	TransformBegin
 	        Rotate -55 1 0 0
 	        Rotate 90 0 0 1
-		LightSource "infinite" "string mapname" [ "textures/Skydome.pfm" ]
+		LightSource "infinite" "string mapname" [ "$currentDirectory/textures/Skydome.pfm" ]
 	TransformEnd
 WorldEnd
