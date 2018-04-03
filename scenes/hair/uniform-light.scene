@@ -1,0 +1,19 @@
+Integrator "path" "integer maxdepth" [ $integrator_maxdepth ] 
+Transform [ -0.999887 0.00390257 0.0145262 -0 -0 0.965755 -0.259457 -0 0.0150413 0.259428 0.965645 -0 0.146624 -9.36998 28.765 1]
+Sampler "sobol" "integer pixelsamples" [ $sampler_pixelsamples ] 
+PixelFilter "triangle" "float xwidth" [ $pixelfilter_xwidth ] "float ywidth" [ $pixelfilter_ywidth ] 
+Film "image"
+   "integer xresolution" [ $image_xresolution ] "integer yresolution" [ $image_yresolution ]
+    "float scale" $image_scale
+    "string filename" "$output_filename"
+
+Camera "perspective" "float fov" [ $camera_fov ] 
+WorldBegin
+	Material "hair" "float eumelanin" .3
+	Include "$input_hairmodel_filename" 
+	TransformBegin
+	        Rotate -55 1 0 0
+	        Rotate 90 0 0 1
+		LightSource "infinite" "string mapname" [ "$currentDirectory/textures/Skydome.pfm" ]
+	TransformEnd
+WorldEnd

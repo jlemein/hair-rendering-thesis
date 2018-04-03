@@ -1,0 +1,19 @@
+Integrator "path" "integer maxdepth" [ 32 ] 
+Transform [ -0.999887 0.00390257 0.0145262 -0 -0 0.965755 -0.259457 -0 0.0150413 0.259428 0.965645 -0 0.146624 -9.36998 28.765 1]
+Sampler "sobol" "integer pixelsamples" [ 1024 ] 
+PixelFilter "triangle" "float xwidth" [ 1.000000 ] "float ywidth" [ 1.000000 ] 
+Film "image"
+   "integer xresolution" [ 1024 ] "integer yresolution" [ 1024 ]
+    "float scale" 4
+    "string filename" "curly-hair.exr"
+
+Camera "perspective" "float fov" [ 32 ] 
+WorldBegin
+	Material "hair" "float eumelanin" .3
+	Include "../../output/generated/straight-hair.pbrt15" 
+	TransformBegin
+	        Rotate -55 1 0 0
+	        Rotate 90 0 0 1
+		LightSource "infinite" "string mapname" [ "../../scenes/hair/textures/Skydome.pfm" ]
+	TransformEnd
+WorldEnd

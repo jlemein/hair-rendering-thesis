@@ -28627,6 +28627,7 @@ ext/pbrt-v3/src/tools/bsdftest.cpp
 ext/pbrt-v3/src/tools/cyhair2pbrt.cpp
 ext/pbrt-v3/src/tools/imgtool.cpp
 ext/pbrt-v3/src/tools/obj2pbrt.cpp
+src/scripts/analyze-hair.cpp
 src/scripts/hairsimplify.cpp
 src/scripts/hairsimplify.h
 src/scripts/make_relative.h

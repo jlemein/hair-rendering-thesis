@@ -41,11 +41,13 @@ void PropertyBag::addPropertiesFromLine(const std::string& line) {
 }
 
 std::string PropertyBag::getProperty(const std::string& key) {
-  if (mProperties.find(key) != mProperties.end()) {
-    return mProperties[key];
-  } else {
-    throw "Key does not exist in property bag";
-  }
+    if (mProperties.find(key) != mProperties.end()) {
+        return mProperties[key];
+    } else {
+        std::string msg = "'" + key + "' does not exist in property bag";
+        std::cout << "ERROR: " << msg << std::endl;
+        throw msg;
+    }
 }
 
 void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, const std::string& outputFileName) {
