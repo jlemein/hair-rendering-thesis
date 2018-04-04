@@ -27,6 +27,9 @@ if(Boost_FOUND)
                             src/scripts/propertybag.h src/scripts/propertybag.cpp
                             src/scripts/hairsimplify.h src/scripts/hairsimplify.cpp)
   target_link_libraries(preprocess ${Boost_LIBRARIES})
+
+    add_executable(analyzehair src/scripts/analyze-hair.cpp)
+  target_link_libraries(analyzehair ${Boost_LIBRARIES})
 endif()
 
 add_library(sayhello STATIC src/scripts/sayhello.cpp)
