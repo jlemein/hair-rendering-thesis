@@ -1,12 +1,17 @@
-Integrator "path" "integer maxdepth" [ 2 ] 
+Integrator "path" "integer maxdepth" [ 8 ] 
 Transform [ -0.999887 0.00390257 0.0145262 -0 -0 0.965755 -0.259457 -0 0.0150413 0.259428 0.965645 -0 0.146624 -9.36998 28.765 1]
 
-Sampler "halton" "integer pixelsamples" [ 8 ] 
+# Begin Camera Matrix
+#Rotate -45 1 0 0
+#Rotate 30 0 1 0 
+# End Camera Matrix
+
+Sampler "halton" "integer pixelsamples" [ 64 ] 
 PixelFilter "triangle" "float xwidth" [ 1.000000 ] "float ywidth" [ 1.000000 ] 
 Film "image"
     "integer xresolution" [ 1024 ] "integer yresolution" [ 1024 ]
 #   "integer xresolution" [ 512 ] "integer yresolution" [ 512 ]
-    "string filename" "straight-hair-with-head.exr"
+    "string filename" "wWavyThin-with-head.exr"
 
 Camera "perspective" "float fov" [ 35.000000 ] 
 
@@ -17,15 +22,33 @@ WorldBegin
 	MakeNamedMaterial "blonde_hair" "string type" [ "hair" ] "float	eumelanin" [ .3 ]
 
 	NamedMaterial "brown_hair"
-	#Include "models/straight-hair.pbrt"
 
-TransformBegin
-# Original Scene bounds: (-48.471413, -48.249229, -59.862568) - (37.471680, 48.062748, 60.134830)
-    Translate 3.48519 5.98676 0.419746
-    Scale 0.10747 0.10747 0.10747
-    Rotate -90 1 0 0
-    Include "models/woman/woman.pbrt"
-TransformEnd
+
+    TransformBegin
+        Rotate 0 0 1 0         # User rotation
+ #       Translate 0 0 100
+        Translate 3.48519 8.98676 0.419746
+        Scale 0.10747 0.10747 0.10747
+
+        # General orientation
+        #Translate 0 0 460
+        #Rotate 270 0 1 0
+
+        # Hair model - Scene bounds: (-72.512674, -37.103265, -44.539743) - (22.947744, 67.860666, 43.951963)
+        TransformBegin  
+            #Rotate 90 0 1 0
+	        Include "models/wWavyThin.50.pbrt"
+        TransformEnd
+
+        # Female head model - Original Scene bounds: (-48.471413, -48.249229, -59.862568) - (37.471680, 48.062748, 60.134830)
+        TransformBegin
+            Rotate -90 1 0 0
+            #Scale 0.9 0.9 0.9
+            Include "models/woman/woman.pbrt"
+        TransformEnd
+    TransformEnd
+
+
 	LightSource "distant" "point from" [ 0.190330 0.758426 -0.623349 ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ 19.091171 19.091171 19.091171 ] 
 	TransformBegin
 	        Rotate -55 1 0 0

@@ -18,9 +18,9 @@ find_package(Boost 1.58.0 COMPONENTS program_options filesystem date_time  REQUI
 
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
-  add_executable(replace_args src/scripts/replace_args.cpp
+  add_executable(prepare src/scripts/preparescene.cpp
                               src/scripts/propertybag.h src/scripts/propertybag.cpp)
-  target_link_libraries(replace_args ${Boost_LIBRARIES})
+  target_link_libraries(prepare ${Boost_LIBRARIES})
 
   add_executable(preprocess src/scripts/preprocess.cpp
 			    src/scripts/make_relative.h

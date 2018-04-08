@@ -7,6 +7,10 @@
 
 struct Point {
   float x, y, z;
+
+  friend std::ostream& operator<<(std::ostream& out, const Point& p) {
+      out << "[" << p.x << " " << p.y << " " << p.z << "]";
+  }
 };
 
 struct Curve {
@@ -14,6 +18,8 @@ struct Curve {
     std::vector<Point> points;
     float width0;
     float width1;
+
+
 };
 
 struct Hair {
@@ -24,6 +30,10 @@ struct Hair {
      */
 
     std::vector<Curve> curves;
+
+    Point sceneExtentMin, sceneExtentMax; // orthogonal boundary over each dimension
+    Point size;     // orthogonal size over each dimension
+    Point center;   // center point of hair model
 
 };
 
@@ -127,7 +137,22 @@ std::istream& operator>>(std::istream& istream, Hair& data) {
             nextValues(istream, points);
             std::stringstream ss(points);
             Point p;
+
+            bool firstRun = true;
             while (ss >> p.x >> p.y >> p.z) {
+                if (firstRun) {
+                    data.sceneExtentMax = data.sceneExtentMin = p;
+                    firstRun = false;
+                }
+
+                if (p.x < data.sceneExtentMin.x) data.sceneExtentMin.x = p.x;
+                if (p.y < data.sceneExtentMin.y) data.sceneExtentMin.y = p.y;
+                if (p.z < data.sceneExtentMin.z) data.sceneExtentMin.z = p.z;
+
+                if (p.x > data.sceneExtentMax.x) data.sceneExtentMax.x = p.x;
+                if (p.y > data.sceneExtentMax.y) data.sceneExtentMax.y = p.y;
+                if (p.z > data.sceneExtentMax.z) data.sceneExtentMax.z = p.z;
+
                 c.points.push_back(p);
             }
             data.curves.push_back(c);
@@ -135,6 +160,14 @@ std::istream& operator>>(std::istream& istream, Hair& data) {
         else {
             nextValues(istream, values);
         }
+
+        data.size.x = data.sceneExtentMax.x - data.sceneExtentMin.x;
+        data.size.y = data.sceneExtentMax.y - data.sceneExtentMin.y;
+        data.size.z = data.sceneExtentMax.z - data.sceneExtentMin.z;
+
+        data.center.x = data.sceneExtentMin.x + data.size.x / 2.0;
+        data.center.y = data.sceneExtentMin.y + data.size.y / 2.0;
+        data.center.z = data.sceneExtentMin.z + data.size.z / 2.0;
     }
 
     std::cout << "Finished reading. Number of curves: " << data.curves.size() << std::endl;
@@ -163,6 +196,10 @@ int main(int argc, char** argv) {
 
     Hair hair;
     infile >> hair;
+
+    std::cout << "Scene extents: " << hair.sceneExtentMin << " x " << hair.sceneExtentMax << std::endl;
+    std::cout << "Scene size: " << hair.size << std::endl;
+    std::cout << "Center point: " << hair.center << std::endl;
 
     return 0;
 }

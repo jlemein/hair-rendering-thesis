@@ -6,6 +6,7 @@
 #include <boost/smart_ptr/shared_ptr.hpp>
 #include <boost/property_map/property_map.hpp>
 #include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/trim.hpp>
 
 void PropertyBag::addPropertiesFromFile(const std::string fileName) {
   std::ifstream infile(fileName.c_str());
@@ -13,9 +14,18 @@ void PropertyBag::addPropertiesFromFile(const std::string fileName) {
     throw "Failed to open input file '" + fileName + "'";
   }
 
-  std::string name, value;
-  while(!infile.eof() && infile >> name >> value) {
-    mProperties[name] = value;
+  std::string key, value;
+  std::string line;
+  while(!infile.eof() && getline(infile, line)) {
+      if (!line.empty() && !boost::starts_with(line, "#")) {
+          boost::algorithm::trim(line);
+          std::stringstream ss(line);
+          ss >> key;
+          getline(ss, value);
+          boost::algorithm::trim(value);
+          std::cout << key << ": '" << value << "'" << std::endl;
+          mProperties[key] = value;
+      }
   }
   
   infile.close();

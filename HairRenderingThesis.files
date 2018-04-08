@@ -28631,11 +28631,11 @@ src/scripts/analyze-hair.cpp
 src/scripts/hairsimplify.cpp
 src/scripts/hairsimplify.h
 src/scripts/make_relative.h
+src/scripts/preparescene.cpp
 src/scripts/preprocess.cpp
 src/scripts/propertybag.cpp
 src/scripts/propertybag.h
 src/scripts/renderframe.cpp
-src/scripts/replace_args.cpp
 src/scripts/sayhello.cpp
 src/scripts/sayhello.h
 src/scripts/simplify.cpp
