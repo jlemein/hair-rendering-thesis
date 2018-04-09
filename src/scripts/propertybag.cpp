@@ -9,26 +9,30 @@
 #include <boost/algorithm/string/trim.hpp>
 
 void PropertyBag::addPropertiesFromFile(const std::string fileName) {
+    std::cout << "Reading property file: ; '" << fileName << "'" << std::endl;
+
   std::ifstream infile(fileName.c_str());
   if (infile.fail()) {
     throw "Failed to open input file '" + fileName + "'";
   }
 
-  std::string key, value;
   std::string line;
   while(!infile.eof() && getline(infile, line)) {
       if (!line.empty() && !boost::starts_with(line, "#")) {
+          std::string key, value;
+          std::cout << "Read line: '" << line << "'" << std::endl;
           boost::algorithm::trim(line);
           std::stringstream ss(line);
           ss >> key;
           getline(ss, value);
           boost::algorithm::trim(value);
-          std::cout << key << ": '" << value << "'" << std::endl;
+          std::cout << key << ": '" << value << "'" << std::endl << std::endl;
           mProperties[key] = value;
       }
   }
   
   infile.close();
+  std::cout << std::endl;
 }
 
 void PropertyBag::addProperty(const std::string& key, const std::string& value) {

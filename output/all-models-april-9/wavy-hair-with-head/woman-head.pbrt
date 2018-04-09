@@ -1,13 +1,13 @@
-Integrator "path" "integer maxdepth" [ 32 ] 
+Integrator "path" "integer maxdepth" [ 16 ] 
 #Transform [ -0.999887 0.00390257 0.0145262 -0 -0 0.965755 -0.259457 -0 0.0150413 0.259428 0.965645 -0 0.146624 -9.36998 28.765 1 ]
 Translate 0 0 29
 Rotate 0 0 1 0
-Sampler "sobol" "integer pixelsamples" [ 128 ]
+Sampler "sobol" "integer pixelsamples" [ 32 ]
 
 PixelFilter "triangle" "float xwidth" [ 1.000000 ] "float ywidth" [ 1.000000 ] 
 Film "image"
     "integer xresolution" [ 1024 ] "integer yresolution" [ 1024 ]
-    "string filename" "straight-with-head.png"
+    "string filename" "wavy-with-head.xthin.25.exr"
 
 Camera "perspective" "float fov" [ 32 ] 
 
@@ -26,7 +26,7 @@ WorldBegin
 
         # Hair model - Scene bounds: (-77.744104, -49.430307, -49.275224) - (26.574915, 66.646448, 52.372057)
         TransformBegin  
-	        Include "../../../scenes/hair/models/wStraight.25.pbrt"
+	        Include "../../../scenes/hair/models/wWavy.xthin.25.pbrt"
         TransformEnd
 
         # Female head model - Original Scene bounds: (-48.471413, -48.249229, -59.862568) - (37.471680, 48.062748, 60.134830)

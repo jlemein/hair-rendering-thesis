@@ -28630,7 +28630,11 @@ ext/pbrt-v3/src/tools/obj2pbrt.cpp
 src/scripts/analyze-hair.cpp
 src/scripts/hairsimplify.cpp
 src/scripts/hairsimplify.h
+src/scripts/hairstruct.cpp
+src/scripts/hairstruct.h
 src/scripts/make_relative.h
+src/scripts/pbrthairparser.cpp
+src/scripts/pbrthairparser.h
 src/scripts/preparescene.cpp
 src/scripts/preprocess.cpp
 src/scripts/propertybag.cpp

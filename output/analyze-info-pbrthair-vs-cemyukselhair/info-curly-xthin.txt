@@ -1,0 +1,16 @@
+Parsing hair model 'wCurly.xthin.pbrt'
+Finished reading
+
+Model bounding box information
+-------------------------------
+Scene extent: [-34.1652 -12.0509 32.1009] x [-34.0661 -11.2735 32.5687]
+Scene size: [0.099102 0.777451 0.467758]
+Center point: [-34.1157 -11.6622 32.3348]
+
+Curve info
+-------------------------------
+Number of curves: 3291580
+Range curve width0: [ 0.01 ; 0.01 ], average: 0.01
+Range curve width1: [ 0.01 ; 0.01 ], average: 0.01
+
+	Hair strands have circular cross section
