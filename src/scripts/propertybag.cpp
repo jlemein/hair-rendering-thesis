@@ -1,12 +1,84 @@
 #include "propertybag.h"
 
+#include <boost/algorithm/string.hpp>
+//#include <boost/algorithm/string/trim.hpp>
+//#include <boost/algorithm/string/predicate.hpp>
+
+#include "animatedproperty.h"
+#include "constantproperty.h"
+#include "property.h"
+
 #include <fstream>
 #include <iostream>
+#include <sstream>
 
-#include <boost/smart_ptr/shared_ptr.hpp>
-#include <boost/property_map/property_map.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/trim.hpp>
+//#include <boost/smart_ptr/shared_ptr.hpp>
+//#include <boost/property_map/property_map.hpp>
+//#include <boost/algorithm/string.hpp>
+
+//#include <boost/algorithm/string/replace.hpp>
+#include <boost/lexical_cast.hpp>
+
+void PropertyBag::parseAnimatedProperty(std::stringstream& ss) {
+    std::string line;
+    std::string element;
+    std::string buffer;
+    ss >> element;
+
+    if (element.empty() || !boost::starts_with(element, "@")) {
+        std::cout << "Requested to parse an animated property, but it does not start with @" << std::endl;
+        return;
+    }
+
+    std::string key = element.substr(1);
+    AnimatedProperty* property = new AnimatedProperty(key);
+
+    do {
+        // read frame number
+        bool isAbsoluteKeyFrame = false;
+        if (ss.peek() == '#') {
+            isAbsoluteKeyFrame = true;
+            ss.ignore();
+        }
+
+        // read key frame
+        std::getline(ss, buffer, ':');
+        int keyFrame = boost::lexical_cast<int>(buffer);
+
+        // read value
+        std::string value;
+        std::getline(ss, buffer, '{');
+        ss.ignore();
+        std::getline(ss, value, '}');
+        ss.ignore();
+
+        // read animationType
+        std::string line;
+        ss >> line;
+        AnimationType animationType;
+        if (line[0] == '-') {
+            animationType = AnimationType::Fixed;
+        } else if (line[0] == '-' && line[1] == '>') {
+            animationType = AnimationType::Linear;
+        }
+
+        property->addKeyFrame(keyFrame, isAbsoluteKeyFrame, animationType, boost::lexical_cast<float>(value));
+    } while (!ss.str().empty());
+
+    mProperties[key] = property;
+
+}
+
+void PropertyBag::parseConstantProperty(std::stringstream& ss) {
+    std::string key, value;
+    ss >> key;
+    getline(ss, value);
+    boost::algorithm::trim(value);
+
+    std::cout << key << ": '" << value << "'" << std::endl << std::endl;
+
+    mProperties[key] = new ConstantProperty(key, value);
+}
 
 void PropertyBag::addPropertiesFromFile(const std::string fileName) {
     std::cout << "Reading property file: ; '" << fileName << "'" << std::endl;
@@ -23,20 +95,24 @@ void PropertyBag::addPropertiesFromFile(const std::string fileName) {
           std::cout << "Read line: '" << line << "'" << std::endl;
           boost::algorithm::trim(line);
           std::stringstream ss(line);
-          ss >> key;
-          getline(ss, value);
-          boost::algorithm::trim(value);
-          std::cout << key << ": '" << value << "'" << std::endl << std::endl;
-          mProperties[key] = value;
+
+          //ss >> key;
+
+          if (ss.peek() == '@') {
+              parseAnimatedProperty(ss);
+          } else {
+              parseConstantProperty(ss);
+          }
       }
   }
-  
+
   infile.close();
   std::cout << std::endl;
 }
 
 void PropertyBag::addProperty(const std::string& key, const std::string& value) {
-  mProperties[key] = value;
+    std::cout << "DONT CALL THIS FUNCTION" << std::endl;
+    mProperties[key] = new ConstantProperty(key, value);
 }
 
 void PropertyBag::addPropertiesFromLine(const std::string& line) {
@@ -49,19 +125,20 @@ void PropertyBag::addPropertiesFromLine(const std::string& line) {
     if (splitted.size() != 2) {
       throw "Cannot parse key-value pair '" + keyValue + "'";
     } else {
-      mProperties[splitted[0]] = splitted[1];
+      mProperties[splitted[0]] = new ConstantProperty(splitted[0], splitted[1]);
     }
   }
 }
 
 std::string PropertyBag::getProperty(const std::string& key) {
     if (mProperties.find(key) != mProperties.end()) {
-        return mProperties[key];
+        return mProperties[key]->getValue();
     } else {
         std::string msg = "'" + key + "' does not exist in property bag";
         std::cout << "ERROR: " << msg << std::endl;
         throw msg;
     }
+//    return "";
 }
 
 void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, const std::string& outputFileName) {
@@ -77,9 +154,9 @@ void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, cons
   }
 
   std::string line;
-  while( std::getline(infile, line) ) {    
-    for (auto prop : mProperties) {  
-      boost::replace_all(line, "$"+prop.first, prop.second);
+  while( std::getline(infile, line) ) {
+    for (auto prop : mProperties) {
+      boost::replace_all(line, "$"+prop.first, prop.second->getValue());
     }
     
     outfile << line << std::endl;
@@ -90,14 +167,14 @@ void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, cons
 }
 
 void PropertyBag::writePropertiesToFile(const std::string& fileName) {
-  std::ofstream outfile(fileName.c_str());
-  if (outfile.fail()) {
-    throw "Cannot open file '" + fileName + "' to write properties";
-  }
+//  std::ofstream outfile(fileName.c_str());
+//  if (outfile.fail()) {
+//    throw "Cannot open file '" + fileName + "' to write properties";
+//  }
 
-  for (auto keyValuePair : mProperties) {
-    outfile << keyValuePair.first << " " << keyValuePair.second << std::endl;
-  }
+//  for (auto keyValuePair : mProperties) {
+//    outfile << keyValuePair.first << " " << keyValuePair.second << std::endl;
+//  }
 
-  outfile.close();
+//  outfile.close();
 }

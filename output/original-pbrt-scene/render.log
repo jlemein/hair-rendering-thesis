@@ -1,0 +1,92 @@
+jeffrey@jeffrey-desktop-mint ~/hair-rendering-thesis/scenes/hair-pbrt $ pbrt curly-hair.pbrt 
+pbrt version 3 (built Apr  9 2018 at 21:08:02) [Detected 8 cores]
+Copyright (c)1998-2018 Matt Pharr, Greg Humphreys, and Wenzel Jakob.
+The source code to pbrt (but *not* the book contents) is covered by the BSD License.
+See the file LICENSE.txt for the conditions of the license.
+Rendering: [+++++++++++++++++++++++++++++++++++++++++++]  (5722.6s)          
+Statistics:
+  BVH
+    Interior nodes                                                4749308
+    Leaf nodes                                                    4749309
+    Primitives per leaf node                       5266528 /      4749309 (1.11x)
+  Integrator
+    Camera rays traced                                          134742528
+    Path length                                                     1.570 avg [range 0 - 32]
+    Zero-radiance paths                          171296293 /    234558807 (73.03%)
+  Intersections
+    Regular ray intersection tests                              519761525
+    Shadow ray intersection tests                               234558783
+    Curve refinement level                                          1.056 avg [range 0 - 4]
+    Ray-curve intersection tests                 638447390 /  16210103967 (3.94%)
+  Memory
+    BVH tree                                                       370.24 MiB
+    Curves                                                         339.02 MiB
+    Film pixels                                                     32.00 MiB
+    Primitives                                                     361.62 MiB
+    Texture MIP maps                                                 2.00 MiB
+    TransformCache                                                 260.00 kB
+  Scene
+    Curves                                                         658316
+    Lights                                                              1
+    Materials created                                              658317
+    Shapes created                                                5266528
+    Split curves                                                  5266528
+    Probes per TransformCache lookup                                1.000 avg [range 1 - 1]
+    TransformCache hits                            1316632 /      1316634 (100.00%)
+  Texture
+    Trilinear lookups                                           335688119
+  Profile
+    Integrator::Render()                                            99.86% (   1:35:29.30)
+      Camera::GenerateRay[Differential]()                            0.17% (   0:00:09.97)
+      Film::AddSample()                                              0.12% (   0:00:06.88)
+      Film::MergeTile()                                              0.00% (   0:00:00.00)
+      Sampler::GetSample[12]D()                                      0.37% (   0:00:20.98)
+      Sampler::StartPixelSample()                                    0.00% (   0:00:00.08)
+      SamplerIntegrator::Li()                                       98.88% (   1:34:33.35)
+        Accelerator::Intersect()                                    36.90% (   0:35:17.05)
+          Curve::Intersect()                                        22.17% (   0:21:12.26)
+        BSDF::Sample_f()                                             3.31% (   0:03:09.90)
+        Direct lighting                                             57.15% (   0:54:39.03)
+          Accelerator::Intersect()                                  21.19% (   0:20:15.56)
+            Curve::Intersect()                                      12.76% (   0:12:12.08)
+          Accelerator::IntersectP()                                 26.60% (   0:25:26.35)
+            Curve::IntersectP()                                     15.85% (   0:15:09.60)
+          BSDF::PDF()                                                1.46% (   0:01:23.70)
+          BSDF::Sample_f()                                           3.38% (   0:03:13.85)
+          BSDF::f()                                                  1.53% (   0:01:27.83)
+          Light::Pdf()                                               0.39% (   0:00:22.28)
+          Light::Sample_*()                                          1.07% (   0:01:01.31)
+            MIPMap::Lookup() (trilinear)                             0.42% (   0:00:24.37)
+          MIPMap::Lookup() (trilinear)                               0.05% (   0:00:03.11)
+          Sampler::GetSample[12]D()                                  0.37% (   0:00:21.38)
+        MIPMap::Lookup() (trilinear)                                 0.09% (   0:00:05.31)
+        Material::ComputeScatteringFunctions()                       0.47% (   0:00:27.06)
+        Sampler::GetSample[12]D()                                    0.18% (   0:00:10.04)
+    Scene parsing and creation                                       0.14% (   0:00:08.12)
+      Acceleration structure creation                                0.04% (   0:00:02.42)
+      MIP map generation                                             0.00% (   0:00:00.00)
+      MIPMap::Lookup() (trilinear)                                   0.00% (   0:00:00.01)
+  Profile (flattened)
+    Curve::Intersect()                                              34.93% (   0:33:24.34)
+    Accelerator::Intersect()                                        23.15% (   0:22:08.26)
+    Curve::IntersectP()                                             15.85% (   0:15:09.60)
+    Accelerator::IntersectP()                                       10.75% (   0:10:16.74)
+    BSDF::Sample_f()                                                 6.69% (   0:06:23.75)
+    BSDF::f()                                                        1.53% (   0:01:27.83)
+    BSDF::PDF()                                                      1.46% (   0:01:23.70)
+    Direct lighting                                                  1.11% (   0:01:03.61)
+    Sampler::GetSample[12]D()                                        0.91% (   0:00:52.41)
+    SamplerIntegrator::Li()                                          0.78% (   0:00:44.94)
+    Light::Sample_*()                                                0.64% (   0:00:36.94)
+    MIPMap::Lookup() (trilinear)                                     0.57% (   0:00:32.81)
+    Material::ComputeScatteringFunctions()                           0.47% (   0:00:27.06)
+    Light::Pdf()                                                     0.39% (   0:00:22.28)
+    Integrator::Render()                                             0.31% (   0:00:18.00)
+    Camera::GenerateRay[Differential]()                              0.17% (   0:00:09.97)
+    Film::AddSample()                                                0.12% (   0:00:06.88)
+    Scene parsing and creation                                       0.10% (   0:00:05.67)
+    Acceleration structure creation                                  0.04% (   0:00:02.42)
+    Sampler::StartPixelSample()                                      0.00% (   0:00:00.08)
+    Film::MergeTile()                                                0.00% (   0:00:00.00)
+    MIP map generation                                               0.00% (   0:00:00.00)
+

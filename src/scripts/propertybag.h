@@ -2,7 +2,10 @@
 #define PROPERTY_BAG_H
 
 #include <boost/unordered_map.hpp>
-using property_map_t = boost::unordered::unordered_map<std::string, std::string>;
+#include "property.h"
+#include <sstream>
+
+using property_map_t = boost::unordered::unordered_map<std::string, Property*>;
 
 /**
  *  author: Jeffrey Lemein
@@ -10,6 +13,9 @@ using property_map_t = boost::unordered::unordered_map<std::string, std::string>
 class PropertyBag {
 private:
     property_map_t mProperties;
+
+    void parseAnimatedProperty(std::stringstream& ss);
+    void parseConstantProperty(std::stringstream& ss);
 
 public:
     /**

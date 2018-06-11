@@ -1,6 +1,6 @@
 Integrator "path" "integer maxdepth" [ 32 ] 
 Transform [ -0.999887 0.00390257 0.0145262 -0 -0 0.965755 -0.259457 -0 0.0150413 0.259428 0.965645 -0 0.146624 -9.36998 28.765 1]
-Sampler "sobol" "integer pixelsamples" [ 8 ] 
+Sampler "sobol" "integer pixelsamples" [ 128 ] 
 PixelFilter "triangle" "float xwidth" [ 1.000000 ] "float ywidth" [ 1.000000 ] 
 Film "image"
     "integer xresolution" [ 1024 ] "integer yresolution" [ 1024 ]

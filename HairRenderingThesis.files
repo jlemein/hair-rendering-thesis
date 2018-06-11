@@ -28628,6 +28628,13 @@ ext/pbrt-v3/src/tools/cyhair2pbrt.cpp
 ext/pbrt-v3/src/tools/imgtool.cpp
 ext/pbrt-v3/src/tools/obj2pbrt.cpp
 src/scripts/analyze-hair.cpp
+src/scripts/animatedproperty.cpp
+src/scripts/animatedproperty.h
+src/scripts/animationpropertybag.cpp
+src/scripts/animationpropertybag.h
+src/scripts/animationtype.h
+src/scripts/constantproperty.cpp
+src/scripts/constantproperty.h
 src/scripts/hairsimplify.cpp
 src/scripts/hairsimplify.h
 src/scripts/hairstruct.cpp
@@ -28637,6 +28644,9 @@ src/scripts/pbrthairparser.cpp
 src/scripts/pbrthairparser.h
 src/scripts/preparescene.cpp
 src/scripts/preprocess.cpp
+src/scripts/processhair.cpp
+src/scripts/property.cpp
+src/scripts/property.h
 src/scripts/propertybag.cpp
 src/scripts/propertybag.h
 src/scripts/renderframe.cpp

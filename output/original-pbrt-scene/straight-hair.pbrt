@@ -1,0 +1,27 @@
+Integrator "path" "integer maxdepth" [ 32 ] 
+Transform [ -0.999887 0.00390257 0.0145262 -0 -0 0.965755 -0.259457 -0 0.0150413 0.259428 0.965645 -0 0.146624 -9.36998 28.765 1]
+
+Sampler "halton" "integer pixelsamples" [ 512 ] 
+PixelFilter "triangle" "float xwidth" [ 1.000000 ] "float ywidth" [ 1.000000 ] 
+Film "image"
+   "integer xresolution" [ 1024 ] "integer yresolution" [ 1024 ]
+#   "integer xresolution" [ 512 ] "integer yresolution" [ 512 ]
+    "string filename" "straight-hair.exr"
+
+Camera "perspective" "float fov" [ 35.000000 ] 
+
+WorldBegin
+	MakeNamedMaterial "black_hair" "string type" [ "hair" ] "float eumelanin" [ 8 ]
+	MakeNamedMaterial "red_hair" "string type" [ "hair" ] "float eumelanin" [ 3 ]
+	MakeNamedMaterial "brown_hair" "string type" [ "hair" ] "float eumelanin" [ 1.3 ] "float beta_m" .25 "float alpha" 2
+	MakeNamedMaterial "blonde_hair" "string type" [ "hair" ] "float	eumelanin" [ .3 ]
+
+	NamedMaterial "brown_hair"
+	Include "models/straight-hair.pbrt" 
+	LightSource "distant" "point from" [ 0.190330 0.758426 -0.623349 ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ 19.091171 19.091171 19.091171 ] 
+	TransformBegin
+	        Rotate -55 1 0 0
+	        Rotate 90 0 0 1
+		LightSource "infinite" "string mapname" [ "textures/Skydome.pfm" ] 
+	TransformEnd
+WorldEnd

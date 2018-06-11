@@ -26,7 +26,7 @@ WorldBegin
 
         # Hair model - Scene bounds: (-77.744104, -49.430307, -49.275224) - (26.574915, 66.646448, 52.372057)
         TransformBegin  
-	        Include "../../../scenes/hair/models/wCurly.xthin.25.pbrt"
+	        #Include "../../../scenes/hair/models/wCurly.xthin.25.pbrt"
         TransformEnd
 
         # Female head model - Original Scene bounds: (-48.471413, -48.249229, -59.862568) - (37.471680, 48.062748, 60.134830)

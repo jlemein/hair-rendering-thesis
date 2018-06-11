@@ -55,8 +55,10 @@ struct Hair
     float minCurveWidth0, minCurveWidth1, maxCurveWidth0, maxCurveWidth1;
     float avgCurveWidth0, avgCurveWidth1;
 
+    void writeFile(const std::string& outputFileName);
+
     friend std::istream& operator>>(std::istream& istream, Hair& hair);
-    //friend std::ostream& operator<<(std::ostream& ostream, Hair& hair);
+    friend std::ostream& operator<<(std::ostream& ostream, Hair& hair);
 };
 
 #endif // HAIRSTRUCT_H
