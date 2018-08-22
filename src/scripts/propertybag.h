@@ -20,6 +20,11 @@ private:
 public:
     /**
     * Reads a property file and returns the map containing the property-value pairs.
+    * A property can be defined in 2 ways: as a static property and an animated property
+    *
+    * Animated property
+    * - Starts with '@', meaning at keyframe #<number>, starting with 0 as first keyframe
+    *   Examples: @0: viewRotation=90; @4: viewRotation=360
     */
     void addPropertiesFromFile(const std::string fileName);
     void addProperty(const std::string& key, const std::string& value);
@@ -29,6 +34,11 @@ public:
      * Returns property value from property bag, throws error if not exist
      */
     std::string getProperty(const std::string& key);
+
+    /**
+      * Returns the number of keyframes defined for this property map
+      */
+    int getKeyFrameCount() const;
     
     /**
     * Replaces all properties in inputFileName with the values provided in properties-map.

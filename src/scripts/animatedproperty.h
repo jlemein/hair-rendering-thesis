@@ -26,6 +26,8 @@ public:
     virtual std::string operator()(float t) const;
     virtual std::string operator[](int keyframe) const;
     virtual std::string getValue() const;
+
+    virtual int getKeyFrameCount() const;
 };
 
 #endif // ANIMATEDPROPERTY_H

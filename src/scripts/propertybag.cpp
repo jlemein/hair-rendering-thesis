@@ -18,6 +18,25 @@
 
 //#include <boost/algorithm/string/replace.hpp>
 #include <boost/lexical_cast.hpp>
+#include <boost/filesystem.hpp>
+
+/**
+ * An animated property is a property that describes a discrete function. Two types of animations can be described:
+ * - A keyframe animation, meaning the numbers are absolute indices in the animation. #1 means first frame of animation, #2 means second frame.
+ *
+ *
+ *
+ * Examples of animation descriptions:
+ *
+ * For keyframe 0 to keyframe
+ * @viewAngle #1: { 10.0 } - #4 { 40.0 }  -- implies that keyframe 1 has orientation 10.0, keyframe 2 and 3 also have orientation 10.0, and from keyframe 4 the orientation is set to 40.0.
+ * @viewAngle #1: { 10.0 } -> #4 { 40.0 }  -- implies that keyframe 1 has orientation 10.0, keyframe 2 and 3 are linearly interpolated, meaning keyframe 2 has orientation 20.0, keyframe 3 has orientation 30.0 and keyframe 4 has orientation of 40.0.
+ * @viewAngle 0: { 45.0 } -
+ * @viewAngle 0: { 45.0 } -> 1: { 90.0 }
+ *
+ * @viewAngle #1: 10.0 - #4: 20.0
+ * @viewAngle #1: 10.0 ~ #4: 20.0
+ */
 
 void PropertyBag::parseAnimatedProperty(std::stringstream& ss) {
     std::string line;
@@ -33,37 +52,53 @@ void PropertyBag::parseAnimatedProperty(std::stringstream& ss) {
     std::string key = element.substr(1);
     AnimatedProperty* property = new AnimatedProperty(key);
 
+    std::cout << "Parsing animated property @" << key << std::endl;
+    bool stopCondition = false;
+
     do {
-        // read frame number
-        bool isAbsoluteKeyFrame = false;
-        if (ss.peek() == '#') {
+        // read whether keyframe is provided, and if yes, then which frame number
+        bool isAbsoluteKeyFrame = true;
+        int keyframe;
+        std::getline(ss, element, ':');
+        boost::trim(element);
+
+        if (element.length() > 1 && element[0] == '#') {
             isAbsoluteKeyFrame = true;
-            ss.ignore();
+            keyframe = boost::lexical_cast<int>(element.substr(1));
+        } else {
+            std::cout << "For now only keyframes can be provided using hash (#)" << std::endl;
+            keyframe = boost::lexical_cast<int>(element);
         }
 
-        // read key frame
-        std::getline(ss, buffer, ':');
-        int keyFrame = boost::lexical_cast<int>(buffer);
+        std::cout << "Keyframe provided for keyframe: " << keyframe << std::endl;
+        ss >> line;
+        boost::trim(line);
 
         // read value
-        std::string value;
-        std::getline(ss, buffer, '{');
-        ss.ignore();
-        std::getline(ss, value, '}');
-        ss.ignore();
+        float value = boost::lexical_cast<float>(line);
+        std::cout << "Keyframe value: " << value << std::endl;
 
         // read animationType
-        std::string line;
-        ss >> line;
-        AnimationType animationType;
-        if (line[0] == '-') {
-            animationType = AnimationType::Fixed;
-        } else if (line[0] == '-' && line[1] == '>') {
-            animationType = AnimationType::Linear;
+        ss >> element;
+        boost::trim(element);
+
+        AnimationType animationType = AnimationType::Fixed;
+        if (!element.empty()) {
+            char interpolationSymbol = boost::lexical_cast<char>(element);
+
+            if (interpolationSymbol == '-') {
+                animationType = AnimationType::Fixed;
+            } else if (interpolationSymbol == '~') {
+                animationType = AnimationType::Linear;
+            } else if (interpolationSymbol == ';') {
+                stopCondition = true;
+            } else {
+                std::cout << "Unsupported interpolation symbol provided. Using fixed interpolation by default" << std::endl;
+            }
         }
 
-        property->addKeyFrame(keyFrame, isAbsoluteKeyFrame, animationType, boost::lexical_cast<float>(value));
-    } while (!ss.str().empty());
+        property->addKeyFrame(keyframe, isAbsoluteKeyFrame, animationType, boost::lexical_cast<float>(value));
+    } while (!ss.str().empty() && !stopCondition);
 
     mProperties[key] = property;
 
@@ -75,7 +110,7 @@ void PropertyBag::parseConstantProperty(std::stringstream& ss) {
     getline(ss, value);
     boost::algorithm::trim(value);
 
-    std::cout << key << ": '" << value << "'" << std::endl << std::endl;
+    //std::cout << key << ": '" << value << "'" << std::endl << std::endl;
 
     mProperties[key] = new ConstantProperty(key, value);
 }
@@ -92,7 +127,7 @@ void PropertyBag::addPropertiesFromFile(const std::string fileName) {
   while(!infile.eof() && getline(infile, line)) {
       if (!line.empty() && !boost::starts_with(line, "#")) {
           std::string key, value;
-          std::cout << "Read line: '" << line << "'" << std::endl;
+          //std::cout << "Read line: '" << line << "'" << std::endl;
           boost::algorithm::trim(line);
           std::stringstream ss(line);
 
@@ -111,7 +146,6 @@ void PropertyBag::addPropertiesFromFile(const std::string fileName) {
 }
 
 void PropertyBag::addProperty(const std::string& key, const std::string& value) {
-    std::cout << "DONT CALL THIS FUNCTION" << std::endl;
     mProperties[key] = new ConstantProperty(key, value);
 }
 
@@ -141,29 +175,75 @@ std::string PropertyBag::getProperty(const std::string& key) {
 //    return "";
 }
 
-void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, const std::string& outputFileName) {
-  std::ifstream infile(inputFileName.c_str());
-  if (infile.fail()) {
-    throw "Failed to open input file '" + inputFileName + "'";
-  }
+int PropertyBag::getKeyFrameCount() const {
+    int numberKeyFrames = 1;
 
-  std::ofstream outfile(outputFileName.c_str());
-  if (outfile.fail()) {
-    infile.close();
-    throw "Cannot write to output file '" + outputFileName + "'";
-  }
-
-  std::string line;
-  while( std::getline(infile, line) ) {
-    for (auto prop : mProperties) {
-      boost::replace_all(line, "$"+prop.first, prop.second->getValue());
+    for (auto property : mProperties) {
+        numberKeyFrames = std::max(numberKeyFrames, property.second->getKeyFrameCount());
     }
-    
-    outfile << line << std::endl;
-  }
 
-  outfile.close();
-  infile.close();
+    return numberKeyFrames;
+
+}
+
+std::string formatKeyFrame(int keyIndex) {
+    std::string keyframeStr;
+    if (keyIndex < 10) {
+        keyframeStr = "000";
+    } else if (keyIndex < 100) {
+        keyframeStr = "00";
+    } else if (keyIndex < 1000) {
+        keyframeStr = "0";
+    }
+    keyframeStr += boost::lexical_cast<std::string>(keyIndex);
+    return keyframeStr;
+}
+
+void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, const std::string& outputFileName) {
+  namespace fs = boost::filesystem;
+
+  // check how many keyframes there are defined
+  int keyFrameCount = getKeyFrameCount();
+  std::cout << "Replacing properties for " << keyFrameCount << " key frames" << std::endl << std::endl;
+
+  for (int keyIndex = 0; keyIndex < keyFrameCount; ++keyIndex) {
+      //
+      // Opening input file stream
+      std::ifstream infile(inputFileName.c_str());
+      if (infile.fail()) {
+        throw "Failed to open input file '" + inputFileName + "'";
+      }
+
+      //
+      // Writing output file
+      std::string formattedKeyFrame = formatKeyFrame(keyIndex);
+
+      fs::path p = fs::path(outputFileName);
+      std::string newOutputFileName = (p.parent_path() / p.stem()).string()
+              + "_" + formattedKeyFrame
+              + p.extension().string();
+
+      std::cout << newOutputFileName << std::endl;
+      std::ofstream outfile(newOutputFileName.c_str());
+      if (outfile.fail()) {
+        infile.close();
+        throw "Cannot write to output file '" + outputFileName + "'";
+      }
+
+      this->addProperty("KEY_FRAME", formattedKeyFrame);
+
+      std::string line;
+      while( std::getline(infile, line) ) {
+        for (auto prop : mProperties) {
+          boost::replace_all(line, "$"+prop.first, (*prop.second)[keyIndex]);
+        }
+
+        outfile << line << std::endl;
+      }
+
+      outfile.close();
+      infile.close();
+  }
 }
 
 void PropertyBag::writePropertiesToFile(const std::string& fileName) {

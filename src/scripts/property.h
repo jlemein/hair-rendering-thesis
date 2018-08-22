@@ -30,6 +30,12 @@ public:
      */
     virtual std::string getValue() const = 0;
 
+    /**
+     * @brief getKeyFrameCount returns the number of keyframes defined for this property
+     * @return default is 1, but can be any positive number
+     */
+    virtual int getKeyFrameCount() const;
+
     std::string name;
 
 };

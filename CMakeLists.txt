@@ -14,7 +14,7 @@ set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
 
-find_package(Boost 1.58.0 COMPONENTS program_options filesystem date_time  REQUIRED)
+find_package(Boost 1.58.0 COMPONENTS program_options filesystem date_time REQUIRED)
 
 file(GLOB SRC_FILES
     "*.h"
