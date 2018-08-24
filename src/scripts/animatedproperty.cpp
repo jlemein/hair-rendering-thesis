@@ -36,6 +36,8 @@ std::string AnimatedProperty::operator [](int key) const {
         }
     }
 
+    //std::cout << this->name << " at #" << key << ": " << returnValue << std::endl;
+
     return boost::lexical_cast<std::string>(returnValue);
 }
 
