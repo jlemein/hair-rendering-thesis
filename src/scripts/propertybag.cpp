@@ -52,7 +52,6 @@ void PropertyBag::parseAnimatedProperty(std::stringstream& ss) {
     std::string key = element.substr(1);
     AnimatedProperty* property = new AnimatedProperty(key);
 
-    std::cout << "Parsing animated property @" << key << std::endl;
     bool stopCondition = false;
 
     do {
@@ -70,13 +69,11 @@ void PropertyBag::parseAnimatedProperty(std::stringstream& ss) {
             keyframe = boost::lexical_cast<int>(element);
         }
 
-        std::cout << "Keyframe provided for keyframe: " << keyframe << std::endl;
         ss >> line;
         boost::trim(line);
 
         // read value
         float value = boost::lexical_cast<float>(line);
-        std::cout << "Keyframe value: " << value << std::endl;
 
         // read animationType
         ss >> element;
@@ -116,8 +113,6 @@ void PropertyBag::parseConstantProperty(std::stringstream& ss) {
 }
 
 void PropertyBag::addPropertiesFromFile(const std::string fileName) {
-    std::cout << "Reading property file: ; '" << fileName << "'" << std::endl;
-
   std::ifstream infile(fileName.c_str());
   if (infile.fail()) {
     throw "Failed to open input file '" + fileName + "'";
@@ -151,7 +146,7 @@ void PropertyBag::addProperty(const std::string& key, const std::string& value) 
 
 void PropertyBag::addPropertiesFromLine(const std::string& line) {
   std::vector<std::string> keyValues;
-  boost::split(keyValues, line, boost::is_any_of("\t "), boost::token_compress_on);
+  boost::split(keyValues, line, boost::is_any_of("\t, "), boost::token_compress_on);
 
   for (auto keyValue : keyValues) {
     std::vector<std::string> splitted;
@@ -204,7 +199,6 @@ void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, cons
 
   // check how many keyframes there are defined
   int keyFrameCount = getKeyFrameCount();
-  std::cout << "Replacing properties for " << keyFrameCount << " key frames" << std::endl << std::endl;
 
   for (int keyIndex = 0; keyIndex < keyFrameCount; ++keyIndex) {
       //
@@ -223,7 +217,6 @@ void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, cons
               + "_" + formattedKeyFrameStr
               + p.extension().string();
 
-      std::cout << newOutputFileName << std::endl;
       std::ofstream outfile(newOutputFileName.c_str());
       if (outfile.fail()) {
         infile.close();
@@ -243,6 +236,8 @@ void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, cons
 
       outfile.close();
       infile.close();
+
+      std::cout << newOutputFileName << "[Done]" << std::endl;
   }
 }
 

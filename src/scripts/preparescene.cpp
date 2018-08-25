@@ -73,7 +73,6 @@ int main(int argc, char** argv) {
 
   if (vm.count("propertyfile")) {
     std::string fileName = vm["propertyfile"].as<std::string>();
-    std::cout << "Property file specified: " << fileName << "\n";
     try {
       propertyBag.addPropertiesFromFile(fileName);
     } catch(const char* e) {
@@ -87,7 +86,6 @@ int main(int argc, char** argv) {
   }
 
   try {
-    //propertyBag.writePropertiesToFile(inputFileName + ".properties");
     propertyBag.replacePropertiesInFile(inputFileName.string(), outputFileName.string());
   } catch (const char* e) {
     std::cout << "Exception when replacing arguments: " << e << std::endl;

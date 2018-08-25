@@ -48,24 +48,6 @@ std::string AnimatedProperty::operator [](int key) const {
         returnValue = linearInterpolate(valuePrev, valueNext, offset / duration);
     }
 
-//    if (mKeyFrames.size() > 2) {
-//        std::cout << "Animated property: " << name << std::endl;
-//        for (auto keyframe : mKeyFrames) {
-//            std::cout << "#" << keyframe.first << ": " << keyframe.second << std::endl;
-//        }
-//        std::cout << "Requested frame #" << key << std::endl;
-
-//        if (position <= 0) {
-//            std::cout << "Position is before first keyframe" << std::endl;
-//        } else if (position >= mKeyFrames.size()) {
-//            std::cout << "Position is after last specified keyframe" << std::endl;
-//        } else {
-//            std::cout << "Position is: " << position << ", meaning between keyframes: " << mKeyFrames[position-1].first << " and " << mKeyFrames[position].first << std::endl;
-//        }
-//    }
-
-//    std::cout << this->name << " at #" << key << ": " << returnValue << std::endl;
-
     return boost::lexical_cast<std::string>(returnValue);
 }
 
@@ -80,11 +62,8 @@ std::string AnimatedProperty::getValue() const {
 
 int AnimatedProperty::getKeyFrameCount() const {
     int maxKeyFrameIndex = 0;
-    std::cout << "Requesting keyframe count for @" << this->name << std::endl;
-    std::cout << "Key frames: " << mKeyFrames.size() << std::endl;
 
     for (auto keyFrame : mKeyFrames) {
-        std::cout << "Index: " << keyFrame.first << std::endl;
         maxKeyFrameIndex = std::max(maxKeyFrameIndex, keyFrame.first);
     }
 

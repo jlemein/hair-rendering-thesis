@@ -8,7 +8,7 @@ Sampler "$sampler_type" "integer pixelsamples" [ $sampler_pixelsamples ]
 PixelFilter "triangle" "float xwidth" [ $pixelfilter_xwidth ] "float ywidth" [ $pixelfilter_ywidth ] 
 Film "image"
     "integer xresolution" [ $image_xresolution ] "integer yresolution" [ $image_yresolution ]
-    "string filename" "$image_output_basename$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
+    "string filename" "output/$image_output_basename$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
     "float scale" 4
 
 Camera "perspective" "float fov" [ $camera_fov ] 
@@ -32,7 +32,7 @@ WorldBegin
 
             TransformBegin
             	NamedMaterial "$material_name" 
-	            Include "$model_hair_filename$model_hair_thickness$model_hair_percentage.pbrt"
+	            Include "$model_base_directory$model_hair_filename$model_hair_thickness$model_hair_percentage.pbrt"
             TransformEnd
 
             TransformBegin
