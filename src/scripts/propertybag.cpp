@@ -216,11 +216,11 @@ void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, cons
 
       //
       // Writing output file
-      std::string formattedKeyFrame = formatKeyFrame(keyIndex);
+      std::string formattedKeyFrameStr = formatKeyFrame(keyIndex);
 
       fs::path p = fs::path(outputFileName);
       std::string newOutputFileName = (p.parent_path() / p.stem()).string()
-              + "_" + formattedKeyFrame
+              + "_" + formattedKeyFrameStr
               + p.extension().string();
 
       std::cout << newOutputFileName << std::endl;
@@ -230,7 +230,7 @@ void PropertyBag::replacePropertiesInFile(const std::string& inputFileName, cons
         throw "Cannot write to output file '" + outputFileName + "'";
       }
 
-      this->addProperty("KEY_FRAME", formattedKeyFrame);
+      this->addProperty("KEY_FRAME", formattedKeyFrameStr);
 
       std::string line;
       while( std::getline(infile, line) ) {

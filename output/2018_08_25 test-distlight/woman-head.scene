@@ -1,5 +1,6 @@
 Integrator "$integrator_type" "integer maxdepth" [ $integrator_maxdepth ] 
 #Transform [ $transform_matrix ]
+# $light_power
 Translate 0 0 29
 Rotate 0 0 1 0
 Sampler "$sampler_type" "integer pixelsamples" [ $sampler_pixelsamples ]
@@ -7,7 +8,7 @@ Sampler "$sampler_type" "integer pixelsamples" [ $sampler_pixelsamples ]
 PixelFilter "triangle" "float xwidth" [ $pixelfilter_xwidth ] "float ywidth" [ $pixelfilter_ywidth ] 
 Film "image"
     "integer xresolution" [ $image_xresolution ] "integer yresolution" [ $image_yresolution ]
-    "string filename" "$image_output_basename.$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
+    "string filename" "$image_output_basename$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
     "float scale" 4
 
 Camera "perspective" "float fov" [ $camera_fov ] 
@@ -18,17 +19,7 @@ WorldBegin
 	MakeNamedMaterial "brown_hair" "string type" [ "hair" ] "float eumelanin" [ 1.3 ] "float beta_m" .25 "float alpha" 2
 	MakeNamedMaterial "blonde_hair" "string type" [ "hair" ] "float	eumelanin" [ .3 ]
 
-    # Blond hair    
-    # Material "hair" "float eumelanin" .3
-
-    # Brown hair
-    Material "hair" "float eumelanin" [ 1.3 ] "float beta_m" .25 "float alpha" 2
-
-    # Red hair
-    # Material "hair" "float eumelanin" [ 3 ]
-
-    # Black hair
-    # Material "hair" "float eumelanin" [ 8 ]
+    LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 
 
     TransformBegin
         Rotate $view_rotation 0 1 0
@@ -50,7 +41,7 @@ WorldBegin
             TransformEnd
         TransformEnd
 
-	    LightSource "distant" "point from" [ $distlight_x $distlight_y $distlight_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $distlight_power $distlight_power $distlight_power ] 
+#	    LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 
 	    #TransformBegin
 	    #        Rotate -55 1 0 0
 	    #        Rotate 90 0 0 1

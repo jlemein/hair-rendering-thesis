@@ -16,27 +16,55 @@ float linearInterpolate(float valueA, float valueB, float ratio) {
     return (1.0f - ratio) * valueA + ratio * valueB;
 }
 
+int AnimatedProperty::findPosition(int keyFrame) const {
+    // assume key frames are sorted
+    int foundIndex = 0;
+    if (mKeyFrames.empty()) {
+        std::cout << "No key frames specified, unable to find position" << std::endl;
+        throw "No key frames specified, unable to find position";
+    }
+    for( int i=0; i<mKeyFrames.size(); ++i ) {
+        if (keyFrame < mKeyFrames[i].first) {
+            return i;
+        }
+    }
+    return mKeyFrames.size();
+}
+
 std::string AnimatedProperty::operator [](int key) const {
     float returnValue;
 
-    for (int i=0; i<mKeyFrames.size(); ++i) {
-        // The case when key frame comes before the sequence of defined key frames (then just return first value)
-        if (i == 0 && key <= mKeyFrames[i].first) {
-            returnValue = mKeyFrames[0].second;
-        } else if (key <= mKeyFrames[i].first) {
-            // interpolate
-            float valuePrev = mKeyFrames[i-1].second;
-            float valueNext = mKeyFrames[i].second;
-            float duration = (mKeyFrames[i].first - mKeyFrames[i-1].first);
-            float offset = key - mKeyFrames[i-1].first;
-            returnValue = linearInterpolate(valuePrev, valueNext, offset / duration);
-        } else {
-            // otherwise key frame lays after the sequence defined, so return last value of list
-            returnValue = mKeyFrames[i].second;
-        }
+    int position = findPosition(key);
+    if (position == 0) {
+        returnValue = mKeyFrames[position].second;
+    } else if (position == mKeyFrames.size()) {
+        returnValue = mKeyFrames[position-1].second;
+    } else {
+        // interpolate
+        float valuePrev = mKeyFrames[position-1].second;
+        float valueNext = mKeyFrames[position].second;
+        float duration = (mKeyFrames[position].first - mKeyFrames[position-1].first);
+        float offset = key - mKeyFrames[position-1].first;
+        returnValue = linearInterpolate(valuePrev, valueNext, offset / duration);
     }
 
-    //std::cout << this->name << " at #" << key << ": " << returnValue << std::endl;
+//    if (mKeyFrames.size() > 2) {
+//        std::cout << "Animated property: " << name << std::endl;
+//        for (auto keyframe : mKeyFrames) {
+//            std::cout << "#" << keyframe.first << ": " << keyframe.second << std::endl;
+//        }
+//        std::cout << "Requested frame #" << key << std::endl;
+
+//        if (position <= 0) {
+//            std::cout << "Position is before first keyframe" << std::endl;
+//        } else if (position >= mKeyFrames.size()) {
+//            std::cout << "Position is after last specified keyframe" << std::endl;
+//        } else {
+//            std::cout << "Position is: " << position << ", meaning between keyframes: " << mKeyFrames[position-1].first << " and " << mKeyFrames[position].first << std::endl;
+//        }
+//    }
+
+//    std::cout << this->name << " at #" << key << ": " << returnValue << std::endl;
 
     return boost::lexical_cast<std::string>(returnValue);
 }

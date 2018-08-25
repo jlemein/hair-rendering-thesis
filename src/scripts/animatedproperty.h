@@ -23,6 +23,15 @@ public:
 
     void addKeyFrame(int keyFrame, bool isAbsoluteKeyFrame, AnimationType animationType, float value);
 
+    /**
+     * @brief findPosition Finds index in key frame list, where the specified key frame index fits between.
+     * For example: if key frames are specified [0, 5, 10], then key frame index 7 fits between 5 and 10, corresponding to index 2.
+     * @param keyFrame The index of the keyframe
+     * @return Index to the key frame followed after the specified index. 0 in case keyframe comes before first specified keyframe, and
+     * index = length of keyframe array if key frame comes after the last key frame.
+     */
+    int findPosition(int keyFrame) const;
+
     virtual std::string operator()(float t) const;
     virtual std::string operator[](int keyframe) const;
     virtual std::string getValue() const;
