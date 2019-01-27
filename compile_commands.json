@@ -1,0 +1,112 @@
+[
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/simplify.dir/src/scripts/simplify.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/simplify.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/simplify.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/simplify.dir/src/scripts/hairsimplify.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairsimplify.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairsimplify.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/prepare.dir/src/scripts/preparescene.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/preparescene.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/preparescene.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/prepare.dir/src/scripts/property.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/property.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/property.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/prepare.dir/src/scripts/propertybag.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/propertybag.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/propertybag.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/prepare.dir/src/scripts/constantproperty.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/constantproperty.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/constantproperty.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/prepare.dir/src/scripts/animationpropertybag.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/animationpropertybag.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/animationpropertybag.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/prepare.dir/src/scripts/animatedproperty.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/animatedproperty.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/animatedproperty.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/sayhello.dir/src/scripts/sayhello.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/sayhello.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/sayhello.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/preprocess.dir/src/scripts/preprocess.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/preprocess.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/preprocess.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/preprocess.dir/src/scripts/property.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/property.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/property.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/preprocess.dir/src/scripts/propertybag.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/propertybag.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/propertybag.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/preprocess.dir/src/scripts/constantproperty.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/constantproperty.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/constantproperty.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/preprocess.dir/src/scripts/animationpropertybag.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/animationpropertybag.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/animationpropertybag.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/preprocess.dir/src/scripts/animatedproperty.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/animatedproperty.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/animatedproperty.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/preprocess.dir/src/scripts/hairsimplify.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairsimplify.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairsimplify.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/analyzehair.dir/src/scripts/analyze-hair.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/analyze-hair.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/analyze-hair.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/analyzehair.dir/src/scripts/hairstruct.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairstruct.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairstruct.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/analyzehair.dir/src/scripts/pbrthairparser.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/pbrthairparser.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/pbrthairparser.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/hairtransform.dir/src/scripts/hairtransform.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairtransform.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairtransform.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/hairtransform.dir/src/scripts/hairstruct.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairstruct.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/hairstruct.cpp"
+},
+{
+  "directory": "/media/jeffrey/hdd1/dev/hair-rendering-thesis",
+  "command": "/usr/bin/g++    -I/media/jeffrey/hdd1/dev/hair-rendering-thesis/src  -g3 -gdwarf-2   -std=gnu++11 -o CMakeFiles/hairtransform.dir/src/scripts/pbrthairparser.cpp.o -c /media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/pbrthairparser.cpp",
+  "file": "/media/jeffrey/hdd1/dev/hair-rendering-thesis/src/scripts/pbrthairparser.cpp"
+}
+]

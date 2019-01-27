@@ -6,7 +6,7 @@
 #include "pbrthairparser.h"
 
 std::ostream& operator<<(std::ostream& out, const Point& p) {
-  out << "[" << p.x << " " << p.y << " " << p.z << "]";
+    out << "[" << p.x << " " << p.y << " " << p.z << "]";
 }
 
 void Hair::writeFile(const std::string& outputFileName) {
@@ -17,14 +17,14 @@ void Hair::writeFile(const std::string& outputFileName) {
 
     for (const auto& curve : this->curves) {
         out << "Shape \"" << "curve" << "\" "
-            << "\"string type\" [ \"" << "cylinder" << "\" ] "
-            << "\"point P\" [ ";
+                << "\"string type\" [ \"" << "cylinder" << "\" ] "
+                << "\"point P\" [ ";
         for (const auto& pt : curve.points) {
             out << pt.x << " " << pt.y << " " << pt.z << " ";
         }
         out << "] "
-            << "\"float width0\" [ " << curve.width0 << " ] "
-            << "\"float width1\" [ " << curve.width1 << " ] ";
+                << "\"float width0\" [ " << curve.width0 << " ] "
+                << "\"float width1\" [ " << curve.width1 << " ] ";
         out << std::endl;
     }
 }
@@ -41,17 +41,32 @@ std::istream& operator>>(std::istream& istream, Hair& hairData) {
 std::ostream& operator<<(std::ostream& out, const Hair& hair) {
     for (const auto& curve : hair.curves) {
         out << "Shape \"" << "curve" << "\" "
-            << "\"string type\" [ \"" << "cylinder" << "\" ] "
-            << "\"point P\" [ ";
+                << "\"string type\" [ \"" << hair.getCurveType() << "\" ] "
+                << "\"point P\" [ ";
         for (const auto& pt : curve.points) {
             out << pt.x << " " << pt.y << " " << pt.z << " ";
         }
         out << "] "
-            << "\"float width0\" [ " << curve.width0 << " ] "
-            << "\"float width1\" [ " << curve.width1 << " ] ";
+                << "\"float width0\" [ " << curve.width0 << " ] "
+                << "\"float width1\" [ " << curve.width1 << " ] ";
         out << std::endl;
     }
     return out;
+}
+
+std::string Hair::getCurveType() const {
+    if (this->curveType == CurveType::CYLINDER) {
+        return "cylinder";
+    }
+    if (this->curveType == CurveType::RIBBON) {
+        return "ribbon";
+    }
+    if (this->curveType == CurveType::FLAT) {
+        return "flat";
+    }
+
+    //default
+    return "flat";
 }
 
 

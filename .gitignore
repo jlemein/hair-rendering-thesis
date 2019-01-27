@@ -2,10 +2,13 @@ scenes/hair/models
 scenes/bunny-fur/
 output/generated
 output/2018*
+output/archive
+output/*/output
 build
 build2
 ext
 scenes/hair-pbrt/models
+CMakeFiles/
 
 # Prerequisites
 *.d

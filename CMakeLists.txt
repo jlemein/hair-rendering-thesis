@@ -48,6 +48,11 @@ if(Boost_FOUND)
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
     target_link_libraries(analyzehair ${Boost_LIBRARIES})
 
+    add_executable(hairtransform src/scripts/hairtransform.cpp
+        src/scripts/hairstruct.h src/scripts/hairstruct.cpp
+        src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
+    target_link_libraries(hairtransform ${Boost_LIBRARIES})
+
 #    add_executable(processhair src/scripts/processhair.cpp
 #        src/scripts/hairstruct.h src/scripts/hairstruct.cpp
 #        src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)

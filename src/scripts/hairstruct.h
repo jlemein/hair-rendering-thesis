@@ -6,6 +6,7 @@
  */
 #include <vector>
 #include <iostream>
+#include <string>
 
 /**
  * @brief The Point struct represents a point in 3D space
@@ -16,6 +17,8 @@ struct Point {
 
     friend std::ostream& operator<<(std::ostream& out, const Point& p);
 };
+
+enum CurveType { FLAT, CYLINDER, RIBBON };
 
 /**
  * @brief The Curve struct representing a curve in 3D space
@@ -42,6 +45,7 @@ struct Hair
 {
     /** @brief list of curves representing the hair strands of the model */
     std::vector<Curve> curves;
+    CurveType curveType;
 
     /** @brief sceneExtentMin orthogonal boundary for xyz dimensions */
     Point sceneExtentMin, sceneExtentMax;
@@ -59,6 +63,8 @@ struct Hair
 
     friend std::istream& operator>>(std::istream& istream, Hair& hair);
     friend std::ostream& operator<<(std::ostream& ostream, Hair& hair);
+    
+    std::string getCurveType() const;
 };
 
 #endif // HAIRSTRUCT_H

@@ -3,9 +3,14 @@
 #include <string>
 #include <fstream>
 #include <iostream>
+#include <math.h>
+#include <cstdlib>
+#include <sstream>
 
 HairSimplify::HairSimplify(const std::string& inputFileName) : mInputFileName(inputFileName) {
     analyzeHairFile();
+    mCurveWidth = -1.0f;
+    mCurveType = "flat";
 }
 
 void HairSimplify::analyzeHairFile() {
@@ -26,39 +31,73 @@ void HairSimplify::analyzeHairFile() {
     infile.close();
 }
 
+void HairSimplify::setCurveWidth(float curveWidth) {
+    this->mCurveWidth = curveWidth;
+}
+
+void HairSimplify::setCurveType(std::string type) {
+    this->mCurveType = type;
+}
+
 void HairSimplify::reduceToPercentage(const std::string& outputFileName, double percentage, bool sampleRandom) {
-    mHairCount = static_cast<int>(mHairCount * (percentage / 100.0));
+    mHairCount = static_cast<int> (mHairCount * (percentage / 100.0));
     // if (sampleRandom) {
     //     sampleHairsRandomly(inputFileName, outputFileName, numberHairs);
     // } else {
-        sampleFromBeginning(outputFileName);
+    sampleFromBeginning(outputFileName);
     // }
 }
 
-void HairSimplify::sampleFromBeginning(const std::string& outputFileName) {
-  std::cout << "Sample from beginning up to " << mHairCount << " hair strands" << std::endl;
-  
-  std::ifstream inFile(mInputFileName.c_str());
-  if (inFile.fail()) {
-    std::cout << "Cannot read input file " << mInputFileName << std::endl;
-    return;
-  }
+std::string replaceCurveWidths(std::string line, float width0, float width1, std::string curveType) {
+    std::string newString = "";
+    int stringTypeIndex = line.find("\"string type\"");
+    int pointTypeIndex = line.find("\"point P\"");
 
-  std::ofstream outFile(outputFileName.c_str());
-  if (outFile.fail()) {
-    inFile.close();
-    std::cout << "Cannot open output file for writing ('" << outputFileName << "')" << std::endl;
-    return;
-  }
 
-  int lineCount = 0;
-  std::string line;
-  while (getline(inFile, line) && lineCount < mHairCount) {
-    outFile << line << std::endl;
-    lineCount++;
-  }
+    int index = line.find("width0");
+    if (index == std::string::npos) {
+        return line;
+    } else {
+        std::ostringstream os;
+        //std::cout << "Found at index: " << index << ": " << line.substr(0, index) << std::endl;
+
+        os << line.substr(0, stringTypeIndex) << "\"string type\" [ " << "\"" << curveType << "\"" << " ] " << line.substr(pointTypeIndex, index - pointTypeIndex) << "width0\" [ " << width0 << " ] \"float width1\" [ " << width1 << " ]";
+        return os.str();
+    }
+
 }
- 
- void HairSimplify::sampleRandomly() {
-   std::cout << "Not supported at the moment" << std::endl;
- }
+
+void HairSimplify::sampleFromBeginning(const std::string& outputFileName) {
+    std::cout << "Sample from beginning up to " << mHairCount << " hair strands" << std::endl;
+
+    std::ifstream inFile(mInputFileName.c_str());
+    if (inFile.fail()) {
+        std::cout << "Cannot read input file " << mInputFileName << std::endl;
+        return;
+    }
+
+    std::ofstream outFile(outputFileName.c_str());
+    if (outFile.fail()) {
+        inFile.close();
+        std::cout << "Cannot open output file for writing ('" << outputFileName << "')" << std::endl;
+        return;
+    }
+
+    int lineCount = 0;
+    std::string line;
+    while (getline(inFile, line) && lineCount < mHairCount) {
+        float curve0 = (rand() / static_cast<float> (RAND_MAX)) * 0.1f + 0.05f;
+        float curve1 = (rand() / static_cast<float> (RAND_MAX)) * 0.1f + 0.05f;
+
+        if (this->mCurveWidth >= 0.0f) {
+            curve0 = mCurveWidth;
+            curve1 = mCurveWidth;
+        }
+        outFile << replaceCurveWidths(line, curve0, curve1, mCurveType) << std::endl;
+        lineCount++;
+    }
+}
+
+void HairSimplify::sampleRandomly() {
+    std::cout << "Not supported at the moment" << std::endl;
+}
