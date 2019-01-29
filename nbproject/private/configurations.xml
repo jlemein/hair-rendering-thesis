@@ -2,6 +2,8 @@
 <configurationDescriptor version="100">
   <logicalFolder name="root" displayName="root" projectFiles="true" kind="ROOT">
     <df root="." name="0">
+      <df name="assets">
+      </df>
       <df name="bin">
       </df>
       <df name="build">
@@ -2469,6 +2471,78 @@
             </df>
           </df>
           <in>feature_tests.cxx</in>
+        </df>
+      </df>
+      <df name="build_real">
+        <df name="bin">
+        </df>
+        <df name="CMakeFiles">
+          <df name="3.5.1">
+            <df name="CompilerIdCXX">
+              <in>CMakeCXXCompilerId.cpp</in>
+            </df>
+          </df>
+          <df name="analyzehair.dir">
+            <df name="src">
+              <df name="scripts">
+              </df>
+            </df>
+          </df>
+          <df name="bezier.dir">
+            <df name="src">
+              <df name="scripts">
+                <df name="bezier">
+                </df>
+                <df name="gl_util">
+                </df>
+              </df>
+            </df>
+          </df>
+          <df name="CMakeTmp">
+          </df>
+          <df name="hairtransform.dir">
+            <df name="src">
+              <df name="scripts">
+              </df>
+            </df>
+          </df>
+          <df name="prepare.dir">
+            <df name="src">
+              <df name="scripts">
+              </df>
+            </df>
+          </df>
+          <df name="preprocess.dir">
+            <df name="src">
+              <df name="scripts">
+              </df>
+            </df>
+          </df>
+          <df name="sayhello.dir">
+            <df name="src">
+              <df name="scripts">
+              </df>
+            </df>
+          </df>
+          <df name="simplify.dir">
+            <df name="src">
+              <df name="scripts">
+              </df>
+            </df>
+          </df>
+          <df name="testvdb.dir">
+            <df name="src">
+              <df name="scripts">
+                <df name="testvdb">
+                </df>
+              </df>
+            </df>
+          </df>
+          <in>feature_tests.cxx</in>
+        </df>
+      </df>
+      <df name="cmake">
+        <df name="Modules">
         </df>
       </df>
       <df name="CMakeFiles">
@@ -40765,6 +40839,313 @@
           </df>
         </df>
         <df name="openvdb">
+          <df name="openvdb_5_2_0">
+            <df name="cmd">
+              <df name="openvdb_lod">
+                <in>main.cc</in>
+              </df>
+              <df name="openvdb_print">
+                <in>main.cc</in>
+              </df>
+              <df name="openvdb_render">
+                <in>main.cc</in>
+              </df>
+              <df name="openvdb_view">
+                <in>main.cc</in>
+              </df>
+            </df>
+            <df name="doc">
+            </df>
+            <df name="io">
+              <in>Archive.cc</in>
+              <in>Archive.h</in>
+              <in>Compression.cc</in>
+              <in>Compression.h</in>
+              <in>File.cc</in>
+              <in>File.h</in>
+              <in>GridDescriptor.cc</in>
+              <in>GridDescriptor.h</in>
+              <in>Queue.cc</in>
+              <in>Queue.h</in>
+              <in>Stream.cc</in>
+              <in>Stream.h</in>
+              <in>TempFile.cc</in>
+              <in>TempFile.h</in>
+              <in>io.h</in>
+            </df>
+            <df name="math">
+              <in>BBox.h</in>
+              <in>ConjGradient.h</in>
+              <in>Coord.h</in>
+              <in>DDA.h</in>
+              <in>FiniteDifference.h</in>
+              <in>LegacyFrustum.h</in>
+              <in>Maps.cc</in>
+              <in>Maps.h</in>
+              <in>Mat.h</in>
+              <in>Mat3.h</in>
+              <in>Mat4.h</in>
+              <in>Math.h</in>
+              <in>Operators.h</in>
+              <in>Proximity.cc</in>
+              <in>Proximity.h</in>
+              <in>QuantizedUnitVec.cc</in>
+              <in>QuantizedUnitVec.h</in>
+              <in>Quat.h</in>
+              <in>Ray.h</in>
+              <in>Stats.h</in>
+              <in>Stencils.h</in>
+              <in>Transform.cc</in>
+              <in>Transform.h</in>
+              <in>Tuple.h</in>
+              <in>Vec2.h</in>
+              <in>Vec3.h</in>
+              <in>Vec4.h</in>
+            </df>
+            <df name="points">
+              <in>AttributeArray.cc</in>
+              <in>AttributeArray.h</in>
+              <in>AttributeArrayString.cc</in>
+              <in>AttributeArrayString.h</in>
+              <in>AttributeGroup.cc</in>
+              <in>AttributeGroup.h</in>
+              <in>AttributeSet.cc</in>
+              <in>AttributeSet.h</in>
+              <in>IndexFilter.h</in>
+              <in>IndexIterator.h</in>
+              <in>PointAdvect.h</in>
+              <in>PointAttribute.h</in>
+              <in>PointConversion.h</in>
+              <in>PointCount.h</in>
+              <in>PointDataGrid.h</in>
+              <in>PointDelete.h</in>
+              <in>PointGroup.h</in>
+              <in>PointMask.h</in>
+              <in>PointMove.h</in>
+              <in>PointSample.h</in>
+              <in>PointScatter.h</in>
+              <in>StreamCompression.cc</in>
+              <in>StreamCompression.h</in>
+              <in>points.cc</in>
+            </df>
+            <df name="python">
+              <df name="test">
+              </df>
+              <in>pyAccessor.h</in>
+              <in>pyFloatGrid.cc</in>
+              <in>pyGrid.h</in>
+              <in>pyIntGrid.cc</in>
+              <in>pyMetadata.cc</in>
+              <in>pyOpenVDBModule.cc</in>
+              <in>pyTransform.cc</in>
+              <in>pyVec3Grid.cc</in>
+              <in>pyopenvdb.h</in>
+              <in>pyutil.h</in>
+            </df>
+            <df name="tools">
+              <in>ChangeBackground.h</in>
+              <in>Clip.h</in>
+              <in>Composite.h</in>
+              <in>Dense.h</in>
+              <in>DenseSparseTools.h</in>
+              <in>Diagnostics.h</in>
+              <in>Filter.h</in>
+              <in>GridOperators.h</in>
+              <in>GridTransformer.h</in>
+              <in>Interpolation.h</in>
+              <in>LevelSetAdvect.h</in>
+              <in>LevelSetFilter.h</in>
+              <in>LevelSetFracture.h</in>
+              <in>LevelSetMeasure.h</in>
+              <in>LevelSetMorph.h</in>
+              <in>LevelSetPlatonic.h</in>
+              <in>LevelSetRebuild.h</in>
+              <in>LevelSetSphere.h</in>
+              <in>LevelSetTracker.h</in>
+              <in>LevelSetUtil.h</in>
+              <in>Mask.h</in>
+              <in>MeshToVolume.h</in>
+              <in>Morphology.h</in>
+              <in>MultiResGrid.h</in>
+              <in>ParticleAtlas.h</in>
+              <in>ParticlesToLevelSet.h</in>
+              <in>PointAdvect.h</in>
+              <in>PointIndexGrid.h</in>
+              <in>PointPartitioner.h</in>
+              <in>PointScatter.h</in>
+              <in>PointsToMask.h</in>
+              <in>PoissonSolver.h</in>
+              <in>PotentialFlow.h</in>
+              <in>Prune.h</in>
+              <in>RayIntersector.h</in>
+              <in>RayTracer.h</in>
+              <in>SignedFloodFill.h</in>
+              <in>Statistics.h</in>
+              <in>TopologyToLevelSet.h</in>
+              <in>ValueTransformer.h</in>
+              <in>VectorTransformer.h</in>
+              <in>VelocityFields.h</in>
+              <in>VolumeAdvect.h</in>
+              <in>VolumeToMesh.h</in>
+              <in>VolumeToSpheres.h</in>
+            </df>
+            <df name="tree">
+              <in>InternalNode.h</in>
+              <in>Iterator.h</in>
+              <in>LeafBuffer.h</in>
+              <in>LeafManager.h</in>
+              <in>LeafNode.h</in>
+              <in>LeafNodeBool.h</in>
+              <in>LeafNodeMask.h</in>
+              <in>NodeManager.h</in>
+              <in>NodeUnion.h</in>
+              <in>RootNode.h</in>
+              <in>Tree.h</in>
+              <in>TreeIterator.h</in>
+              <in>ValueAccessor.h</in>
+            </df>
+            <df name="unittest">
+              <in>TestAttributeArray.cc</in>
+              <in>TestAttributeArrayString.cc</in>
+              <in>TestAttributeGroup.cc</in>
+              <in>TestAttributeSet.cc</in>
+              <in>TestBBox.cc</in>
+              <in>TestClip.cc</in>
+              <in>TestConjGradient.cc</in>
+              <in>TestCoord.cc</in>
+              <in>TestCpt.cc</in>
+              <in>TestCurl.cc</in>
+              <in>TestDense.cc</in>
+              <in>TestDenseSparseTools.cc</in>
+              <in>TestDiagnostics.cc</in>
+              <in>TestDivergence.cc</in>
+              <in>TestDoubleMetadata.cc</in>
+              <in>TestExceptions.cc</in>
+              <in>TestFastSweeping.cc</in>
+              <in>TestFile.cc</in>
+              <in>TestFloatMetadata.cc</in>
+              <in>TestGradient.cc</in>
+              <in>TestGrid.cc</in>
+              <in>TestGridBbox.cc</in>
+              <in>TestGridDescriptor.cc</in>
+              <in>TestGridIO.cc</in>
+              <in>TestGridTransformer.cc</in>
+              <in>TestIndexFilter.cc</in>
+              <in>TestIndexIterator.cc</in>
+              <in>TestInit.cc</in>
+              <in>TestInt32Metadata.cc</in>
+              <in>TestInt64Metadata.cc</in>
+              <in>TestInternalOrigin.cc</in>
+              <in>TestLaplacian.cc</in>
+              <in>TestLeaf.cc</in>
+              <in>TestLeafBool.cc</in>
+              <in>TestLeafIO.cc</in>
+              <in>TestLeafManager.cc</in>
+              <in>TestLeafMask.cc</in>
+              <in>TestLeafOrigin.cc</in>
+              <in>TestLevelSetRayIntersector.cc</in>
+              <in>TestLevelSetUtil.cc</in>
+              <in>TestLinearInterp.cc</in>
+              <in>TestMaps.cc</in>
+              <in>TestMat4Metadata.cc</in>
+              <in>TestMath.cc</in>
+              <in>TestMeanCurvature.cc</in>
+              <in>TestMeshToVolume.cc</in>
+              <in>TestMetaMap.cc</in>
+              <in>TestMetadata.cc</in>
+              <in>TestMetadataIO.cc</in>
+              <in>TestMultiResGrid.cc</in>
+              <in>TestName.cc</in>
+              <in>TestNodeIterator.cc</in>
+              <in>TestNodeManager.cc</in>
+              <in>TestNodeMask.cc</in>
+              <in>TestParticleAtlas.cc</in>
+              <in>TestParticlesToLevelSet.cc</in>
+              <in>TestPointAdvect.cc</in>
+              <in>TestPointAttribute.cc</in>
+              <in>TestPointConversion.cc</in>
+              <in>TestPointCount.cc</in>
+              <in>TestPointDataLeaf.cc</in>
+              <in>TestPointDelete.cc</in>
+              <in>TestPointGroup.cc</in>
+              <in>TestPointIndexGrid.cc</in>
+              <in>TestPointMask.cc</in>
+              <in>TestPointMove.cc</in>
+              <in>TestPointPartitioner.cc</in>
+              <in>TestPointSample.cc</in>
+              <in>TestPointScatter.cc</in>
+              <in>TestPointsToMask.cc</in>
+              <in>TestPoissonSolver.cc</in>
+              <in>TestPotentialFlow.cc</in>
+              <in>TestPrePostAPI.cc</in>
+              <in>TestQuadraticInterp.cc</in>
+              <in>TestQuantizedUnitVec.cc</in>
+              <in>TestQuat.cc</in>
+              <in>TestRay.cc</in>
+              <in>TestStats.cc</in>
+              <in>TestStream.cc</in>
+              <in>TestStreamCompression.cc</in>
+              <in>TestStringMetadata.cc</in>
+              <in>TestTools.cc</in>
+              <in>TestTopologyToLevelSet.cc</in>
+              <in>TestTransform.cc</in>
+              <in>TestTree.cc</in>
+              <in>TestTreeCombine.cc</in>
+              <in>TestTreeGetSetValues.cc</in>
+              <in>TestTreeIterators.cc</in>
+              <in>TestTreeVisitor.cc</in>
+              <in>TestUtil.cc</in>
+              <in>TestValueAccessor.cc</in>
+              <in>TestVec2Metadata.cc</in>
+              <in>TestVec3Metadata.cc</in>
+              <in>TestVolumeRayIntersector.cc</in>
+              <in>TestVolumeToMesh.cc</in>
+              <in>TestVolumeToSpheres.cc</in>
+              <in>main.cc</in>
+              <in>util.h</in>
+            </df>
+            <df name="util">
+              <in>CpuTimer.h</in>
+              <in>Formats.cc</in>
+              <in>Formats.h</in>
+              <in>MapsUtil.h</in>
+              <in>Name.h</in>
+              <in>NodeMasks.h</in>
+              <in>NullInterrupter.h</in>
+              <in>PagedArray.h</in>
+              <in>Util.cc</in>
+              <in>Util.h</in>
+              <in>logging.h</in>
+            </df>
+            <df name="viewer">
+              <in>Camera.cc</in>
+              <in>Camera.h</in>
+              <in>ClipBox.cc</in>
+              <in>ClipBox.h</in>
+              <in>Font.cc</in>
+              <in>Font.h</in>
+              <in>RenderModules.cc</in>
+              <in>RenderModules.h</in>
+              <in>Viewer.cc</in>
+              <in>Viewer.h</in>
+            </df>
+            <in>Exceptions.h</in>
+            <in>Grid.cc</in>
+            <in>Grid.h</in>
+            <in>MetaMap.cc</in>
+            <in>MetaMap.h</in>
+            <in>Metadata.cc</in>
+            <in>Metadata.h</in>
+            <in>Platform.cc</in>
+            <in>Platform.h</in>
+            <in>PlatformConfig.h</in>
+            <in>Types.h</in>
+            <in>openvdb.cc</in>
+            <in>openvdb.h</in>
+            <in>version.h</in>
+          </df>
+          <df name="project">
+          </df>
         </df>
         <df name="pbrt-v3">
           <df name="cmake">
@@ -42609,87 +42990,7 @@
         </df>
       </df>
       <df name="output">
-        <df name="2018_06_10 test-animation">
-          <df name="curly-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="straight-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="wavy-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="wavythin-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-        </df>
-        <df name="2018_08_20 test-animation-single">
-          <df name="straight-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-        </df>
-        <df name="2018_08_25 distantlight">
-          <df name="output">
-          </df>
-          <df name="straight-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-        </df>
-        <df name="2018_08_26 infinitelight">
+        <df name="2019_01_26">
           <df name="output">
             <df name="models">
               <df name="archive">
@@ -42699,233 +43000,101 @@
               <df name="woman">
               </df>
             </df>
-            <df name="resu1">
+            <df name="oldresults">
             </df>
             <df name="textures">
             </df>
             <df name="tmp">
             </df>
           </df>
-          <df name="tmp">
-          </df>
-          <df name="tmp2">
-          </df>
         </df>
-        <df name="align-pbrt-and-cemyuksel-model">
-          <df name="curly-cemyuksel">
-            <df name="models">
-              <df name="archive">
+        <df name="archive">
+          <df name="2018_06_10 test-animation">
+            <df name="curly-hair-with-head">
+            </df>
+            <df name="straight-hair-with-head">
+            </df>
+            <df name="wavy-hair-with-head">
+            </df>
+            <df name="wavythin-hair-with-head">
+            </df>
+          </df>
+          <df name="2018_08_20 test-animation-single">
+            <df name="straight-hair-with-head">
+            </df>
+          </df>
+          <df name="2018_08_25 distantlight">
+            <df name="output">
+            </df>
+            <df name="straight-hair-with-head">
+            </df>
+          </df>
+          <df name="2018_08_26 infinitelight">
+            <df name="output">
+              <df name="resu1">
               </df>
               <df name="tmp">
               </df>
-              <df name="woman">
-              </df>
             </df>
-            <df name="textures">
+            <df name="tmp">
             </df>
-          </df>
-          <df name="curly-elliptical-cemyuksel">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
+            <df name="tmp2">
             </df>
           </df>
-          <df name="curly-elliptical-pbrt">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
+          <df name="align-pbrt-and-cemyuksel-model">
+            <df name="curly-cemyuksel">
             </df>
-            <df name="textures">
+            <df name="curly-elliptical-cemyuksel">
+            </df>
+            <df name="curly-elliptical-pbrt">
+            </df>
+            <df name="curly-pbrt">
             </df>
           </df>
-          <df name="curly-pbrt">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
+          <df name="all-models">
+            <df name="curly-hair-with-head">
             </df>
-            <df name="textures">
+            <df name="results_firsttry">
             </df>
-          </df>
-        </df>
-        <df name="all-models">
-          <df name="curly-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
+            <df name="straight-hair-with-head">
             </df>
-            <df name="textures">
+            <df name="wavy-hair-with-head">
+            </df>
+            <df name="wavythin-hair-with-head">
             </df>
           </df>
-          <df name="results_firsttry">
-          </df>
-          <df name="straight-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
+          <df name="all-models-april-9">
+            <df name="curly-hair-with-head">
             </df>
-            <df name="textures">
+            <df name="straight-hair-with-head">
+            </df>
+            <df name="wavy-hair-with-head">
+            </df>
+            <df name="wavythin-hair-with-head">
             </df>
           </df>
-          <df name="wavy-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
+          <df name="analyze-info-pbrthair-vs-cemyukselhair">
+          </df>
+          <df name="basic_skeleton">
+            <df name="output">
             </df>
           </df>
-          <df name="wavythin-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
+          <df name="original-pbrt-scene">
           </df>
-        </df>
-        <df name="all-models-april-9">
-          <df name="curly-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
+          <df name="thickness-variation">
+            <df name="curly-standard">
             </df>
-            <df name="textures">
+            <df name="curly-thin">
             </df>
-          </df>
-          <df name="straight-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="wavy-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="wavythin-hair-with-head">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-        </df>
-        <df name="analyze-info-pbrthair-vs-cemyukselhair">
-        </df>
-        <df name="basic_skeleton">
-          <df name="output">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-        </df>
-        <df name="original-pbrt-scene">
-          <df name="models">
-          </df>
-          <df name="textures">
-          </df>
-        </df>
-        <df name="thickness-variation">
-          <df name="curly-standard">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="curly-thin">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="curly-xthin">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="textures">
+            <df name="curly-xthin">
             </df>
           </df>
         </df>
       </df>
       <df name="results">
         <df name="18_08_25">
+        </df>
+        <df name="2019_01_27">
         </df>
       </df>
       <df name="scenes">
@@ -42972,6 +43141,17 @@
           <in>dualscattering.h</in>
         </df>
         <df name="scripts">
+          <df name="bezier">
+            <in>main.cpp</in>
+          </df>
+          <df name="gl_util">
+            <in>Renderable.cpp</in>
+            <in>Renderable.h</in>
+            <in>ShaderSource.cpp</in>
+            <in>ShaderSource.h</in>
+            <in>SimpleGlUtil.cpp</in>
+            <in>SimpleGlUtil.h</in>
+          </df>
           <df name="include">
           </df>
           <df name="src">
@@ -42980,12 +43160,17 @@
             <in>preprocess.cpp</in>
             <in>processhair.cpp</in>
           </df>
+          <df name="testvdb">
+            <in>main.cpp</in>
+          </df>
           <in>analyze-hair.cpp</in>
           <in>animatedproperty.cpp</in>
           <in>animatedproperty.h</in>
           <in>animationpropertybag.cpp</in>
           <in>animationpropertybag.h</in>
           <in>animationtype.h</in>
+          <in>bezier.cpp</in>
+          <in>bezier.h</in>
           <in>constantproperty.cpp</in>
           <in>constantproperty.h</in>
           <in>hairsimplify.cpp</in>

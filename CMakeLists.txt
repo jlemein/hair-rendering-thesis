@@ -9,12 +9,41 @@ include_directories(src)
 # Output appears in bin directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
+
 # Boost libraries
 set(Boost_USE_STATIC_LIBS ON) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
 
+#OpenVDB libraries
 find_package(Boost 1.58.0 COMPONENTS program_options filesystem date_time REQUIRED)
+find_package(OpenVDB REQUIRED)
+include_directories(${OpenVDB_INCLUDE_DIRS})
+set(LIBS ${LIBS} ${OpenVDB_LIBRARIES})
+
+#set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+#set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+#set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+#add_subdirectory("../ext/glfw-3.2.1")
+
+find_package(GLEW REQUIRED)
+include_directories(${GLEW_INCLUDE_DIRS})
+
+find_package(glfw3 3.2 REQUIRED)
+
+find_package(OpenGL REQUIRED)
+include_directories(${OPENGL_INCLUDE_DIR})
+
+find_package(glm REQUIRED)
+
+##target_sources (gbuffer) PUBLIC plyloader.cpp ShaderSource.cpp SimpleGlUtil.cpp)
+#target_include_directories(gbuffer ${OPENGL_INCLUDE_DIR})
+
+
+#add_library (glfw STATIC IMPORTED)
+
+
 
 file(GLOB SRC_FILES
     "*.h"
@@ -52,6 +81,18 @@ if(Boost_FOUND)
         src/scripts/hairstruct.h src/scripts/hairstruct.cpp
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
     target_link_libraries(hairtransform ${Boost_LIBRARIES})
+
+    add_executable(testvdb src/scripts/testvdb/main.cpp
+        src/scripts/hairstruct.h src/scripts/hairstruct.cpp
+        src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
+    target_link_libraries(testvdb ${OpenVDB_LIBRARIES} -ltbb -lHalf)
+
+    add_executable(bezier src/scripts/bezier/main.cpp
+        src/scripts/bezier.h src/scripts/bezier.cpp
+        src/scripts/gl_util/ShaderSource.h src/scripts/gl_util/ShaderSource.cpp
+        #src/scripts/gl_util/Renderable.h src/scripts/gl_util/Renderable.cpp
+        src/scripts/gl_util/SimpleGlUtil.h src/scripts/gl_util/SimpleGlUtil.cpp)
+    target_link_libraries(bezier ${OPENGL_gl_LIBRARY} glfw ${GLFW_LIBRARIES} GLEW glm)
 
 #    add_executable(processhair src/scripts/processhair.cpp
 #        src/scripts/hairstruct.h src/scripts/hairstruct.cpp

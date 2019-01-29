@@ -6,6 +6,7 @@ output/archive
 output/*/output
 build
 build2
+build_real
 ext
 scenes/hair-pbrt/models
 CMakeFiles/
