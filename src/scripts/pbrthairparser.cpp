@@ -4,58 +4,76 @@
 #include <boost/algorithm/string/trim.hpp>
 #include <boost/lexical_cast.hpp>
 
-PbrtHairParser::PbrtHairParser()
-{
+#include "bezier.h"
+#include "scripts/bezier.h"
+
+PbrtHairParser::PbrtHairParser() {
 
 }
 
 void PbrtHairParser::parseFile(std::istream& istream, Hair& hair) {
-    hair.curves.reserve(10000);
+    hair.fibers.reserve(10000);
 
     std::string word;
     float minCurveWidth0 = 9999999, maxCurveWidth0 = -10000, minCurveWidth1 = 999999, maxCurveWidth1 = -10000;
     double sumCurveWidth0 = 0.0, sumCurveWidth1 = 0.0;
     bool firstRunCurves = true;
 
-    while(PbrtHairParser::nextWord(istream, word)) {
+    while (PbrtHairParser::nextWord(istream, word)) {
         std::string values;
 
-        Curve c;
-        c.points.reserve(12);
+        HairFiber fiber;
+        fiber.curve.getControlPoints().reserve(12);
         if (word == "Shape") {
-            PbrtHairParser::nextValues(istream, c.type);
+            PbrtHairParser::nextValues(istream, fiber.type);
         } else if (word == "float width") {
             PbrtHairParser::nextValues(istream, values);
-            c.width0 = c.width1 = boost::lexical_cast<float>(values);
+            fiber.width0 = fiber.width1 = boost::lexical_cast<float>(values);
 
-            sumCurveWidth0 += c.width0;
-            sumCurveWidth1 += c.width1;
-            if (c.width0 < minCurveWidth0) { minCurveWidth0 = c.width0; }
-            if (c.width0 > maxCurveWidth0) { maxCurveWidth0 = c.width0; }
-            if (c.width1 < minCurveWidth1) { minCurveWidth1 = c.width1; }
-            if (c.width1 > maxCurveWidth1) { maxCurveWidth1 = c.width1; }
+            sumCurveWidth0 += fiber.width0;
+            sumCurveWidth1 += fiber.width1;
+            if (fiber.width0 < minCurveWidth0) {
+                minCurveWidth0 = fiber.width0;
+            }
+            if (fiber.width0 > maxCurveWidth0) {
+                maxCurveWidth0 = fiber.width0;
+            }
+            if (fiber.width1 < minCurveWidth1) {
+                minCurveWidth1 = fiber.width1;
+            }
+            if (fiber.width1 > maxCurveWidth1) {
+                maxCurveWidth1 = fiber.width1;
+            }
 
         } else if (word == "float width0") {
             PbrtHairParser::nextValues(istream, values);
-            c.width0 = boost::lexical_cast<float>(values);
+            fiber.width0 = boost::lexical_cast<float>(values);
 
-            sumCurveWidth0 += c.width0;
-            if (c.width0 < minCurveWidth0) { minCurveWidth0 = c.width0; }
-            if (c.width0 > maxCurveWidth0) { maxCurveWidth0 = c.width0; }
+            sumCurveWidth0 += fiber.width0;
+            if (fiber.width0 < minCurveWidth0) {
+                minCurveWidth0 = fiber.width0;
+            }
+            if (fiber.width0 > maxCurveWidth0) {
+                maxCurveWidth0 = fiber.width0;
+            }
 
         } else if (word == "float width1") {
             PbrtHairParser::nextValues(istream, values);
-            c.width1 = boost::lexical_cast<float>(values);
+            fiber.width1 = boost::lexical_cast<float>(values);
 
-            sumCurveWidth1 += c.width1;
-            if (c.width1 < minCurveWidth1) { minCurveWidth1 = c.width1; }
-            if (c.width1 > maxCurveWidth1) { maxCurveWidth1 = c.width1; }
+            sumCurveWidth1 += fiber.width1;
+            if (fiber.width1 < minCurveWidth1) {
+                minCurveWidth1 = fiber.width1;
+            }
+            if (fiber.width1 > maxCurveWidth1) {
+                maxCurveWidth1 = fiber.width1;
+            }
 
         } else if (word == "point P") {
             std::string points;
             PbrtHairParser::nextValues(istream, points);
             std::stringstream ss(points);
-            Point p;
+            Point3 p;
 
             bool firstRun = true;
             while (ss >> p.x >> p.y >> p.z) {
@@ -72,15 +90,14 @@ void PbrtHairParser::parseFile(std::istream& istream, Hair& hair) {
                 if (p.y > hair.sceneExtentMax.y) hair.sceneExtentMax.y = p.y;
                 if (p.z > hair.sceneExtentMax.z) hair.sceneExtentMax.z = p.z;
 
-                c.points.push_back(p);
+                fiber.curve.getControlPoints().push_back(p);
             }
             hair.avgCurveWidth0 = 0;
             hair.avgCurveWidth1 = 0;
             hair.minCurveWidth0 = 0;
             hair.minCurveWidth1 = 0;
-            hair.curves.push_back(c);
-        }
-        else {
+            hair.fibers.push_back(fiber);
+        } else {
             PbrtHairParser::nextValues(istream, values);
         }
 
@@ -92,8 +109,8 @@ void PbrtHairParser::parseFile(std::istream& istream, Hair& hair) {
         hair.center.y = hair.sceneExtentMin.y + hair.size.y / 2.0;
         hair.center.z = hair.sceneExtentMin.z + hair.size.z / 2.0;
 
-        hair.avgCurveWidth0 = sumCurveWidth0 / hair.curves.size();
-        hair.avgCurveWidth1 = sumCurveWidth1 / hair.curves.size();
+        hair.avgCurveWidth0 = sumCurveWidth0 / hair.fibers.size();
+        hair.avgCurveWidth1 = sumCurveWidth1 / hair.fibers.size();
         hair.minCurveWidth0 = minCurveWidth0;
         hair.maxCurveWidth0 = maxCurveWidth0;
         hair.minCurveWidth1 = minCurveWidth1;
@@ -122,8 +139,8 @@ bool PbrtHairParser::nextValues(std::istream& inputStream, std::string& outStrin
         return false;
     } else {
         if (line[0] == '\"' && line.length() > 1) {
-            if (line[line.length()-1] == '\"') {
-                outString = line.substr(1, line.length()-1);
+            if (line[line.length() - 1] == '\"') {
+                outString = line.substr(1, line.length() - 1);
             } else {
                 outString = line.substr(1);
                 boost::algorithm::trim(outString);
@@ -131,20 +148,19 @@ bool PbrtHairParser::nextValues(std::istream& inputStream, std::string& outStrin
                 std::getline(inputStream, result, '\"');
                 outString += ' ' + result;
             }
-        }
-        else if (line[0] == '[') {
+        } else if (line[0] == '[') {
             //std::cout << "READ 2 " << line << std::endl;
 
-            if (line.length() > 1 && line[line.length()-1] == ']') {
-                outString = line.substr(1, line.length()-1);
+            if (line.length() > 1 && line[line.length() - 1] == ']') {
+                outString = line.substr(1, line.length() - 1);
 
                 boost::algorithm::trim(outString);
                 if (outString.length() > 1 && outString[0] == '\"') {
                     outString = outString.substr(1);
 
                 }
-                if (outString.length() > 1 && outString[outString.length()-1] == '\"') {
-                    outString = outString.substr(0, outString.length()-1);
+                if (outString.length() > 1 && outString[outString.length() - 1] == '\"') {
+                    outString = outString.substr(0, outString.length() - 1);
 
                 }
 
@@ -158,16 +174,15 @@ bool PbrtHairParser::nextValues(std::istream& inputStream, std::string& outStrin
                 if (result[0] == '\"') {
                     result = result.substr(1);
                 }
-                if (result[result.length()-1] == '\"') {
-                    result = result.substr(0, result.length()-1);
+                if (result[result.length() - 1] == '\"') {
+                    result = result.substr(0, result.length() - 1);
                 }
                 outString += ' ' + result;
             }
-        }
-        else {
+        } else {
 
             if (line.find('\"') != std::string::npos) {
-                outString = line.substr(0, line.length()-1);
+                outString = line.substr(0, line.length() - 1);
             } else {
                 outString = line;
             }

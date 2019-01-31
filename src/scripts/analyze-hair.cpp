@@ -7,8 +7,6 @@
 
 #include "hairstruct.h"
 
-
-
 int main(int argc, char** argv) {
     if (argc <= 1) {
         std::cout << "No input file specified" << std::endl;
@@ -33,10 +31,10 @@ int main(int argc, char** argv) {
     std::cout << "Center point: " << hair.center << std::endl << std::endl;
 
     std::cout << "Curve info\n-------------------------------" << std::endl;
-    std::cout << "Number of curves: " << hair.curves.size() << std::endl;
+    std::cout << "Number of curves: " << hair.fibers.size() << std::endl;
     std::cout << "Range curve width0: [ " << hair.minCurveWidth0 << " ; " << hair.maxCurveWidth0 << " ], average: " << hair.avgCurveWidth0 << std::endl;
     std::cout << "Range curve width1: [ " << hair.minCurveWidth1 << " ; " << hair.maxCurveWidth1 << " ], average: " << hair.avgCurveWidth1 << std::endl << std::endl;
-    if (abs(hair.avgCurveWidth0 - hair.avgCurveWidth1) < 0.05f*hair.avgCurveWidth0) {
+    if (abs(hair.avgCurveWidth0 - hair.avgCurveWidth1) < 0.05f * hair.avgCurveWidth0) {
         std::cout << "\tHair strands have circular cross section" << std::endl;
     } else {
         std::cout << "\tHair strands have elliptical cross section" << std::endl;

@@ -5,8 +5,11 @@
 #include <sstream>
 #include "pbrthairparser.h"
 
-std::ostream& operator<<(std::ostream& out, const Point& p) {
-    out << "[" << p.x << " " << p.y << " " << p.z << "]";
+//std::ostream& operator<<(std::ostream& out, const Point& p) {
+//    out << "[" << p.x << " " << p.y << " " << p.z << "]";
+//}
+
+Hair::Hair() {
 }
 
 void Hair::writeFile(const std::string& outputFileName) {
@@ -15,16 +18,16 @@ void Hair::writeFile(const std::string& outputFileName) {
         std::cout << "Failed to open " << outputFileName << std::endl;
     }
 
-    for (const auto& curve : this->curves) {
+    for (const auto& fiber : this->fibers) {
         out << "Shape \"" << "curve" << "\" "
                 << "\"string type\" [ \"" << "cylinder" << "\" ] "
                 << "\"point P\" [ ";
-        for (const auto& pt : curve.points) {
+        for (const auto& pt : fiber.curve.getControlPoints()) {
             out << pt.x << " " << pt.y << " " << pt.z << " ";
         }
         out << "] "
-                << "\"float width0\" [ " << curve.width0 << " ] "
-                << "\"float width1\" [ " << curve.width1 << " ] ";
+                << "\"float width0\" [ " << fiber.width0 << " ] "
+                << "\"float width1\" [ " << fiber.width1 << " ] ";
         out << std::endl;
     }
 }
@@ -39,16 +42,16 @@ std::istream& operator>>(std::istream& istream, Hair& hairData) {
 }
 
 std::ostream& operator<<(std::ostream& out, const Hair& hair) {
-    for (const auto& curve : hair.curves) {
+    for (const auto& fiber : hair.fibers) {
         out << "Shape \"" << "curve" << "\" "
                 << "\"string type\" [ \"" << hair.getCurveType() << "\" ] "
                 << "\"point P\" [ ";
-        for (const auto& pt : curve.points) {
+        for (const auto& pt : fiber.curve.getControlPoints()) {
             out << pt.x << " " << pt.y << " " << pt.z << " ";
         }
         out << "] "
-                << "\"float width0\" [ " << curve.width0 << " ] "
-                << "\"float width1\" [ " << curve.width1 << " ] ";
+                << "\"float width0\" [ " << fiber.width0 << " ] "
+                << "\"float width1\" [ " << fiber.width1 << " ] ";
         out << std::endl;
     }
     return out;

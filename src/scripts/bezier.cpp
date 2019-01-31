@@ -17,6 +17,13 @@ Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
     return a + b + c + d;
 }
 
+std::ostream& operator<<(std::ostream& out, const Point3& p) {
+    out << "[" << p.x << " " << p.y << " " << p.z << "]";
+}
+
+BezierSpline::BezierSpline() {
+};
+
 BezierSpline::BezierSpline(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3) {
     this->mControlPoints.push_back(p0);
     this->mControlPoints.push_back(p1);
@@ -56,8 +63,12 @@ unsigned int BezierSpline::getSegmentCount() const {
     return (mControlPoints.size() - 1) / 3;
 }
 
-const Point3* BezierSpline::getControlPoints() const {
-    return &mControlPoints[0];
+std::vector<Point3>& BezierSpline::getControlPoints() {
+    return this->mControlPoints;
+}
+
+const std::vector<Point3>& BezierSpline::getControlPoints() const {
+    return this->mControlPoints;
 }
 
 unsigned int BezierSpline::getControlPointCount() const {
@@ -86,7 +97,6 @@ Point3 BezierSpline::sampleCurve(double t) const {
 }
 
 Point3 BezierSpline::sampleSegment(unsigned int segment, double t) const {
-    std::cout << "SampleSegment " << segment << ", " << t << std::endl;
     if (segment < 0 || segment >= this->getSegmentCount()) {
         std::cout << "[ERROR]: Invalid segment index " << segment << ", segment count is " << getSegmentCount() << std::endl;
         exit(1);
@@ -98,6 +108,6 @@ Point3 BezierSpline::sampleSegment(unsigned int segment, double t) const {
     }
 
     unsigned int controlPointStart = segment * 3;
-    std::cout << segment << ", " << t << std::endl;
+
     return cubicBezier(t, mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]);
 }

@@ -16,9 +16,13 @@
 #define BEZIER_H
 
 #include <vector>
+#include <iostream>
 
 struct Point3 {
 public:
+    Point3(double x = 0.0, double y = 0.0, double z = 0.0f) : x(x), y(y), z(z) {
+    }
+    
     double x, y, z;
     Point3 operator*(double m) {
         return Point3(this->x * m, this->y*m, this->z * m);
@@ -26,8 +30,9 @@ public:
     Point3 operator+(const Point3& p) {
         return Point3(this->x + p.x, this->y + p.y, this->z + p.z);
     }
-    Point3(double x, double y, double z) : x(x), y(y), z(z) {
-    }
+    
+    
+    friend std::ostream& operator<<(std::ostream& out, const Point3& p);
 };
 
 
@@ -36,6 +41,7 @@ private:
     std::vector<Point3> mControlPoints;
     
 public:
+    BezierSpline();
     BezierSpline(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3);
     BezierSpline(const double controlPoints[], unsigned int size);
     BezierSpline(const Point3 controlPoints[], unsigned int size);
@@ -45,7 +51,9 @@ public:
     void addControlPoint(const Point3& p);
     
     unsigned int getSegmentCount() const;
-    const Point3* getControlPoints() const;
+    std::vector<Point3>& getControlPoints();
+    const std::vector<Point3>& getControlPoints() const;
+    
     unsigned int getControlPointCount() const;
     
     Point3 sampleCurve(double t) const;

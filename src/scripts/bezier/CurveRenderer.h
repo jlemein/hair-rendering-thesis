@@ -24,6 +24,7 @@ public:
     virtual ~CurveRenderer();
     
     void addCurve(const BezierSpline& curve);
+    void addHairModel(const Hair& hair);
     //void addCurves(const std::vector<const BezierSpline>& curves);
     
     int startup();

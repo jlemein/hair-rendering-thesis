@@ -39,7 +39,6 @@
 #include "../gl_util/ShaderSource.h"
 #include "../gl_util/SimpleGlUtil.h"
 #include "../bezier.h"
-
 #include "../hairstruct.h"
 using namespace std;
 
@@ -119,11 +118,17 @@ void CurveRenderer::addCurve(const BezierSpline& curve) {
     mCurves.push_back(&curve);
 }
 
-//void CurveRenderer::addCurves(const std::vector<const BezierSpline&> curves) {
-//    for (auto it : curves) {
-//        mCurves.push_back(*it);
-//    }
-//}
+void CurveRenderer::addHairModel(const Hair& hair) {
+    //    std::vector<double> mCoords;
+    //
+    //    for (auto& fiber : hair.fibers) {
+    //        for (auto& pt : fiber.curve.getControlPoints()) {
+    //            mCoords.push_back(pt.x);
+    //            mCoords.push_back(pt.y);
+    //            mCoords.push_back(pt.z);
+    //        }
+    //    }
+}
 
 void CurveRenderer::init() {
     glfwSetScrollCallback(window, onScrolled);
@@ -143,12 +148,11 @@ void CurveRenderer::init() {
             assetFolder + "bezier-vs.glsl",
             assetFolder + "bezier-fs.glsl");
 
-
+    // allocate buffer for all curves
     int nSamples = 100;
     for (int i = 0; i <= nSamples; ++i) {
         double t = i / static_cast<double> (nSamples);
         Point3 pt = mCurves[0]->sampleCurve(t);
-        std::cout << "t = " << t << "  [" << pt.x << ", " << pt.y << ", " << pt.z << "]" << std::endl;
         curve.push_back(pt.x);
         curve.push_back(pt.y);
         curve.push_back(pt.z);
@@ -160,7 +164,7 @@ void CurveRenderer::init() {
     glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
     glBufferData(GL_ARRAY_BUFFER, curve.size() * sizeof (double), (void*) &curve[0], GL_STATIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[CONTROL_POINTS]);
-    glBufferData(GL_ARRAY_BUFFER, mCurves[0]->getControlPointCount() * sizeof (double) * 3, (void*) mCurves[0]->getControlPoints(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, mCurves[0]->getControlPointCount() * sizeof (double) * 3, (const void*) &(mCurves[0]->getControlPoints()[0]), GL_STATIC_DRAW);
 }
 
 void CurveRenderer::render() {

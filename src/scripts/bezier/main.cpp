@@ -67,7 +67,7 @@ void queryHairFile(std::string& fileName) {
     Hair hair;
     input >> hair;
 
-    cout << "Curve count for hair model: " << hair.curves.size() << endl;
+    cout << "Curve count for hair model: " << hair.fibers.size() << endl;
 }
 
 //void menu(UserMode& mode, std::string& fileName) {
@@ -103,10 +103,22 @@ int main(void) {
 
     UserMode mode;
     std::string fileName = hairFile;
+    std::ifstream input(hairFile.c_str());
+    if (input.fail()) {
+        cout << "Failed to open hair file" << endl;
+        return 0;
+    }
+    Hair hair;
+    input >> hair;
+
+    for (auto& pt : hair.fibers[0].curve.getControlPoints())
+        cout << pt << endl;
+    cout << "Curve count for hair model: " << hair.fibers.size() << endl;
+
 
     //menu(mode, fileName);
 
-    renderer->addCurve(spline);
+    renderer->addCurve(hair.fibers[0].curve);
     renderer->startup();
     return 0;
 }

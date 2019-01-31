@@ -8,27 +8,30 @@
 #include <iostream>
 #include <string>
 
-/**
- * @brief The Point struct represents a point in 3D space
- */
-struct Point {
-    /** @brief Position of the point */
-    float x, y, z;
+#include "bezier.h"
 
-    friend std::ostream& operator<<(std::ostream& out, const Point& p);
-};
+///**
+// * @brief The Point struct represents a point in 3D space
+// */
+//struct Point {
+//    /** @brief Position of the point */
+//    float x, y, z;
+//
+//    friend std::ostream& operator<<(std::ostream& out, const Point& p);
+//};
 
 enum CurveType { FLAT, CYLINDER, RIBBON };
 
 /**
  * @brief The Curve struct representing a curve in 3D space
  */
-struct Curve {
+struct HairFiber {
     /** @brief type of curve */
     std::string type;
 
     /** @brief list of points representing the curve */
-    std::vector<Point> points;
+    //std::vector<Point> points;
+    BezierSpline curve;
 
     /**
      * @brief widths for the cross section of the curve (to allow oval curves)
@@ -41,20 +44,24 @@ struct Curve {
  * Actually its just reading a scene file (*.pbrt), but assumes only curve
  * information is present corresponding to a hair model.
  */
-struct Hair
+class Hair
 {
+public:
+    Hair();
+    
     /** @brief list of curves representing the hair strands of the model */
-    std::vector<Curve> curves;
+    std::vector<HairFiber> fibers;
+    
     CurveType curveType;
 
     /** @brief sceneExtentMin orthogonal boundary for xyz dimensions */
-    Point sceneExtentMin, sceneExtentMax;
+    Point3 sceneExtentMin, sceneExtentMax;
 
     /** @brief orthogonal size for each dimension in xyz */
-    Point size;
+    Point3 size;
 
     /** @brief center Center point of bounding box of hair model */
-    Point center;
+    Point3 center;
 
     float minCurveWidth0, minCurveWidth1, maxCurveWidth0, maxCurveWidth1;
     float avgCurveWidth0, avgCurveWidth1;
