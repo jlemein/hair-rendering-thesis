@@ -36,15 +36,27 @@ private:
     std::vector<Point3> mControlPoints;
     
 public:
-    BezierSpline(Point3 p0, Point3 p1, Point3 p2, Point3 p3);
+    BezierSpline(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3);
     BezierSpline(const double controlPoints[], unsigned int size);
+    BezierSpline(const Point3 controlPoints[], unsigned int size);
+    
+    void addControlPoints(const double controlPoints[], unsigned int size);
+    void addControlPoints(const Point3 controlPoints[], unsigned int size);
+    void addControlPoint(const Point3& p);
+    
+    unsigned int getSegmentCount() const;
+    const Point3* getControlPoints() const;
+    unsigned int getControlPointCount() const;
+    
+    Point3 sampleCurve(double t) const;
     
     /**
-     * Samples the curve
-     * @param t
+     * samples a specific segment
+     * @param segment
+     * @param t the point on the curve to be sampled between start (t=0) and end (t=1)
      * @return 
      */
-    Point3 sample(double t) const;
+    Point3 sampleSegment(unsigned int segment, double t) const;
 };
 
 #endif /* BEZIER_H */

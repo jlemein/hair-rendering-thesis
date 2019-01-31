@@ -8,4 +8,16 @@
         <activeConfIndexElem>0</activeConfIndexElem>
     </data>
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/jeffrey/hair-rendering-thesis/CMakeLists.txt</file>
+            <file>file:/home/jeffrey/hair-rendering-thesis/src/scripts/bezier/main.cpp</file>
+            <file>file:/home/jeffrey/hair-rendering-thesis/assets/controlpoint-gs.glsl</file>
+            <file>file:/home/jeffrey/hair-rendering-thesis/assets/bezier-fs.glsl</file>
+            <file>file:/home/jeffrey/hair-rendering-thesis/src/scripts/bezier.cpp</file>
+            <file>file:/home/jeffrey/hair-rendering-thesis/assets/bezier-vs.glsl</file>
+            <file>file:/home/jeffrey/hair-rendering-thesis/src/scripts/bezier.h</file>
+            <file>file:/home/jeffrey/lib/pbrt-v3/src/shapes/curve.h</file>
+        </group>
+    </open-files>
 </project-private>

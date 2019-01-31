@@ -8,10 +8,6 @@
 #include <algorithm>
 #include <iostream>
 
-//void quadB(double t, Point3 p0, Point3 p1, Point3 p2) {
-//    return p1 + (1.0 - t)*(1.0 - t)*(p0 - p1) + t * t * (p2 - p1);
-//}
-
 Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
     Point3 a = p0 * (1.0 - t)*(1.0 - t)*(1.0 - t);
     Point3 b = p1 * 3.0 * (1.0 - t)*(1.0 - t) * t;
@@ -21,7 +17,7 @@ Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
     return a + b + c + d;
 }
 
-BezierSpline::BezierSpline(Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+BezierSpline::BezierSpline(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3) {
     this->mControlPoints.push_back(p0);
     this->mControlPoints.push_back(p1);
     this->mControlPoints.push_back(p2);
@@ -34,10 +30,74 @@ BezierSpline::BezierSpline(const double controlPoints[], unsigned int size) {
     }
 }
 
-Point3 BezierSpline::sample(double t) const {
-    if (t < 0.0 || t > 1.0) {
-        std::cout << "WARNING: t = " << t << ": invalid t value. Value will be clamped between 0 and 1" << std::endl;
-        t = std::max(0.0, std::min(1.0, t));
+BezierSpline::BezierSpline(const Point3 controlPoints[], unsigned int size) {
+    for (int i = 0; i < size; ++i) {
+        this->mControlPoints.push_back(controlPoints[i]);
     }
-    return cubicBezier(t, this->mControlPoints[0], this->mControlPoints[1], this->mControlPoints[2], this->mControlPoints[3]);
+}
+
+void BezierSpline::addControlPoint(const Point3& p) {
+    this->mControlPoints.push_back(p);
+}
+
+void BezierSpline::addControlPoints(const double controlPoints[], unsigned int size) {
+    for (int i = 0; i + 2 < size; i += 3) {
+        this->mControlPoints.push_back(Point3(controlPoints[i], controlPoints[i + 1], controlPoints[i + 2]));
+    }
+}
+
+void BezierSpline::addControlPoints(const Point3 controlPoints[], unsigned int size) {
+    for (int i = 0; i < size; ++i) {
+        this->mControlPoints.push_back(controlPoints[i]);
+    }
+}
+
+unsigned int BezierSpline::getSegmentCount() const {
+    return (mControlPoints.size() - 1) / 3;
+}
+
+const Point3* BezierSpline::getControlPoints() const {
+    return &mControlPoints[0];
+}
+
+unsigned int BezierSpline::getControlPointCount() const {
+    return mControlPoints.size();
+}
+
+Point3 BezierSpline::sampleCurve(double t) const {
+    if (t < 0.0 || t > 1.0) {
+        std::cout << "[WARNING]: t value invalid. Value will be clamped between [0, 1]" << std::endl;
+        t = std::max(0.0, std::min(t, 1.0));
+    }
+
+
+    double integerPart;
+    double u = std::modf(t * getSegmentCount(), &integerPart);
+
+    unsigned int segmentIndex;
+    if (integerPart >= getSegmentCount()) {
+        segmentIndex = getSegmentCount() - 1;
+        u = 1.0;
+    } else {
+        segmentIndex = static_cast<unsigned int> (integerPart);
+    }
+
+    return this->sampleSegment(segmentIndex, u);
+}
+
+Point3 BezierSpline::sampleSegment(unsigned int segment, double t) const {
+    std::cout << "SampleSegment " << segment << ", " << t << std::endl;
+    if (segment < 0 || segment >= this->getSegmentCount()) {
+        std::cout << "[ERROR]: Invalid segment index " << segment << ", segment count is " << getSegmentCount() << std::endl;
+        exit(1);
+    }
+
+    if (t < 0.0 || t > 1.0) {
+        std::cout << "[WARNING]: Sampling curve with invalid t value. t will be clamped between [0, 1]" << std::endl;
+        t = std::max(0.0, std::min(t, 1.0));
+    }
+
+    unsigned int controlPointStart = segment * 3;
+    std::cout << segment << ", " << t << std::endl;
+    return cubicBezier(t, mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]);
 }

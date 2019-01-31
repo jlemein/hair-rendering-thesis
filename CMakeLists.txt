@@ -73,22 +73,28 @@ if(Boost_FOUND)
     target_link_libraries(preprocess ${Boost_LIBRARIES})
 
     add_executable(analyzehair src/scripts/analyze-hair.cpp
+        src/scripts/bezier.h src/scripts/bezier.cpp
         src/scripts/hairstruct.h src/scripts/hairstruct.cpp
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
     target_link_libraries(analyzehair ${Boost_LIBRARIES})
 
     add_executable(hairtransform src/scripts/hairtransform.cpp
+        src/scripts/bezier.h src/scripts/bezier.cpp
         src/scripts/hairstruct.h src/scripts/hairstruct.cpp
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
     target_link_libraries(hairtransform ${Boost_LIBRARIES})
 
     add_executable(testvdb src/scripts/testvdb/main.cpp
+        src/scripts/bezier.h src/scripts/bezier.cpp
         src/scripts/hairstruct.h src/scripts/hairstruct.cpp
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
     target_link_libraries(testvdb ${OpenVDB_LIBRARIES} -ltbb -lHalf)
 
     add_executable(bezier src/scripts/bezier/main.cpp
         src/scripts/bezier.h src/scripts/bezier.cpp
+        src/scripts/bezier/CurveRenderer.h src/scripts/bezier/CurveRenderer.cpp
+        src/scripts/hairstruct.h src/scripts/hairstruct.cpp
+        src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp
         src/scripts/gl_util/ShaderSource.h src/scripts/gl_util/ShaderSource.cpp
         #src/scripts/gl_util/Renderable.h src/scripts/gl_util/Renderable.cpp
         src/scripts/gl_util/SimpleGlUtil.h src/scripts/gl_util/SimpleGlUtil.cpp)

@@ -43142,6 +43142,8 @@
         </df>
         <df name="scripts">
           <df name="bezier">
+            <in>CurveRenderer.cpp</in>
+            <in>CurveRenderer.h</in>
             <in>main.cpp</in>
           </df>
           <df name="gl_util">
