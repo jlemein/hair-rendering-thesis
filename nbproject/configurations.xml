@@ -4,6 +4,11 @@
     <df root="." name="0">
       <df name="src">
         <df name="scripts">
+          <df name="vdb">
+            <in>InputOutputUtil.cpp</in>
+            <in>InputOutputUtil.h</in>
+            <in>readvdb.cpp</in>
+          </df>
           <in>analyze-hair.cpp</in>
           <in>animatedproperty.cpp</in>
           <in>animationpropertybag.cpp</in>
@@ -5198,6 +5203,15 @@
             <Elem>__cpp_variadic_templates=200704</Elem>
           </preprocessorList>
         </ccTool>
+      </item>
+      <item path="src/scripts/vdb/InputOutputUtil.cpp"
+            ex="false"
+            tool="1"
+            flavor2="0">
+      </item>
+      <item path="src/scripts/vdb/InputOutputUtil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/scripts/vdb/readvdb.cpp" ex="false" tool="1" flavor2="0">
       </item>
     </conf>
   </confs>

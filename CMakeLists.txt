@@ -84,11 +84,26 @@ if(Boost_FOUND)
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
     target_link_libraries(hairtransform ${Boost_LIBRARIES})
 
-    add_executable(testvdb src/scripts/testvdb/main.cpp
+    add_executable(testvdb src/scripts/vdb/testvdb.cpp
+        src/scripts/vdb/InputOutputUtil.h src/scripts/vdb/InputOutputUtil.cpp
         src/scripts/bezier.h src/scripts/bezier.cpp
         src/scripts/hairstruct.h src/scripts/hairstruct.cpp
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
     target_link_libraries(testvdb ${OpenVDB_LIBRARIES} -ltbb -lHalf)
+
+    add_executable(writevdb src/scripts/vdb/writevdb.cpp
+        src/scripts/vdb/InputOutputUtil.h src/scripts/vdb/InputOutputUtil.cpp
+        src/scripts/bezier.h src/scripts/bezier.cpp
+        src/scripts/hairstruct.h src/scripts/hairstruct.cpp
+        src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
+    target_link_libraries(writevdb ${OpenVDB_LIBRARIES} -ltbb -lHalf)
+
+    add_executable(readvdb src/scripts/vdb/readvdb.cpp
+        src/scripts/vdb/InputOutputUtil.h src/scripts/vdb/InputOutputUtil.cpp
+        src/scripts/bezier.h src/scripts/bezier.cpp
+        src/scripts/hairstruct.h src/scripts/hairstruct.cpp
+        src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
+    target_link_libraries(readvdb ${OpenVDB_LIBRARIES} -ltbb -lHalf)
 
     add_executable(bezier src/scripts/bezier/main.cpp
         src/scripts/bezier.h src/scripts/bezier.cpp

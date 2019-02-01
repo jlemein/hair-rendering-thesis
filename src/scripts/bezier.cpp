@@ -9,10 +9,11 @@
 #include <iostream>
 
 Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+
     Point3 a = p0 * (1.0 - t)*(1.0 - t)*(1.0 - t);
-    Point3 b = p1 * 3.0 * (1.0 - t)*(1.0 - t) * t;
-    Point3 c = p2 * 3.0 * (1.0 - t)*(1.0 - t) * t * t;
-    Point3 d = p3 * t * t * t;
+    Point3 b = p1 * 3.0 * t * (1.0 - t)*(1.0 - t);
+    Point3 c = p2 * 3.0 * t * t * (1.0 - t)*(1.0 - t);
+    Point3 d = p3 * t * t*t;
 
     return a + b + c + d;
 }
@@ -21,23 +22,23 @@ std::ostream& operator<<(std::ostream& out, const Point3& p) {
     out << "[" << p.x << " " << p.y << " " << p.z << "]";
 }
 
-BezierSpline::BezierSpline() {
+BezierSpline::BezierSpline() : mShareControlPoints(false) {
 };
 
-BezierSpline::BezierSpline(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3) {
+BezierSpline::BezierSpline(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3) : BezierSpline() {
     this->mControlPoints.push_back(p0);
     this->mControlPoints.push_back(p1);
     this->mControlPoints.push_back(p2);
     this->mControlPoints.push_back(p3);
 };
 
-BezierSpline::BezierSpline(const double controlPoints[], unsigned int size) {
+BezierSpline::BezierSpline(const double controlPoints[], unsigned int size) : BezierSpline() {
     for (int i = 0; i + 2 < size; i += 3) {
         this->mControlPoints.push_back(Point3(controlPoints[i], controlPoints[i + 1], controlPoints[i + 2]));
     }
 }
 
-BezierSpline::BezierSpline(const Point3 controlPoints[], unsigned int size) {
+BezierSpline::BezierSpline(const Point3 controlPoints[], unsigned int size) : BezierSpline() {
     for (int i = 0; i < size; ++i) {
         this->mControlPoints.push_back(controlPoints[i]);
     }
@@ -59,8 +60,20 @@ void BezierSpline::addControlPoints(const Point3 controlPoints[], unsigned int s
     }
 }
 
+bool BezierSpline::setUseSharedControlPoints(bool useSharedControlPoints) {
+    this->mShareControlPoints = useSharedControlPoints;
+}
+
+bool BezierSpline::isUsingSharedControlPoints() const {
+    return this->mShareControlPoints;
+}
+
 unsigned int BezierSpline::getSegmentCount() const {
-    return (mControlPoints.size() - 1) / 3;
+    if (this->mShareControlPoints) {
+        return (mControlPoints.size() - 1) / 3;
+    } else {
+        return mControlPoints.size() / 4;
+    }
 }
 
 std::vector<Point3>& BezierSpline::getControlPoints() {
@@ -96,6 +109,10 @@ Point3 BezierSpline::sampleCurve(double t) const {
     return this->sampleSegment(segmentIndex, u);
 }
 
+unsigned int BezierSpline::getControlPointOffsetForSegment(unsigned int segment) const {
+    return this->mShareControlPoints ? segment * 3 : segment * 4;
+}
+
 Point3 BezierSpline::sampleSegment(unsigned int segment, double t) const {
     if (segment < 0 || segment >= this->getSegmentCount()) {
         std::cout << "[ERROR]: Invalid segment index " << segment << ", segment count is " << getSegmentCount() << std::endl;
@@ -107,7 +124,8 @@ Point3 BezierSpline::sampleSegment(unsigned int segment, double t) const {
         t = std::max(0.0, std::min(t, 1.0));
     }
 
-    unsigned int controlPointStart = segment * 3;
+    unsigned int controlPointStart = getControlPointOffsetForSegment(segment);
+    std::cout << " -- t: " << t << std::endl;
 
     return cubicBezier(t, mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]);
 }

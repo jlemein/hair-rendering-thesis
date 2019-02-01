@@ -38,6 +38,7 @@ public:
 
 class BezierSpline {
 private:
+    bool mShareControlPoints = false;
     std::vector<Point3> mControlPoints;
     
 public:
@@ -50,13 +51,20 @@ public:
     void addControlPoints(const Point3 controlPoints[], unsigned int size);
     void addControlPoint(const Point3& p);
     
+    bool setUseSharedControlPoints(bool useSharedControlPoints);
+    bool isUsingSharedControlPoints() const;
+    
     unsigned int getSegmentCount() const;
+    unsigned int getControlPointOffsetForSegment(unsigned int segment) const;
+    
     std::vector<Point3>& getControlPoints();
     const std::vector<Point3>& getControlPoints() const;
     
     unsigned int getControlPointCount() const;
     
     Point3 sampleCurve(double t) const;
+    
+    
     
     /**
      * samples a specific segment

@@ -2518,6 +2518,14 @@
               </df>
             </df>
           </df>
+          <df name="readvdb.dir">
+            <df name="src">
+              <df name="scripts">
+                <df name="vdb">
+                </df>
+              </df>
+            </df>
+          </df>
           <df name="sayhello.dir">
             <df name="src">
               <df name="scripts">
@@ -2534,6 +2542,16 @@
             <df name="src">
               <df name="scripts">
                 <df name="testvdb">
+                </df>
+                <df name="vdb">
+                </df>
+              </df>
+            </df>
+          </df>
+          <df name="writevdb.dir">
+            <df name="src">
+              <df name="scripts">
+                <df name="vdb">
                 </df>
               </df>
             </df>
@@ -43162,8 +43180,12 @@
             <in>preprocess.cpp</in>
             <in>processhair.cpp</in>
           </df>
-          <df name="testvdb">
-            <in>main.cpp</in>
+          <df name="vdb">
+            <in>InputOutputUtil.cpp</in>
+            <in>InputOutputUtil.h</in>
+            <in>readvdb.cpp</in>
+            <in>testvdb.cpp</in>
+            <in>writevdb.cpp</in>
           </df>
           <in>analyze-hair.cpp</in>
           <in>animatedproperty.cpp</in>

@@ -16,6 +16,7 @@
 
 #include <vector>
 class BezierSpline;
+class Hair;
 
 class CurveRenderer {
 public:

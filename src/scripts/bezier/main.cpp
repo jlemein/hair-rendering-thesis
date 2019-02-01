@@ -22,13 +22,24 @@ enum UserMode {
 const std::string hairFile = "/home/jeffrey/hair-rendering-thesis/scenes/hair/models/wStraight.10.pbrt";
 
 const double bezier_points[] = {
-    -5.0, 0.0, 0.0,
-    0.0, 5.0, 0.0,
-    5.0, 0.0, 0.0,
-    5.0, 5.0, 0.0,
-    5.0, 7.0, 5.0,
-    7.0, 3.0, 5.0,
-    0.0, 0.0, 0.0
+    //    -5.0, 0.0, 0.0,
+    //    0.0, 5.0, 0.0,
+    //    5.0, 0.0, 0.0,
+    //    5.0, 5.0, 0.0,
+    //
+    1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0,
+    1.0, 1.0, 1.0
+
+    //    3.0, 3.0, 3.0,
+    //    3.0, 3.0, 3.0,
+    //    3.0, 3.0, 3.0,
+    //    3.0, 3.0, 3.0
+    //    //5.0, 5.0, 0.0,
+    //    5.0, 0.0, 0.0,
+    //    0.0, 5.0, 0.0,
+    //    -5.0, 1.0, 0.0
 };
 
 CurveRenderer* renderer;
@@ -118,7 +129,10 @@ int main(void) {
 
     //menu(mode, fileName);
 
-    renderer->addCurve(hair.fibers[0].curve);
+    BezierSpline bs(bezier_points, 12);
+    bs.setUseSharedControlPoints(false);
+    renderer->addCurve(bs);
+    //renderer->addCurve(hair.fibers[0].curve);
     renderer->startup();
     return 0;
 }
