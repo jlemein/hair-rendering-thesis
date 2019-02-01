@@ -35,8 +35,8 @@ public:
      * @param to
      * @return 
      */
-    float interpolate(const Point3& from, const Point3 to);
-    float interpolateToInfinity(const Point3& from, const Point3 direction);
+    float interpolate(const Point3& from, const Point3& to);
+    float interpolateToInfinity(const Point3& from, const Point3& direction);
     
     void printMetaDataForAllGrids() const;
     void printMetaDataForHairDensityGrid() const;
@@ -47,6 +47,7 @@ private:
     std::string mInputFileName;
     std::vector<openvdb::GridBase::Ptr> mGrids;
     openvdb::GridBase::Ptr mHairDensityGrid;
+    float mVoxelSize = 1.0f;
     
      void printMetaDataForGrid(openvdb::GridBase::Ptr) const;
 

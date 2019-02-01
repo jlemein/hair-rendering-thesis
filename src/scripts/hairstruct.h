@@ -72,6 +72,8 @@ public:
     friend std::ostream& operator<<(std::ostream& ostream, Hair& hair);
     
     std::string getCurveType() const;
+    
+    void optimizeCurves();
 };
 
 #endif // HAIRSTRUCT_H

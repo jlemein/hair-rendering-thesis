@@ -25,7 +25,7 @@ public:
     virtual ~CurveRenderer();
     
     void addCurve(const BezierSpline& curve);
-    void addHairModel(const Hair& hair);
+    void addHairModel(const Hair& hair, int limitFiberCount = 3);
     //void addCurves(const std::vector<const BezierSpline>& curves);
     
     int startup();
@@ -35,6 +35,7 @@ public:
 private:
     const unsigned int WINDOW_WIDTH, WINDOW_HEIGHT;
     std::vector<const BezierSpline*> mCurves;
+
 
 };
 

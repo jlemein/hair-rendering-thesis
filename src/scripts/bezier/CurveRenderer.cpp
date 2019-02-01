@@ -61,8 +61,8 @@ glm::vec3 green(0.0f, 1.0f, 0.0f);
 glm::vec3 blue(0.0f, 1.0f, 1.0f);
 glm::vec3 colors[3] = {red, green, blue};
 
-glm::vec3 eye(0.0f, 0.0f, 7.0f);
-glm::vec3 center(.0f, 2.5f, .0f);
+glm::vec3 eye(0.0f, 0.0f, 400.0f);
+glm::vec3 center(25.0f, 51.0f, 19.0f);
 glm::vec3 up(.0f, 1.0f, .0f);
 
 glm::mat4 model = glm::mat4(1.0f);
@@ -75,6 +75,7 @@ std::vector<int> curveOffsets;
 void onScrolled(GLFWwindow* window, double xOffset, double yOffset) {
     eye *= yOffset * -0.02 + 1.0;
     view = glm::lookAt(eye, center, up);
+    std::cout << "eye: " << eye.x << " ; " << eye.y << " ; " << eye.z << std::endl;
     SimpleGlUtil::setUniform(shaderProgram[BEZIER_CURVE], "view", view);
     SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "view", view);
 }
@@ -121,16 +122,21 @@ void CurveRenderer::addCurve(const BezierSpline& curve) {
     mCurves.push_back(&curve);
 }
 
-void CurveRenderer::addHairModel(const Hair& hair) {
-    //    std::vector<double> mCoords;
-    //
-    //    for (auto& fiber : hair.fibers) {
-    //        for (auto& pt : fiber.curve.getControlPoints()) {
-    //            mCoords.push_back(pt.x);
-    //            mCoords.push_back(pt.y);
-    //            mCoords.push_back(pt.z);
-    //        }
-    //    }
+void CurveRenderer::addHairModel(const Hair& hair, int limitFiberCount) {
+    int fiberCount = 0;
+    for (auto& fiber : hair.fibers) {
+        this->addCurve(fiber.curve);
+        if (++fiberCount > limitFiberCount && limitFiberCount > 0) {
+            return;
+        }
+    }
+
+    //    Point3 centerPt = 0.5 * (hair.sceneExtentMin + hair.sceneExtentMax);
+    //    center = glm::vec3(center.x, center.y, center.z);
+    //    eye = Point3::DistanceBetween(hair.sceneExtentMin, hair.sceneExtentMax) * glm::normalize(glm::cross(center, up));
+    //    view = glm::lookAt(eye, center, up);
+    //    SimpleGlUtil::setUniform(shaderProgram[BEZIER_CURVE], "view", view);
+    //SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "view", view);
 }
 
 void CurveRenderer::init() {

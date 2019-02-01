@@ -35,6 +35,9 @@ public:
         return Point3(this->x - p.x, this->y - p.y, this->z - p.z);
     }
     
+    // static methods
+    static double DistanceBetween(const Point3& p1, const Point3& p2);
+    
     
     friend std::ostream& operator<<(std::ostream& out, const Point3& p);
 };

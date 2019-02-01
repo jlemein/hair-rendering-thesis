@@ -72,6 +72,10 @@ std::string Hair::getCurveType() const {
     return "flat";
 }
 
+void Hair::optimizeCurves() {
+    //vector
+}
+
 
 /*
  * Shape "curve" "string type" [ "cylinder" ] "point P" [ -11.439552 49.158043 -14.240796 -11.473633 49.230301 -14.286941 -11.509600 49.301491 -14.334203 -11.547457 49.371628 -14.382583  ] "float width0" [ 0.100000 ] "float width1" [ 0.100000 ]

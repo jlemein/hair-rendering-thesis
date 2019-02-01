@@ -32,6 +32,13 @@ std::ostream& operator<<(std::ostream& out, const Point3& p) {
     out << "[" << p.x << " " << p.y << " " << p.z << "]";
 }
 
+double Point3::DistanceBetween(const Point3& p1, const Point3& p2) {
+    double dx = p2.x - p1.x;
+    double dy = p2.y - p1.y;
+    double dz = p2.z - p1.z;
+    return sqrt(dx * dx + dy * dy + dz * dz);
+}
+
 BezierSpline::BezierSpline() : mShareControlPoints(false) {
 };
 

@@ -12,9 +12,11 @@
  */
 
 #include <openvdb/openvdb.h>
+#include <openvdb/tools/Interpolation.h>
 
 #include "OpenVdbReader.h"
 #include "../hairstruct.h"
+#include "../bezier.h"
 
 OpenVdbReader::OpenVdbReader(std::string fileName) : mInputFileName(fileName) {
 }
@@ -53,12 +55,47 @@ void OpenVdbReader::initialize() {
  * @param to
  * @return
  */
-float OpenVdbReader::interpolate(const Point3& from, const Point3 to) {
-    std::cout << "[WARNING]: interpolate(Point3&, Point$) is not implemented\n";
-    return -1.0f;
+float OpenVdbReader::interpolate(const Point3& from, const Point3& to) {
+    //TODO: Check if sampling goes correctly
+
+    std::cout << "[WARNING]: interpolate(Point3&, Point$) is not implemented correctly yet\n";
+
+    using namespace openvdb;
+    using namespace openvdb::v3_1::tools;
+
+    // there is a choice of different interpolators, mainly PointSampler, BoxSampler and QuadraticSampler
+    // in addition to StaggeredPointSampler, StaggeredBoxSampler and StaggeredQuadraticSampler for staggered velocity grids.
+
+    const FloatGrid::Ptr grid = openvdb::gridPtrCast<openvdb::FloatGrid>(mHairDensityGrid);
+    Vec3d wsFrom(from.x, from.y, from.z);
+    Vec3d wsTo(to.x, to.y, to.z);
+
+    // Request a value accessor for accelerated access.
+    // (Because value accessors employ a cache, it is important to declare
+    // one accessor per thread.)
+    FloatGrid::ConstAccessor accessor = grid->getConstAccessor();
+
+    // Instantiate the GridSampler template on the accessor type and on
+    // a box sampler for accelerated trilinear interpolation.
+    GridSampler<FloatGrid::ConstAccessor, BoxSampler> fastSampler(accessor, grid->transform());
+
+    int nSamples = 100;
+    Vec3d sampleIncrement = (wsTo - wsFrom) / nSamples;
+    openvdb::FloatGrid::ValueType value = 0.0f;
+    openvdb::Vec3d wsSamplePosition = wsFrom;
+
+    for (int i = 0; i < 100; ++i) {
+        wsSamplePosition += sampleIncrement;
+        value += fastSampler.wsSample(wsSamplePosition);
+    }
+
+    // normalize the sampling
+    value *= Point3::DistanceBetween(from, to) / static_cast<float> (nSamples) * mVoxelSize;
+
+    return value;
 }
 
-float OpenVdbReader::interpolateToInfinity(const Point3& from, const Point3 direction) {
+float OpenVdbReader::interpolateToInfinity(const Point3& from, const Point3& direction) {
     std::cout << "[WARNING]: interpolateToInfinity(Point3&, Point$) is not implemented\n";
     return -1.0f;
 }
