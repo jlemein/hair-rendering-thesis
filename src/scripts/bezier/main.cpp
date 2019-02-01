@@ -21,29 +21,7 @@ enum UserMode {
 
 const std::string hairFile = "/home/jeffrey/hair-rendering-thesis/scenes/hair/models/wStraight.10.pbrt";
 
-const double bezier_points[] = {
-    //    -5.0, 0.0, 0.0,
-    //    0.0, 5.0, 0.0,
-    //    5.0, 0.0, 0.0,
-    //    5.0, 5.0, 0.0,
-    //
-    1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0,
-    1.0, 1.0, 1.0
-
-    //    3.0, 3.0, 3.0,
-    //    3.0, 3.0, 3.0,
-    //    3.0, 3.0, 3.0,
-    //    3.0, 3.0, 3.0
-    //    //5.0, 5.0, 0.0,
-    //    5.0, 0.0, 0.0,
-    //    0.0, 5.0, 0.0,
-    //    -5.0, 1.0, 0.0
-};
-
 CurveRenderer* renderer;
-BezierSpline spline(bezier_points, 21);
 
 const unsigned int WINDOW_WIDTH = 1024, WINDOW_HEIGHT = 1024;
 
@@ -129,9 +107,28 @@ int main(void) {
 
     //menu(mode, fileName);
 
-    BezierSpline bs(bezier_points, 12);
-    bs.setUseSharedControlPoints(false);
-    renderer->addCurve(bs);
+    BezierSpline bs1(
+            Point3(0.0, 5.0, 0.0),
+            Point3(-1.0, 5.1, 0.0),
+            Point3(1.0, 5.1, 0.0),
+            Point3(0.0, 5.0, 0.0));
+    BezierSpline bs2(
+            Point3(0.0, 10.0, 0.0),
+            Point3(-1.0, 10.1, 0.0),
+            Point3(1.0, 10.0, 0.0),
+            Point3(0.0, 10.0, 0.0));
+    BezierSpline bs3(
+            Point3(0.0, 20.0, 0.0),
+            Point3(-1.0, 20.0, 0.0),
+            Point3(1.0, 20.0, 0.0),
+            Point3(0.0, 20.0, 0.0));
+    bs1.setUseSharedControlPoints(false);
+    bs2.setUseSharedControlPoints(false);
+    bs3.setUseSharedControlPoints(false);
+
+    renderer->addCurve(bs1);
+    renderer->addCurve(bs2);
+    //renderer->addCurve(bs3);
     //renderer->addCurve(hair.fibers[0].curve);
     renderer->startup();
     return 0;

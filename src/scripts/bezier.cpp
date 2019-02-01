@@ -8,11 +8,21 @@
 #include <algorithm>
 #include <iostream>
 
-Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+Point3 cubicBezier2(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
 
     Point3 a = p0 * (1.0 - t)*(1.0 - t)*(1.0 - t);
     Point3 b = p1 * 3.0 * t * (1.0 - t)*(1.0 - t);
     Point3 c = p2 * 3.0 * t * t * (1.0 - t)*(1.0 - t);
+    Point3 d = p3 * t * t*t;
+
+    return a + b + c + d;
+}
+
+Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+
+    Point3 a = p0 * (1.0 - t)*(1.0 - t)*(1.0 - t);
+    Point3 b = p0 + (p1 - p0) * 3.0 * t * (1.0 - t)*(1.0 - t);
+    Point3 c = p3 + (p2 - p3) * 3.0 * t * t * (1.0 - t)*(1.0 - t);
     Point3 d = p3 * t * t*t;
 
     return a + b + c + d;
@@ -125,7 +135,5 @@ Point3 BezierSpline::sampleSegment(unsigned int segment, double t) const {
     }
 
     unsigned int controlPointStart = getControlPointOffsetForSegment(segment);
-    std::cout << " -- t: " << t << std::endl;
-
     return cubicBezier(t, mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]);
 }

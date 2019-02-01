@@ -9,6 +9,7 @@
 #include <fstream>
 #include <string>
 #include <math.h>
+#include <time.h>
 
 #include "InputOutputUtil.h"
 #include "../hairstruct.h"
@@ -18,10 +19,15 @@ using namespace std;
 const int SAMPLES_PER_SEGMENT = 10;
 const double VOXEL_SIZE = 1.0;
 
+double max_sample_length = 0.0;
+
 const char* ARGUMENT_NAMES[] = {
     "Run directory",
-    "Hair input file"
+    "Hair input file",
+    "Output openvdb file"
 };
+
+// openvdb
 
 void writeSpline(const BezierSpline& spline) {
 
@@ -32,29 +38,25 @@ double computeDistance(const Point3& p1, const Point3& p2) {
     double y = (p2.y - p1.y);
     double z = (p2.z - p1.z);
 
-    double d = sqrt(x * x + y * y + z * z);
-    cout << "distance between " << p1 << " and " << p2 << " = " << d << endl;
-    return d;
+    return sqrt(x * x + y * y + z * z);
 }
 
 double getStepSize(int sampleSize) {
     // step size is the increment to walk through a segment
-    double stepSize = 1.0 / static_cast<double> (sampleSize - 1);
-    cout << "Step size for sample size " << sampleSize << ": " << stepSize << endl;
-    return stepSize;
+    return 1.0 / static_cast<double> (sampleSize - 1);
 }
 
-void sampleSegment(const BezierSpline& spline, int segment) {
+void sampleSegment(openvdb::FloatGrid::Accessor& accessor, const BezierSpline& spline, int segment) {
     if (SAMPLES_PER_SEGMENT < 2) {
         cout << "A segment must be sampled at least 2 times, terminating application..." << endl;
         exit(1);
     }
 
-    cout << "Segment defined by: \n";
-    for (auto& pt : spline.getControlPoints()) {
-        cout << pt << endl;
-    }
-    cout << "\n\n";
+    //    cout << "Segment defined by: \n";
+    //    for (auto& pt : spline.getControlPoints()) {
+    //        cout << pt << endl;
+    //    }
+    //    cout << "\n\n";
 
     double stepSize = getStepSize(SAMPLES_PER_SEGMENT);
 
@@ -70,10 +72,17 @@ void sampleSegment(const BezierSpline& spline, int segment) {
 
         }
 
-        double value = 0.5 * (prevDistance + distance) / VOXEL_SIZE;
+        double lengthSample = 0.5 * (prevDistance + distance);
+        double value = lengthSample / (VOXEL_SIZE);
+
+        if (lengthSample > max_sample_length) {
+            max_sample_length = lengthSample;
+        }
 
         // write to voxel grid
-        cout << "Write( " << P << ") = " << value << endl;
+        //cout << "Write( " << P << ") = " << value << endl;
+        openvdb::Coord xyz(P.x, P.y, P.z);
+        accessor.setValue(xyz, accessor.getValue(xyz) + value);
 
         // store for next iteration
         prevDistance = distance;
@@ -82,49 +91,61 @@ void sampleSegment(const BezierSpline& spline, int segment) {
 
 }
 
+void write(openvdb::FloatGrid::Accessor& accessor, const Hair& hair) {
+    unsigned int fiberCount = hair.fibers.size();
+    unsigned int fiberIndex = 0;
+
+    for (const auto& fiber : hair.fibers) {
+        double percentageCompleted = 100.0 * static_cast<double> (fiberIndex) / fiberCount;
+        cout << "\r" << percentageCompleted << " %: " << fiberIndex << " / " << fiberCount << " hair fibers completed      ";
+
+        for (int segment = 0; segment < fiber.curve.getSegmentCount(); ++segment) {
+            sampleSegment(accessor, fiber.curve, segment);
+        }
+        ++fiberIndex;
+    }
+
+    cout << "\r" << "100.0%: " << fiberIndex << " / " << fiberCount << " hair fibers completed        \n";
+}
+
 int main(int argc, const char** argv) {
     cout << "== Write VDB ==" << endl;
 
-    for (int i = 0; i < argc; ++i) {
-        cout << ARGUMENT_NAMES[i] << ": " << argv[i] << endl;
+    if (argc <= 1) {
+        // ask user for input for hair file
+        cout << "No hair file provided, exiting\n";
+        return 1;
     }
-    cout << "------------------------------------\n\n";
+
+    string inputHairFile = argv[1];
+    string outputVdbFile = argc > 2 ? argv[2] : "mygrid.vdb";
 
     // 1. Ask user to enter file name and open file
     ifstream hairFile;
-    if (!InputOutputUtil::OpenFile(hairFile, argc, argv)) {
+    if (!InputOutputUtil::OpenFile(hairFile, inputHairFile)) {
         cout << "Failed to open hair input file, terminating application..." << endl;
         return -1;
     }
+    std::cout << "hair : " << (hairFile.fail() ? "failed" : "success") << endl;
 
-    //Hair hair;
-    //hairFile >> hair;
-
-    //for (auto& fiber : hair.fibers) {
-
-    BezierSpline spline(
-            Point3(-11, 49, -14),
-            Point3(-11, 49, -14),
-            Point3(-11, 49, -14),
-            Point3(-11, 49, -14));
-    //const BezierSpline& spline = hair.fibers[0].curve;
-
-    for (int segment = 0; segment < spline.getSegmentCount(); ++segment) {
-        sampleSegment(spline, segment);
-    }
-
-
-
-    //}
-
-    //cout << "Loaded hair model with " << hair.fibers.size() << " fibers" << endl;
+    Hair hair;
+    hairFile >> hair;
+    cout << "Loaded hair model with " << hair.fibers.size() << " fibers" << endl;
 
     openvdb::initialize();
     openvdb::FloatGrid::Ptr grid = openvdb::FloatGrid::create(/*background value=*/2.0);
-    grid->setName("MySpecialGrid");
+    openvdb::FloatGrid::Accessor accessor = grid->getAccessor();
+    grid->setName("HairDensityGrid");
+
+    write(accessor, hair);
+
+    grid->insertMeta("Maximum Sample Length", openvdb::FloatMetadata(max_sample_length));
+    grid->insertMeta("Author", openvdb::StringMetadata("Jeffrey Lemein"));
+    grid->insertMeta("Updated last", openvdb::Int32Metadata(time(0)));
 
     // Create a VDB file object.
-    openvdb::io::File file("mygrids.vdb");
+    cout << "Writing VDB grid to " << outputVdbFile << endl;
+    openvdb::io::File file(outputVdbFile);
     openvdb::GridPtrVec grids;
     grids.push_back(grid);
     file.write(grids);

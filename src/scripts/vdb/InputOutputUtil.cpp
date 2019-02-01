@@ -70,26 +70,26 @@ bool InputOutputUtil::QueryOutputFileUntilValid(std::ofstream& output) {
     return false;
 }
 
-bool InputOutputUtil::OpenFile(std::ifstream& input, int argc, const char** argv) {
-    if (argc > 1) {
-        input.open(argv[1]);
+bool InputOutputUtil::OpenFile(std::ifstream& input, const std::string& pathToFile) {
+    if (!pathToFile.empty()) {
+        input.open(pathToFile.c_str());
         if (!input.fail()) {
             return true;
         } else {
-            std::cout << "Could not open '" << argv[1] << "'" << std::endl;
+            std::cout << "Could not open '" << pathToFile << "'" << std::endl;
         }
     }
 
     return QueryInputFileUntilValid(input);
 }
 
-bool InputOutputUtil::OpenFile(std::ofstream& output, int argc, const char** argv) {
-    if (argc > 1) {
-        output.open(argv[1]);
+bool InputOutputUtil::OpenFile(std::ofstream& output, const std::string& pathToFile) {
+    if (!pathToFile.empty()) {
+        output.open(pathToFile.c_str());
         if (!output.fail()) {
             return true;
         } else {
-            std::cout << "Could not open '" << argv[1] << "' for writing" << std::endl;
+            std::cout << "Could not open '" << pathToFile << "' for writing" << std::endl;
         }
     }
 

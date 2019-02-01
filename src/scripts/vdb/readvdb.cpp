@@ -11,23 +11,21 @@
 
 #include "InputOutputUtil.h"
 #include "../hairstruct.h"
+#include "OpenVdbReader.h"
 using namespace std;
 
 int main(int argc, const char** argv) {
     cout << "== ReadVDB ==" << endl;
 
     // 1. Ask user to enter file name and open file
-    ifstream inputFile;
-    if (!InputOutputUtil::OpenFile(inputFile, argc, argv)) {
-        cout << "Failed to open input file, terminating application..." << endl;
-        return -1;
-    }
+    string inputVdbFileName = argc > 1 ? argv[1] : "mygrid.vdb";
+    OpenVdbReader vdbReader(inputVdbFileName);
 
-    openvdb::initialize();
-
-    string line;
-    while (getline(inputFile, line)) {
-        cout << line << '\n';
+    try {
+        vdbReader.initialize();
+        vdbReader.printVdbInfo();
+    } catch (openvdb::IoError err) {
+        cout << "Cannot read voxel grid specified in " << inputVdbFileName << endl;
     }
 
     return 0;

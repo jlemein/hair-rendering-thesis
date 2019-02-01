@@ -7,6 +7,8 @@
           <df name="vdb">
             <in>InputOutputUtil.cpp</in>
             <in>InputOutputUtil.h</in>
+            <in>OpenVdbReader.cpp</in>
+            <in>OpenVdbReader.h</in>
             <in>readvdb.cpp</in>
           </df>
           <in>analyze-hair.cpp</in>
@@ -5210,6 +5212,10 @@
             flavor2="0">
       </item>
       <item path="src/scripts/vdb/InputOutputUtil.h" ex="false" tool="3" flavor2="0">
+      </item>
+      <item path="src/scripts/vdb/OpenVdbReader.cpp" ex="false" tool="1" flavor2="0">
+      </item>
+      <item path="src/scripts/vdb/OpenVdbReader.h" ex="false" tool="3" flavor2="0">
       </item>
       <item path="src/scripts/vdb/readvdb.cpp" ex="false" tool="1" flavor2="0">
       </item>

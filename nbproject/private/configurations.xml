@@ -43183,6 +43183,8 @@
           <df name="vdb">
             <in>InputOutputUtil.cpp</in>
             <in>InputOutputUtil.h</in>
+            <in>OpenVdbReader.cpp</in>
+            <in>OpenVdbReader.h</in>
             <in>readvdb.cpp</in>
             <in>testvdb.cpp</in>
             <in>writevdb.cpp</in>

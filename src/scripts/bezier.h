@@ -31,6 +31,10 @@ public:
         return Point3(this->x + p.x, this->y + p.y, this->z + p.z);
     }
     
+    Point3 operator-(const Point3& p) {
+        return Point3(this->x - p.x, this->y - p.y, this->z - p.z);
+    }
+    
     
     friend std::ostream& operator<<(std::ostream& out, const Point3& p);
 };

@@ -21,8 +21,8 @@ class InputOutputUtil {
 public:
     static bool QueryInputFileUntilValid(std::ifstream& ifstream);
     static bool QueryOutputFileUntilValid(std::ofstream& ofstream);
-    static bool OpenFile(std::ifstream& ifstream, int argc, const char** argv);
-    static bool OpenFile(std::ofstream& ofstream, int argc, const char** argv);
+    static bool OpenFile(std::ifstream& ifstream, const std::string& pathToFile = "");
+    static bool OpenFile(std::ofstream& ofstream, const std::string& pathToFile = "");
     
 private:
     const static std::string DEFAULT_FILE_PATH;

@@ -58,6 +58,8 @@ float zNear = 0.1f, zFar = 1000.0f;
 
 glm::vec3 red(1.0f, 0.0f, 0.0f);
 glm::vec3 green(0.0f, 1.0f, 0.0f);
+glm::vec3 blue(0.0f, 1.0f, 1.0f);
+glm::vec3 colors[3] = {red, green, blue};
 
 glm::vec3 eye(0.0f, 0.0f, 7.0f);
 glm::vec3 center(.0f, 2.5f, .0f);
@@ -67,7 +69,8 @@ glm::mat4 model = glm::mat4(1.0f);
 glm::mat4 view = glm::lookAt(eye, center, up);
 glm::mat4 perspective = glm::perspective(fovy, aspect, zNear, zFar);
 
-std::vector<double> curve;
+std::vector<double> dataPoints;
+std::vector<int> curveOffsets;
 
 void onScrolled(GLFWwindow* window, double xOffset, double yOffset) {
     eye *= yOffset * -0.02 + 1.0;
@@ -149,22 +152,30 @@ void CurveRenderer::init() {
             assetFolder + "bezier-fs.glsl");
 
     // allocate buffer for all curves
-    int nSamples = 100;
-    for (int i = 0; i <= nSamples; ++i) {
-        double t = i / static_cast<double> (nSamples);
-        Point3 pt = mCurves[0]->sampleCurve(t);
-        curve.push_back(pt.x);
-        curve.push_back(pt.y);
-        curve.push_back(pt.z);
+    int nSamples = 10;
+
+    curveOffsets.push_back(0);
+
+    for (auto curve : mCurves) {
+        for (int i = 0; i < nSamples; ++i) {
+            double t = i / static_cast<double> (nSamples - 1);
+
+            Point3 pt = curve->sampleCurve(t);
+            dataPoints.push_back(pt.x);
+            dataPoints.push_back(pt.y);
+            dataPoints.push_back(pt.z);
+        }
+        std::cout << "Offset added: " << dataPoints.size() << std::endl;
+        curveOffsets.push_back(dataPoints.size());
     }
 
 
 
     glGenBuffers(2, vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
-    glBufferData(GL_ARRAY_BUFFER, curve.size() * sizeof (double), (void*) &curve[0], GL_STATIC_DRAW);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[CONTROL_POINTS]);
-    glBufferData(GL_ARRAY_BUFFER, mCurves[0]->getControlPointCount() * sizeof (double) * 3, (const void*) &(mCurves[0]->getControlPoints()[0]), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, dataPoints.size() * sizeof (double), (void*) &dataPoints[0], GL_STATIC_DRAW);
+    //    glBindBuffer(GL_ARRAY_BUFFER, vbo[CONTROL_POINTS]);
+    //    glBufferData(GL_ARRAY_BUFFER, mCurves[0]->getControlPointCount() * sizeof (double) * 3, (const void*) &(mCurves[0]->getControlPoints()[0]), GL_STATIC_DRAW);
 }
 
 void CurveRenderer::render() {
@@ -177,21 +188,26 @@ void CurveRenderer::render() {
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
     glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 0 * sizeof (GLdouble), (void*) (0 * sizeof (GLdouble)));
-    SimpleGlUtil::setUniform(shaderProgram[BEZIER_CURVE], "color", red);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
-    glDrawArrays(GL_LINE_STRIP, 0, curve.size() / 3);
+
+    for (int offsetIndex = 0; offsetIndex < curveOffsets.size() - 1; ++offsetIndex) {
+        SimpleGlUtil::setUniform(shaderProgram[BEZIER_CURVE], "color", colors[offsetIndex]);
+        glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
+        int start = curveOffsets[offsetIndex] / 3;
+        int end = (curveOffsets[offsetIndex + 1] - curveOffsets[offsetIndex]) / 3; //(curveOffsets[offsetIndex + 1] - start) / 3;
+        glDrawArrays(GL_LINE_STRIP, start, end);
+    }
 
     //Render control points
-    glUseProgram(shaderProgram[CONTROL_POINTS]);
-    SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "view", view);
-    SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "perspective", perspective);
-    SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "model", model);
-
-    glEnableVertexAttribArray(0);
-    glBindBuffer(GL_ARRAY_BUFFER, vbo[CONTROL_POINTS]);
-    glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 0 * sizeof (GLdouble), (void*) (0 * sizeof (GLdouble)));
-    SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "color", green);
-    glDrawArrays(GL_LINE_STRIP, 0, mCurves[0]->getControlPointCount() / sizeof (double));
+    //    glUseProgram(shaderProgram[CONTROL_POINTS]);
+    //    SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "view", view);
+    //    SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "perspective", perspective);
+    //    SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "model", model);
+    //
+    //    glEnableVertexAttribArray(0);
+    //    glBindBuffer(GL_ARRAY_BUFFER, vbo[CONTROL_POINTS]);
+    //    glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 0 * sizeof (GLdouble), (void*) (0 * sizeof (GLdouble)));
+    //    SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "color", green);
+    //    glDrawArrays(GL_LINE_STRIP, 0, mCurves[0]->getControlPointCount() / sizeof (double));
 }
 
 int CurveRenderer::startup(void) {
