@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <iostream>
 
-Point3 cubicBezier2(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
 
     Point3 a = p0 * (1.0 - t)*(1.0 - t)*(1.0 - t);
     Point3 b = p1 * 3.0 * t * (1.0 - t)*(1.0 - t);
@@ -18,11 +18,11 @@ Point3 cubicBezier2(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
     return a + b + c + d;
 }
 
-Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+Point3 cubicBezier2(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
 
     Point3 a = p0 * (1.0 - t)*(1.0 - t)*(1.0 - t);
-    Point3 b = p0 + (p1 - p0) * 3.0 * t * (1.0 - t)*(1.0 - t);
-    Point3 c = p3 + (p2 - p3) * 3.0 * t * t * (1.0 - t)*(1.0 - t);
+    Point3 b = (p1 - p0) * 3.0 * t * (1.0 - t)*(1.0 - t);
+    Point3 c = (p2 - p3) * 3.0 * t * t * (1.0 - t)*(1.0 - t);
     Point3 d = p3 * t * t*t;
 
     return a + b + c + d;
@@ -41,6 +41,11 @@ double Point3::DistanceBetween(const Point3& p1, const Point3& p2) {
 
 BezierSpline::BezierSpline() : mShareControlPoints(false) {
 };
+
+BezierSpline::BezierSpline(const BezierSpline& spline) {
+    this->mShareControlPoints = spline.mShareControlPoints;
+    this->mControlPoints.insert(this->mControlPoints.begin(), spline.mControlPoints.begin(), spline.mControlPoints.end());
+}
 
 BezierSpline::BezierSpline(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3) : BezierSpline() {
     this->mControlPoints.push_back(p0);
@@ -75,6 +80,12 @@ void BezierSpline::addControlPoints(const Point3 controlPoints[], unsigned int s
     for (int i = 0; i < size; ++i) {
         this->mControlPoints.push_back(controlPoints[i]);
     }
+}
+
+void BezierSpline::addControlPoints(const std::vector<Point3>& controlPoints) {
+    this->mControlPoints.insert(this->mControlPoints.end(),
+            this->mShareControlPoints ? controlPoints.begin() + 1 : controlPoints.begin(),
+            controlPoints.end());
 }
 
 bool BezierSpline::setUseSharedControlPoints(bool useSharedControlPoints) {

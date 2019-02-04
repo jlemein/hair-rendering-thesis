@@ -72,8 +72,45 @@ std::string Hair::getCurveType() const {
     return "flat";
 }
 
+bool isCurveConnected(const BezierSpline& b1, const BezierSpline& b2) {
+    const std::vector<Point3>& cp1 = b1.getControlPoints();
+    const std::vector<Point3>& cp2 = b2.getControlPoints();
+
+    return cp1[cp1.size() - 1] == cp2[0];
+}
+
 void Hair::optimizeCurves() {
+    std::vector<HairFiber> newFibers;
+
     //vector
+    for (int i = 0; i<this->fibers.size(); ++i) {
+        HairFiber f;
+        BezierSpline& currentSpline = this->fibers[i].curve;
+
+        //set widths of other fiber
+        //f.width = this->fibers[i].width;
+
+        // start from current spline
+        BezierSpline mergedCurve(this->fibers[i].curve);
+        mergedCurve.setUseSharedControlPoints(true);
+
+        for (int j = i + 1; j < this->fibers.size(); ++j, ++i) {
+            const BezierSpline& nextSpline = this->fibers[j].curve;
+
+            // check if last and first control points match
+            if (isCurveConnected(mergedCurve, nextSpline)) {
+                mergedCurve.addControlPoints(nextSpline.getControlPoints());
+            } else {
+                break;
+            }
+        }
+        f.curve = mergedCurve;
+        newFibers.push_back(f);
+    }
+
+    std::cout << "newfibers: " << newFibers.size() << std::endl;
+    this->fibers.clear();
+    this->fibers = newFibers;
 }
 
 

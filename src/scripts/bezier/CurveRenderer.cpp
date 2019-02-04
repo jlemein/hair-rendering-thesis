@@ -54,7 +54,7 @@ GLuint shaderProgram[2];
 const unsigned int WINDOW_WIDTH = 1024, WINDOW_HEIGHT = 1024;
 float aspect = WINDOW_WIDTH / static_cast<float> (WINDOW_HEIGHT);
 float fovy = 120;
-float zNear = 0.1f, zFar = 1000.0f;
+float zNear = 0.1f, zFar = 3000.0f;
 
 glm::vec3 red(1.0f, 0.0f, 0.0f);
 glm::vec3 green(0.0f, 1.0f, 0.0f);
@@ -69,7 +69,7 @@ glm::mat4 model = glm::mat4(1.0f);
 glm::mat4 view = glm::lookAt(eye, center, up);
 glm::mat4 perspective = glm::perspective(fovy, aspect, zNear, zFar);
 
-std::vector<double> dataPoints;
+std::vector<float> dataPoints;
 std::vector<int> curveOffsets;
 
 void onScrolled(GLFWwindow* window, double xOffset, double yOffset) {
@@ -131,6 +131,8 @@ void CurveRenderer::addHairModel(const Hair& hair, int limitFiberCount) {
         }
     }
 
+
+
     //    Point3 centerPt = 0.5 * (hair.sceneExtentMin + hair.sceneExtentMax);
     //    center = glm::vec3(center.x, center.y, center.z);
     //    eye = Point3::DistanceBetween(hair.sceneExtentMin, hair.sceneExtentMax) * glm::normalize(glm::cross(center, up));
@@ -158,7 +160,7 @@ void CurveRenderer::init() {
             assetFolder + "bezier-fs.glsl");
 
     // allocate buffer for all curves
-    int nSamples = 10;
+    int nSamples = 60;
 
     curveOffsets.push_back(0);
 
@@ -171,7 +173,7 @@ void CurveRenderer::init() {
             dataPoints.push_back(pt.y);
             dataPoints.push_back(pt.z);
         }
-        std::cout << "Offset added: " << dataPoints.size() << std::endl;
+        //        std::cout << "Offset added: " << dataPoints.size() << std::endl;
         curveOffsets.push_back(dataPoints.size());
     }
 
@@ -179,7 +181,8 @@ void CurveRenderer::init() {
 
     glGenBuffers(2, vbo);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
-    glBufferData(GL_ARRAY_BUFFER, dataPoints.size() * sizeof (double), (void*) &dataPoints[0], GL_STATIC_DRAW);
+    std::cout << "data point size: " << dataPoints.size() << std::endl;
+    glBufferData(GL_ARRAY_BUFFER, dataPoints.size() * sizeof (GLfloat), (void*) &dataPoints[0], GL_STATIC_DRAW);
     //    glBindBuffer(GL_ARRAY_BUFFER, vbo[CONTROL_POINTS]);
     //    glBufferData(GL_ARRAY_BUFFER, mCurves[0]->getControlPointCount() * sizeof (double) * 3, (const void*) &(mCurves[0]->getControlPoints()[0]), GL_STATIC_DRAW);
 }
@@ -193,7 +196,7 @@ void CurveRenderer::render() {
 
     glEnableVertexAttribArray(0);
     glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
-    glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 0 * sizeof (GLdouble), (void*) (0 * sizeof (GLdouble)));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0 * sizeof (GLfloat), (void*) (0 * sizeof (GLfloat)));
 
     for (int offsetIndex = 0; offsetIndex < curveOffsets.size() - 1; ++offsetIndex) {
         SimpleGlUtil::setUniform(shaderProgram[BEZIER_CURVE], "color", colors[offsetIndex]);

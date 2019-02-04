@@ -97,6 +97,8 @@ float OpenVdbReader::interpolate(const Point3& from, const Point3& to) {
 
 float OpenVdbReader::interpolateToInfinity(const Point3& from, const Point3& direction) {
     std::cout << "[WARNING]: interpolateToInfinity(Point3&, Point$) is not implemented\n";
+
+    //return interpolate(from, direction.normalize() * mInfinity);
     return -1.0f;
 }
 

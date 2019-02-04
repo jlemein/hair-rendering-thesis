@@ -48,6 +48,7 @@ private:
     std::vector<openvdb::GridBase::Ptr> mGrids;
     openvdb::GridBase::Ptr mHairDensityGrid;
     float mVoxelSize = 1.0f;
+    float mInfinity = 1000.0f;
     
      void printMetaDataForGrid(openvdb::GridBase::Ptr) const;
 

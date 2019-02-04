@@ -44,6 +44,10 @@ find_package(glm REQUIRED)
 #add_library (glfw STATIC IMPORTED)
 
 
+#option(ENABLE_TESTS "Enable Tests" OFF)
+#if(${ENABLE_TESTS})
+#    enable_testing()
+#endif()
 
 file(GLOB SRC_FILES
     "*.h"

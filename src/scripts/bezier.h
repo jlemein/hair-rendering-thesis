@@ -17,6 +17,7 @@
 
 #include <vector>
 #include <iostream>
+#include <stdlib.h>
 
 struct Point3 {
 public:
@@ -35,6 +36,11 @@ public:
         return Point3(this->x - p.x, this->y - p.y, this->z - p.z);
     }
     
+    bool operator==(const Point3& p) const {
+        // compare by delta instead of == to prevent floating point precision errors
+        return abs(p.x - x) + abs(p.y - y) + abs(p.z - z) < 0.0001;    
+    }
+    
     // static methods
     static double DistanceBetween(const Point3& p1, const Point3& p2);
     
@@ -50,13 +56,15 @@ private:
     
 public:
     BezierSpline();
+    BezierSpline(const BezierSpline& spline);
     BezierSpline(const Point3& p0, const Point3& p1, const Point3& p2, const Point3& p3);
     BezierSpline(const double controlPoints[], unsigned int size);
     BezierSpline(const Point3 controlPoints[], unsigned int size);
     
+    void addControlPoint(const Point3& p);
     void addControlPoints(const double controlPoints[], unsigned int size);
     void addControlPoints(const Point3 controlPoints[], unsigned int size);
-    void addControlPoint(const Point3& p);
+    void addControlPoints(const std::vector<Point3>& controlPoints);
     
     bool setUseSharedControlPoints(bool useSharedControlPoints);
     bool isUsingSharedControlPoints() const;

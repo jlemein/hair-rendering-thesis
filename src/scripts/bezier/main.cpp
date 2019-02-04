@@ -15,7 +15,7 @@
 
 using namespace std;
 
-enum UserMode {
+enum class UserMode {
     RENDER_SAMPLE_BEZIER, RENDER_USER_INPUT, RENDER_HAIR_MODEL
 };
 
@@ -65,8 +65,9 @@ void queryHairFile(std::string& fileName) {
 //
 //    do {
 //        cout << "Choose any of the options: " << endl;
-//        cout << "\t1.) Use example Bezier curve" << endl
-//                << "\t2.) Use hair model" << endl;
+//        cout << "1.) Use example Bezier curve" << endl
+//             << "2.) Load hair model" << endl
+//                << "3.) ";
 //
 //
 //        cin >> number;
@@ -86,11 +87,24 @@ void queryHairFile(std::string& fileName) {
 //    }
 //}
 
-int main(void) {
+int main(int argc, char** argv) {
     renderer = new CurveRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
-    cout << "Hello Bezier curve" << endl;
+    cout << "Hello Bezier Renderer" << endl;
 
-    UserMode mode;
+    UserMode userMode;
+    //std::map<std::string, std::string> params;
+    //    handleMenu(userMode, params);
+    //
+    //    switch (userMode) {
+    //        case UserMode::RENDER_HAIR_MODEL:
+    //            break;
+    //        case UserMode::RENDER_SAMPLE_BEZIER:
+    //            break;
+    //        case UserMode::RENDER_USER_INPUT:
+    //            break;
+    //    }
+
+
     std::string fileName = hairFile;
     std::ifstream input(hairFile.c_str());
     if (input.fail()) {
@@ -99,10 +113,10 @@ int main(void) {
     }
     Hair hair;
     input >> hair;
-
-    for (auto& pt : hair.fibers[0].curve.getControlPoints())
-        cout << pt << endl;
-    cout << "Curve count for hair model: " << hair.fibers.size() << endl;
+    //
+    //    for (auto& pt : hair.fibers[0].curve.getControlPoints())
+    //        cout << pt << endl;
+    //    cout << "Curve count for hair model: " << hair.fibers.size() << endl;
 
 
     //menu(mode, fileName);
@@ -112,7 +126,7 @@ int main(void) {
         -25.796530, 51.218952, 19.373894, -26.082401, 51.150608, 19.698441, -26.423557, 50.851059, 19.976362, -26.760401, 50.482285, 20.234373,
         -26.760401, 50.482285, 20.234373, -27.097244, 50.113510, 20.492384, -27.469509, 49.567532, 20.712675, -27.817591, 49.006298, 20.921959};
 
-    BezierSpline bezier_all(pt, 36);
+    BezierSpline bezier_all(pt, 24);
     bezier_all.setUseSharedControlPoints(false);
 
     double pt1[12] = {-25.045174, 50.892357, 18.287086, -25.260208, 51.178432, 18.687077, -25.510658, 51.287296, 19.049347, -25.796530, 51.218952, 19.373894};
@@ -124,6 +138,19 @@ int main(void) {
     bezier_pt1.setUseSharedControlPoints(false);
     bezier_pt2.setUseSharedControlPoints(false);
     bezier_pt3.setUseSharedControlPoints(false);
+
+    cout << "Control points:" << endl;
+    for (auto cp : bezier_all.getControlPoints()) {
+        cout << cp << endl;
+    }
+    cout << endl;
+    cout << "Sample points" << endl;
+    cout << "sampleCurve(" << 0.5f << ") = " << bezier_all.sampleCurve(0.5f) << endl;
+    cout << "sampleSegment (0, 1.0) = " << bezier_all.sampleSegment(0, 1.0f) << endl;
+    cout << "sampleSegment (1, 0.0) = " << bezier_all.sampleSegment(1, 0.0f) << endl;
+    //    for (float t = 0.0; t <= 1.01; t += 0.1) {
+    //        cout << "bezier A(" << t << ") = " << bezier_all.sampleCurve(t) << endl;
+    //    }
 
     //    BezierSpline bs1(
     //            Point3(0.0, 5.0, 0.0),
@@ -144,13 +171,15 @@ int main(void) {
     //    bs2.setUseSharedControlPoints(false);
     //    bs3.setUseSharedControlPoints(false);
 
-    //renderer->addHairModel(hair);
-    renderer->addCurve(bezier_pt1);
-    renderer->addCurve(bezier_pt2);
-    renderer->addCurve(bezier_pt3);
-    //    renderer->addCurve(bs2);
-    //renderer->addCurve(bs3);
-    //renderer->addCurve(hair.fibers[0].curve);
+    cout << "Curves before optimize: " << hair.fibers.size() << endl;
+    hair.optimizeCurves();
+    cout << "Curves after optimize: " << hair.fibers.size() << endl;
+    renderer->addHairModel(hair, 100);
+
+    //    renderer->addCurve(bezier_pt1);
+    //    renderer->addCurve(bezier_pt2);
+    //    renderer->addCurve(bezier_pt3);
     renderer->startup();
+
     return 0;
 }
