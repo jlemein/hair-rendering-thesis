@@ -72,7 +72,19 @@ glm::mat4 perspective = glm::perspective(fovy, aspect, zNear, zFar);
 std::vector<float> dataPoints;
 std::vector<int> curveOffsets;
 
-void onScrolled(GLFWwindow* window, double xOffset, double yOffset) {
+static void CheckError() {
+    static unsigned int glError;
+    if (glError = glGetError()) {
+        if (glGetError() == GL_OUT_OF_MEMORY) {
+            std::cout << "GL ERROR: Out of memory. Exiting...";
+        } else {
+            std::cout << "GL ERROR (" << std::hex << glError << "): Exiting...";
+        }
+        //exit(1);
+    }
+}
+
+static void onScrolled(GLFWwindow* window, double xOffset, double yOffset) {
     eye *= yOffset * -0.02 + 1.0;
     view = glm::lookAt(eye, center, up);
     std::cout << "eye: " << eye.x << " ; " << eye.y << " ; " << eye.z << std::endl;
@@ -80,7 +92,7 @@ void onScrolled(GLFWwindow* window, double xOffset, double yOffset) {
     SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "view", view);
 }
 
-void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) {
+static void onKey(GLFWwindow* window, int key, int scancode, int action, int mods) {
     glm::quat rotation;
 
     if (action == GLFW_PRESS) {
@@ -112,17 +124,18 @@ CurveRenderer::CurveRenderer(unsigned int windowWidth, unsigned int windowHeight
 : WINDOW_WIDTH(windowWidth), WINDOW_HEIGHT(windowHeight) {
 }
 
-CurveRenderer::CurveRenderer(const CurveRenderer& orig) : CurveRenderer() {
+CurveRenderer::CurveRenderer(const CurveRenderer & orig) : CurveRenderer() {
 }
 
 CurveRenderer::~CurveRenderer() {
 }
 
-void CurveRenderer::addCurve(const BezierSpline& curve) {
+void CurveRenderer::addCurve(const BezierSpline & curve) {
     mCurves.push_back(&curve);
 }
 
 void CurveRenderer::addHairModel(const Hair& hair, int limitFiberCount) {
+    std::cout << "CurveRenderer::addHairModel" << std::endl;
     int fiberCount = 0;
     for (auto& fiber : hair.fibers) {
         this->addCurve(fiber.curve);
@@ -145,7 +158,7 @@ void CurveRenderer::init() {
     glfwSetScrollCallback(window, onScrolled);
     glfwSetKeyCallback(window, onKey);
 
-    glEnable(GL_DOUBLEBUFFER | GL_DEPTH_BUFFER);
+    glEnable(GL_DOUBLEBUFFER | GL_DEPTH_TEST);
     //glEnable(GL_DEPTH_TEST);
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -183,6 +196,9 @@ void CurveRenderer::init() {
     glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
     std::cout << "data point size: " << dataPoints.size() << std::endl;
     glBufferData(GL_ARRAY_BUFFER, dataPoints.size() * sizeof (GLfloat), (void*) &dataPoints[0], GL_STATIC_DRAW);
+
+    CheckError();
+
     //    glBindBuffer(GL_ARRAY_BUFFER, vbo[CONTROL_POINTS]);
     //    glBufferData(GL_ARRAY_BUFFER, mCurves[0]->getControlPointCount() * sizeof (double) * 3, (const void*) &(mCurves[0]->getControlPoints()[0]), GL_STATIC_DRAW);
 }

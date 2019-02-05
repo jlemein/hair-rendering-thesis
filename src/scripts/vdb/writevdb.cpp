@@ -17,7 +17,7 @@
 using namespace std;
 
 const int SAMPLES_PER_SEGMENT = 10;
-const double VOXEL_SIZE = 1.0;
+const double VOXEL_SIZE = 0.25;
 
 double max_sample_length = 0.0;
 
@@ -26,12 +26,6 @@ const char* ARGUMENT_NAMES[] = {
     "Hair input file",
     "Output openvdb file"
 };
-
-// openvdb
-
-void writeSpline(const BezierSpline& spline) {
-
-}
 
 double computeDistance(const Point3& p1, const Point3& p2) {
     double x = (p2.x - p1.x);
@@ -51,12 +45,6 @@ void sampleSegment(openvdb::FloatGrid::Accessor& accessor, const BezierSpline& s
         cout << "A segment must be sampled at least 2 times, terminating application..." << endl;
         exit(1);
     }
-
-    //    cout << "Segment defined by: \n";
-    //    for (auto& pt : spline.getControlPoints()) {
-    //        cout << pt << endl;
-    //    }
-    //    cout << "\n\n";
 
     double stepSize = getStepSize(SAMPLES_PER_SEGMENT);
 
@@ -133,14 +121,23 @@ int main(int argc, const char** argv) {
     cout << "Loaded hair model with " << hair.fibers.size() << " fibers" << endl;
 
     openvdb::initialize();
-    openvdb::FloatGrid::Ptr grid = openvdb::FloatGrid::create(/*background value=*/2.0);
-    openvdb::FloatGrid::Accessor accessor = grid->getAccessor();
-    grid->setName("HairDensityGrid");
 
+    // create voxel grid with background value 0
+    openvdb::FloatGrid::Ptr grid = openvdb::FloatGrid::create(/*background value=*/0.0);
+    grid->setName("HairDensityGrid");
+    grid->insertMeta("Author", openvdb::StringMetadata("Jeffrey Lemein"));
+
+    // assign a transform to define a voxel size (for voxelSize 0.25 -> 1 unit in the hair model
+    grid->setTransform(openvdb::v3_1::math::Transform::createLinearTransform(VOXEL_SIZE));
+    grid->insertMeta("VoxelSize", openvdb::DoubleMetadata(VOXEL_SIZE));
+
+    // hair model is read without transformations applied to it (e.g. local space)
+    grid->setIsInWorldSpace(false);
+
+    openvdb::FloatGrid::Accessor accessor = grid->getAccessor();
     write(accessor, hair);
 
     grid->insertMeta("Maximum Sample Length", openvdb::FloatMetadata(max_sample_length));
-    grid->insertMeta("Author", openvdb::StringMetadata("Jeffrey Lemein"));
     grid->insertMeta("Updated last", openvdb::Int32Metadata(time(0)));
 
     // Create a VDB file object.

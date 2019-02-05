@@ -8,7 +8,7 @@
 #include <algorithm>
 #include <iostream>
 
-Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+static Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
 
     Point3 a = p0 * (1.0 - t)*(1.0 - t)*(1.0 - t);
     Point3 b = p1 * 3.0 * t * (1.0 - t)*(1.0 - t);
@@ -18,7 +18,7 @@ Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
     return a + b + c + d;
 }
 
-Point3 cubicBezier2(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
+static Point3 cubicBezier2(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
 
     Point3 a = p0 * (1.0 - t)*(1.0 - t)*(1.0 - t);
     Point3 b = (p1 - p0) * 3.0 * t * (1.0 - t)*(1.0 - t);
@@ -26,6 +26,17 @@ Point3 cubicBezier2(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
     Point3 d = p3 * t * t*t;
 
     return a + b + c + d;
+}
+
+inline Point3 Lerp(double t, Point3 p1, Point3 p2) {
+    return p1 * (1 - t) + p2 * t;
+}
+
+static Point3 EvalBezier(const Point3 cp[4], double u) {
+    Point3 cp1[3] = {Lerp(u, cp[0], cp[1]), Lerp(u, cp[1], cp[2]), Lerp(u, cp[2], cp[3])};
+    Point3 cp2[2] = {Lerp(u, cp1[0], cp1[1]), Lerp(u, cp1[1], cp1[2])};
+
+    return Lerp(u, cp2[0], cp2[1]);
 }
 
 std::ostream& operator<<(std::ostream& out, const Point3& p) {
@@ -83,6 +94,7 @@ void BezierSpline::addControlPoints(const Point3 controlPoints[], unsigned int s
 }
 
 void BezierSpline::addControlPoints(const std::vector<Point3>& controlPoints) {
+    //TODO: make an option to remove first control point or not. This assumption is not clear from function signature
     this->mControlPoints.insert(this->mControlPoints.end(),
             this->mShareControlPoints ? controlPoints.begin() + 1 : controlPoints.begin(),
             controlPoints.end());
@@ -153,5 +165,8 @@ Point3 BezierSpline::sampleSegment(unsigned int segment, double t) const {
     }
 
     unsigned int controlPointStart = getControlPointOffsetForSegment(segment);
-    return cubicBezier(t, mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]);
+
+    const Point3 cp[4] = {mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]};
+    return EvalBezier(cp, t);
+    //return cubicBezier(t, mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]);
 }
