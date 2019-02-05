@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <iostream>
+#include <cmath>
 
 static Point3 cubicBezier(double t, Point3 p0, Point3 p1, Point3 p2, Point3 p3) {
 
@@ -41,6 +42,7 @@ static Point3 EvalBezier(const Point3 cp[4], double u) {
 
 std::ostream& operator<<(std::ostream& out, const Point3& p) {
     out << "[" << p.x << " " << p.y << " " << p.z << "]";
+    return out;
 }
 
 double Point3::DistanceBetween(const Point3& p1, const Point3& p2) {
@@ -100,7 +102,7 @@ void BezierSpline::addControlPoints(const std::vector<Point3>& controlPoints) {
             controlPoints.end());
 }
 
-bool BezierSpline::setUseSharedControlPoints(bool useSharedControlPoints) {
+void BezierSpline::setUseSharedControlPoints(bool useSharedControlPoints) {
     this->mShareControlPoints = useSharedControlPoints;
 }
 
@@ -168,5 +170,4 @@ Point3 BezierSpline::sampleSegment(unsigned int segment, double t) const {
 
     const Point3 cp[4] = {mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]};
     return EvalBezier(cp, t);
-    //return cubicBezier(t, mControlPoints[controlPointStart], mControlPoints[controlPointStart + 1], mControlPoints[controlPointStart + 2], mControlPoints[controlPointStart + 3]);
 }

@@ -9,12 +9,22 @@ include_directories(src)
 # Output appears in bin directory
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
+#
+# Add cmake modules path for all find library scripts
+#
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
 # Boost libraries
 set(Boost_USE_STATIC_LIBS ON) 
 set(Boost_USE_MULTITHREADED ON)  
 set(Boost_USE_STATIC_RUNTIME OFF) 
+
+#tbb libraries
+#list(APPEND CMAKE_MODULE_PATH "<path to FindTBB module>")
+find_package(TBB REQUIRED)
+
+# opener and ilmbase libraries
+find_package(OPENEXR REQUIRED)
 
 #OpenVDB libraries
 find_package(Boost 1.58.0 COMPONENTS program_options filesystem date_time REQUIRED)
@@ -27,8 +37,10 @@ set(LIBS ${LIBS} ${OpenVDB_LIBRARIES})
 #set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
 #add_subdirectory("../ext/glfw-3.2.1")
 
+if(NOT APPLE)
 find_package(GLEW REQUIRED)
 include_directories(${GLEW_INCLUDE_DIRS})
+endif(NOT APPLE)
 
 find_package(glfw3 3.2 REQUIRED)
 
@@ -53,6 +65,9 @@ file(GLOB SRC_FILES
     "*.h"
     "*.cpp"
 )
+if(OPENEXR_FOUND)
+	include_directories(OPENEXR_INCLUDE_DIR)
+endif(OPENEXR_FOUND)
 
 if(Boost_FOUND)
   include_directories(${Boost_INCLUDE_DIRS})
@@ -94,7 +109,8 @@ if(Boost_FOUND)
         src/scripts/bezier.h src/scripts/bezier.cpp
         src/scripts/hairstruct.h src/scripts/hairstruct.cpp
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
-    target_link_libraries(testvdb ${OpenVDB_LIBRARIES} -ltbb -lHalf)
+#    target_link_libraries(testvdb ${OpenVDB_LIBRARIES} ${TBB_LIBRARIES} -lHalf)
+    target_link_libraries(testvdb ${OpenVDB_LIBRARIES} ${TBB_LIBRARIES} ${OPENEXR_LIBRARIES})
 
     add_executable(writevdb src/scripts/vdb/writevdb.cpp
         src/scripts/vdb/OpenVdbReader.h src/scripts/vdb/OpenVdbReader.cpp
@@ -102,7 +118,8 @@ if(Boost_FOUND)
         src/scripts/bezier.h src/scripts/bezier.cpp
         src/scripts/hairstruct.h src/scripts/hairstruct.cpp
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
-    target_link_libraries(writevdb ${OpenVDB_LIBRARIES} -ltbb -lHalf)
+#    target_link_libraries(writevdb ${OpenVDB_LIBRARIES} ${TBB_LIBRARIES} -lHalf)
+    target_link_libraries(writevdb ${OpenVDB_LIBRARIES} ${TBB_LIBRARIES} ${OPENEXR_LIBRARIES})
 
     add_executable(readvdb src/scripts/vdb/readvdb.cpp
         src/scripts/vdb/OpenVdbReader.h src/scripts/vdb/OpenVdbReader.cpp
@@ -110,7 +127,8 @@ if(Boost_FOUND)
         src/scripts/bezier.h src/scripts/bezier.cpp
         src/scripts/hairstruct.h src/scripts/hairstruct.cpp
         src/scripts/pbrthairparser.h src/scripts/pbrthairparser.cpp)
-    target_link_libraries(readvdb ${OpenVDB_LIBRARIES} -ltbb -lHalf)
+#    target_link_libraries(readvdb ${OpenVDB_LIBRARIES} ${TBB_LIBRARIES} -lHalf)
+    target_link_libraries(readvdb ${OpenVDB_LIBRARIES} ${TBB_LIBRARIES} ${OPENEXR_LIBRARIES})
 
     add_executable(bezier src/scripts/bezier/main.cpp
         src/scripts/bezier.h src/scripts/bezier.cpp
@@ -120,7 +138,11 @@ if(Boost_FOUND)
         src/scripts/gl_util/ShaderSource.h src/scripts/gl_util/ShaderSource.cpp
         #src/scripts/gl_util/Renderable.h src/scripts/gl_util/Renderable.cpp
         src/scripts/gl_util/SimpleGlUtil.h src/scripts/gl_util/SimpleGlUtil.cpp)
+if(APPLE)
+    target_link_libraries(bezier ${OPENGL_gl_LIBRARY} glfw ${GLFW_LIBRARIES} glm)
+else(APPLE)
     target_link_libraries(bezier ${OPENGL_gl_LIBRARY} glfw ${GLFW_LIBRARIES} GLEW glm)
+endif(APPLE)
 
 #    add_executable(processhair src/scripts/processhair.cpp
 #        src/scripts/hairstruct.h src/scripts/hairstruct.cpp

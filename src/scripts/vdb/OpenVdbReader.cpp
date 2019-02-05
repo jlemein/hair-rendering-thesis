@@ -18,6 +18,14 @@
 #include "../hairstruct.h"
 #include "../bezier.h"
 
+using namespace openvdb;
+
+#ifdef __APPLE__
+using namespace openvdb::v6_0::tools;
+#else
+using namespace openvdb::v3_1::tools;
+#endif
+
 OpenVdbReader::OpenVdbReader(std::string fileName) : mInputFileName(fileName) {
 }
 
@@ -60,8 +68,7 @@ float OpenVdbReader::interpolate(const Point3& from, const Point3& to) {
 
     std::cout << "[WARNING]: interpolate(Point3&, Point$) is not implemented correctly yet\n";
 
-    using namespace openvdb;
-    using namespace openvdb::v3_1::tools;
+
 
     // there is a choice of different interpolators, mainly PointSampler, BoxSampler and QuadraticSampler
     // in addition to StaggeredPointSampler, StaggeredBoxSampler and StaggeredQuadraticSampler for staggered velocity grids.

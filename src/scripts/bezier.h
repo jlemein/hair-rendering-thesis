@@ -17,7 +17,7 @@
 
 #include <vector>
 #include <iostream>
-#include <stdlib.h>
+#include <cmath>
 
 struct Point3 {
 public:
@@ -38,7 +38,7 @@ public:
     
     bool operator==(const Point3& p) const {
         // compare by delta instead of == to prevent floating point precision errors
-        return abs(p.x - x) + abs(p.y - y) + abs(p.z - z) < 0.0001;    
+        return fabs(p.x - x) + abs(p.y - y) + abs(p.z - z) < 0.0001;
     }
     
     // static methods
@@ -66,7 +66,7 @@ public:
     void addControlPoints(const Point3 controlPoints[], unsigned int size);
     void addControlPoints(const std::vector<Point3>& controlPoints);
     
-    bool setUseSharedControlPoints(bool useSharedControlPoints);
+    void setUseSharedControlPoints(bool useSharedControlPoints);
     bool isUsingSharedControlPoints() const;
     
     unsigned int getSegmentCount() const;

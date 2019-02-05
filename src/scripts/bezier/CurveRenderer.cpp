@@ -15,7 +15,13 @@
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <iostream>
+
+#ifndef __APPLE__
 #include <GL/glew.h>
+#else
+#include <OpenGL/gl.h> //OS x libs
+#endif //__APPLE__
+
 #include <GLFW/glfw3.h>
 //#include "plyloader.h"
 //#include "ShaderSource.h"
@@ -252,11 +258,13 @@ int CurveRenderer::startup(void) {
     /* Make the window's context current */
     glfwMakeContextCurrent(window);
 
+#ifndef __APPLE__
     if (GLEW_OK != glewInit()) {
         cout << "GLEW Error" << endl;
         return -1;
     }
-
+#endif
+    
     init();
 
     /* Loop until the user closes the window */

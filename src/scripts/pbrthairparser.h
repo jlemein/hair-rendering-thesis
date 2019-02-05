@@ -3,7 +3,7 @@
 
 #include <iostream>
 
-struct Hair;
+class Hair;
 
 class PbrtHairParser
 {

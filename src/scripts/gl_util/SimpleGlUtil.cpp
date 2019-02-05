@@ -3,7 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+#ifndef __APPLE__
 #include <GL/glew.h>
+#else
+#include <OpenGL/gl3.h> //OS x libs
+#endif
 
 #include "SimpleGlUtil.h"
 #include <iostream>

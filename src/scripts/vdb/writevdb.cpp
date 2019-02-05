@@ -16,6 +16,12 @@
 #include "../bezier.h"
 using namespace std;
 
+#ifdef __APPLE__
+using namespace openvdb::v6_0::math;
+#else
+using namespace openvdb::v3_1::math;
+#endif
+
 const int SAMPLES_PER_SEGMENT = 10;
 const double VOXEL_SIZE = 0.25;
 
@@ -128,7 +134,7 @@ int main(int argc, const char** argv) {
     grid->insertMeta("Author", openvdb::StringMetadata("Jeffrey Lemein"));
 
     // assign a transform to define a voxel size (for voxelSize 0.25 -> 1 unit in the hair model
-    grid->setTransform(openvdb::v3_1::math::Transform::createLinearTransform(VOXEL_SIZE));
+    grid->setTransform(Transform::createLinearTransform(VOXEL_SIZE));
     grid->insertMeta("VoxelSize", openvdb::DoubleMetadata(VOXEL_SIZE));
 
     // hair model is read without transformations applied to it (e.g. local space)
