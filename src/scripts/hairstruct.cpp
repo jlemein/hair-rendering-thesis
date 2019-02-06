@@ -84,14 +84,13 @@ void Hair::optimizeCurves() {
 
     //vector
     for (int i = 0; i<this->fibers.size(); ++i) {
+        
+        // TODO: copy over the fiber properties to new fiber
         HairFiber f;
-        BezierSpline& currentSpline = this->fibers[i].curve;
-
-        //set widths of other fiber
-        //f.width = this->fibers[i].width;
+        const HairFiber& originalFiber = this->fibers[i];
 
         // start from current spline
-        BezierSpline mergedCurve(this->fibers[i].curve);
+        BezierSpline mergedCurve(originalFiber.curve);
         mergedCurve.setUseSharedControlPoints(true);
 
         for (int j = i + 1; j < this->fibers.size(); ++j, ++i) {

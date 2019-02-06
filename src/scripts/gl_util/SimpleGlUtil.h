@@ -39,6 +39,11 @@ public:
     //static int compileShader(const std::string& vsName, const std::string& fsName);
     
     /**
+     * Checks if GLSL is supported
+     */
+    static bool isShadingLanguageSupported(int major, int minor = 0);
+    
+    /**
      * Sets the uniform parameter of the program
      * @param param Parameter name
      * @param value Value of param

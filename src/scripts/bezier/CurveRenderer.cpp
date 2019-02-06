@@ -19,7 +19,7 @@
 #ifndef __APPLE__
 #include <GL/glew.h>
 #else
-#include <OpenGL/gl.h> //OS x libs
+#include <OpenGL/gl3.h> //OS x libs
 #endif //__APPLE__
 
 #include <GLFW/glfw3.h>
@@ -47,6 +47,12 @@
 #include "../bezier.h"
 #include "../hairstruct.h"
 using namespace std;
+
+// FOR MY LINUX PC
+//string assetFolder = "/home/jeffrey/hair-rendering-thesis/assets/";
+
+// FOR MY MAC LAPTOP
+string assetFolder = "/Users/jeffrey/dev/hair-rendering-thesis/assets/";
 
 GLFWwindow* window = nullptr;
 const int BEZIER_CURVE = 0;
@@ -80,8 +86,9 @@ std::vector<int> curveOffsets;
 
 static void CheckError() {
     static unsigned int glError;
-    if (glError = glGetError()) {
-        if (glGetError() == GL_OUT_OF_MEMORY) {
+    glError = glGetError();
+    if (glError != GL_NO_ERROR) {
+        if (glError == GL_OUT_OF_MEMORY) {
             std::cout << "GL ERROR: Out of memory. Exiting...";
         } else {
             std::cout << "GL ERROR (" << std::hex << glError << "): Exiting...";
@@ -160,7 +167,14 @@ void CurveRenderer::addHairModel(const Hair& hair, int limitFiberCount) {
     //SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "view", view);
 }
 
+
+
 void CurveRenderer::init() {
+    if (!SimpleGlUtil::isShadingLanguageSupported(4, 3)) {
+        cout << "GLSL support is limited. Falling back to GLSL 1.2" << endl;
+        assetFolder += "fallback/";
+    }
+    
     glfwSetScrollCallback(window, onScrolled);
     glfwSetKeyCallback(window, onKey);
 
@@ -169,7 +183,9 @@ void CurveRenderer::init() {
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-    const string assetFolder = "/home/jeffrey/hair-rendering-thesis/assets/";
+    //TODO: add asset folder option as argument to bezier executable
+    
+    
     cout << "Reading shader files ...\n";
     shaderProgram[BEZIER_CURVE] = SimpleGlUtil::createShaderProgram(
             assetFolder + "bezier-vs.glsl",

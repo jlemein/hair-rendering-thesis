@@ -13,6 +13,8 @@
 #include <iostream>
 #include "ShaderSource.h"
 #include <vector>
+#include <sstream>
+#include <string>
 
 #include <glm/matrix.hpp>
 #include <glm/gtc/matrix_transform.hpp>
@@ -67,6 +69,20 @@ void linkProgram(int program) {
     } else {
         cout << "Linking OK" << endl;
     }
+}
+
+bool SimpleGlUtil::isShadingLanguageSupported(int major, int minor) {
+    std::string glslVersion = string((const char*)glGetString(GL_SHADING_LANGUAGE_VERSION));
+    std::istringstream stream(glslVersion);
+    std::string token;
+    
+    getline(stream, token, '.');
+    int supportedMajor = std::stoi(token);
+    
+    getline(stream, token, '.');
+    int supportedMinor = std::stoi(token);
+    
+    return !(supportedMajor < major || (supportedMajor == major && supportedMinor < 3));
 }
 
 void SimpleGlUtil::setUniform(GLuint program, const std::string& param, const glm::mat4& value) {

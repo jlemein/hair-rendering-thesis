@@ -17,8 +17,14 @@
 using namespace std;
 
 static CurveRenderer* renderer = 0;
+static Hair hairModel;
 
-const std::string DEFAULT_HAIR_PATH = "/home/jeffrey/hair-rendering-thesis/scenes/hair/models/wStraight.10.pbrt";
+// TODO: make relative to current folder
+#ifdef __APPLE__
+const string DEFAULT_HAIR_PATH = "/Users/jeffrey/dev/pbrt-v3-scenes/hair/models/straight-hair.pbrt";
+#else
+const string DEFAULT_HAIR_PATH = "/home/jeffrey/hair-rendering-thesis/scenes/hair/models/wStraight.10.pbrt";
+#endif
 
 const unsigned int WINDOW_WIDTH = 1024, WINDOW_HEIGHT = 1024;
 
@@ -37,7 +43,7 @@ void queryHairFile(Hair& hairModel, const string& defaultHairFile = "") {
             fileName = defaultHairFile;
         }
 
-        cout << "Opening " << fileName << endl;
+        cout << "Parsing hair file: " << fileName << "..." << endl;
         inputStream.open(fileName.c_str());
         isInvalidFile = inputStream.fail();
         if (isInvalidFile) {
@@ -83,13 +89,12 @@ static void actionSpecifyControlPoints() {
         controlPoints.push_back(controlPoint);
     } while (true);
 
-    char answer;
     cout << "Does your Bezier curve uses shared control points (y = yes): ";
-    cin >> answer;
+    getline(cin, input);
 
     BezierSpline spline;
     spline.addControlPoints(controlPoints);
-    spline.setUseSharedControlPoints(answer == 'y');
+    spline.setUseSharedControlPoints(!input.empty() && input[0] == 'y');
     renderer->addCurve(spline);
 }
 
@@ -98,18 +103,17 @@ static void ActionRenderBezierCurve() {
     std::cout << "1.) Specify control points" << endl;
     std::cout << "2.) Use example curve" << endl;
 
-    int choice;
-    cin >> choice;
+    std::string choice;
+    getline(cin, choice);
 
-    if (choice == 1) {
+    if (choice =1= "1") {
         actionSpecifyControlPoints();
-    } else if (choice == 2) {
+    } else if (choice == "2") {
         actionUseExampleCurve();
     }
 }
 
 static void ActionRenderHairModel() {
-    Hair hairModel;
     queryHairFile(hairModel, DEFAULT_HAIR_PATH);
 
     // add only 100 hair strands to limit memory
@@ -141,17 +145,11 @@ static void ShowMenu() {
 }
 
 int main(int argc, char** argv) {
-    renderer = new CurveRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
     cout << "Hello Bezier Renderer" << endl;
-
-    //ShowMenu();
-
-    Hair hair;
-    ifstream input(DEFAULT_HAIR_PATH);
-    input >> hair;
-    hair.optimizeCurves();
-
-    renderer->addHairModel(hair, 100);
+    renderer = new CurveRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
+    
+    ShowMenu();
+    
     renderer->startup();
 
     return 0;

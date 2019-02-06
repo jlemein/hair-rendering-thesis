@@ -15,6 +15,7 @@ using namespace std;
 void ShaderSource::Source(const std::string& fileName, std::vector<char*>& sourceLines, int& lineCount) {
     ifstream input(fileName.c_str());
     if (input.fail()) {
+        cout << "Cannot read shader source from: " << fileName << endl;
         lineCount = 0;
         return;
     }
