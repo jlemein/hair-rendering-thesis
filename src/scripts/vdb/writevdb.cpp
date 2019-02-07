@@ -10,6 +10,7 @@
 #include <string>
 #include <math.h>
 #include <time.h>
+#include <exception>
 
 #include "InputOutputUtil.h"
 #include "../hairstruct.h"
@@ -22,16 +23,15 @@ using namespace openvdb::v6_0::math;
 using namespace openvdb::v3_1::math;
 #endif
 
-const int SAMPLES_PER_SEGMENT = 10;
-const double VOXEL_SIZE = 0.25;
+const int DEFAULT_SAMPLES_PER_SEGMENT = 10;
+const double DEFAULT_VOXEL_SIZE = 1.0;
 
+// params of writevdb
+double voxelSize = DEFAULT_VOXEL_SIZE;
+int samplesPerSegment = DEFAULT_SAMPLES_PER_SEGMENT;
+
+// stats
 double max_sample_length = 0.0;
-
-const char* ARGUMENT_NAMES[] = {
-    "Run directory",
-    "Hair input file",
-    "Output openvdb file"
-};
 
 double computeDistance(const Point3& p1, const Point3& p2) {
     double x = (p2.x - p1.x);
@@ -47,27 +47,27 @@ double getStepSize(int sampleSize) {
 }
 
 void sampleSegment(openvdb::FloatGrid::Accessor& accessor, const BezierSpline& spline, int segment) {
-    if (SAMPLES_PER_SEGMENT < 2) {
+    if (samplesPerSegment < 2) {
         cout << "A segment must be sampled at least 2 times, terminating application..." << endl;
         exit(1);
     }
 
-    double stepSize = getStepSize(SAMPLES_PER_SEGMENT);
+    double stepSize = getStepSize(samplesPerSegment);
 
     double prevDistance = 0.0;
     Point3 P = spline.sampleSegment(segment, 0.0);
     Point3 nextP;
 
-    for (int i = 0; i < SAMPLES_PER_SEGMENT; ++i) {
+    for (int i = 0; i < samplesPerSegment; ++i) {
         double distance = 0.0;
-        if (i + 1 < SAMPLES_PER_SEGMENT) {
+        if (i + 1 < samplesPerSegment) {
             nextP = spline.sampleSegment(segment, (i + 1) * stepSize);
             distance = computeDistance(P, nextP);
 
         }
 
         double lengthSample = 0.5 * (prevDistance + distance);
-        double value = lengthSample / (VOXEL_SIZE);
+        double value = lengthSample / (voxelSize);
 
         if (lengthSample > max_sample_length) {
             max_sample_length = lengthSample;
@@ -102,17 +102,60 @@ void write(openvdb::FloatGrid::Accessor& accessor, const Hair& hair) {
     cout << "\r" << "100.0%: " << fiberIndex << " / " << fiberCount << " hair fibers completed        \n";
 }
 
+void showProgramInfo() {
+    cout << "This program writes PBRT hair models to a voxel grid (using OpenVDB)\n"
+            << "The hair models are described in a scene file format, usually ending in *.pbrt\n\n"
+            << "This program expects input arguments to be run successfully:\n"
+            << "\twritevdb <0> [1] [2] \n"
+            << "\t [0] (string) required - input path to hair file\n"
+            << "\t [1] (string) optional - output file path of vdb file (default: mygrid.vdb)\n"
+            << "\t [2] (int)    optional - samples per curve/hair fiber segment (default: " << DEFAULT_SAMPLES_PER_SEGMENT << ")"
+            << "\t [3] (double) optional - voxel size (default: " << DEFAULT_VOXEL_SIZE << ")\n"
+            << endl;
+}
+
 int main(int argc, const char** argv) {
-    cout << "== Write VDB ==" << endl;
+    cout << "=== Write VDB ===" << endl;
 
     if (argc <= 1) {
         // ask user for input for hair file
-        cout << "No hair file provided, exiting\n";
+        cout << "ERROR: No input hair file provided, exiting\n\n";
+        showProgramInfo();
         return 1;
     }
 
     string inputHairFile = argv[1];
     string outputVdbFile = argc > 2 ? argv[2] : "mygrid.vdb";
+
+    samplesPerSegment = DEFAULT_SAMPLES_PER_SEGMENT;
+    if (argc > 3) {
+        try {
+            std::string samplesPerSegmentStr = argv[3];
+            samplesPerSegment = std::stoi(samplesPerSegmentStr);
+            if (samplesPerSegment <= 1) {
+                cout << "Samples per segment invalid: must be positive and larger than 2. Setting to default sample size of " << DEFAULT_SAMPLES_PER_SEGMENT << endl;
+                samplesPerSegment = DEFAULT_SAMPLES_PER_SEGMENT;
+            }
+        } catch (exception& e) {
+            cout << "Samples per segment must be an integer. Using default samples per segment of " << DEFAULT_SAMPLES_PER_SEGMENT << endl;
+        }
+    }
+
+    voxelSize = DEFAULT_VOXEL_SIZE;
+    if (argc > 4) {
+        try {
+            std::string voxelSizeStr = argv[4];
+            voxelSize = std::stod(voxelSizeStr);
+            if (voxelSize <= 0.0) {
+                cout << "Voxel size invalid: must be positive value. Setting to default voxel size of " << DEFAULT_VOXEL_SIZE << endl;
+                voxelSize = DEFAULT_VOXEL_SIZE;
+            }
+        } catch (exception& e) {
+            cout << "Voxel size must be a double. Using default voxel size of " << DEFAULT_VOXEL_SIZE << endl;
+        }
+    }
+
+    cout << "Writing voxel grid to " << outputVdbFile << endl;
 
     // 1. Ask user to enter file name and open file
     ifstream hairFile;
@@ -120,11 +163,10 @@ int main(int argc, const char** argv) {
         cout << "Failed to open hair input file, terminating application..." << endl;
         return -1;
     }
-    std::cout << "hair : " << (hairFile.fail() ? "failed" : "success") << endl;
 
+    cout << "Parsing hair file ..." << endl;
     Hair hair;
     hairFile >> hair;
-    cout << "Loaded hair model with " << hair.fibers.size() << " fibers" << endl;
 
     openvdb::initialize();
 
@@ -133,9 +175,9 @@ int main(int argc, const char** argv) {
     grid->setName("HairDensityGrid");
     grid->insertMeta("Author", openvdb::StringMetadata("Jeffrey Lemein"));
 
-    // assign a transform to define a voxel size (for voxelSize 0.25 -> 1 unit in the hair model
-    grid->setTransform(Transform::createLinearTransform(VOXEL_SIZE));
-    grid->insertMeta("VoxelSize", openvdb::DoubleMetadata(VOXEL_SIZE));
+    // assign a transform to define a voxel size (voxel size works inverse with transform)
+    grid->setTransform(Transform::createLinearTransform(1.0 / voxelSize));
+    grid->insertMeta("VoxelSize", openvdb::DoubleMetadata(1.0 / voxelSize));
 
     // hair model is read without transformations applied to it (e.g. local space)
     grid->setIsInWorldSpace(false);
@@ -146,6 +188,9 @@ int main(int argc, const char** argv) {
     grid->insertMeta("Maximum Sample Length", openvdb::FloatMetadata(max_sample_length));
     grid->insertMeta("Updated last", openvdb::Int32Metadata(time(0)));
 
+    cout << "Longest distance between two samples points is: " << max_sample_length << endl;
+
+
     // Create a VDB file object.
     cout << "Writing VDB grid to " << outputVdbFile << endl;
     openvdb::io::File file(outputVdbFile);
@@ -153,6 +198,7 @@ int main(int argc, const char** argv) {
     grids.push_back(grid);
     file.write(grids);
     file.close();
+    cout << "[done]" << endl;
 
     return 0;
 }

@@ -2616,6 +2616,120 @@
       </df>
       <df name="docs">
       </df>
+      <df name="experiment">
+        <df name="2019_01_26">
+          <df name="output">
+            <df name="models">
+              <df name="archive">
+              </df>
+              <df name="tmp">
+              </df>
+              <df name="woman">
+              </df>
+            </df>
+            <df name="oldresults">
+            </df>
+            <df name="textures">
+            </df>
+            <df name="tmp">
+            </df>
+          </df>
+        </df>
+        <df name="2019_02_07_writingvdb">
+          <df name="models">
+            <df name="archive">
+            </df>
+            <df name="tmp">
+            </df>
+            <df name="woman">
+            </df>
+          </df>
+          <df name="output">
+          </df>
+        </df>
+        <df name="archive">
+          <df name="2018_06_10 test-animation">
+            <df name="curly-hair-with-head">
+            </df>
+            <df name="straight-hair-with-head">
+            </df>
+            <df name="wavy-hair-with-head">
+            </df>
+            <df name="wavythin-hair-with-head">
+            </df>
+          </df>
+          <df name="2018_08_20 test-animation-single">
+            <df name="straight-hair-with-head">
+            </df>
+          </df>
+          <df name="2018_08_25 distantlight">
+            <df name="output">
+            </df>
+            <df name="straight-hair-with-head">
+            </df>
+          </df>
+          <df name="2018_08_26 infinitelight">
+            <df name="output">
+              <df name="resu1">
+              </df>
+              <df name="tmp">
+              </df>
+            </df>
+            <df name="tmp">
+            </df>
+            <df name="tmp2">
+            </df>
+          </df>
+          <df name="align-pbrt-and-cemyuksel-model">
+            <df name="curly-cemyuksel">
+            </df>
+            <df name="curly-elliptical-cemyuksel">
+            </df>
+            <df name="curly-elliptical-pbrt">
+            </df>
+            <df name="curly-pbrt">
+            </df>
+          </df>
+          <df name="all-models">
+            <df name="curly-hair-with-head">
+            </df>
+            <df name="results_firsttry">
+            </df>
+            <df name="straight-hair-with-head">
+            </df>
+            <df name="wavy-hair-with-head">
+            </df>
+            <df name="wavythin-hair-with-head">
+            </df>
+          </df>
+          <df name="all-models-april-9">
+            <df name="curly-hair-with-head">
+            </df>
+            <df name="straight-hair-with-head">
+            </df>
+            <df name="wavy-hair-with-head">
+            </df>
+            <df name="wavythin-hair-with-head">
+            </df>
+          </df>
+          <df name="analyze-info-pbrthair-vs-cemyukselhair">
+          </df>
+          <df name="basic_skeleton">
+            <df name="output">
+            </df>
+          </df>
+          <df name="original-pbrt-scene">
+          </df>
+          <df name="thickness-variation">
+            <df name="curly-standard">
+            </df>
+            <df name="curly-thin">
+            </df>
+            <df name="curly-xthin">
+            </df>
+          </df>
+        </df>
+      </df>
       <df name="ext">
         <df name="boost_1_66_0">
           <df name="boost">
@@ -43008,108 +43122,6 @@
             <df name="geometry">
             </df>
             <df name="textures">
-            </df>
-          </df>
-        </df>
-      </df>
-      <df name="output">
-        <df name="2019_01_26">
-          <df name="output">
-            <df name="models">
-              <df name="archive">
-              </df>
-              <df name="tmp">
-              </df>
-              <df name="woman">
-              </df>
-            </df>
-            <df name="oldresults">
-            </df>
-            <df name="textures">
-            </df>
-            <df name="tmp">
-            </df>
-          </df>
-        </df>
-        <df name="archive">
-          <df name="2018_06_10 test-animation">
-            <df name="curly-hair-with-head">
-            </df>
-            <df name="straight-hair-with-head">
-            </df>
-            <df name="wavy-hair-with-head">
-            </df>
-            <df name="wavythin-hair-with-head">
-            </df>
-          </df>
-          <df name="2018_08_20 test-animation-single">
-            <df name="straight-hair-with-head">
-            </df>
-          </df>
-          <df name="2018_08_25 distantlight">
-            <df name="output">
-            </df>
-            <df name="straight-hair-with-head">
-            </df>
-          </df>
-          <df name="2018_08_26 infinitelight">
-            <df name="output">
-              <df name="resu1">
-              </df>
-              <df name="tmp">
-              </df>
-            </df>
-            <df name="tmp">
-            </df>
-            <df name="tmp2">
-            </df>
-          </df>
-          <df name="align-pbrt-and-cemyuksel-model">
-            <df name="curly-cemyuksel">
-            </df>
-            <df name="curly-elliptical-cemyuksel">
-            </df>
-            <df name="curly-elliptical-pbrt">
-            </df>
-            <df name="curly-pbrt">
-            </df>
-          </df>
-          <df name="all-models">
-            <df name="curly-hair-with-head">
-            </df>
-            <df name="results_firsttry">
-            </df>
-            <df name="straight-hair-with-head">
-            </df>
-            <df name="wavy-hair-with-head">
-            </df>
-            <df name="wavythin-hair-with-head">
-            </df>
-          </df>
-          <df name="all-models-april-9">
-            <df name="curly-hair-with-head">
-            </df>
-            <df name="straight-hair-with-head">
-            </df>
-            <df name="wavy-hair-with-head">
-            </df>
-            <df name="wavythin-hair-with-head">
-            </df>
-          </df>
-          <df name="analyze-info-pbrthair-vs-cemyukselhair">
-          </df>
-          <df name="basic_skeleton">
-            <df name="output">
-            </df>
-          </df>
-          <df name="original-pbrt-scene">
-          </df>
-          <df name="thickness-variation">
-            <df name="curly-standard">
-            </df>
-            <df name="curly-thin">
-            </df>
-            <df name="curly-xthin">
             </df>
           </df>
         </df>

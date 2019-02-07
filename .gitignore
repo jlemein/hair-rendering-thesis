@@ -1,9 +1,9 @@
 scenes/hair/models
 scenes/bunny-fur/
-output/generated
-output/2018*
-output/archive
-output/*/output
+experiment/generated
+experiment/2018*
+experiment/archive
+experiment/*/output
 build
 build2
 build_real
