@@ -16,9 +16,8 @@
 
 #include <string>
 #include <vector>
+#include "../bezier.h"
 #include <openvdb/openvdb.h>
-
-struct Point3;
 
 class OpenVdbReader {
 public:
@@ -42,13 +41,18 @@ public:
     void printMetaDataForHairDensityGrid() const;
    
     void printVdbInfo() const;
+    void getBoundingBox(Point3* from, Point3* p2) const;
+    float getVoxelSize() const;
+    openvdb::FloatGrid::Ptr getHairDensityGrid() const;
     
 private:
     std::string mInputFileName;
     std::vector<openvdb::GridBase::Ptr> mGrids;
-    openvdb::GridBase::Ptr mHairDensityGrid;
+    openvdb::FloatGrid::Ptr mHairDensityGrid;
     float mVoxelSize = 1.0f;
     float mInfinity = 1000.0f;
+    
+    Point3 mBoundingBoxMin, mBoundingBoxMax;
     
      void printMetaDataForGrid(openvdb::GridBase::Ptr) const;
 

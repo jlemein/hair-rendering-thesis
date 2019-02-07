@@ -11,12 +11,15 @@
  * Created on February 1, 2019, 4:25 PM
  */
 
+#include <exception>
+#include <sstream>
+#include <string>
+
 #include <openvdb/openvdb.h>
 #include <openvdb/tools/Interpolation.h>
 
 #include "OpenVdbReader.h"
 #include "../hairstruct.h"
-#include "../bezier.h"
 
 using namespace openvdb;
 
@@ -26,7 +29,8 @@ using namespace openvdb::v6_0::tools;
 using namespace openvdb::v3_1::tools;
 #endif
 
-OpenVdbReader::OpenVdbReader(std::string fileName) : mInputFileName(fileName) {
+OpenVdbReader::OpenVdbReader(std::string fileName)
+: mInputFileName(fileName), mBoundingBoxMin(0.0, 0.0, 0.0), mBoundingBoxMax(0.0, 0.0, 0.0) {
 }
 
 OpenVdbReader::OpenVdbReader(const OpenVdbReader& orig) {
@@ -48,12 +52,49 @@ void OpenVdbReader::initialize() {
 
         mGrids.push_back(grid);
 
-        if (nameIter.gridName() == "HairDensityVolume") {
-            mHairDensityGrid = grid;
+        if (nameIter.gridName() == "HairDensityGrid") {
+            mHairDensityGrid = openvdb::gridPtrCast<openvdb::FloatGrid>(grid);
+
+            try {
+                mVoxelSize = grid->metaValue<float>("VoxelSize");
+            } catch (std::exception& e) {
+                std::cout << "[ERROR]: No VoxelSize value could be found" << std::endl;
+            }
+
+            try {
+                std::string bbMinStr = grid->metaValue<std::string>("BoundingBoxMin");
+                std::string bbMaxStr = grid->metaValue<std::string>("BoundingBoxMax");
+
+
+                std::stringstream bbMin(bbMinStr);
+                std::stringstream bbMax(bbMaxStr);
+                bbMin >> this->mBoundingBoxMin.x >> this->mBoundingBoxMin.y >> this->mBoundingBoxMin.z;
+                bbMax >> this->mBoundingBoxMax.x >> this->mBoundingBoxMax.y >> this->mBoundingBoxMax.z;
+            } catch (std::exception& e) {
+                std::cout << "[ERROR]: No bounding box value is stored in hair density grid" << std::endl;
+            }
         }
     }
 
     file.close();
+}
+
+openvdb::FloatGrid::Ptr OpenVdbReader::getHairDensityGrid() const {
+    return mHairDensityGrid;
+}
+
+void OpenVdbReader::getBoundingBox(Point3* bbMin, Point3* bbMax) const {
+    bbMin->x = this->mBoundingBoxMin.x;
+    bbMin->y = this->mBoundingBoxMin.y;
+    bbMin->z = this->mBoundingBoxMin.z;
+
+    bbMax->x = this->mBoundingBoxMax.x;
+    bbMax->y = this->mBoundingBoxMax.y;
+    bbMax->z = this->mBoundingBoxMax.z;
+}
+
+float OpenVdbReader::getVoxelSize() const {
+    return mVoxelSize;
 }
 
 /**
@@ -64,12 +105,6 @@ void OpenVdbReader::initialize() {
  * @return
  */
 float OpenVdbReader::interpolate(const Point3& from, const Point3& to) {
-    //TODO: Check if sampling goes correctly
-
-    std::cout << "[WARNING]: interpolate(Point3&, Point$) is not implemented correctly yet\n";
-
-
-
     // there is a choice of different interpolators, mainly PointSampler, BoxSampler and QuadraticSampler
     // in addition to StaggeredPointSampler, StaggeredBoxSampler and StaggeredQuadraticSampler for staggered velocity grids.
 
@@ -97,9 +132,11 @@ float OpenVdbReader::interpolate(const Point3& from, const Point3& to) {
     }
 
     // normalize the sampling
-    value *= Point3::DistanceBetween(from, to) / static_cast<float> (nSamples) * mVoxelSize;
+    std::cout << "mVoxelSize" << mVoxelSize << std::endl;
+    double numVoxelCellsCrossed = Point3::DistanceBetween(from, to) / mVoxelSize;
+    double integratedValue = numVoxelCellsCrossed * (value / static_cast<double> (nSamples));
 
-    return value;
+    return integratedValue;
 }
 
 float OpenVdbReader::interpolateToInfinity(const Point3& from, const Point3& direction) {

@@ -32,6 +32,7 @@ int samplesPerSegment = DEFAULT_SAMPLES_PER_SEGMENT;
 
 // stats
 double max_sample_length = 0.0;
+Point3 bbMin, bbMax;
 
 double computeDistance(const Point3& p1, const Point3& p2) {
     double x = (p2.x - p1.x);
@@ -64,6 +65,13 @@ void sampleSegment(openvdb::FloatGrid::Accessor& accessor, const BezierSpline& s
             nextP = spline.sampleSegment(segment, (i + 1) * stepSize);
             distance = computeDistance(P, nextP);
 
+            bbMin.x = std::min(bbMin.x, nextP.x);
+            bbMin.y = std::min(bbMin.y, nextP.y);
+            bbMin.z = std::min(bbMin.z, nextP.z);
+
+            bbMax.x = std::max(bbMax.x, nextP.x);
+            bbMax.y = std::max(bbMax.y, nextP.y);
+            bbMax.z = std::max(bbMax.z, nextP.z);
         }
 
         double lengthSample = 0.5 * (prevDistance + distance);
@@ -74,8 +82,7 @@ void sampleSegment(openvdb::FloatGrid::Accessor& accessor, const BezierSpline& s
         }
 
         // write to voxel grid
-        //cout << "Write( " << P << ") = " << value << endl;
-        openvdb::Coord xyz(P.x, P.y, P.z);
+        openvdb::Coord xyz(P.x / voxelSize, P.y / voxelSize, P.z / voxelSize);
         accessor.setValue(xyz, accessor.getValue(xyz) + value);
 
         // store for next iteration
@@ -89,20 +96,27 @@ void write(openvdb::FloatGrid::Accessor& accessor, const Hair& hair) {
     unsigned int fiberCount = hair.fibers.size();
     unsigned int fiberIndex = 0;
 
+    // set bounding box
+    if (hair.fibers.size() > 0) {
+        bbMin = bbMax = hair.fibers[0].curve.getControlPoints()[0];
+    }
+
     for (const auto& fiber : hair.fibers) {
         double percentageCompleted = 100.0 * static_cast<double> (fiberIndex) / fiberCount;
-        cout << "\r" << percentageCompleted << " %: " << fiberIndex << " / " << fiberCount << " hair fibers completed      ";
+        cout << "\r" << static_cast<int> (std::round(percentageCompleted)) << "%: " << fiberIndex << " / " << fiberCount << " hair fibers completed      ";
 
         for (int segment = 0; segment < fiber.curve.getSegmentCount(); ++segment) {
+
             sampleSegment(accessor, fiber.curve, segment);
         }
         ++fiberIndex;
     }
 
-    cout << "\r" << "100.0%: " << fiberIndex << " / " << fiberCount << " hair fibers completed        \n";
+    cout << "\r" << "100%: " << fiberIndex << " / " << fiberCount << " hair fibers completed        \n";
 }
 
 void showProgramInfo() {
+
     cout << "This program writes PBRT hair models to a voxel grid (using OpenVDB)\n"
             << "The hair models are described in a scene file format, usually ending in *.pbrt\n\n"
             << "This program expects input arguments to be run successfully:\n"
@@ -176,14 +190,23 @@ int main(int argc, const char** argv) {
     grid->insertMeta("Author", openvdb::StringMetadata("Jeffrey Lemein"));
 
     // assign a transform to define a voxel size (voxel size works inverse with transform)
-    grid->setTransform(Transform::createLinearTransform(1.0 / voxelSize));
-    grid->insertMeta("VoxelSize", openvdb::DoubleMetadata(1.0 / voxelSize));
+    grid->setTransform(Transform::createLinearTransform(voxelSize));
+    grid->insertMeta("VoxelSize", openvdb::FloatMetadata(voxelSize));
+
 
     // hair model is read without transformations applied to it (e.g. local space)
+    // TODO: check if this can be set to true, and then dont have to self divide by voxel size
     grid->setIsInWorldSpace(false);
 
     openvdb::FloatGrid::Accessor accessor = grid->getAccessor();
     write(accessor, hair);
+
+    std::stringstream bbMinStream, bbMaxStream;
+    bbMinStream << bbMin.x << " " << bbMin.y << " " << bbMin.z;
+    bbMaxStream << bbMax.x << " " << bbMax.y << " " << bbMax.z;
+
+    grid->insertMeta("BoundingBoxMin", openvdb::StringMetadata(bbMinStream.str()));
+    grid->insertMeta("BoundingBoxMax", openvdb::StringMetadata(bbMaxStream.str()));
 
     grid->insertMeta("Maximum Sample Length", openvdb::FloatMetadata(max_sample_length));
     grid->insertMeta("Updated last", openvdb::Int32Metadata(time(0)));

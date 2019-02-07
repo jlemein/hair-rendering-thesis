@@ -2523,6 +2523,8 @@
               </df>
             </df>
           </df>
+          <df name="Progress">
+          </df>
           <df name="readvdb.dir">
             <df name="src">
               <df name="scripts">
@@ -2645,6 +2647,8 @@
             </df>
           </df>
           <df name="output">
+          </df>
+          <df name="png">
           </df>
         </df>
         <df name="archive">
@@ -43132,6 +43136,8 @@
         <df name="2019_01_27">
         </df>
         <df name="2019_02_05 bezier_renderer">
+        </df>
+        <df name="2019_02_07_writingvdb">
         </df>
       </df>
       <df name="scenes">
