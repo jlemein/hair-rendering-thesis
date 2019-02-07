@@ -106,7 +106,7 @@ static void ActionRenderBezierCurve() {
     std::string choice;
     getline(cin, choice);
 
-    if (choice =1= "1") {
+    if (choice == "1") {
         actionSpecifyControlPoints();
     } else if (choice == "2") {
         actionUseExampleCurve();
@@ -147,9 +147,9 @@ static void ShowMenu() {
 int main(int argc, char** argv) {
     cout << "Hello Bezier Renderer" << endl;
     renderer = new CurveRenderer(WINDOW_WIDTH, WINDOW_HEIGHT);
-    
+
     ShowMenu();
-    
+
     renderer->startup();
 
     return 0;

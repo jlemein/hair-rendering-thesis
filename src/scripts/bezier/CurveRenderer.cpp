@@ -48,11 +48,14 @@
 #include "../hairstruct.h"
 using namespace std;
 
-// FOR MY LINUX PC
-//string assetFolder = "/home/jeffrey/hair-rendering-thesis/assets/";
 
+#ifndef __APPLE__
+// FOR MY LINUX PC
+string assetFolder = "/home/jeffrey/hair-rendering-thesis/assets/";
+#else
 // FOR MY MAC LAPTOP
 string assetFolder = "/Users/jeffrey/dev/hair-rendering-thesis/assets/";
+#endif
 
 GLFWwindow* window = nullptr;
 const int BEZIER_CURVE = 0;
@@ -167,14 +170,12 @@ void CurveRenderer::addHairModel(const Hair& hair, int limitFiberCount) {
     //SimpleGlUtil::setUniform(shaderProgram[CONTROL_POINTS], "view", view);
 }
 
-
-
 void CurveRenderer::init() {
     if (!SimpleGlUtil::isShadingLanguageSupported(4, 3)) {
         cout << "GLSL support is limited. Falling back to GLSL 1.2" << endl;
         assetFolder += "fallback/";
     }
-    
+
     glfwSetScrollCallback(window, onScrolled);
     glfwSetKeyCallback(window, onKey);
 
@@ -184,12 +185,17 @@ void CurveRenderer::init() {
     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     //TODO: add asset folder option as argument to bezier executable
-    
-    
+
+
     cout << "Reading shader files ...\n";
     shaderProgram[BEZIER_CURVE] = SimpleGlUtil::createShaderProgram(
             assetFolder + "bezier-vs.glsl",
             assetFolder + "bezier-fs.glsl");
+    //    shaderProgram[BEZIER_CURVE] = SimpleGlUtil::createShaderProgram(
+    //            assetFolder + "bezier2-vs.glsl",
+    //            assetFolder + "bezier2-gs.glsl",
+    //            assetFolder + "bezier2-fs.glsl");
+
     shaderProgram[CONTROL_POINTS] = SimpleGlUtil::createShaderProgram(
             assetFolder + "bezier-vs.glsl",
             assetFolder + "bezier-fs.glsl");
@@ -208,8 +214,8 @@ void CurveRenderer::init() {
             dataPoints.push_back(pt.y);
             dataPoints.push_back(pt.z);
         }
-        //        std::cout << "Offset added: " << dataPoints.size() << std::endl;
-        curveOffsets.push_back(dataPoints.size());
+        std::cout << "Offset added: " << dataPoints.size() << std::endl;
+        curveOffsets.push_back(dataPoints.size() / 3);
     }
 
 
@@ -239,8 +245,8 @@ void CurveRenderer::render() {
     for (int offsetIndex = 0; offsetIndex < curveOffsets.size() - 1; ++offsetIndex) {
         SimpleGlUtil::setUniform(shaderProgram[BEZIER_CURVE], "color", colors[offsetIndex]);
         glBindBuffer(GL_ARRAY_BUFFER, vbo[BEZIER_CURVE]);
-        int start = curveOffsets[offsetIndex] / 3;
-        int end = (curveOffsets[offsetIndex + 1] - curveOffsets[offsetIndex]) / 3; //(curveOffsets[offsetIndex + 1] - start) / 3;
+        int start = curveOffsets[offsetIndex];
+        int end = (curveOffsets[offsetIndex + 1] - curveOffsets[offsetIndex]); //(curveOffsets[offsetIndex + 1] - start) / 3;
         glDrawArrays(GL_LINE_STRIP, start, end);
     }
 
@@ -280,7 +286,7 @@ int CurveRenderer::startup(void) {
         return -1;
     }
 #endif
-    
+
     init();
 
     /* Loop until the user closes the window */

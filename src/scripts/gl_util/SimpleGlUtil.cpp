@@ -23,7 +23,7 @@ using namespace std;
 
 static GLuint createShaderProgram(const std::string& vsName, const std::string& fsName);
 
-void compileShader(const std::string& fileName, unsigned int shader) {
+static void compileShader(const std::string& fileName, unsigned int shader) {
     std::vector<char*> sourceLines;
     int lineCount;
 
@@ -46,7 +46,7 @@ void compileShader(const std::string& fileName, unsigned int shader) {
     }
 }
 
-void linkProgram(int program) {
+static void linkProgram(int program) {
     glLinkProgram(program);
     GLint isLinked = 0;
     glGetProgramiv(program, GL_LINK_STATUS, &isLinked);
