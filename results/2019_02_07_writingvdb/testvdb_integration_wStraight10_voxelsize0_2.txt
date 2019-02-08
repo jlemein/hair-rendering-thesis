@@ -1,0 +1,25 @@
+Input file: wStraight.10.voxelsize0_2.vdb
+Found grid with name: HairDensityGrid
+Metadata for grid with name 'HairDensityGrid':
+	Author = Jeffrey Lemein
+	BoundingBoxMax = 26.5267 63.8245 43.3566
+	BoundingBoxMin = -58.1498 -41.737 -42.1628
+	Maximum Sample Length = 0.000860775
+	Updated last = 1549607675
+	VoxelSize = 0.2
+	file_bbox_max = [132, 319, 216]
+	file_bbox_min = [-290, -208, -210]
+	file_compression = blosc + active values
+	file_mem_bytes = 129459232
+	file_voxel_count = 2114337
+	is_local_space = true
+	name = HairDensityGrid
+
+[-291.749, 55.2187, 2.9845] to [133.633, 55.2187, 2.9845]
+Interpolate -x ---> +x: 0 hair strands
+
+[-79.0577, -209.685, 2.9845] to [-79.0577, 320.122, 2.9845]
+Interpolate -y ---> +y: 0 hair strands
+
+[-79.0577, 55.2187, -211.814] to [-79.0577, 55.2187, 217.783]
+Interpolate -z ---> +z: 0 hair strands

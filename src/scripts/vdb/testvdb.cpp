@@ -23,20 +23,32 @@ int main(int argc, const char** argv) {
     vdbReader.initialize();
     auto grid = vdbReader.getHairDensityGrid();
 
-    Point3 p1, p2;
-    vdbReader.getBoundingBox(&p1, &p2);
+    Point3 bbMin, bbMax;
+    vdbReader.getBoundingBox(&bbMin, &bbMax);
     double voxelSize = vdbReader.getVoxelSize();
 
-    double width = p2.x - p1.x;
-    double height = p2.y - p1.y;
-    double depth = p2.z - p1.z;
+    double width = bbMax.x - bbMin.x;
+    double height = bbMax.y - bbMin.y;
+    double depth = bbMax.z - bbMin.z;
 
-    Point3 leftFrom(p1.x - voxelSize, p1.y + height / 2.0, p1.z + depth / 2.0);
+    Point3 leftFrom(bbMin.x - voxelSize, bbMin.y + height / 2.0, bbMin.z + depth / 2.0);
     Point3 leftTo(leftFrom.x + width + 2.0 * voxelSize, leftFrom.y, leftFrom.z);
 
-    double interpolateX = vdbReader.interpolate(leftFrom, leftTo);
+    Point3 bottomFrom(bbMin.x + width / 2.0, bbMin.y - voxelSize, bbMin.z + depth / 2.0);
+    Point3 bottomTo(bottomFrom.x, bottomFrom.y + height + 2.0 * voxelSize, bottomFrom.z);
 
+    Point3 nearFrom(bbMin.x + width / 2.0, bbMin.y + height / 2.0, bbMin.z - voxelSize);
+    Point3 nearTo(nearFrom.x, nearFrom.y, nearFrom.z + depth + 2.0 * voxelSize);
+
+    double interpolateX = vdbReader.interpolate(leftFrom, leftTo);
     cout << "Interpolate -x ---> +x: " << interpolateX << " hair strands" << endl;
+
+    double interpolateY = vdbReader.interpolate(bottomFrom, bottomTo);
+    cout << "Interpolate -y ---> +y: " << interpolateY << " hair strands" << endl;
+
+    double interpolateZ = vdbReader.interpolate(nearFrom, nearTo);
+    cout << "Interpolate -z ---> +z: " << interpolateZ << " hair strands" << endl;
+
 
     return 0;
 }

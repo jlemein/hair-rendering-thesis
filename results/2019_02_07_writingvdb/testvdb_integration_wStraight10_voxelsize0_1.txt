@@ -1,0 +1,26 @@
+jeffrey@jeffrey-desktop-mint /media/jeffrey/hdd1/dev/hair-rendering-thesis/experiment/2019_02_07_writingvdb/output $ testvdb wStraight.10.voxelsize0_1.vdb 
+Input file: wStraight.10.voxelsize0_1.vdb
+Found grid with name: HairDensityGrid
+Metadata for grid with name 'HairDensityGrid':
+	Author = Jeffrey Lemein
+	BoundingBoxMax = 26.5267 63.8245 43.3566
+	BoundingBoxMin = -58.1498 -41.737 -42.1628
+	Maximum Sample Length = 0.000860775
+	Updated last = 1549606843
+	VoxelSize = 0.1
+	file_bbox_max = [265, 638, 433]
+	file_bbox_min = [-581, -417, -421]
+	file_compression = blosc + active values
+	file_mem_bytes = 582858984
+	file_voxel_count = 4544718
+	is_local_space = true
+	name = HairDensityGrid
+
+[-582.498, 110.437, 5.969] to [266.267, 110.437, 5.969]
+Interpolate -x ---> +x: 0 hair strands
+
+[-158.115, -418.37, 5.969] to [-158.115, 639.245, 5.969]
+Interpolate -y ---> +y: 0 hair strands
+
+[-158.115, 110.437, -422.628] to [-158.115, 110.437, 434.566]
+Interpolate -z ---> +z: 0 hair strands

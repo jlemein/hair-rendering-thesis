@@ -112,6 +112,9 @@ float OpenVdbReader::interpolate(const Point3& from, const Point3& to) {
     Vec3d wsFrom(from.x, from.y, from.z);
     Vec3d wsTo(to.x, to.y, to.z);
 
+    wsFrom /= mVoxelSize;
+    wsTo /= mVoxelSize;
+
     // Request a value accessor for accelerated access.
     // (Because value accessors employ a cache, it is important to declare
     // one accessor per thread.)
@@ -119,16 +122,17 @@ float OpenVdbReader::interpolate(const Point3& from, const Point3& to) {
 
     // Instantiate the GridSampler template on the accessor type and on
     // a box sampler for accelerated trilinear interpolation.
-    GridSampler<FloatGrid::ConstAccessor, BoxSampler> fastSampler(accessor, grid->transform());
+    GridSampler<FloatGrid::ConstAccessor, PointSampler> fastSampler(accessor, grid->transform());
 
     int nSamples = 100;
     Vec3d sampleIncrement = (wsTo - wsFrom) / nSamples;
     openvdb::FloatGrid::ValueType value = 0.0f;
-    openvdb::Vec3d wsSamplePosition = wsFrom;
+
+    std::cout << wsFrom << " to " << wsTo << std::endl;
 
     for (int i = 0; i < 100; ++i) {
-        wsSamplePosition += sampleIncrement;
-        value += fastSampler.wsSample(wsSamplePosition);
+        Vec3d wsSamplePosition = wsFrom + i * sampleIncrement;
+        value += fastSampler.wsSample(wsSamplePosition); // / mVoxelSize);
     }
 
     // normalize the sampling
