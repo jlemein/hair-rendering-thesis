@@ -56,12 +56,6 @@ void OpenVdbReader::initialize() {
             mHairDensityGrid = openvdb::gridPtrCast<openvdb::FloatGrid>(grid);
 
             try {
-                mVoxelSize = grid->metaValue<float>("VoxelSize");
-            } catch (std::exception& e) {
-                std::cout << "[ERROR]: No VoxelSize value could be found" << std::endl;
-            }
-
-            try {
                 std::string bbMinStr = grid->metaValue<std::string>("BoundingBoxMin");
                 std::string bbMaxStr = grid->metaValue<std::string>("BoundingBoxMax");
 
@@ -93,52 +87,58 @@ void OpenVdbReader::getBoundingBox(Point3* bbMin, Point3* bbMax) const {
     bbMax->z = this->mBoundingBoxMax.z;
 }
 
-float OpenVdbReader::getVoxelSize() const {
-    return mVoxelSize;
+double OpenVdbReader::getVoxelSize() const {
+    return mHairDensityGrid->transform().voxelSize().x();
 }
 
 /**
  * Interpolates the voxel grid from a 3D point in space to another point
- * in 3D space
+ * in 3D space.
+ * The point of origin is not taken into account when interpolating. The samples are divided
+ * equally over the line, from origin to destination, including the destination point, but not including the origin point.
  * @param from
  * @param to
+ * @param sampleCount The amount of samples to take along the ray from origin to destination
  * @return
  */
-float OpenVdbReader::interpolate(const Point3& from, const Point3& to) {
+float OpenVdbReader::interpolate(const Point3& from, const Point3& to, unsigned int sampleCount) {
     // there is a choice of different interpolators, mainly PointSampler, BoxSampler and QuadraticSampler
     // in addition to StaggeredPointSampler, StaggeredBoxSampler and StaggeredQuadraticSampler for staggered velocity grids.
 
-    const FloatGrid::Ptr grid = openvdb::gridPtrCast<openvdb::FloatGrid>(mHairDensityGrid);
+    // convert to openvdb world space coordinates
     Vec3d wsFrom(from.x, from.y, from.z);
     Vec3d wsTo(to.x, to.y, to.z);
+    Vec3d isFrom = mHairDensityGrid->transform().worldToIndex(wsFrom);
+    Vec3d isTo = mHairDensityGrid->transform().worldToIndex(wsTo);
+    std::cout << "Interpolating from world space " << wsFrom << " -> " << wsTo << std::endl;
+    std::cout << "Interpolating from index space " << isFrom << " -> " << isTo << std::endl;
 
-    wsFrom /= mVoxelSize;
-    wsTo /= mVoxelSize;
+    const FloatGrid::Ptr grid = openvdb::gridPtrCast<openvdb::FloatGrid>(mHairDensityGrid);
 
     // Request a value accessor for accelerated access.
-    // (Because value accessors employ a cache, it is important to declare
-    // one accessor per thread.)
+    // (Because value accessors employ a cache, it is important to declare one accessor per thread.)
     FloatGrid::ConstAccessor accessor = grid->getConstAccessor();
+    GridSampler<FloatGrid::ConstAccessor, BoxSampler> fastSampler(accessor, grid->transform());
 
-    // Instantiate the GridSampler template on the accessor type and on
-    // a box sampler for accelerated trilinear interpolation.
-    GridSampler<FloatGrid::ConstAccessor, PointSampler> fastSampler(accessor, grid->transform());
-
-    int nSamples = 100;
-    Vec3d sampleIncrement = (wsTo - wsFrom) / nSamples;
+    Vec3d stepIncrement = (wsTo - wsFrom) / sampleCount;
     openvdb::FloatGrid::ValueType value = 0.0f;
 
-    std::cout << wsFrom << " to " << wsTo << std::endl;
-
-    for (int i = 0; i < 100; ++i) {
-        Vec3d wsSamplePosition = wsFrom + i * sampleIncrement;
-        value += fastSampler.wsSample(wsSamplePosition); // / mVoxelSize);
+    for (int i = 1; i <= sampleCount; ++i) {
+        Vec3d wsSamplePosition = wsFrom + i * stepIncrement;
+        //FloatGrid::ValueType vv = fastSampler.wsSample(wsSamplePosition);
+        //std::cout << "Sampling at index: [" << grid->transform().worldToIndex(wsSamplePosition) << "] = " << vv << std::endl;
+        FloatGrid::ValueType sampledValue = fastSampler.wsSample(wsSamplePosition);
+        if (sampledValue < 0.0) {
+            sampledValue = 0.0;
+        }
+        value += sampledValue;
     }
 
     // normalize the sampling
-    std::cout << "mVoxelSize" << mVoxelSize << std::endl;
-    double numVoxelCellsCrossed = Point3::DistanceBetween(from, to) / mVoxelSize;
-    double integratedValue = numVoxelCellsCrossed * (value / static_cast<double> (nSamples));
+    double numVoxelCellsCrossed = Point3::DistanceBetween(from, to) / this->getVoxelSize();
+    std::cout << "Voxels crossed: " << numVoxelCellsCrossed << std::endl;
+    std::cout << "Value: " << value << std::endl;
+    double integratedValue = numVoxelCellsCrossed * (value / static_cast<double> (sampleCount));
 
     return integratedValue;
 }

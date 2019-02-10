@@ -17,6 +17,7 @@
 #include "../bezier.h"
 using namespace std;
 
+//FIXME: cmake for one version of openvdb
 #ifdef __APPLE__
 using namespace openvdb::v6_0::math;
 #else
@@ -26,64 +27,98 @@ using namespace openvdb::v3_1::math;
 const int DEFAULT_SAMPLES_PER_SEGMENT = 10;
 const double DEFAULT_VOXEL_SIZE = 1.0;
 
-// params of writevdb
-double voxelSize = DEFAULT_VOXEL_SIZE;
-int samplesPerSegment = DEFAULT_SAMPLES_PER_SEGMENT;
+// ----------------------------------------------------------
+// INPUT PARAMS (for application writevdb)
 
-// stats
-double max_sample_length = 0.0;
+// size of a voxel cell in units of hair model file
+double voxelSize = DEFAULT_VOXEL_SIZE;
+
+// samples to be taken per curve segment. The larger the more accurate the voxel grid becomes.
+int samplesPerSegment = DEFAULT_SAMPLES_PER_SEGMENT;
+// ----------------------------------------------------------
+
+//
+// this is the maximum sample length, stored after hair file is written to voxel grid.
+// this length related to the voxel size gives a broad indication of the accuracy
+// of the generated voxel grid
+double maxSampleLength = 0.0;
+
+// these are the bounding box positions of the hair model.
+// after hair model is written to voxel grid, these reflect the bounding box positions
+// of the hair model.
 Point3 bbMin, bbMax;
 
-double computeDistance(const Point3& p1, const Point3& p2) {
-    double x = (p2.x - p1.x);
-    double y = (p2.y - p1.y);
-    double z = (p2.z - p1.z);
-
-    return sqrt(x * x + y * y + z * z);
-}
-
+/**
+ * Computes the step size to be used when sampling the curve
+ * @param sampleSize should be >= 2, the amount of samples to be taken for a sampling a curve segment.
+ * @return the step size in domain (0, 1] to be used when sampling through the hair fiber.
+ */
 double getStepSize(int sampleSize) {
-    // step size is the increment to walk through a segment
-    return 1.0 / static_cast<double> (sampleSize - 1);
-}
-
-void sampleSegment(openvdb::FloatGrid::Accessor& accessor, const BezierSpline& spline, int segment) {
     if (samplesPerSegment < 2) {
         cout << "A segment must be sampled at least 2 times, terminating application..." << endl;
         exit(1);
     }
 
-    double stepSize = getStepSize(samplesPerSegment);
+    // step size is the increment to walk through a segment
+    return 1.0 / static_cast<double> (sampleSize - 1);
+}
+
+void updateBoundingBox(const Point3& p) {
+    bbMin.x = std::min(bbMin.x, p.x);
+    bbMin.y = std::min(bbMin.y, p.y);
+    bbMin.z = std::min(bbMin.z, p.z);
+
+    bbMax.x = std::max(bbMax.x, p.x);
+    bbMax.y = std::max(bbMax.y, p.y);
+    bbMax.z = std::max(bbMax.z, p.z);
+}
+
+/**
+ *
+ * @param grid
+ * @param accessor
+ * @param spline
+ * @param segment
+ */
+void sampleSegment(openvdb::FloatGrid::Ptr grid, openvdb::FloatGrid::Accessor& accessor, const BezierSpline& spline, int segment) {
+    const double stepSize = getStepSize(samplesPerSegment);
 
     double prevDistance = 0.0;
+
+    // Sample the starting point of the segment
     Point3 P = spline.sampleSegment(segment, 0.0);
     Point3 nextP;
 
     for (int i = 0; i < samplesPerSegment; ++i) {
         double distance = 0.0;
+
+        // if not yet at the last control point
         if (i + 1 < samplesPerSegment) {
             nextP = spline.sampleSegment(segment, (i + 1) * stepSize);
-            distance = computeDistance(P, nextP);
+            distance = Point3::DistanceBetween(P, nextP);
 
-            bbMin.x = std::min(bbMin.x, nextP.x);
-            bbMin.y = std::min(bbMin.y, nextP.y);
-            bbMin.z = std::min(bbMin.z, nextP.z);
-
-            bbMax.x = std::max(bbMax.x, nextP.x);
-            bbMax.y = std::max(bbMax.y, nextP.y);
-            bbMax.z = std::max(bbMax.z, nextP.z);
+            updateBoundingBox(nextP);
         }
 
         double lengthSample = 0.5 * (prevDistance + distance);
         double value = lengthSample / (voxelSize);
+        if (value < 0.0) {
+            cout << "value: " << value << " (distance: " << lengthSample << ", voxelsize: " << voxelSize << ")" << endl;
+        }
 
-        if (lengthSample > max_sample_length) {
-            max_sample_length = lengthSample;
+        if (lengthSample > maxSampleLength) {
+            maxSampleLength = lengthSample;
         }
 
         // write to voxel grid
-        openvdb::Coord xyz(P.x / voxelSize, P.y / voxelSize, P.z / voxelSize);
-        accessor.setValue(xyz, accessor.getValue(xyz) + value);
+        openvdb::Vec3d indexSpace = grid->transform().worldToIndex(openvdb::Vec3d(P.x, P.y, P.z));
+        openvdb::Coord ijk(indexSpace.x(), indexSpace.y(), indexSpace.z());
+
+        accessor.setValue(ijk, accessor.getValue(ijk) + value);
+        openvdb::FloatGrid::ValueType stored = accessor.getValue(ijk);
+        if (stored < 0.0) {
+            cout << "Stored value: " << stored << endl;
+        }
 
         // store for next iteration
         prevDistance = distance;
@@ -92,22 +127,24 @@ void sampleSegment(openvdb::FloatGrid::Accessor& accessor, const BezierSpline& s
 
 }
 
-void write(openvdb::FloatGrid::Accessor& accessor, const Hair& hair) {
+void write(openvdb::FloatGrid::Ptr grid, const Hair& hair) {
     unsigned int fiberCount = hair.fibers.size();
     unsigned int fiberIndex = 0;
+
 
     // set bounding box
     if (hair.fibers.size() > 0) {
         bbMin = bbMax = hair.fibers[0].curve.getControlPoints()[0];
     }
 
+    openvdb::FloatGrid::Accessor accessor = grid->getAccessor();
     for (const auto& fiber : hair.fibers) {
         double percentageCompleted = 100.0 * static_cast<double> (fiberIndex) / fiberCount;
         cout << "\r" << static_cast<int> (std::round(percentageCompleted)) << "%: " << fiberIndex << " / " << fiberCount << " hair fibers completed      ";
 
         for (int segment = 0; segment < fiber.curve.getSegmentCount(); ++segment) {
 
-            sampleSegment(accessor, fiber.curve, segment);
+            sampleSegment(grid, accessor, fiber.curve, segment);
         }
         ++fiberIndex;
     }
@@ -189,17 +226,12 @@ int main(int argc, const char** argv) {
     grid->setName("HairDensityGrid");
     grid->insertMeta("Author", openvdb::StringMetadata("Jeffrey Lemein"));
 
-    // assign a transform to define a voxel size (voxel size works inverse with transform)
+    // assign a transform to define a voxel size
+    grid->setIsInWorldSpace(true);
     grid->setTransform(Transform::createLinearTransform(voxelSize));
     grid->insertMeta("VoxelSize", openvdb::FloatMetadata(voxelSize));
 
-
-    // hair model is read without transformations applied to it (e.g. local space)
-    // TODO: check if this can be set to true, and then dont have to self divide by voxel size
-    grid->setIsInWorldSpace(false);
-
-    openvdb::FloatGrid::Accessor accessor = grid->getAccessor();
-    write(accessor, hair);
+    write(grid, hair);
 
     std::stringstream bbMinStream, bbMaxStream;
     bbMinStream << bbMin.x << " " << bbMin.y << " " << bbMin.z;
@@ -208,10 +240,10 @@ int main(int argc, const char** argv) {
     grid->insertMeta("BoundingBoxMin", openvdb::StringMetadata(bbMinStream.str()));
     grid->insertMeta("BoundingBoxMax", openvdb::StringMetadata(bbMaxStream.str()));
 
-    grid->insertMeta("Maximum Sample Length", openvdb::FloatMetadata(max_sample_length));
+    grid->insertMeta("Maximum Sample Length", openvdb::FloatMetadata(maxSampleLength));
     grid->insertMeta("Updated last", openvdb::Int32Metadata(time(0)));
 
-    cout << "Longest distance between two samples points is: " << max_sample_length << endl;
+    cout << "Longest distance between two samples points is: " << maxSampleLength << endl;
 
 
     // Create a VDB file object.
