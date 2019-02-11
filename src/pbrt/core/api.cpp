@@ -579,7 +579,7 @@ namespace pbrt {
         else if (name == "dualscattering")
             material = CreateDualscatteringMaterial(mp);
         else if (name == "marschner")
-            material = CreateDualscatteringMaterial(mp);
+            material = CreateMarschnerMaterial(mp);
         else if (name == "disney")
             material = CreateDisneyMaterial(mp);
         else if (name == "mix") {

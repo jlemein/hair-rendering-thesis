@@ -71,7 +71,7 @@ namespace pbrt {
     }
 
     DualscatteringMaterial *CreateDualscatteringMaterial(const TextureParams &mp) {
-        Error("OOOHHHH MY GOD, it is WORKING!!");
+        Error("Dualscattering material working!!");
         std::shared_ptr<Texture < Spectrum>> Kd =
                 mp.GetSpectrumTexture("Kd", Spectrum(0.25f));
         std::shared_ptr<Texture < Spectrum>> Ks =

@@ -11,8 +11,7 @@
  * Created on February 11, 2019, 11:34 PM
  */
 
-// materials/plastic.cpp*
-#include "dualscattering.h"
+#include "marschner.h"
 #include "spectrum.h"
 #include "reflection.h"
 #include "paramset.h"
@@ -61,7 +60,7 @@ namespace pbrt {
         std::shared_ptr<Texture < Float>> bumpMap =
                 mp.GetFloatTextureOrNull("bumpmap");
         bool remapRoughness = mp.FindBool("remaproughness", true);
-        return new DualscatteringMaterial(Kd, Ks, roughness, bumpMap, remapRoughness);
+        return new MarschnerMaterial(Kd, Ks, roughness, bumpMap, remapRoughness);
     }
 
 } // namespace pbrt
