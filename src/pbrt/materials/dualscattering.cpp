@@ -41,7 +41,7 @@
 
 namespace pbrt {
 
-    // PlasticMaterial Method Definitions
+    // DualscatteringMaterial Method Definitions
 
     void DualscatteringMaterial::ComputeScatteringFunctions(
             SurfaceInteraction *si, MemoryArena &arena, TransportMode mode,

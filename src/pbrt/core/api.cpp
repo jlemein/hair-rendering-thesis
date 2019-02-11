@@ -28,6 +28,8 @@
     (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
     OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
+ *
+ * This file has been altered to get my shaders working
  */
 
 // core/api.cpp*
@@ -81,6 +83,7 @@
 #include "materials/subsurface.h"
 #include "materials/translucent.h"
 #include "materials/uber.h"
+#include "materials/marschner.h"
 #include "materials/dualscattering.h"
 #include "samplers/halton.h"
 #include "samplers/maxmin.h"
@@ -574,6 +577,8 @@ namespace pbrt {
         else if (name == "hair")
             material = CreateHairMaterial(mp);
         else if (name == "dualscattering")
+            material = CreateDualscatteringMaterial(mp);
+        else if (name == "marschner")
             material = CreateDualscatteringMaterial(mp);
         else if (name == "disney")
             material = CreateDisneyMaterial(mp);
