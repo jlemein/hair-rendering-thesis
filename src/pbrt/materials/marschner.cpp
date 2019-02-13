@@ -22,36 +22,24 @@ namespace pbrt {
 
     // MarschnerMaterial Method Definitions
 
-    void MarschnerMaterial::ComputeScatteringFunctions(
-            SurfaceInteraction *si, MemoryArena &arena, TransportMode mode,
-            bool allowMultipleLobes) const {
-        //        // Perform bump mapping with _bumpMap_, if present
-        //        if (bumpMap) Bump(bumpMap, si);
-        //        si->bsdf = ARENA_ALLOC(arena, BSDF)(*si);
-        //        // Initialize diffuse component of plastic material
-        //        Spectrum kd = Kd->Evaluate(*si).Clamp();
-        //        if (!kd.IsBlack())
-        //            si->bsdf->Add(ARENA_ALLOC(arena, LambertianReflection)(kd));
-        //
-        //        // Initialize specular component of plastic material
-        //        Spectrum ks = Ks->Evaluate(*si).Clamp();
-        //        if (!ks.IsBlack()) {
-        //            Fresnel *fresnel = ARENA_ALLOC(arena, FresnelDielectric)(1.5f, 1.f);
-        //            // Create microfacet distribution _distrib_ for plastic material
-        //            Float rough = roughness->Evaluate(*si);
-        //            if (remapRoughness)
-        //                rough = TrowbridgeReitzDistribution::RoughnessToAlpha(rough);
-        //            MicrofacetDistribution *distrib =
-        //                    ARENA_ALLOC(arena, TrowbridgeReitzDistribution)(rough, rough);
-        //            BxDF *spec =
-        //                    ARENA_ALLOC(arena, MicrofacetReflection)(ks, distrib, fresnel);
-        //            si->bsdf->Add(spec);
-        //        }
+    void MarschnerMaterial::ComputeScatteringFunctions(SurfaceInteraction *si,
+            MemoryArena &arena, TransportMode mode, bool allowMultipleLobes) const {
+
+        // Allocate a bsdf that contains the collection of BRDFs and BTDFs
+        si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
+
+        // Add a
+        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)());
+
+        Spectrum kd = mKd->Evaluate(*si).Clamp();
+
+        if (!kd.IsBlack()) {
+            si->bsdf->Add(ARENA_ALLOC(arena, LambertianReflection)(kd));
+        }
+
     }
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp) {
-        Error("Marschner material is working!!");
-
         Float Ar = mp.FindFloat("Ar", Radians(-7.5));
         Float Br = mp.FindFloat("Br", Radians(7.5));
         Float hairRadius = 1.0;
@@ -61,14 +49,38 @@ namespace pbrt {
         Float causticWidth = Radians(15.0);
         Float causticFade = 0.3;
         Float causticLimit = 0.5;
-        Error("causticLimit");
 
-        //Float Kd = 0.0;
         std::shared_ptr<Texture < Spectrum>> sigmaA = mp.GetSpectrumTexture("sigmaA", Spectrum(0.25f)); //should be defined as color
         std::shared_ptr<Texture < Spectrum>> Kd = mp.GetSpectrumTexture("Kd", Spectrum(0.25f));
 
         return new MarschnerMaterial(Ar, Br, hairRadius, eta, eccentricity, glintScaleFactor, causticWidth, causticFade, causticLimit, sigmaA, Kd);
     }
+
+    /*******************************
+     * MarschnerBSDF
+     *******************************/
+
+    MarschnerBSDF::MarschnerBSDF()
+    : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)) {
+    };
+
+    Spectrum MarschnerBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
+        Float rgb[3] = {1.0, 0.0, 0.0};
+        return Spectrum::FromRGB(rgb);
+    }
+
+    //    Spectrum MarschnerBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
+    //
+    //    }
+
+    Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
+        return 1.0 / (4.0 * Pi);
+    }
+
+    std::string MarschnerBSDF::ToString() const {
+        return "MarschnerBSDF";
+    }
+
 
 
     //    class marschner
