@@ -27,7 +27,7 @@ namespace pbrt {
 
         // Allocate a bsdf that contains the collection of BRDFs and BTDFs
         si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
-        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)());
+        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si));
     }
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp) {
@@ -51,12 +51,19 @@ namespace pbrt {
      * MarschnerBSDF
      *******************************/
 
-    MarschnerBSDF::MarschnerBSDF()
-    : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)) {
+    MarschnerBSDF::MarschnerBSDF(const SurfaceInteraction& si)
+    : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
+    mNs(si.shading.n),
+    mNg(si.n) {
     };
 
     Spectrum MarschnerBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
-        Float rgb[3] = {1.0, 0.0, 0.0};
+        // z axis represents normal to hair fiber
+        // x axis goes with the fiber,
+
+
+        Normal3f nn = Abs(mNg);
+        Float rgb[3] = {nn.x, nn.y, nn.z};
         return Spectrum::FromRGB(rgb);
     }
 

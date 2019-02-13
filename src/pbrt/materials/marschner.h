@@ -58,7 +58,7 @@ namespace pbrt {
     // MarschnerBSDF Declarations
     class MarschnerBSDF : public BxDF {
       public:
-        MarschnerBSDF();
+        MarschnerBSDF(const SurfaceInteraction& si);
         
         /**
          * (Required) Returns the value of the distribution function for the given pair of directions
@@ -86,7 +86,9 @@ namespace pbrt {
         //virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType = nullptr) const;
         
         /**
-         * 
+         * Returns the probability density function between the incoming and outgoing direction.
+         * In other words, how likely is it that incoming radiance is reflected
+         * (or refracted) towards the outgoing direction.
          * @param wo
          * @param wi
          * @return 
@@ -104,7 +106,7 @@ namespace pbrt {
         //virtual Spectrum rho(int nSamples, const Point2f *samples1, const Point2f *samples2) const;
 
       private:
-
+          const Normal3f mNs, mNg;
     };
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp);
