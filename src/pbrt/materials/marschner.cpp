@@ -27,16 +27,7 @@ namespace pbrt {
 
         // Allocate a bsdf that contains the collection of BRDFs and BTDFs
         si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
-
-        // Add a
         si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)());
-
-        Spectrum kd = mKd->Evaluate(*si).Clamp();
-
-        if (!kd.IsBlack()) {
-            si->bsdf->Add(ARENA_ALLOC(arena, LambertianReflection)(kd));
-        }
-
     }
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp) {
