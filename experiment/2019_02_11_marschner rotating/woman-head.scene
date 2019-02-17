@@ -1,0 +1,64 @@
+Integrator "$integrator_type" "integer maxdepth" [ $integrator_maxdepth ] 
+#Transform [ $transform_matrix ]
+# $light_power
+Translate 0 0 38
+Rotate 0 0 1 0
+Sampler "$sampler_type" "integer pixelsamples" [ $sampler_pixelsamples ]
+
+PixelFilter "triangle" "float xwidth" [ $pixelfilter_xwidth ] "float ywidth" [ $pixelfilter_ywidth ] 
+Film "image"
+    "integer xresolution" [ $image_xresolution ] "integer yresolution" [ $image_yresolution ]
+    "string filename" "output/$image_output_basename$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
+    "float scale" $image_scale
+
+Camera "perspective" "float fov" [ $camera_fov ] 
+
+WorldBegin
+	MakeNamedMaterial "black_hair" "string type" [ "marschner" ]
+	MakeNamedMaterial "red_hair" "string type" [ "marschner" ]
+	MakeNamedMaterial "brown_hair" "string type" [ "marschner" ]
+	MakeNamedMaterial "blonde_hair" "string type" [ "marschner" ]
+
+$useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 
+$useAreaLight    LightSource "infinite" 
+$useAreaLight            "rgb L" [ $infinite_light_power $infinite_light_power $infinite_light_power ] 
+$useAreaLight            "rgb scale" [ 1 1 1 ] 
+$useAreaLight            "integer samples" [ $infinite_light_samples ] 
+$useAreaLight            "string mapname" [ "textures/$infinite_light_environment_map" ]
+
+$useAreaLight TransformBegin
+$useAreaLight    AttributeBegin
+$useAreaLight        Translate $area_light_x $area_light_y $area_light_z
+$useAreaLight        AreaLightSource "diffuse" "blackbody L" [6500 $area_light_power]
+$useAreaLight        Shape "sphere" "float radius" [ 2.0 ] 
+$useAreaLight    AttributeEnd
+$useAreaLight TransformEnd
+    
+
+    TransformBegin
+        Rotate $view_rotation 0 1 0
+        Rotate 180 0 1 0
+        Rotate -90 0 1 0
+
+        TransformBegin
+            Translate 0 -10 20
+            NamedMaterial "brown_hair"
+          	#Include "models/straight-hair.50.pbrt" 
+        TransformEnd
+
+        TransformBegin
+            Scale 0.10747 0.10747 0.10747
+            Rotate 90 0 1 0
+
+            TransformBegin
+            	NamedMaterial "$material_name" 
+	            Include "models/$model_hair_filename$model_hair_thickness$model_hair_percentage.pbrt"
+            TransformEnd
+
+            TransformBegin
+                Rotate -90 1 0 0
+                #Include "models/$model_head_filename"
+            TransformEnd
+        TransformEnd
+    TransformEnd
+WorldEnd

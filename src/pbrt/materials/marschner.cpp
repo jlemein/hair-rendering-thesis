@@ -53,17 +53,47 @@ namespace pbrt {
 
     MarschnerBSDF::MarschnerBSDF(const SurfaceInteraction& si)
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
-    mNs(si.shading.n),
-    mNg(si.n) {
+    mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv) {
     };
 
+    static void ToSphericalCoords(const Vector3f& w, Float& theta, Float& phi) {
+        theta = PiOver2 - acos(w.x);
+        phi = atan2(w.y, w.z);
+    }
+
+    static Float DifferenceAngle(Float theta_i, Float theta_r) {
+        return 0.5 * (theta_r - theta_i);
+    }
+
+    static Float RelativeAzimuth(Float phi_i, Float phi_r) {
+        // TODO: check if needs to be wrapped around [0, 2pi]
+        //mod(abs(phi_r - phi_i), 2*PI);
+
+        return phi_r - phi_i;
+    }
+
+    static Float HalfAngle(Float a, Float b) {
+        return 0.5 * (a + b);
+
+    }
+
     Spectrum MarschnerBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
-        // z axis represents normal to hair fiber
-        // x axis goes with the fiber,
+        // x axis goes with the fiber, from root to tip
+        // y represents normal too, but major axis
+        // z axis represents normal to hair fiber (minor axis)
 
+        Float theta_i, phi_i, theta_r, phi_r;
+        ToSphericalCoords(wi, theta_i, phi_i);
+        ToSphericalCoords(wi, theta_r, phi_r);
 
-        Normal3f nn = Abs(mNg);
-        Float rgb[3] = {nn.x, nn.y, nn.z};
+        Float theta_d = DifferenceAngle(theta_i, theta_r);
+        Float phi = RelativeAzimuth(phi_i, phi_r);
+        Float theta_h = HalfAngle(theta_i, theta_r);
+        Float phi_h = HalfAngle(phi_i, phi_r);
+        //        printf("wi: %f %f %f\n", wi.x, wi.y, wi.z);
+        //        printf("theta_i: %f; phi_i: %f\n", theta_i, phi_i);
+
+        Float rgb[3] = {abs(theta_i) / PiOver2, abs(phi_i) / Pi, 0};
         return Spectrum::FromRGB(rgb);
     }
 
@@ -72,6 +102,7 @@ namespace pbrt {
     //    }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
+
         return 1.0 / (4.0 * Pi);
     }
 

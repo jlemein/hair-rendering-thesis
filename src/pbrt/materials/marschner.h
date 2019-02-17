@@ -107,6 +107,7 @@ namespace pbrt {
 
       private:
           const Normal3f mNs, mNg;
+          const Vector3f mDpdu, mDpdv;
     };
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp);
