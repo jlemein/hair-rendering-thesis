@@ -17,8 +17,45 @@
 #include "paramset.h"
 #include "texture.h"
 #include "interaction.h"
+#include "hair.h"
 
 namespace pbrt {
+
+    static void ToSphericalCoords(const Vector3f& w, Float& theta, Float& phi) {
+        theta = PiOver2 - acos(w.x);
+        phi = atan2(w.y, w.z);
+    }
+
+    static Float DifferenceAngle(Float theta_i, Float theta_r) {
+        return 0.5 * (theta_r - theta_i);
+    }
+
+    static Float RelativeAzimuth(Float phi_i, Float phi_r) {
+        // TODO: check if needs to be wrapped around [0, 2pi]
+        //mod(abs(phi_r - phi_i), 2*PI);
+
+        return phi_r - phi_i;
+    }
+
+    static Float HalfAngle(Float a, Float b) {
+        return 0.5 * (a + b);
+    }
+
+    /**
+     * Returns the value of a normalized Gaussian function at point 'x', with a standard deviation of 'width'
+     * @param width The width of the gaussian function
+     * @param x Position to sample the gaussian
+     * @returns Sampled position of the gaussian at position x
+     */
+    static Float Gaussian(Float width, Float x) {
+        Float a = 1.0 / (width * sqrt(2.0 * Pi));
+        float c = width; //width of the curve is beta (might also be 0.5 * sigma)
+
+        float nom = Sqr(x);
+        float den = 2.0 * Sqr(width);
+
+        return a * exp(-nom / den);
+    }
 
     // MarschnerMaterial Method Definitions
 
@@ -27,7 +64,7 @@ namespace pbrt {
 
         // Allocate a bsdf that contains the collection of BRDFs and BTDFs
         si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
-        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si));
+        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt, mBr, mBtt, mBtrt));
     }
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp) {
@@ -51,30 +88,26 @@ namespace pbrt {
      * MarschnerBSDF
      *******************************/
 
-    MarschnerBSDF::MarschnerBSDF(const SurfaceInteraction& si)
+    MarschnerBSDF::MarschnerBSDF(const SurfaceInteraction& si,
+            Float alphaR, Float alphaTT, Float alphaTRT,
+            Float betaR, Float betaTT, Float betaTRT
+            )
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
-    mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv) {
+    mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv),
+    mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
+    mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT) {
     };
 
-    static void ToSphericalCoords(const Vector3f& w, Float& theta, Float& phi) {
-        theta = PiOver2 - acos(w.x);
-        phi = atan2(w.y, w.z);
+    Float MarschnerBSDF::M_r(Float theta_h) {
+        return Gaussian(mBetaR, theta_h - mAlphaR);
     }
 
-    static Float DifferenceAngle(Float theta_i, Float theta_r) {
-        return 0.5 * (theta_r - theta_i);
+    Float MarschnerBSDF::M_tt(Float theta_h) {
+        return Gaussian(mBetaTT, theta_h - mAlphaTT);
     }
 
-    static Float RelativeAzimuth(Float phi_i, Float phi_r) {
-        // TODO: check if needs to be wrapped around [0, 2pi]
-        //mod(abs(phi_r - phi_i), 2*PI);
-
-        return phi_r - phi_i;
-    }
-
-    static Float HalfAngle(Float a, Float b) {
-        return 0.5 * (a + b);
-
+    Float MarschnerBSDF::M_trt(Float theta_h) {
+        return Gaussian(mBetaTRT, theta_h - mAlphaTRT);
     }
 
     Spectrum MarschnerBSDF::f(const Vector3f &wo, const Vector3f &wi) const {

@@ -56,9 +56,9 @@ namespace pbrt {
     };
     
     // MarschnerBSDF Declarations
-    class MarschnerBSDF : public BxDF {
+    class MarschnerBSDF : public BxDF {        
       public:
-        MarschnerBSDF(const SurfaceInteraction& si);
+        MarschnerBSDF(const SurfaceInteraction& si, Float alphaR, Float alphaTT, Float alphaTRT, Float betaR, Float betaTT, Float betaTRT);
         
         /**
          * (Required) Returns the value of the distribution function for the given pair of directions
@@ -105,9 +105,16 @@ namespace pbrt {
         //virtual Spectrum rho(const Vector3f &wo, int nSamples, const Point2f *samples) const;
         //virtual Spectrum rho(int nSamples, const Point2f *samples1, const Point2f *samples2) const;
 
-      private:
-          const Normal3f mNs, mNg;
-          const Vector3f mDpdu, mDpdv;
+    private:
+        const Normal3f mNs, mNg;
+        const Vector3f mDpdu, mDpdv;
+
+        // Marschner params
+        const Float mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT;
+
+        Float M_r(Float theta_h);
+        Float M_tt(Float theta_h);
+        Float M_trt(Float theta_h);
     };
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp);
