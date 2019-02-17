@@ -41,6 +41,10 @@ namespace pbrt {
         return 0.5 * (a + b);
     }
 
+    static Float CosineSquared(Float x) {
+        return Sqr(cos(x));
+    }
+
     /**
      * Returns the value of a normalized Gaussian function at point 'x', with a standard deviation of 'width'
      * @param width The width of the gaussian function
@@ -98,15 +102,15 @@ namespace pbrt {
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT) {
     };
 
-    Float MarschnerBSDF::M_r(Float theta_h) {
+    Float MarschnerBSDF::M_r(Float theta_h) const {
         return Gaussian(mBetaR, theta_h - mAlphaR);
     }
 
-    Float MarschnerBSDF::M_tt(Float theta_h) {
+    Float MarschnerBSDF::M_tt(Float theta_h) const {
         return Gaussian(mBetaTT, theta_h - mAlphaTT);
     }
 
-    Float MarschnerBSDF::M_trt(Float theta_h) {
+    Float MarschnerBSDF::M_trt(Float theta_h) const {
         return Gaussian(mBetaTRT, theta_h - mAlphaTRT);
     }
 
@@ -123,11 +127,11 @@ namespace pbrt {
         Float phi = RelativeAzimuth(phi_i, phi_r);
         Float theta_h = HalfAngle(theta_i, theta_r);
         Float phi_h = HalfAngle(phi_i, phi_r);
-        //        printf("wi: %f %f %f\n", wi.x, wi.y, wi.z);
-        //        printf("theta_i: %f; phi_i: %f\n", theta_i, phi_i);
 
-        Float rgb[3] = {abs(theta_i) / PiOver2, abs(phi_i) / Pi, 0};
-        return Spectrum::FromRGB(rgb);
+        //        Float rgb[3] = {abs(theta_i) / PiOver2, abs(phi_i) / Pi, 0};
+        //        Spectrum result = Spectrum::FromRGB(rgb);
+        Spectrum result = (M_r(theta_h) + M_tt(theta_h) + M_trt(theta_h)) / CosineSquared(theta_d);
+        return result;
     }
 
     //    Spectrum MarschnerBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
@@ -135,8 +139,7 @@ namespace pbrt {
     //    }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
-
-        return 1.0 / (4.0 * Pi);
+        return PiOver4;
     }
 
     std::string MarschnerBSDF::ToString() const {

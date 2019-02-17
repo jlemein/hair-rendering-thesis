@@ -112,9 +112,9 @@ namespace pbrt {
         // Marschner params
         const Float mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT;
 
-        Float M_r(Float theta_h);
-        Float M_tt(Float theta_h);
-        Float M_trt(Float theta_h);
+        Float M_r(Float theta_h) const;
+        Float M_tt(Float theta_h) const;
+        Float M_trt(Float theta_h) const;
     };
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp);
