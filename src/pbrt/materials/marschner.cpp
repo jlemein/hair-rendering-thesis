@@ -1,12 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /*
  * File:   MarschnerMaterial.cpp
- * Author: jeffrey
+ * Author: jeffrey lemein
  *
  * Created on February 11, 2019, 11:34 PM
  */
@@ -21,9 +16,30 @@
 
 namespace pbrt {
 
+    /**
+     * Safe acos function, to prevent 'nan' as result when parameter x is
+     * (slightly) larger than or smaller than 1.0 or -1.0 respectively
+     * (due to rounding errors).
+     * @param x Argument to the acosine function. Values smaller than
+     * -1.0 and larger than 1.0 are mapped to -1.0 and 1.0 respectively.
+     * @return The inverse cosine result for parameter x.
+     */
+    static inline Float SafeACos(Float x) {
+        if (x <= -1.0) {
+            return Pi;
+        }
+        if (x >= 1.0) {
+            return 0.0;
+        }
+        return acos(x);
+    }
+
     static void ToSphericalCoords(const Vector3f& w, Float& theta, Float& phi) {
-        theta = PiOver2 - acos(w.x);
+        theta = PiOver2 - SafeACos(w.x);
         phi = atan2(w.y, w.z);
+
+        CHECK_LE(abs(theta), PiOver2);
+        CHECK_LE(abs(phi), Pi);
     }
 
     static Float DifferenceAngle(Float theta_i, Float theta_r) {
@@ -61,7 +77,9 @@ namespace pbrt {
         return a * exp(-nom / den);
     }
 
-    // MarschnerMaterial Method Definitions
+    /*******************************
+     * MarschnerMaterial
+     *******************************/
 
     void MarschnerMaterial::ComputeScatteringFunctions(SurfaceInteraction *si,
             MemoryArena &arena, TransportMode mode, bool allowMultipleLobes) const {
@@ -116,21 +134,19 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
         // x axis goes with the fiber, from root to tip
-        // y represents normal too, but major axis
+        // y represents normal to hair fiber (major axis)
         // z axis represents normal to hair fiber (minor axis)
 
         Float theta_i, phi_i, theta_r, phi_r;
         ToSphericalCoords(wi, theta_i, phi_i);
-        ToSphericalCoords(wi, theta_r, phi_r);
+        ToSphericalCoords(wo, theta_r, phi_r);
 
         Float theta_d = DifferenceAngle(theta_i, theta_r);
         Float phi = RelativeAzimuth(phi_i, phi_r);
         Float theta_h = HalfAngle(theta_i, theta_r);
         Float phi_h = HalfAngle(phi_i, phi_r);
 
-        //        Float rgb[3] = {abs(theta_i) / PiOver2, abs(phi_i) / Pi, 0};
-        //        Spectrum result = Spectrum::FromRGB(rgb);
-        Spectrum result = (M_r(theta_h) + M_tt(theta_h) + M_trt(theta_h)) / CosineSquared(theta_d);
+        Spectrum result = 0.01 * (M_r(theta_h) + M_tt(theta_h) + M_trt(theta_h)) / CosineSquared(theta_d);
         return result;
     }
 
