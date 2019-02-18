@@ -77,6 +77,18 @@ namespace pbrt {
         return a * exp(-nom / den);
     }
 
+    static Float BravaisPerpendicular(Float eta, Float gamma) {
+        return sqrt(Sqr(eta) - Sqr(sin(gamma))) / cos(gamma);
+    }
+
+    static Float BravaisParallel(Float eta, Float gamma) {
+        return Sqr(eta) * cos(gamma) / sqrt(Sqr(eta) - Sqr(sin(gamma)));
+    }
+
+    static Float Fresnel() {
+        return 0.0;
+    }
+
     /*******************************
      * MarschnerMaterial
      *******************************/
@@ -132,6 +144,22 @@ namespace pbrt {
         return Gaussian(mBetaTRT, theta_h - mAlphaTRT);
     }
 
+    Spectrum MarschnerBSDF::N_r(Float relativePhi) const {
+        return N_p(0, relativePhi);
+    }
+
+    Spectrum MarschnerBSDF::N_tt(Float relativePhi) const {
+        return N_p(1, relativePhi);
+    }
+
+    Spectrum MarschnerBSDF::N_trt(Float relativePhi) const {
+        return N_p(2, relativePhi);
+    }
+
+    Spectrum MarschnerBSDF::N_p(int p, Float relativePhi) const {
+        return Spectrum(0.01);
+    }
+
     Spectrum MarschnerBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
         // x axis goes with the fiber, from root to tip
         // y represents normal to hair fiber (major axis)
@@ -146,7 +174,11 @@ namespace pbrt {
         Float theta_h = HalfAngle(theta_i, theta_r);
         Float phi_h = HalfAngle(phi_i, phi_r);
 
-        Spectrum result = 0.01 * (M_r(theta_h) + M_tt(theta_h) + M_trt(theta_h)) / CosineSquared(theta_d);
+        Spectrum result = (
+                M_r(theta_h) * N_r(phi)
+                + M_tt(theta_h) * N_tt(phi)
+                + M_trt(theta_h) * N_trt(phi)) / CosineSquared(theta_d);
+
         return result;
     }
 

@@ -115,6 +115,12 @@ namespace pbrt {
         Float M_r(Float theta_h) const;
         Float M_tt(Float theta_h) const;
         Float M_trt(Float theta_h) const;
+        
+        Spectrum N_r(Float relativePhi) const;
+        Spectrum N_tt(Float relativePhi) const;
+        Spectrum N_trt(Float relativePhi) const;
+        
+        Spectrum N_p(int p, Float relativePhi) const;
     };
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp);
