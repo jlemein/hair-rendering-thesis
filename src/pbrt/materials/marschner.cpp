@@ -57,8 +57,12 @@ namespace pbrt {
         return 0.5 * (a + b);
     }
 
-    static Float CosineSquared(Float x) {
+    static inline Float CosineSquared(Float x) {
         return Sqr(cos(x));
+    }
+
+    static inline Float SineSquared(Float x) {
+        return Sqr(sin(x));
     }
 
     /**
@@ -77,16 +81,48 @@ namespace pbrt {
         return a * exp(-nom / den);
     }
 
+    /**
+     * Slightly faster variant when you need to get both Bravais indices
+     * @param eta Index of refraction
+     * @param gamma Angle of incidence (in radians) or sine angle_of_incidence ??
+     * @param bravaisPerpendicular Output value that will hold perpendicular component of bravais index
+     * @param bravaisParallel Output value that will hold parallel component of bravais index
+     */
+    static void ToBravais(Float eta, Float gamma, Float& etaPerpendicular, Float& etaParallel) {
+        Float rootPart = sqrt(Sqr(eta) - SineSquared(gamma));
+        Float cosGamma = cos(gamma);
+
+        etaPerpendicular = rootPart / cosGamma;
+        etaParallel = Sqr(eta) * cosGamma / rootPart;
+    }
+
+    // TODO: gamma is angle of incidence or sine of angle of incidence??
+
     static Float BravaisPerpendicular(Float eta, Float gamma) {
         return sqrt(Sqr(eta) - Sqr(sin(gamma))) / cos(gamma);
     }
+
+    // TODO: gamma is angle of incidence or sine of angle of incidence??
 
     static Float BravaisParallel(Float eta, Float gamma) {
         return Sqr(eta) * cos(gamma) / sqrt(Sqr(eta) - Sqr(sin(gamma)));
     }
 
-    static Float Fresnel() {
+    static Float Fresnel(Float etaPerp, Float etaPar, Float gamma) {
         return 0.0;
+    }
+
+    static Float SolveRootForGammaI_R(Float phi) {
+        //return sin(-phi / 2.0); //h
+        return -phi / 2.0; //gamma_i
+    }
+
+    static Spectrum Transmittance(const Spectrum& sigmaA, Float gamma_t) {
+        return Exp(-2.0 * sigmaA * (1.0 + cos(2.0 * gamma_t)));
+    }
+
+    static Float DPhiDh_R(Float gamma_i) {
+        return 1.0 / std::max(0e5, sqrt(1.0 - SineSquared(gamma_i)));
     }
 
     /*******************************
@@ -98,7 +134,7 @@ namespace pbrt {
 
         // Allocate a bsdf that contains the collection of BRDFs and BTDFs
         si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
-        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt, mBr, mBtt, mBtrt));
+        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt, mBr, mBtt, mBtrt, mEta, mSigmaA));
     }
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp) {
@@ -124,12 +160,14 @@ namespace pbrt {
 
     MarschnerBSDF::MarschnerBSDF(const SurfaceInteraction& si,
             Float alphaR, Float alphaTT, Float alphaTRT,
-            Float betaR, Float betaTT, Float betaTRT
+            Float betaR, Float betaTT, Float betaTRT,
+            Float eta, std::shared_ptr<Texture < Spectrum>> sigmaA
             )
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
     mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv),
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
-    mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT) {
+    mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
+    mEta(eta), mSigmaA(sigmaA) {
     };
 
     Float MarschnerBSDF::M_r(Float theta_h) const {
@@ -145,7 +183,18 @@ namespace pbrt {
     }
 
     Spectrum MarschnerBSDF::N_r(Float relativePhi) const {
-        return N_p(0, relativePhi);
+        // R has only 1 root
+        //Float h = SolveRoots_R(relativePhi);
+        Float gamma_i = SolveRootForGammaI_R(relativePhi);
+
+        Float etaPerpendicular, etaParallel;
+        ToBravais(this->mEta, gamma_i, etaPerpendicular, etaParallel);
+
+        Float absorption = Fresnel(etaPerpendicular, etaParallel, gamma_i);
+        Float dphi_dh = DPhiDh_R(gamma_i);
+
+        return absorption / (2.0 * dphi_dh);
+        //return N_p(0, relativePhi);
     }
 
     Spectrum MarschnerBSDF::N_tt(Float relativePhi) const {
@@ -173,6 +222,8 @@ namespace pbrt {
         Float phi = RelativeAzimuth(phi_i, phi_r);
         Float theta_h = HalfAngle(theta_i, theta_r);
         Float phi_h = HalfAngle(phi_i, phi_r);
+
+
 
         Spectrum result = (
                 M_r(theta_h) * N_r(phi)
