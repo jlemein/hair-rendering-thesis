@@ -112,9 +112,17 @@ namespace pbrt {
         return 0.0;
     }
 
-    static Float SolveRootForGammaI_R(Float phi) {
-        //return sin(-phi / 2.0); //h
-        return -phi / 2.0; //gamma_i
+    /**
+     * Solves the root for reflection (R) mode of Marschner.
+     * Gamma is returned instead of the root h (for efficiency reasons)
+     *
+     *  h = sin gamma, so if you want h, then do arcsin(gamma)
+     *
+     * @param phi
+     * @return Gamma_i
+     */
+    static inline Float SolveGammaRoot_R(Float phi) {
+        return -phi / 2.0;
     }
 
     static Spectrum Transmittance(const Spectrum& sigmaA, Float gamma_t) {
@@ -122,7 +130,7 @@ namespace pbrt {
     }
 
     static Float DPhiDh_R(Float gamma_i) {
-        return 1.0 / std::max(0e5, sqrt(1.0 - SineSquared(gamma_i)));
+        return 1.0 / std::max(1e-5, sqrt(1.0 - SineSquared(gamma_i)));
     }
 
     /*******************************
@@ -148,7 +156,8 @@ namespace pbrt {
         Float causticFade = 0.3;
         Float causticLimit = 0.5;
 
-        std::shared_ptr<Texture < Spectrum>> sigmaA = mp.GetSpectrumTexture("sigmaA", Spectrum(0.25f)); //should be defined as color
+        Float rgb[3] = {0.4, 0.2, 0.1};
+        std::shared_ptr<Texture < Spectrum>> sigmaA = mp.GetSpectrumTexture("sigmaA", Spectrum::FromRGB(rgb)); //should be defined as color
         std::shared_ptr<Texture < Spectrum>> Kd = mp.GetSpectrumTexture("Kd", Spectrum(0.25f));
 
         return new MarschnerMaterial(Ar, Br, hairRadius, eta, eccentricity, glintScaleFactor, causticWidth, causticFade, causticLimit, sigmaA, Kd);
@@ -183,18 +192,14 @@ namespace pbrt {
     }
 
     Spectrum MarschnerBSDF::N_r(Float relativePhi) const {
-        // R has only 1 root
-        //Float h = SolveRoots_R(relativePhi);
-        Float gamma_i = SolveRootForGammaI_R(relativePhi);
+        // Reflection has only 1 root
+        Float gamma_i = SolveGammaRoot_R(relativePhi);
 
-        Float etaPerpendicular, etaParallel;
-        ToBravais(this->mEta, gamma_i, etaPerpendicular, etaParallel);
+        Float etaPerp, etaPar;
+        ToBravais(mEta, gamma_i, etaPerp, etaPar);
 
-        Float absorption = Fresnel(etaPerpendicular, etaParallel, gamma_i);
-        Float dphi_dh = DPhiDh_R(gamma_i);
-
-        return absorption / (2.0 * dphi_dh);
-        //return N_p(0, relativePhi);
+        // reflection is only determined by Fresnel
+        return Fresnel(etaPerp, etaPar, gamma_i) / (2.0 * DPhiDh_R(gamma_i));
     }
 
     Spectrum MarschnerBSDF::N_tt(Float relativePhi) const {
