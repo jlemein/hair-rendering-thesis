@@ -57,13 +57,9 @@ namespace pbrt {
         // Yes I was right, should be mapped to domain [-pi, pi]
         // TODO: double check if it is fixed now by unit test
 
-        //return phi_r - phi_i;
-
-        CHECK_LE(abs(phi_i), Pi);
-        CHECK_LE(abs(phi_r), Pi);
-
         Float phi = phi_r - phi_i;
 
+        // map to range [-pi, pi] so that our cubic solver works
         while (phi > Pi) {
             phi -= 2.0 * Pi;
         }
@@ -113,7 +109,7 @@ namespace pbrt {
     static void ToBravais(Float eta, Float gamma, Float& etaPerpendicular, Float& etaParallel) {
         Float rootPart = sqrt(Sqr(eta) - SineSquared(gamma));
 
-        //TODO: sin gamma = h, where 1 < h < 1
+        // TODO: sin gamma = h, where 1 < h < 1
         // Gamma represents the angle between the incident ray and the normal of a dielectric cylinder
         // This means -pi < gamma < pi
         // This also means cos(gamma) is 0 < cos(gamma) <= 1
