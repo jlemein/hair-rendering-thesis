@@ -34,6 +34,10 @@ namespace pbrt {
         return acos(x);
     }
 
+    static inline Float SafeZero(Float x) {
+        return std::max(Float(1e-5), x);
+    }
+
     static void ToSphericalCoords(const Vector3f& w, Float& theta, Float& phi) {
         theta = PiOver2 - SafeACos(w.x);
         phi = atan2(w.y, w.z);
@@ -50,7 +54,40 @@ namespace pbrt {
         // TODO: check if needs to be wrapped around [0, 2pi]
         //mod(abs(phi_r - phi_i), 2*PI);
 
-        return phi_r - phi_i;
+        // I think phi should be mapped between [-pi, +pi] to make
+        // finding roots work that is accurate for gamma in range [-pi/2, pi/2]
+
+        //return phi_r - phi_i;
+
+        CHECK_LE(abs(phi_i), Pi);
+        CHECK_LE(abs(phi_r), Pi);
+
+        if (phi_i > Pi) {
+            phi_i -= 2.0 * Pi;
+        }
+        if (phi_i < -Pi) {
+            phi_i += 2.0 * Pi;
+        }
+        if (phi_r > Pi) {
+            phi_r -= 2.0 * Pi;
+        }
+        if (phi_r < -Pi) {
+            phi_r += 2.0 * Pi;
+        }
+
+        Float phi = phi_r - phi_i;
+
+        if (phi > Pi) {
+            phi -= 2.0 * Pi;
+        }
+        if (phi < -Pi) {
+            phi += 2.0 * Pi;
+        }
+        if (abs(phi) > Pi) {
+            printf("phi_i = %f, phi_r = %f, phi = %f\n", phi_i, phi_r, phi);
+        }
+        CHECK_LE(abs(phi), Pi);
+        return phi;
     }
 
     static Float HalfAngle(Float a, Float b) {
@@ -90,7 +127,18 @@ namespace pbrt {
      */
     static void ToBravais(Float eta, Float gamma, Float& etaPerpendicular, Float& etaParallel) {
         Float rootPart = sqrt(Sqr(eta) - SineSquared(gamma));
+
+        //TODO: sin gamma = h, where 1 < h < 1
+        // Gamma represents the angle between the incident ray and the normal of a dielectric cylinder
+        // This means -pi < gamma < pi
+        // This also means cos(gamma) is 0 < cos(gamma) <= 1
+
         Float cosGamma = cos(gamma);
+
+        if (cosGamma < 0.0) {
+            printf("cosgamma: %f -- gamma is: %f\n", cosGamma, gamma);
+            CHECK_GE(cosGamma, 0.0);
+        }
 
         etaPerpendicular = rootPart / cosGamma;
         etaParallel = Sqr(eta) * cosGamma / rootPart;
@@ -108,8 +156,97 @@ namespace pbrt {
         return Sqr(eta) * cos(gamma) / sqrt(Sqr(eta) - Sqr(sin(gamma)));
     }
 
-    static Float Fresnel(Float etaPerp, Float etaPar, Float gamma) {
-        return 0.0;
+    static Float FresnelSplitted(Float ni, Float nt, Float gamma_i, Float gamma_t) {
+        Float cos_gamma_i = cos(gamma_i);
+        Float cos_gamma_t = cos(gamma_t);
+
+        // for p-polarized light
+        Float rParallel = (nt * cos_gamma_i - ni * cos_gamma_t) / (nt * cos_gamma_i + ni * cos_gamma_t);
+
+        // for s-polarized light
+        Float rPerpendicular = (ni * cos_gamma_i - nt * cos_gamma_t) / (ni * cos_gamma_i + nt * cos_gamma_t);
+
+        return 0.5 * (rParallel + rPerpendicular);
+    }
+
+    /**
+     * Fresnel reflection for s-polarized light (perpendicular to incidence plane)
+     * @param ni Index of refraction for material of incident side
+     * @param nt Index of refraction for material on transmitted side
+     * @param gamma_i Angle of incidence
+     * @param gamma_t Angle of refraction
+     * @return
+     */
+    static Float FresnelReflectionS(Float ni, Float nt, Float gamma_i) {
+        Float sinGammaByN = ni * sin(gamma_i) / nt;
+
+        if (sinGammaByN >= 1.0) {
+            return 1.0;
+        } else {
+            Float gamma_t = SafeASin(sinGammaByN);
+            Float cos_gamma_i = cos(gamma_i);
+            Float cos_gamma_t = cos(gamma_t);
+            return (ni * cos_gamma_i - nt * cos_gamma_t) / (ni * cos_gamma_i + nt * cos_gamma_t);
+        }
+    }
+
+    /**
+     * Fresnel reflection for p-polarized light (parallel to incidence plane)
+     * @param ni Index of refraction for material of incident side
+     * @param nt Index of refraction for material on transmitted side
+     * @param gamma_i Angle of incidence
+     * @param gamma_t Angle of refraction
+     * @return
+     */
+    static Float FresnelReflectionP(Float ni, Float nt, Float gamma_i) {
+        Float sinGammaByN = ni * sin(gamma_i) / nt;
+        if (sinGammaByN >= 1.0) {
+            return 1.0;
+        } else {
+            Float gamma_t = SafeASin(sinGammaByN);
+            Float cos_gamma_i = cos(gamma_i);
+            Float cos_gamma_t = cos(gamma_t);
+            return (nt * cos_gamma_i - ni * cos_gamma_t) / (nt * cos_gamma_i + ni * cos_gamma_t);
+        }
+    }
+
+    /**
+     * Fresnel reflection for polarized light
+     * @param etaPerp
+     * @param etaPar
+     * @param gamma_i
+     * @return
+     */
+    static Float Fresnel(Float etaPerp, Float etaPar, Float gamma_i) {
+        CHECK_GT(etaPerp, 0.0);
+        CHECK_GT(etaPar, 0.0);
+
+        // TODO: check if gamma_i should be projected for parallel and perpendicular planes
+        // Marschner indicates that by using the altered index of refractions, that you can
+        // just use gamma as angle (appendix B)
+
+        // TODO: must we use gamma_t based on eta, or calculate gamma_t for projected and perpendicular cases
+        // use Snell's law to find transmitted angle
+        //Float gamma_t = SafeASin(sin(gamma_i) / eta);
+
+        // Something goes wrong here, because sin(gamma) divided
+        Float x = sin(gamma_i) / etaPerp;
+        Float y = sin(gamma_i) / etaPar;
+        //if (x < -1.0001 || x > 1.0001) {
+        //printf("safe asin failed, because y = %f ;; etaPar = %f\n", y, etaPar);
+
+        // }
+        CHECK(x >= -1.0001 && x <= 1.0001);
+        //        Float gamma_t_perpendicular = SafeASin(sin(gamma_i) / etaPerp);
+        Float fresnelS = FresnelReflectionS(1.0, etaPerp, gamma_i);
+        CHECK_LE(fresnelS, 1.0);
+
+        // for s-polarized light
+        //        Float gamma_t_parallel = SafeASin(sin(gamma_i) / etaPar);
+        Float fresnelP = FresnelReflectionP(1.0, etaPar, gamma_i);
+        CHECK_LE(fresnelP, 1.0);
+
+        return 0.5 * (fresnelP + fresnelS);
     }
 
     /**
@@ -130,7 +267,7 @@ namespace pbrt {
     }
 
     static Float DPhiDh_R(Float gamma_i) {
-        return 1.0 / std::max(1e-5, sqrt(1.0 - SineSquared(gamma_i)));
+        return 1.0 / SafeZero(sqrt(1.0 - SineSquared(gamma_i)));
     }
 
     /*******************************
@@ -193,6 +330,9 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::N_r(Float relativePhi) const {
         // Reflection has only 1 root
+        // TODO: let relativePhi be in specific bounds.
+        // Marschner says that rootsolving works for relativePhi between [-pi, +pi]
+        //
         Float gamma_i = SolveGammaRoot_R(relativePhi);
 
         Float etaPerp, etaPar;
