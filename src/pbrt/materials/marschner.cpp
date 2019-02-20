@@ -51,41 +51,26 @@ namespace pbrt {
     }
 
     static Float RelativeAzimuth(Float phi_i, Float phi_r) {
-        // TODO: check if needs to be wrapped around [0, 2pi]
-        //mod(abs(phi_r - phi_i), 2*PI);
 
         // I think phi should be mapped between [-pi, +pi] to make
         // finding roots work that is accurate for gamma in range [-pi/2, pi/2]
+        // Yes I was right, should be mapped to domain [-pi, pi]
+        // TODO: double check if it is fixed now by unit test
 
         //return phi_r - phi_i;
 
         CHECK_LE(abs(phi_i), Pi);
         CHECK_LE(abs(phi_r), Pi);
 
-        if (phi_i > Pi) {
-            phi_i -= 2.0 * Pi;
-        }
-        if (phi_i < -Pi) {
-            phi_i += 2.0 * Pi;
-        }
-        if (phi_r > Pi) {
-            phi_r -= 2.0 * Pi;
-        }
-        if (phi_r < -Pi) {
-            phi_r += 2.0 * Pi;
-        }
-
         Float phi = phi_r - phi_i;
 
-        if (phi > Pi) {
+        while (phi > Pi) {
             phi -= 2.0 * Pi;
         }
-        if (phi < -Pi) {
+        while (phi < -Pi) {
             phi += 2.0 * Pi;
         }
-        if (abs(phi) > Pi) {
-            printf("phi_i = %f, phi_r = %f, phi = %f\n", phi_i, phi_r, phi);
-        }
+
         CHECK_LE(abs(phi), Pi);
         return phi;
     }
@@ -201,6 +186,7 @@ namespace pbrt {
     static Float FresnelReflectionP(Float ni, Float nt, Float gamma_i) {
         Float sinGammaByN = ni * sin(gamma_i) / nt;
         if (sinGammaByN >= 1.0) {
+            // total reflection
             return 1.0;
         } else {
             Float gamma_t = SafeASin(sinGammaByN);
