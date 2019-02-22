@@ -111,35 +111,31 @@ namespace pbrt {
     /**
      * Slightly faster variant when you need to get both Bravais indices
      * @param eta Index of refraction
-     * @param gamma Angle of incidence (in radians) or sine angle_of_incidence ??
+     * @param theta Longitudinal angle of incidence (in radians)
      * @param bravaisPerpendicular Output value that will hold perpendicular component of bravais index
      * @param bravaisParallel Output value that will hold parallel component of bravais index
      */
-    static void ToBravais(Float eta, Float gamma, Float& etaPerpendicular, Float& etaParallel) {
-        Float rootPart = sqrt(Sqr(eta) - SineSquared(gamma));
+    static void ToBravais(Float eta, Float theta, Float& etaPerpendicular, Float& etaParallel) {
+        Float rootPart = sqrt(Sqr(eta) - SineSquared(theta));
 
         // sin gamma = h, where 1 < h < 1
         // Gamma represents the angle between the incident ray and the normal of a dielectric cylinder
         // This means -pi <= gamma <= pi
         // This also means cos(gamma) is 0 <= cos(gamma) <= 1
 
-        Float cosGamma = Clamp(cos(gamma), 1e-5, 1.0);
-        CHECK(cosGamma > 0.0 && cosGamma <= 1.0);
+        Float cosTheta = Clamp(cos(theta), 1e-5, 1.0);
+        CHECK(cosTheta > 0.0 && cosTheta <= 1.0);
 
-        etaPerpendicular = rootPart / cosGamma;
-        etaParallel = Sqr(eta) * cosGamma / rootPart;
+        etaPerpendicular = rootPart / cosTheta;
+        etaParallel = Sqr(eta) * cosTheta / rootPart;
     }
 
-    // TODO: gamma is angle of incidence or sine of angle of incidence??
-
-    static Float BravaisPerpendicular(Float eta, Float gamma) {
-        return sqrt(Sqr(eta) - Sqr(sin(gamma))) / cos(gamma);
+    static Float BravaisPerpendicular(Float eta, Float theta) {
+        return sqrt(Sqr(eta) - Sqr(sin(theta))) / cos(theta);
     }
 
-    // TODO: gamma is angle of incidence or sine of angle of incidence??
-
-    static Float BravaisParallel(Float eta, Float gamma) {
-        return Sqr(eta) * cos(gamma) / sqrt(Sqr(eta) - Sqr(sin(gamma)));
+    static Float BravaisParallel(Float eta, Float theta) {
+        return Sqr(eta) * cos(theta) / sqrt(Sqr(eta) - Sqr(sin(theta)));
     }
 
     /**
@@ -164,7 +160,7 @@ namespace pbrt {
             Float cos_gamma_i = cos(gamma_i);
             Float cos_gamma_t = cos(gamma_t);
             //printf("nt: %f, gamma_i: %f, gamma_t: %f, cosGammaI: %f, cosGammaT: %f\n", nt, gamma_i, gamma_t, cos_gamma_i, cos_gamma_t);
-            return Sqr((ni * cos_gamma_i - nt * cos_gamma_t) / (ni * cos_gamma_i + nt * cos_gamma_t));
+            return Clamp(Sqr((ni * cos_gamma_i - nt * cos_gamma_t) / (ni * cos_gamma_i + nt * cos_gamma_t)), 0.0, 1.0);
 
         }
     }
@@ -196,7 +192,7 @@ namespace pbrt {
             Float gamma_t = SafeASin(sinGammaT);
             Float cos_gamma_i = cos(gamma_i);
             Float cos_gamma_t = cos(gamma_t);
-            return Sqr((nt * cos_gamma_i - ni * cos_gamma_t) / (nt * cos_gamma_i + ni * cos_gamma_t));
+            return Clamp(Sqr((nt * cos_gamma_i - ni * cos_gamma_t) / (nt * cos_gamma_i + ni * cos_gamma_t)), 0.0, 1.0);
         }
     }
 
@@ -223,7 +219,7 @@ namespace pbrt {
 
         // for s-polarized light
         Float fresnelP = FresnelReflectionP(1.0, etaPar, gamma_i);
-        CHECK(fresnelP >= 0.0 && fresnelP <= 1.0);
+        CHECK(fresnelP > -0.00001 && fresnelP < 1.00001);
 
         return 0.5 * (fresnelP + fresnelS);
     }
@@ -246,6 +242,8 @@ namespace pbrt {
     static int SolveCubicRoots(Float a, Float b, Float c, Float d,
             Float& root1, Float& root2, Float& root3) {
         //Float discriminant = a * a * b * b + 18.0 * a * b * c - 4.0 * b * b * b - 4.0 * a * a * a * c - 27.0 * c*c;
+
+        //TODO: d is not used
 
         Float p = b - a * a / 3.0;
         Float q = 2.0 * a * a * a / 27.0 - a * b / 3.0 + c;
@@ -272,14 +270,14 @@ namespace pbrt {
 
         Float a = -8.0 * constant / (Pi * Pi * Pi);
         Float c = 6.0 * constant / Pi - 2.0;
-        Float d = Pi;
+        Float d = Pi - phi;
 
         // return gamma
         Float root1, root2, root3;
         int numberRoots = SolveCubicRoots(a, 0.0, c, d, root1, root2, root3);
         CHECK_EQ(numberRoots, 1);
 
-
+        return root1;
     }
 
     static Spectrum Transmittance(const Spectrum& sigmaA, Float sinGammaT) {
@@ -315,7 +313,6 @@ namespace pbrt {
 
         // Allocate a bsdf that contains the collection of BRDFs and BTDFs
         si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
-
         si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt, mBr, mBtt, mBtrt, mEta, sigmaA));
     }
 
@@ -330,7 +327,7 @@ namespace pbrt {
         Float causticFade = 0.3;
         Float causticLimit = 0.5;
 
-        Float rgb[3] = {0.4, 0.2, 0.1};
+        Float rgb[3] = {0.432, 0.612, 0.98};
         std::shared_ptr<Texture < Spectrum>> sigmaA = mp.GetSpectrumTexture("sigmaA", Spectrum::FromRGB(rgb)); //should be defined as color
         std::shared_ptr<Texture < Spectrum>> Kd = mp.GetSpectrumTexture("Kd", Spectrum(0.25f));
 
@@ -369,40 +366,36 @@ namespace pbrt {
         return Gaussian(mBetaTRT, theta_h - mAlphaTRT);
     }
 
-    Spectrum MarschnerBSDF::N_r(Float relativePhi) const {
+    Spectrum MarschnerBSDF::N_r(Float relativePhi, Float etaPerp, Float etaPar) const {
         // Reflection has only 1 root
         // TODO: let relativePhi be in specific bounds.
         // Marschner says that rootsolving works for relativePhi between [-pi, +pi]
         //
-        Float gamma_i = SolveGammaRoot_R(relativePhi);
-
-        Float etaPerp, etaPar;
-        ToBravais(mEta, gamma_i, etaPerp, etaPar);
+        Float gammaI = SolveGammaRoot_R(relativePhi);
 
         // reflection is only determined by Fresnel
-
-        return Fresnel(etaPerp, etaPar, gamma_i) / (2.0 * DPhiDh_R(gamma_i));
+        return Fresnel(etaPerp, etaPar, gammaI) / (2.0 * DPhiDh_R(gammaI));
     }
 
-    Spectrum MarschnerBSDF::N_tt(Float relativePhi) const {
-        Float etaPerp, etaPar;
-
+    Spectrum MarschnerBSDF::N_tt(Float relativePhi, Float etaPerp, Float etaPar) const {
         // TODO: Check why etaPerp is required here. It is not calculated yet,
         // because it needs gammaI.
-        Float gammaI = SolveGammaRoot_TT(relativePhi, mEta /*etaPerp*/);
-        ToBravais(mEta, gammaI, etaPerp, etaPar);
+        Float gammaI = SolveGammaRoot_TT(relativePhi, etaPerp);
 
-        Float sinGammaT = sin(gammaI) / mEta;
-        Float dphidh = DPhiDh_TT(sin(gammaI), etaPerp);
+        Float sinGammaI = sin(gammaI);
+        //Float dphidh = DPhiDh_TT(sinGammaI, etaPerp);
 
         // generalize sigmaA to 3D
+        Float sinGammaT = sinGammaI / mEta;
         Float gammaT = SafeASin(sinGammaT);
         Spectrum sigmaAFor3D = Spectrum(mSigmaA) / AssurePositiveNonZero(cos(gammaT));
 
-        return Sqr(1.0 - Fresnel(etaPerp, etaPar, gammaI)) * Transmittance(sigmaAFor3D, sinGammaT) / (2.0 * dphidh);
+        return Sqr(1.0 - Fresnel(etaPerp, etaPar, gammaI)) * Transmittance(sigmaAFor3D, sinGammaT); // / (2.0 * dphidh);
+
+        //return N_p(1, relativePhi);
     }
 
-    Spectrum MarschnerBSDF::N_trt(Float relativePhi) const {
+    Spectrum MarschnerBSDF::N_trt(Float relativePhi, Float etaPerp, Float etaPar) const {
 
         return N_p(2, relativePhi);
     }
@@ -426,10 +419,14 @@ namespace pbrt {
         Float theta_h = HalfAngle(theta_i, theta_r);
         Float phi_h = HalfAngle(phi_i, phi_r);
 
+        Float etaPerp, etaPar;
+        // TODO: check if bravais index is based on theta_r or theta_i or maybe theta_d ??
+        ToBravais(mEta, theta_r, etaPerp, etaPar);
+
         Spectrum result = (
-                M_r(theta_h) * N_r(phi)
-                + M_tt(theta_h) * N_tt(phi)
-                + M_trt(theta_h) * N_trt(phi)) / CosineSquared(theta_d);
+                M_r(theta_h) * N_r(phi, etaPerp, etaPar)
+                + M_tt(theta_h) * N_tt(phi, etaPerp, etaPar)
+                + M_trt(theta_h) * N_trt(phi, etaPerp, etaPar)) / CosineSquared(theta_d);
 
         return result;
     }
