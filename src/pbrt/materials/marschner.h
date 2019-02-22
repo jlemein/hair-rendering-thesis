@@ -60,7 +60,7 @@ namespace pbrt {
       public:
         MarschnerBSDF(const SurfaceInteraction& si, Float alphaR, Float alphaTT, Float alphaTRT, 
                 Float betaR, Float betaTT, Float betaTRT, 
-                Float eta, std::shared_ptr<Texture<Spectrum>> sigmaA);
+                Float eta, Spectrum sigmaA);
         
         /**
          * (Required) Returns the value of the distribution function for the given pair of directions
@@ -114,7 +114,7 @@ namespace pbrt {
         // Marschner params
         const Float mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT;
         Float mEta;
-        std::shared_ptr<Texture<Spectrum>> mSigmaA;
+        Spectrum mSigmaA;
 
         Float M_r(Float theta_h) const;
         Float M_tt(Float theta_h) const;

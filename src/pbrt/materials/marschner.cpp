@@ -241,12 +241,67 @@ namespace pbrt {
         return -phi / 2.0;
     }
 
-    static Spectrum Transmittance(const Spectrum& sigmaA, Float gamma_t) {
-        return Exp(-2.0 * sigmaA * (1.0 + cos(2.0 * gamma_t)));
+    // TODO: Write unit tests to verify these functions
+
+    static int SolveCubicRoots(Float a, Float b, Float c, Float d,
+            Float& root1, Float& root2, Float& root3) {
+        //Float discriminant = a * a * b * b + 18.0 * a * b * c - 4.0 * b * b * b - 4.0 * a * a * a * c - 27.0 * c*c;
+
+        Float p = b - a * a / 3.0;
+        Float q = 2.0 * a * a * a / 27.0 - a * b / 3.0 + c;
+        Float discr = 0.25 * q * q + p * p * p / 27.0;
+
+        if (discr > 0.0) {
+            Float sqrtDiscriminant = sqrt(discr);
+            Float x1 = pow(-0.5 * q + sqrtDiscriminant, Float(1.0 / 3.0));
+            Float x2 = pow(-0.5 * q - sqrtDiscriminant, Float(1.0 / 3.0));
+            root1 = x1 + x2 - a / 3.0;
+            return 1;
+        }
+
+        Error("Should not happen at this stage");
+        return 0;
+    }
+
+    static Float SolveGammaRoot_TT(Float phi, Float etaPerp) {
+        Float tmp = 1.0 / etaPerp;
+        //printf("etaPerp: %f, tmp: %f\n", etaPerp, tmp);
+        CHECK_GT(etaPerp, 0.0);
+        CHECK(tmp >= 0.0 && tmp <= 1.0);
+        Float constant = asin(1.0 / etaPerp);
+
+        Float a = -8.0 * constant / (Pi * Pi * Pi);
+        Float c = 6.0 * constant / Pi - 2.0;
+        Float d = Pi;
+
+        // return gamma
+        Float root1, root2, root3;
+        int numberRoots = SolveCubicRoots(a, 0.0, c, d, root1, root2, root3);
+        CHECK_EQ(numberRoots, 1);
+
+
+    }
+
+    static Spectrum Transmittance(const Spectrum& sigmaA, Float sinGammaT) {
+        if (abs(sinGammaT) >= 1.0) {
+            return 0.0;
+        } else {
+            Float gammaT = SafeASin(sinGammaT);
+            return Exp(-2.0 * sigmaA * (1.0 + cos(2.0 * gammaT)));
+        }
     }
 
     static Float DPhiDh_R(Float gamma_i) {
         return 1.0 / AssurePositiveNonZero(sqrt(1.0 - SineSquared(gamma_i)));
+    }
+
+    static Float DPhiDh_TT(Float h, Float etaPerp) {
+        Float cn = asin(1.0 / etaPerp);
+        Float a = -8.0 * cn / (Pi * Pi * Pi);
+        Float c = 6.0 * cn / Pi - 2.0;
+
+        Float dArcSin = sqrt(1.0 - h * h);
+        return -3.0 * a * Sqr(asin(h)) / dArcSin + c / dArcSin;
     }
 
     /*******************************
@@ -256,9 +311,12 @@ namespace pbrt {
     void MarschnerMaterial::ComputeScatteringFunctions(SurfaceInteraction *si,
             MemoryArena &arena, TransportMode mode, bool allowMultipleLobes) const {
 
+        Spectrum sigmaA = mSigmaA->Evaluate(*si);
+
         // Allocate a bsdf that contains the collection of BRDFs and BTDFs
         si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
-        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt, mBr, mBtt, mBtrt, mEta, mSigmaA));
+
+        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt, mBr, mBtt, mBtrt, mEta, sigmaA));
     }
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp) {
@@ -286,24 +344,28 @@ namespace pbrt {
     MarschnerBSDF::MarschnerBSDF(const SurfaceInteraction& si,
             Float alphaR, Float alphaTT, Float alphaTRT,
             Float betaR, Float betaTT, Float betaTRT,
-            Float eta, std::shared_ptr<Texture < Spectrum>> sigmaA
+            Float eta, Spectrum sigmaA
             )
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
     mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv),
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
     mEta(eta), mSigmaA(sigmaA) {
+
     };
 
     Float MarschnerBSDF::M_r(Float theta_h) const {
+
         return Gaussian(mBetaR, theta_h - mAlphaR);
     }
 
     Float MarschnerBSDF::M_tt(Float theta_h) const {
+
         return Gaussian(mBetaTT, theta_h - mAlphaTT);
     }
 
     Float MarschnerBSDF::M_trt(Float theta_h) const {
+
         return Gaussian(mBetaTRT, theta_h - mAlphaTRT);
     }
 
@@ -318,18 +380,35 @@ namespace pbrt {
         ToBravais(mEta, gamma_i, etaPerp, etaPar);
 
         // reflection is only determined by Fresnel
+
         return Fresnel(etaPerp, etaPar, gamma_i) / (2.0 * DPhiDh_R(gamma_i));
     }
 
     Spectrum MarschnerBSDF::N_tt(Float relativePhi) const {
-        return N_p(1, relativePhi);
+        Float etaPerp, etaPar;
+
+        // TODO: Check why etaPerp is required here. It is not calculated yet,
+        // because it needs gammaI.
+        Float gammaI = SolveGammaRoot_TT(relativePhi, mEta /*etaPerp*/);
+        ToBravais(mEta, gammaI, etaPerp, etaPar);
+
+        Float sinGammaT = sin(gammaI) / mEta;
+        Float dphidh = DPhiDh_TT(sin(gammaI), etaPerp);
+
+        // generalize sigmaA to 3D
+        Float gammaT = SafeASin(sinGammaT);
+        Spectrum sigmaAFor3D = Spectrum(mSigmaA) / AssurePositiveNonZero(cos(gammaT));
+
+        return Sqr(1.0 - Fresnel(etaPerp, etaPar, gammaI)) * Transmittance(sigmaAFor3D, sinGammaT) / (2.0 * dphidh);
     }
 
     Spectrum MarschnerBSDF::N_trt(Float relativePhi) const {
+
         return N_p(2, relativePhi);
     }
 
     Spectrum MarschnerBSDF::N_p(int p, Float relativePhi) const {
+
         return Spectrum(0.01);
     }
 
@@ -360,6 +439,7 @@ namespace pbrt {
     //    }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
+
         return PiOver4;
     }
 
