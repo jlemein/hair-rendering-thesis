@@ -368,9 +368,6 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::N_r(Float relativePhi, Float etaPerp, Float etaPar) const {
         // Reflection has only 1 root
-        // TODO: let relativePhi be in specific bounds.
-        // Marschner says that rootsolving works for relativePhi between [-pi, +pi]
-        //
         Float gammaI = SolveGammaRoot_R(relativePhi);
 
         // reflection is only determined by Fresnel
@@ -378,8 +375,6 @@ namespace pbrt {
     }
 
     Spectrum MarschnerBSDF::N_tt(Float relativePhi, Float etaPerp, Float etaPar) const {
-        // TODO: Check why etaPerp is required here. It is not calculated yet,
-        // because it needs gammaI.
         Float gammaI = SolveGammaRoot_TT(relativePhi, etaPerp);
 
         Float sinGammaI = sin(gammaI);
