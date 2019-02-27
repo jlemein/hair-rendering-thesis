@@ -40,7 +40,7 @@ TEST(Marschner, SolveRootsForRandTT) {
         Float x1, x2, x3;
         int nRoots = SolveDepressedCubic(a, c, d, x1, x2, x3);
 
-        // always expect 1 root for R and TT scattering components
+        // always expect 1 root for TT scattering components
         EXPECT_EQ(1, nRoots);
 
         // result should always be 0, we check here for smaller than 1e-5
@@ -49,17 +49,11 @@ TEST(Marschner, SolveRootsForRandTT) {
     }
 }
 
-//TEST(Marschner, SolveRoots) {
-//    // 3x^3 -9x + Pi = 0
-//    Float r1, r2, r3;
-//    int nRoots = SolveCubicRoots(3.0, 0.0, -9.0, Pi, r1, r2, r3);
-//    EXPECT_EQ(1, nRoots);
-//    EXPECT_FLOAT_EQ(0.0, 3.0 * pow(r1, 3.0) - 9 * r1 + Pi);
-//}
+// TODO:
+// * test if dphidh(0, gamma, etaPerp) equals dphidh_r
+// * test if dphi comes close to gradient and is always above 0
 
 TEST(Marschner, RelativeAzimuth) {
-    // Relative azimuth takes
-
 
     // test all variants where difference is 0 degrees
     EXPECT_FLOAT_EQ(0.0, RelativeAzimuth(-2.0 * Pi, -2.0 * Pi));

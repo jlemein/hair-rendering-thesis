@@ -304,16 +304,16 @@ namespace pbrt {
     }
 
     static Float DPhiDh_R(Float gamma_i) {
-        return 1.0 / AssurePositiveNonZero(sqrt(1.0 - SineSquared(gamma_i)));
+        return -2.0 / AssurePositiveNonZero(sqrt(1.0 - SineSquared(gamma_i)));
     }
 
-    static Float DPhiDh_TT(Float h, Float etaPerp) {
-        Float cn = asin(1.0 / etaPerp);
-        Float a = -8.0 * cn / (Pi * Pi * Pi);
-        Float c = 6.0 * cn / Pi - 2.0;
+    static Float DPhiDh(int p, Float gammaI, Float etaPerp) {
+        Float c = asin(1.0 / etaPerp);
+        Float a = 8.0 * p * c / (Pi * Pi * Pi);
+        Float b = 6.0 * p * c / Pi - 2.0;
 
-        Float dArcSin = sqrt(1.0 - h * h);
-        return -3.0 * a * Sqr(asin(h)) / dArcSin + c / dArcSin;
+        return (-3.0 * a * gammaI * gammaI + b) / SafeSqrt(1.0 - SineSquared(gammaI));
+
     }
 
     /*******************************
@@ -385,23 +385,24 @@ namespace pbrt {
         Float gammaI = SolveGammaRoot_R(relativePhi);
 
         // reflection is only determined by Fresnel
-        return Fresnel(etaPerp, etaPar, gammaI) / (2.0 * DPhiDh_R(gammaI));
+        return Fresnel(etaPerp, etaPar, gammaI)
+                / (2.0 * fabs(DPhiDh_R(gammaI)));
     }
 
     Spectrum MarschnerBSDF::N_tt(Float relativePhi, Float etaPerp, Float etaPar) const {
         Float gammaI = SolveGammaRoot_TT(relativePhi, etaPerp);
 
+        // TODO: write gammaT as the more efficient variant from marschner paper
         Float sinGammaI = sin(gammaI);
-        //Float dphidh = DPhiDh_TT(sinGammaI, etaPerp);
-
-        // generalize sigmaA to 3D
         Float sinGammaT = sinGammaI / mEta;
         Float gammaT = SafeASin(sinGammaT);
+
+        // generalize sigmaA to 3D
         Spectrum sigmaAFor3D = Spectrum(mSigmaA) / AssurePositiveNonZero(cos(gammaT));
 
-        return Sqr(1.0 - Fresnel(etaPerp, etaPar, gammaI)) * Transmittance(sigmaAFor3D, sinGammaT); // / (2.0 * dphidh);
-
-        //return N_p(1, relativePhi);
+        return Sqr(1.0 - Fresnel(etaPerp, etaPar, gammaI))
+                * Transmittance(sigmaAFor3D, sinGammaT)
+                / (fabs(2.0 * DPhiDh(ScatteringMode::TT, gammaI, etaPerp)));
     }
 
     Spectrum MarschnerBSDF::N_trt(Float relativePhi, Float etaPerp, Float etaPar) const {

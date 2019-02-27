@@ -18,6 +18,8 @@
 
 namespace pbrt {
 
+    enum ScatteringMode { R=0, TT=1, TRT=2 };
+    
     // PlasticMaterial Declarations
     class MarschnerMaterial : public Material {
       public:
