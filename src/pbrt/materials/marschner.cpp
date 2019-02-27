@@ -238,12 +238,6 @@ namespace pbrt {
     }
 
     static Float Discriminant(Float a, Float b, Float c, Float d) {
-        //        return a * a * b * b
-        //                + 18.0 * a * b * c
-        //                - 4.0 * b * b * b
-        //                - 4.0 * a * a * a * c
-        //                - 27.0 * c*c;
-
         return 18.0 * a * b * c * d
                 - 4.0 * b * b * b * d
                 + b * b * c * c

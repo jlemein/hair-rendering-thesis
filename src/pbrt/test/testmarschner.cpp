@@ -19,7 +19,34 @@ TEST(Marschner, SolveRoot) {
 
     EXPECT_EQ(1, nRoots);
     EXPECT_FLOAT_EQ(0.0, a * x * x * x + c * x + d);
-    //EXPECT_FLOAT_EQ(Discriminant(a, b, c, d), DiscriminantCardano(c / a, d / a));
+}
+
+TEST(Marschner, SolveRootsForRandTT) {
+    Float eta = 1.55;
+    const Float C = asin(1.0 / eta);
+
+    // walk around cylinder for incoming phi values
+    for (Float phi = -Pi; phi <= Pi; phi += 0.01 * Pi) {
+
+        // make sure that phi stays between [-Pi, Pi] due to floating point
+        // precision errors
+        phi = Clamp(phi, -Pi, Pi);
+
+        // depressed cubic equation: ax^3 + cx + d = 0
+        Float a = -8.0 * C / (Pi * Pi * Pi);
+        Float c = 6.0 * C / Pi - 2.0;
+        Float d = Pi - phi;
+
+        Float x1, x2, x3;
+        int nRoots = SolveDepressedCubic(a, c, d, x1, x2, x3);
+
+        // always expect 1 root for R and TT scattering components
+        EXPECT_EQ(1, nRoots);
+
+        // result should always be 0, we check here for smaller than 1e-5
+        Float result = a * x1 * x1 * x1 + c * x1 + d;
+        EXPECT_LT(fabs(result), 1e-5);
+    }
 }
 
 //TEST(Marschner, SolveRoots) {
