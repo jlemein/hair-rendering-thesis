@@ -237,26 +237,46 @@ namespace pbrt {
         return -phi / 2.0;
     }
 
+    static Float Discriminant(Float a, Float b, Float c, Float d) {
+        //        return a * a * b * b
+        //                + 18.0 * a * b * c
+        //                - 4.0 * b * b * b
+        //                - 4.0 * a * a * a * c
+        //                - 27.0 * c*c;
+
+        return 18.0 * a * b * c * d
+                - 4.0 * b * b * b * d
+                + b * b * c * c
+                - 4.0 * a * c * c * c
+                - 27 * a * a * d*d;
+    }
+
+    static inline Float DiscriminantCardano(Float p, Float q) {
+        return 0.25 * q * q + p * p * p / 27.0;
+    }
+
     // TODO: Write unit tests to verify these functions
 
-    static int SolveCubicRoots(Float a, Float b, Float c, Float d,
-            Float& root1, Float& root2, Float& root3) {
-        //Float discriminant = a * a * b * b + 18.0 * a * b * c - 4.0 * b * b * b - 4.0 * a * a * a * c - 27.0 * c*c;
+    /**
+     * To solve a depressed cubic, which is a cubic polynomial of the form
+     * ax^3 + cx + d = 0
+     * @param p
+     * @param q
+     */
+    static int SolveDepressedCubic(Float a, Float c, Float d, Float& root1, Float& root2, Float& root3) {
+        Float p = c / a;
+        Float q = d / a;
 
-        //TODO: d is not used
+        Float D = DiscriminantCardano(p, q);
 
-        Float p = b - a * a / 3.0;
-        Float q = 2.0 * a * a * a / 27.0 - a * b / 3.0 + c;
-        Float discr = 0.25 * q * q + p * p * p / 27.0;
+        if (D >= 0) {
+            Float alpha = pow(-0.5 * q + sqrt(D), Float(1.0 / 3.0));
+            //Float beta = pow(-0.5 * q - sqrtD, 1.0 / 3.0);
+            Float beta = -p / (3.0 * alpha);
 
-        if (discr > 0.0) {
-            Float sqrtDiscriminant = sqrt(discr);
-            Float x1 = pow(-0.5 * q + sqrtDiscriminant, Float(1.0 / 3.0));
-            Float x2 = pow(-0.5 * q - sqrtDiscriminant, Float(1.0 / 3.0));
-            root1 = x1 + x2 - a / 3.0;
+            root1 = alpha + beta;
             return 1;
         }
-
         Error("Should not happen at this stage");
         return 0;
     }
@@ -274,7 +294,7 @@ namespace pbrt {
 
         // return gamma
         Float root1, root2, root3;
-        int numberRoots = SolveCubicRoots(a, 0.0, c, d, root1, root2, root3);
+        int numberRoots = SolveDepressedCubic(a, c, d, root1, root2, root3);
         CHECK_EQ(numberRoots, 1);
 
         return root1;
