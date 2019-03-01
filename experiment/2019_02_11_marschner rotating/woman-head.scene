@@ -17,6 +17,7 @@ WorldBegin
 	MakeNamedMaterial "black_hair" "string type" [ "marschner" ]
 	MakeNamedMaterial "red_hair" "string type" [ "marschner" ]
 	MakeNamedMaterial "brown_hair" "string type" [ "marschner" ]
+    MakeNamedMaterial "brown_hair_ref" "string type" [ "hair" ]
 	MakeNamedMaterial "blonde_hair" "string type" [ "marschner" ]
 
 $useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 

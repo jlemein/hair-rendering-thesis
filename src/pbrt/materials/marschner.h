@@ -60,7 +60,8 @@ namespace pbrt {
     // MarschnerBSDF Declarations
     class MarschnerBSDF : public BxDF {        
       public:
-        MarschnerBSDF(const SurfaceInteraction& si, Float alphaR, Float alphaTT, Float alphaTRT, 
+        MarschnerBSDF(const SurfaceInteraction& si, Float h, 
+                Float alphaR, Float alphaTT, Float alphaTRT, 
                 Float betaR, Float betaTT, Float betaTRT, 
                 Float eta, Spectrum sigmaA);
         

@@ -69,6 +69,7 @@ namespace pbrt {
         Float phi = phi_r - phi_i;
 
         // map to range [-pi, pi] so that our cubic solver works
+        // TODO: dont do this, will be done later
         while (phi > Pi) {
             phi -= 2.0 * Pi;
         }
@@ -76,7 +77,7 @@ namespace pbrt {
             phi += 2.0 * Pi;
         }
 
-        CHECK_LE(abs(phi), Pi);
+        //CHECK_LE(abs(phi), Pi);
         return phi;
     }
 
@@ -159,8 +160,9 @@ namespace pbrt {
             Float gamma_t = SafeASin(sinGammaT);
             Float cos_gamma_i = cos(gamma_i);
             Float cos_gamma_t = cos(gamma_t);
-            //printf("nt: %f, gamma_i: %f, gamma_t: %f, cosGammaI: %f, cosGammaT: %f\n", nt, gamma_i, gamma_t, cos_gamma_i, cos_gamma_t);
-            return Clamp(Sqr((ni * cos_gamma_i - nt * cos_gamma_t) / (ni * cos_gamma_i + nt * cos_gamma_t)), 0.0, 1.0);
+
+            return Clamp(Sqr((ni * cos_gamma_i - nt * cos_gamma_t)
+                    / (ni * cos_gamma_i + nt * cos_gamma_t)), 0.0, 1.0);
 
         }
     }
@@ -188,7 +190,6 @@ namespace pbrt {
             // total reflection
             return 1.0;
         } else {
-            //printf("P sinGammaT: %f", sinGammaT);
             Float gamma_t = SafeASin(sinGammaT);
             Float cos_gamma_i = cos(gamma_i);
             Float cos_gamma_t = cos(gamma_t);
@@ -221,7 +222,6 @@ namespace pbrt {
         Float fresnelP = FresnelReflectionP(1.0, etaPar, gammaI);
         CHECK(fresnelP > -0.00001 && fresnelP < 1.00001);
 
-        printf("fresnelS: %f -- fresnelP: %f\n", fresnelS, fresnelP);
         return 0.5 * (fresnelP + fresnelS);
     }
 
@@ -246,13 +246,11 @@ namespace pbrt {
 
         if (D >= 0) {
             Float alpha = pow(-0.5 * q + sqrt(D), Float(1.0 / 3.0));
-            //Float beta = pow(-0.5 * q - sqrtD, 1.0 / 3.0);
             Float beta = -p / (3.0 * alpha);
 
             roots[0] = alpha + beta;
             return 1;
         } else {
-            //            Float r = 0.25 * q * q - D;
             Float R = 2.0 * pow(sqrt(0.25 * q * q - D), 1.0 / 3.0);
             Float tanPhi = -2.0 * sqrt(-D) / q;
             Float phi = atan(tanPhi);
@@ -265,8 +263,6 @@ namespace pbrt {
             roots[0] = R * cos(phi / 3.0);
             roots[1] = R * cos((phi + 2.0 * Pi) / 3.0);
             roots[2] = R * cos((phi + 4.0 * Pi) / 3.0);
-
-            printf("Roots is 3\n");
             return 3;
         }
     }
@@ -293,6 +289,10 @@ namespace pbrt {
         Float c = 6.0 * constant / Pi - 2.0;
         Float d = Pi - phi;
 
+        // TODO: check if this is needed?
+        //        while (d > Pi) d -= 2 * Pi;
+        //        while (d < -Pi) d += 2 * Pi;
+
         Float roots[3];
         int numberRoots = SolveDepressedCubic(a, c, d, roots);
         CHECK_EQ(numberRoots, 1);
@@ -308,6 +308,10 @@ namespace pbrt {
         Float a = -8.0 * p * C / (Pi * Pi * Pi);
         Float c = 6.0 * p * C / Pi - 2.0;
         Float d = p * Pi - phi;
+
+        // TODO: check if this is needed?
+        //        while (d > Pi) d -= 2 * Pi;
+        //        while (d < -Pi) d += 2 * Pi;
 
         int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
         CHECK(numberRoots == 1 || numberRoots == 3);
@@ -347,7 +351,10 @@ namespace pbrt {
 
         // Allocate a bsdf that contains the collection of BRDFs and BTDFs
         si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
-        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt, mBr, mBtt, mBtrt, mEta, sigmaA));
+
+        Float h = 2.0 * si->uv[1] - 1.0;
+
+        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, h, mAr, mAtt, mAtrt, mBr, mBtt, mBtrt, mEta, sigmaA));
     }
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp) {
@@ -373,17 +380,18 @@ namespace pbrt {
      *******************************/
 
     MarschnerBSDF::MarschnerBSDF(const SurfaceInteraction& si,
+            Float h,
             Float alphaR, Float alphaTT, Float alphaTRT,
             Float betaR, Float betaTT, Float betaTRT,
             Float eta, Spectrum sigmaA
             )
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
-    mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv),
+    mH(h), mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv),
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
     mEta(eta), mSigmaA(sigmaA) {
-        mH = 2.0 * si.uv[1] - 1.0;
 
+        CHECK(abs(mH) <= 1.0);
     };
 
     Float MarschnerBSDF::M_r(Float theta_h) const {
@@ -401,9 +409,38 @@ namespace pbrt {
         return Gaussian(mBetaTRT, theta_h - mAlphaTRT);
     }
 
+    /**
+     * Receives the incoming gammaI direction with the corresponding
+     * refracted direction gammaT. It computes the resulting phi when scattered
+     * through the cylinder.
+     *
+     * @param p
+     * @param gammaI
+     * @param gammaT
+     * @return
+     */
+    //    Float Phi(int p, Float gammaI, Float gammaT) {
+    //        return 2.0 * p * gammaT - 2.0 * gammaI + p * Pi;
+    //    }
+    //
+    //    Float PhiR(Float gammaI) {
+    //        return -2.0 * gammaI;
+    //    }
+
+    //    Float DPhi(Float relativePhi, Float phi) {
+    //        Float dphi = relativePhi - phi;
+    //        while (dphi > Pi) dphi -= 2 * Pi;
+    //        while (dphi < -Pi) dphi += 2 * Pi;
+    //        return dphi;
+    //    }
+
     Spectrum MarschnerBSDF::N_r(Float relativePhi, Float etaPerp, Float etaPar) const {
         // Reflection has only 1 root
-        Float gammaI = SolveGammaRoot_R(relativePhi);
+        // TODO: must we calculate a root here?
+        //Float gammaI = SolveGammaRoot_R(relativePhi);
+
+        Float dPhi = relativePhi; //DPhi(relativePhi, PhiR(_gammaI));
+        Float gammaI = SolveGammaRoot_R(dPhi);
 
         // reflection is only determined by Fresnel
         return Fresnel(etaPerp, etaPar, gammaI)
@@ -411,12 +448,13 @@ namespace pbrt {
     }
 
     Spectrum MarschnerBSDF::N_tt(Float relativePhi, Float etaPerp, Float etaPar) const {
-        Float gammaI = SolveGammaRoot_TT(relativePhi, etaPerp);
+
+        Float dPhi = relativePhi; // DPhi(relativePhi, Phi(ScatteringMode::TT, _gammaI, _gammaT));
+        Float gammaI = SolveGammaRoot_TT(dPhi, etaPerp);
+
         Float sinGammaI = sin(gammaI);
 
-        // TODO: Check if we can use mEta here, or should we use etaPerp, etaPar
-        Float sinGammaT = sinGammaI / mEta;
-        // TODO: write gammaT as the more efficient variant from marschner paper
+        Float sinGammaT = sinGammaI / etaPerp; //mEta;
         Float gammaT = SafeASin(sinGammaT);
 
         // generalize sigmaA to 3D
@@ -427,33 +465,36 @@ namespace pbrt {
                 / (fabs(2.0 * DPhiDh(ScatteringMode::TT, gammaI, etaPerp)));
     }
 
-    Float GammaT(Float gammaI, Float etaPerp) {
-        Float c = asin(1.0 / etaPerp);
-        gammaI * 3.0 * c / Pi - gammaI * gammaI * gammaI * 4.0 * c / (Pi * Pi * Pi);
-    }
+    //    Float GammaT(Float gammaI, Float etaPerp) {
+    //        Float c = asin(1.0 / etaPerp);
+    //        return gammaI * 3.0 * c / Pi - gammaI * gammaI * gammaI * 4.0 * c / (Pi * Pi * Pi);
+    //    }
 
     Spectrum MarschnerBSDF::N_trt(Float relativePhi, Float etaPerp, Float etaPar) const {
-        Float gammaIRoots[3];
-        int nRoots = SolveGammaRoots(ScatteringMode::TRT, relativePhi, etaPerp, gammaIRoots);
+        Float roots[3];
+        int nRoots = SolveGammaRoots(ScatteringMode::TRT, relativePhi, etaPerp, roots);
         CHECK(nRoots == 1 || nRoots == 3);
 
-        Spectrum spectrum(0.0);
+        Spectrum sum(0.0);
 
         for (int i = 0; i < nRoots; ++i) {
-            Float gammaI = gammaIRoots[i];
+            Float gammaI = roots[i];
             Float sinGammaI = sin(gammaI);
 
             // TODO: Check if we can use mEta here, or should we use etaPerp, etaPar
-            //Float sinGammaT = sinGammaI / mEta;
+            Float sinGammaT = sinGammaI / etaPerp; // mEta;
+
             // TODO: write gammaT as the more efficient variant from marschner paper
-            //Float gammaT = SafeASin(sinGammaT);
-            Float gammaT = GammaT(gammaI, etaPerp);
-            Float sinGammaT = sin(gammaT);
+            Float gammaT = SafeASin(sinGammaT);
+            Float cosGammaT = AssurePositiveNonZero(cos(gammaT));
+
+            //            Float gammaT = GammaT(gammaI, etaPerp);
+            //            Float sinGammaT = sin(gammaT);
 
             // generalize sigmaA to 3D
-            Spectrum sigmaAFor3D = Spectrum(mSigmaA) / AssurePositiveNonZero(cos(gammaT));
+            Spectrum sigmaAFor3D = Spectrum(mSigmaA) / cosGammaT;
 
-            spectrum += Sqr(1.0 - Fresnel(etaPerp, etaPar, gammaI))
+            sum += Sqr(1.0 - Fresnel(etaPerp, etaPar, gammaI))
                     * Fresnel(1.0 / etaPerp, 1.0 / etaPar, gammaT)
                     * Transmittance(sigmaAFor3D, sinGammaT)
                     / (fabs(2.0 * DPhiDh(ScatteringMode::TRT, gammaI, etaPerp)));
@@ -461,11 +502,10 @@ namespace pbrt {
             //            Float rgb[3];
             //            spectrum.ToRGBSpectrum().ToRGB(rgb);
             //printf("spectrum %f %f %f - fresnel: %f\n", rgb[0], rgb[1], rgb[2], Fresnel(etaPerp, etaPar, gammaI));
-            printf("etaPerp: %f -- gammaI: %f -- fresnel: %f\n", etaPerp, gammaI, Fresnel(etaPerp, etaPar, gammaI));
+            //printf("etaPerp: %f -- gammaI: %f -- fresnel: %f\n", etaPerp, gammaI, Fresnel(etaPerp, etaPar, gammaI));
         }
 
-        return spectrum;
-        //return N_p(2, relativePhi);
+        return sum;
     }
 
     Spectrum MarschnerBSDF::N_p(int p, Float relativePhi) const {
@@ -488,13 +528,20 @@ namespace pbrt {
         Float phi_h = HalfAngle(phi_i, phi_r);
 
         Float etaPerp, etaPar;
+
         // TODO: check if bravais index is based on theta_r or theta_i or maybe theta_d ??
         ToBravais(mEta, theta_r, etaPerp, etaPar);
+
+        // Compute all useful properties
+        Float gammaI = SafeASin(mH);
+        Float sinGammaT = mH / etaPerp;
+        Float gammaT = SafeASin(sinGammaT);
 
         Spectrum result = (
                 M_r(theta_h) * N_r(phi, etaPerp, etaPar)
                 + M_tt(theta_h) * N_tt(phi, etaPerp, etaPar)
-                + M_trt(theta_h) * N_trt(phi, etaPerp, etaPar)) / CosineSquared(theta_d);
+                + M_trt(theta_h) * N_trt(phi, etaPerp, etaPar)
+                ) / CosineSquared(theta_d);
 
         return result;
     }
