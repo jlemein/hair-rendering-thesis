@@ -203,7 +203,7 @@ namespace pbrt {
      * @param gamma_i
      * @return
      */
-    static Float Fresnel(Float etaPerp, Float etaPar, Float gamma_i) {
+    static Float Fresnel(Float etaPerp, Float etaPar, Float gammaI) {
         CHECK_GT(etaPerp, 0.0);
         CHECK_GT(etaPar, 0.0);
 
@@ -214,14 +214,61 @@ namespace pbrt {
         // TODO: must we use gamma_t based on eta, or calculate gamma_t for projected and perpendicular cases
         // use Snell's law to find transmitted angle
 
-        Float fresnelS = FresnelReflectionS(1.0, etaPerp, gamma_i);
+        Float fresnelS = FresnelReflectionS(1.0, etaPerp, gammaI);
         CHECK(fresnelS >= 0.0 && fresnelS <= 1.0);
 
         // for s-polarized light
-        Float fresnelP = FresnelReflectionP(1.0, etaPar, gamma_i);
+        Float fresnelP = FresnelReflectionP(1.0, etaPar, gammaI);
         CHECK(fresnelP > -0.00001 && fresnelP < 1.00001);
 
+        printf("fresnelS: %f -- fresnelP: %f\n", fresnelS, fresnelP);
         return 0.5 * (fresnelP + fresnelS);
+    }
+
+    static inline Float DiscriminantCardano(Float p, Float q) {
+        return 0.25 * q * q + p * p * p / 27.0;
+    }
+
+    /**
+     * To solve a depressed cubic, which is a cubic polynomial of the form
+     * ax^3 + cx + d = 0
+     * @param a
+     * @param c
+     * @param c
+     * @param roots The solved
+     * @returns then number of roots found
+     */
+    static int SolveDepressedCubic(Float a, Float c, Float d, Float roots[]) {
+        Float p = c / a;
+        Float q = d / a;
+
+        Float D = DiscriminantCardano(p, q);
+
+        if (D >= 0) {
+            Float alpha = pow(-0.5 * q + sqrt(D), Float(1.0 / 3.0));
+            //Float beta = pow(-0.5 * q - sqrtD, 1.0 / 3.0);
+            Float beta = -p / (3.0 * alpha);
+
+            roots[0] = alpha + beta;
+            return 1;
+        } else {
+            //            Float r = 0.25 * q * q - D;
+            Float R = 2.0 * pow(sqrt(0.25 * q * q - D), 1.0 / 3.0);
+            Float tanPhi = -2.0 * sqrt(-D) / q;
+            Float phi = atan(tanPhi);
+
+            // when phi is smaller than 0, then negate result
+            if (phi < 0) {
+                R *= -1.0;
+            }
+
+            roots[0] = R * cos(phi / 3.0);
+            roots[1] = R * cos((phi + 2.0 * Pi) / 3.0);
+            roots[2] = R * cos((phi + 4.0 * Pi) / 3.0);
+
+            printf("Roots is 3\n");
+            return 3;
+        }
     }
 
     /**
@@ -237,61 +284,35 @@ namespace pbrt {
         return -phi / 2.0;
     }
 
-    static Float Discriminant(Float a, Float b, Float c, Float d) {
-        return 18.0 * a * b * c * d
-                - 4.0 * b * b * b * d
-                + b * b * c * c
-                - 4.0 * a * c * c * c
-                - 27 * a * a * d*d;
-    }
-
-    static inline Float DiscriminantCardano(Float p, Float q) {
-        return 0.25 * q * q + p * p * p / 27.0;
-    }
-
-    // TODO: Write unit tests to verify these functions
-
-    /**
-     * To solve a depressed cubic, which is a cubic polynomial of the form
-     * ax^3 + cx + d = 0
-     * @param p
-     * @param q
-     */
-    static int SolveDepressedCubic(Float a, Float c, Float d, Float& root1, Float& root2, Float& root3) {
-        Float p = c / a;
-        Float q = d / a;
-
-        Float D = DiscriminantCardano(p, q);
-
-        if (D >= 0) {
-            Float alpha = pow(-0.5 * q + sqrt(D), Float(1.0 / 3.0));
-            //Float beta = pow(-0.5 * q - sqrtD, 1.0 / 3.0);
-            Float beta = -p / (3.0 * alpha);
-
-            root1 = alpha + beta;
-            return 1;
-        }
-        Error("Should not happen at this stage");
-        return 0;
-    }
-
     static Float SolveGammaRoot_TT(Float phi, Float etaPerp) {
-        Float tmp = 1.0 / etaPerp;
-        //printf("etaPerp: %f, tmp: %f\n", etaPerp, tmp);
         CHECK_GT(etaPerp, 0.0);
-        CHECK(tmp >= 0.0 && tmp <= 1.0);
+        CHECK(1.0 / etaPerp >= 0.0 && 1.0 / etaPerp <= 1.0);
         Float constant = asin(1.0 / etaPerp);
 
         Float a = -8.0 * constant / (Pi * Pi * Pi);
         Float c = 6.0 * constant / Pi - 2.0;
         Float d = Pi - phi;
 
-        // return gamma
-        Float root1, root2, root3;
-        int numberRoots = SolveDepressedCubic(a, c, d, root1, root2, root3);
+        Float roots[3];
+        int numberRoots = SolveDepressedCubic(a, c, d, roots);
         CHECK_EQ(numberRoots, 1);
 
-        return root1;
+        return roots[0];
+    }
+
+    static int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]) {
+        CHECK_GT(etaPerp, 0.0);
+        CHECK(1.0 / etaPerp >= 0.0 && 1.0 / etaPerp <= 1.0);
+        Float C = asin(1.0 / etaPerp);
+
+        Float a = -8.0 * p * C / (Pi * Pi * Pi);
+        Float c = 6.0 * p * C / Pi - 2.0;
+        Float d = p * Pi - phi;
+
+        int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
+        CHECK(numberRoots == 1 || numberRoots == 3);
+
+        return numberRoots;
     }
 
     static Spectrum Transmittance(const Spectrum& sigmaA, Float sinGammaT) {
@@ -313,7 +334,6 @@ namespace pbrt {
         Float b = 6.0 * p * c / Pi - 2.0;
 
         return (-3.0 * a * gammaI * gammaI + b) / SafeSqrt(1.0 - SineSquared(gammaI));
-
     }
 
     /*******************************
@@ -362,6 +382,7 @@ namespace pbrt {
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
     mEta(eta), mSigmaA(sigmaA) {
+        mH = 2.0 * si.uv[1] - 1.0;
 
     };
 
@@ -391,10 +412,11 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::N_tt(Float relativePhi, Float etaPerp, Float etaPar) const {
         Float gammaI = SolveGammaRoot_TT(relativePhi, etaPerp);
-
-        // TODO: write gammaT as the more efficient variant from marschner paper
         Float sinGammaI = sin(gammaI);
+
+        // TODO: Check if we can use mEta here, or should we use etaPerp, etaPar
         Float sinGammaT = sinGammaI / mEta;
+        // TODO: write gammaT as the more efficient variant from marschner paper
         Float gammaT = SafeASin(sinGammaT);
 
         // generalize sigmaA to 3D
@@ -405,9 +427,45 @@ namespace pbrt {
                 / (fabs(2.0 * DPhiDh(ScatteringMode::TT, gammaI, etaPerp)));
     }
 
-    Spectrum MarschnerBSDF::N_trt(Float relativePhi, Float etaPerp, Float etaPar) const {
+    Float GammaT(Float gammaI, Float etaPerp) {
+        Float c = asin(1.0 / etaPerp);
+        gammaI * 3.0 * c / Pi - gammaI * gammaI * gammaI * 4.0 * c / (Pi * Pi * Pi);
+    }
 
-        return N_p(2, relativePhi);
+    Spectrum MarschnerBSDF::N_trt(Float relativePhi, Float etaPerp, Float etaPar) const {
+        Float gammaIRoots[3];
+        int nRoots = SolveGammaRoots(ScatteringMode::TRT, relativePhi, etaPerp, gammaIRoots);
+        CHECK(nRoots == 1 || nRoots == 3);
+
+        Spectrum spectrum(0.0);
+
+        for (int i = 0; i < nRoots; ++i) {
+            Float gammaI = gammaIRoots[i];
+            Float sinGammaI = sin(gammaI);
+
+            // TODO: Check if we can use mEta here, or should we use etaPerp, etaPar
+            //Float sinGammaT = sinGammaI / mEta;
+            // TODO: write gammaT as the more efficient variant from marschner paper
+            //Float gammaT = SafeASin(sinGammaT);
+            Float gammaT = GammaT(gammaI, etaPerp);
+            Float sinGammaT = sin(gammaT);
+
+            // generalize sigmaA to 3D
+            Spectrum sigmaAFor3D = Spectrum(mSigmaA) / AssurePositiveNonZero(cos(gammaT));
+
+            spectrum += Sqr(1.0 - Fresnel(etaPerp, etaPar, gammaI))
+                    * Fresnel(1.0 / etaPerp, 1.0 / etaPar, gammaT)
+                    * Transmittance(sigmaAFor3D, sinGammaT)
+                    / (fabs(2.0 * DPhiDh(ScatteringMode::TRT, gammaI, etaPerp)));
+
+            //            Float rgb[3];
+            //            spectrum.ToRGBSpectrum().ToRGB(rgb);
+            //printf("spectrum %f %f %f - fresnel: %f\n", rgb[0], rgb[1], rgb[2], Fresnel(etaPerp, etaPar, gammaI));
+            printf("etaPerp: %f -- gammaI: %f -- fresnel: %f\n", etaPerp, gammaI, Fresnel(etaPerp, etaPar, gammaI));
+        }
+
+        return spectrum;
+        //return N_p(2, relativePhi);
     }
 
     Spectrum MarschnerBSDF::N_p(int p, Float relativePhi) const {

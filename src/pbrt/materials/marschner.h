@@ -110,6 +110,7 @@ namespace pbrt {
         //virtual Spectrum rho(int nSamples, const Point2f *samples1, const Point2f *samples2) const;
 
     private:
+        Float mH;
         const Normal3f mNs, mNg;
         const Vector3f mDpdu, mDpdv;
 
