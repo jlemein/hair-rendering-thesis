@@ -88,7 +88,7 @@ namespace pbrt {
          * @param sampledType
          * @return
          */
-        //virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType = nullptr) const;
+        virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType = nullptr) const;
         
         /**
          * Returns the probability density function between the incoming and outgoing direction.

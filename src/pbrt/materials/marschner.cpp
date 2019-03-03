@@ -546,9 +546,21 @@ namespace pbrt {
         return result;
     }
 
-    //    Spectrum MarschnerBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
-    //
-    //    }
+    Spectrum MarschnerBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
+
+        Float theta = Pi * sample.x;
+        Float phi = 2.0 * Pi * sample.y;
+
+        Float x = sin(theta) * cos(phi);
+        Float y = sin(theta) * sin(phi);
+        Float z = cos(theta);
+
+        //TODO: sampling is not performed uniform, so pdf should be adjusted
+        *pdf = this->Pdf(wo, *wi);
+        *wi = Vector3f(x, y, z);
+
+        return f(wo, *wi);
+    }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
 
