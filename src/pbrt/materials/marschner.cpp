@@ -14,6 +14,8 @@
 #include "interaction.h"
 #include "hair.h"
 
+#include <algorithm>
+
 namespace pbrt {
 
     /**
@@ -32,6 +34,12 @@ namespace pbrt {
             return 0.0;
         }
         return acos(x);
+    }
+
+    static void PrintSpectrum(const char* s, const Spectrum& sp) {
+        Float rgb[3];
+        sp.ToRGB(rgb);
+        printf("%s [%f %f %f]\n", s, rgb[0], rgb[1], rgb[2]);
     }
 
     /**
@@ -65,14 +73,14 @@ namespace pbrt {
         Float phi = phi_r - phi_i;
 
         // map to range [-pi, pi] so that our cubic solver works
-        //        while (phi > Pi) {
-        //            phi -= 2.0 * Pi;
-        //        }
-        //        while (phi < -Pi) {
-        //            phi += 2.0 * Pi;
-        //        }
+        while (phi > Pi) {
+            phi -= 2.0 * Pi;
+        }
+        while (phi < -Pi) {
+            phi += 2.0 * Pi;
+        }
 
-        //CHECK_LE(abs(phi), Pi);
+        CHECK_LE(abs(phi), Pi);
         return phi;
     }
 
@@ -107,10 +115,10 @@ namespace pbrt {
      */
     static Float Gaussian(Float width, Float x) {
         Float a = 1.0 / (width * sqrt(2.0 * Pi));
-        float c = width; //width of the curve is beta (might also be 0.5 * sigma)
+        Float c = width; //width of the curve is beta (might also be 0.5 * sigma)
 
-        float nom = Sqr(x);
-        float den = 2.0 * Sqr(width);
+        Float nom = Sqr(x);
+        Float den = 2.0 * Sqr(width);
 
         return a * exp(-nom / den);
     }
@@ -326,11 +334,14 @@ namespace pbrt {
     }
 
     static Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT) {
-        //return Exp(-2.0 * sigmaA * (1.0 + cos(2.0 * gammaT)));
 
-        //TODO is this a bug in paper than cos(2*gammaT)?
-        Float cosGammaT = AssurePositiveNonZero(cos(gammaT));
-        return Exp(-2.0 * sigmaA * (cosGammaT / cosThetaT));
+        // PBRT implementation
+        Float cosGammaT = cos(gammaT);
+        return Exp(-sigmaA * (2 * cosGammaT / cosThetaT));
+
+        // My implementation, which is correct?
+        // Float cosGamma2T = AssurePositiveNonZero(cos(2.0 * gammaT));
+        // return Exp(-2.0 * (sigmaA / cosThetaT) * (1.0 + cosGamma2T));
     }
 
     static Float DPhiDh_R(Float gamma_i) {
@@ -356,7 +367,10 @@ namespace pbrt {
      * @return
      */
     Float Phi(int p, Float gammaI, Float gammaT) {
-        return 2.0 * p * gammaT - 2.0 * gammaI + p * Pi;
+        Float phi = 2.0 * p * gammaT - 2.0 * gammaI + p * Pi;
+        //        while (phi > Pi) phi -= 2.0 * Pi;
+        //        while (phi < -Pi) phi += 2.0 * Pi;
+        return phi;
     }
 
     Float PhiR(Float gammaI) {
@@ -364,27 +378,27 @@ namespace pbrt {
     }
 
     /** Temporarily use Logistic from PBRT source code, to see if problems are gone */
-    inline Float Logistic(Float x, Float s) {
-        x = std::abs(x);
-        return std::exp(-x / s) / (s * Sqr(1 + std::exp(-x / s)));
-    }
-
-    inline Float LogisticCDF(Float x, Float s) {
-        return 1 / (1 + std::exp(-x / s));
-    }
-
-    inline Float TrimmedLogistic(Float x, Float s, Float a, Float b) {
-        CHECK_LT(a, b);
-        return Logistic(x, s) / (LogisticCDF(b, s) - LogisticCDF(a, s));
-    }
+    //    inline Float Logistic(Float x, Float s) {
+    //        x = std::abs(x);
+    //        return std::exp(-x / s) / (s * Sqr(1 + std::exp(-x / s)));
+    //    }
+    //
+    //    inline Float LogisticCDF(Float x, Float s) {
+    //        return 1 / (1 + std::exp(-x / s));
+    //    }
+    //
+    //    inline Float TrimmedLogistic(Float x, Float s, Float a, Float b) {
+    //        CHECK_LT(a, b);
+    //        return Logistic(x, s) / (LogisticCDF(b, s) - LogisticCDF(a, s));
+    //    }
 
     /** End of temporary PBRT code */
 
-    static Float GlintLobe(Float phi) {
-        Float s = 0.117160;
-        return TrimmedLogistic(phi, s, -Pi, Pi);
-        //return Clamp(cos(phi), 0.0, 1.0);
-    }
+    //    static Float GlintLobe(Float phi) {
+    //        Float s = 0.117160;
+    //        return TrimmedLogistic(phi, s, -Pi, Pi);
+    //        //return Clamp(cos(phi), 0.0, 1.0);
+    //    }
 
     /*******************************
      * MarschnerMaterial
@@ -460,36 +474,153 @@ namespace pbrt {
         return Gaussian(mBetaTRT, theta_h - mAlphaTRT);
     }
 
-    Spectrum MarschnerBSDF::N_r(Float phi, Float etaPerp, Float etaPar, Float gammaI) const {
+    Spectrum MarschnerBSDF::N_r(Float dphi, Float etaPerp, Float etaPar) const {
 
         // Compute the phi offset between incoming and reflected direction
-        Float offsetPhi = PhiR(gammaI);
-        Float dphi = DifferencePhi(phi, offsetPhi);
+        //Float offsetPhi = PhiR(gammaI);
+        //Float dphi = DifferencePhi(phi, offsetPhi);
+
+        // we only know phi_r at the moment [-pi, pi]
+        // now find the gamma that contributes to this scattering direction
+        Float gammaI = SolveGammaRoot_R(dphi);
+        Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp); //Fresnel(etaPerp, etaPar, gammaI);
+
+        CHECK_EQ(PhiR(gammaI), dphi);
 
         // reflection is only determined by Fresnel
-        return GlintLobe(dphi) * Fresnel(etaPerp, etaPar, gammaI)
-                / (2.0 * fabs(DPhiDh_R(gammaI)));
+        return fresnel / (2.0 * fabs(DPhiDh_R(gammaI)));
     }
 
-    Spectrum MarschnerBSDF::N_tt(Float phi, Float etaPerp, Float etaPar, Float gammaI, Float gammaT, Float sinGammaT, Float cosThetaT) const {
+    Float inline GammaT(Float gammaI, Float etaPerp) {
+        const Float Pi3 = Pi * Pi*Pi;
+        const Float C = SafeASin(1.0 / etaPerp);
 
-        Float dphi = DifferencePhi(phi, Phi(ScatteringMode::TT, gammaI, gammaT));
-        Float fresnel = Fresnel(etaPerp, etaPar, gammaI);
+        return gammaI * 3.0 * C / Pi - gammaI * gammaI * gammaI * 4.0 * C / Pi3;
+    }
 
-        return GlintLobe(dphi) * Sqr(1.0 - fresnel)
+    Spectrum MarschnerBSDF::N_tt(Float dphi, Float etaPerp, Float etaPar, Float cosThetaT) const {
+
+        //Float dphi = DifferencePhi(phi, Phi(ScatteringMode::TT, gammaI, gammaT));
+        Float gammaI = SolveGammaRoot_TT(dphi, etaPerp);
+        Float gammaT = GammaT(gammaI, etaPerp);
+
+        //CHECK_LT(fabs(dphi - Phi(1, gammaI, gammaT)), 0.01);
+
+        Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp); //Fresnel(etaPerp, etaPar, gammaI);
+
+        return Sqr(1.0 - fresnel)
                 * Transmittance(mSigmaA, gammaT, cosThetaT)
                 / (fabs(2.0 * DPhiDh(ScatteringMode::TT, gammaI, etaPerp)));
     }
 
-    Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float etaPar, Float gammaI, Float gammaT, Float sinGammaT, Float cosThetaT) const {
-
-        Float dphi = DifferencePhi(phi, Phi(2.0, gammaI, gammaT));
-        Float fresnel = Fresnel(etaPerp, etaPar, gammaI);
-
-        return GlintLobe(dphi) * Sqr(1.0 - fresnel) * fresnel
-                * Transmittance(mSigmaA, gammaT, cosThetaT)
-                / (fabs(2.0 * DPhiDh(ScatteringMode::TRT, gammaI, etaPerp)));
+    Float smoothstep(Float a, Float b, Float x) {
+        CHECK_GT(b - a, 0.0);
+        return Clamp((b - x) / (b - a), 0.0, 1.0);
     }
+
+    static Float ClampPhi(Float phi, Float min = -Pi, Float max = Pi) {
+        while (phi > max) phi -= 2.0 * Pi;
+        while (phi < min) phi += 2.0 * Pi;
+        return phi;
+    }
+
+    Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float etaPar, Float cosThetaT) const {
+
+        // Surface roughness parameters
+        Float mCausticIntensityLimit = 0.5;
+        Float mFadeRangeCausticMerge = 0.4; //[.2; .4]
+        Float mCausticWidth = Radians(25.0); // between 10 and 25 degrees
+        Float mGlintScaleFactor = 5; // between 0.5 to 5
+
+        Float t;
+        Float causticIntensity;
+        Float phiC;
+
+        // Compute Ntrt
+        //
+        Float roots[3];
+        int nRoots = SolveGammaRoots(2, phi, etaPerp, roots);
+
+        Spectrum sum(.0);
+
+        for (int i = 0; i < nRoots; ++i) {
+            Float gammaI = roots[i];
+            Float gammaT = GammaT(gammaI, etaPerp);
+
+            Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp); //Fresnel(etaPerp, etaPar, gammaI);
+            Float fresnelI = Fresnel(1.0 / etaPerp, 1.0 / etaPar, gammaT);
+            //printf("fresnel: %f, fresnelI: %f  ---  gammaI: %f, gammaT: %f\n", fresnel, fresnelI, gammaI, gammaT);
+
+            Spectrum T = Transmittance(mSigmaA, gammaT, cosThetaT);
+            Spectrum Absorption = Sqr(1.0 - fresnel) * fresnel * T * T;
+            Spectrum L = Absorption / (fabs(2.0 * DPhiDh(ScatteringMode::TRT, gammaI, etaPerp)));
+
+            if (etaPerp < 2.0) {
+                // root for caustic is (hc or -hc)
+                Float hc = sqrt((4.0 - Sqr(etaPerp)) / 3.0);
+                Float gammaC = SafeASin(hc);
+                Float gammaTC = GammaT(gammaC, etaPerp);
+                phiC = Phi(2, gammaI, gammaTC);
+
+                //TODO: Check if this is correct
+                Float squaredDPhiDH = Sqr(DPhiDh(2, gammaC, etaPerp));
+                //Float squaredDPhiDH = Sqr(DPhiDh(2, gammaC*gammaC));
+
+                causticIntensity = std::min(mCausticIntensityLimit, (Float) (2.0 * sqrt(2.0 * mCausticWidth / fabs(squaredDPhiDH))));
+                t = 1.0;
+            } else {
+                phiC = 0.0;
+                causticIntensity = mCausticIntensityLimit;
+                t = smoothstep(2.0, 2.0 + mFadeRangeCausticMerge, etaPerp);
+            }
+            //printf("t = %f\n", t);
+
+            // compute roughness
+            Float gaussianCenter = Gaussian(mCausticWidth, .0);
+            Float gaussianL = Gaussian(mCausticWidth, ClampPhi(phi - phiC));
+            Float gaussianR = Gaussian(mCausticWidth, ClampPhi(phi + phiC));
+
+            CHECK_GE(gaussianL, 0.0);
+            CHECK_GE(gaussianR, 0.0);
+            CHECK_GT(gaussianCenter, 0.0);
+            CHECK(t >= 0.0 && t <= 1.0);
+
+            //printf("phiC: %f\n", phiC);
+            //PrintSpectrum("Np", L);
+            L *= (1.0 - t * gaussianL / gaussianCenter);
+            L *= (1.0 - t * gaussianR / gaussianCenter);
+            L += t * mGlintScaleFactor * Absorption * causticIntensity * (gaussianL + gaussianR);
+            //PrintSpectrum("L", L);
+            sum += L;
+        }
+
+        //PrintSpectrum("sum", sum);
+        return sum;
+        //        return Spectrum(0.0);
+
+    }
+
+
+    //    Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float etaPar, Float gammaI, Float gammaT, Float sinGammaT, Float cosThetaT) const {
+    //
+    //        // find roots
+    //        //Float dphi = DifferencePhi(phi, Phi(2.0, gammaI, gammaT));
+    //
+    //
+    //        Float rGammaI[3];
+    //        int nRoots = SolveGammaRoots(2, phi, etaPerp, rGammaI);
+    //        Float fresnel = Fresnel(etaPerp, etaPar, gammaI);
+    //        Float T = Transmittance(mSigmaA, gammaT, cosThetaT);
+    //
+    //        Spectrum sum(.0);
+    //
+    //        //Float rGammaT = SafeASin(sin(rGammaI[0])/etaPerp);
+    //
+    //        Spectrum A = Sqr(1.0 - fresnel) * fresnel * Sqr(T);
+    //
+    //        return A / (fabs(2.0 * DPhiDh(ScatteringMode::TRT, rGammaI[0], etaPerp)));
+    //
+    //    }
 
     Spectrum MarschnerBSDF::N_p(int p, Float relativePhi) const {
 
@@ -506,7 +637,7 @@ namespace pbrt {
         ToSphericalCoords(wo, theta_r, phi_r);
 
         Float theta_d = DifferenceAngle(theta_i, theta_r);
-        Float phi = phi_r - phi_i; //RelativeAzimuth(phi_i, phi_r);
+        Float phi = RelativeAzimuth(phi_i, phi_r);
         Float theta_h = HalfAngle(theta_i, theta_r);
         Float phi_h = HalfAngle(phi_i, phi_r);
 
@@ -526,9 +657,9 @@ namespace pbrt {
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
 
         Spectrum result = (
-                M_r(theta_h) * N_r(phi, etaPerp, etaPar, gammaI)
-                + M_tt(theta_h) * N_tt(phi, etaPerp, etaPar, gammaI, gammaT, sinGammaT, cosThetaT)
-                + M_trt(theta_h) * N_trt(phi, etaPerp, etaPar, gammaI, gammaT, sinGammaT, cosThetaT)
+                M_r(theta_h) * N_r(phi, etaPerp, etaPar)
+                + M_tt(theta_h) * N_tt(phi, etaPerp, etaPar, cosThetaT)
+                + M_trt(theta_h) * N_trt(phi, etaPerp, etaPar, cosThetaT)
                 ) / CosineSquared(theta_d);
 
         return result;
@@ -536,19 +667,19 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
 
-        //        Float theta = Pi * sample.x;
-        //        Float phi = 2.0 * Pi * sample.y;
-        //
-        //        Float x = sin(theta) * cos(phi);
-        //        Float y = sin(theta) * sin(phi);
-        //        Float z = cos(theta);
-        //
-        //        //TODO: sampling is not performed uniform, so pdf should be adjusted
-        //        *pdf = this->Pdf(wo, *wi);
-        //        *wi = Vector3f(x, y, z);
+        Float theta = Pi * sample.x;
+        Float phi = 2.0 * Pi * sample.y;
 
-        return Spectrum(.0);
-        //return f(wo, *wi);
+        Float x = sin(theta) * cos(phi);
+        Float y = sin(theta) * sin(phi);
+        Float z = cos(theta);
+
+        //TODO: sampling is not performed uniform, so pdf should be adjusted
+        *pdf = this->Pdf(wo, *wi);
+        *wi = Vector3f(x, y, z);
+
+        //        return Spectrum(.0);
+        return f(wo, *wi);
     }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {

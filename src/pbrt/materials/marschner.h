@@ -124,9 +124,9 @@ namespace pbrt {
         Float M_tt(Float theta_h) const;
         Float M_trt(Float theta_h) const;
         
-        Spectrum N_r(Float relativePhi, Float etaPerp, Float etaPar, Float gammaI) const;
-        Spectrum N_tt(Float relativePhi, Float etaPerp, Float etaPar, Float gammaI, Float gammaT, Float sinGammaT, Float cosThetaT) const;
-        Spectrum N_trt(Float relativePhi, Float etaPerp, Float etaPar, Float gammaI, Float gammaT, Float sinGammaT, Float cosThetaT) const;
+        Spectrum N_r(Float relativePhi, Float etaPerp, Float etaPar) const;
+        Spectrum N_tt(Float relativePhi, Float etaPerp, Float etaPar, Float cosThetaT) const;
+        Spectrum N_trt(Float relativePhi, Float etaPerp, Float etaPar, Float cosThetaT) const;
         
         Spectrum N_p(int p, Float relativePhi) const;
     };
