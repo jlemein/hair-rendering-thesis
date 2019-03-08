@@ -23,18 +23,23 @@ fig.suptitle("Marschner reflection")
 axs[0].plot(thetar, mar.M_r(thetai1, thetar), label="Mr")
 axs[0].plot(thetar, mar.M_r(thetai1, thetar), label="Mtt")
 axs[0].plot(thetar, mar.M_r(thetai1, thetar), label="Mtrt")
-axs[0].plot((0, 0), (-np.pi/4, 5))
+axs[0].arrow(-np.pi/4, 5, 0, -5, alpha=0.5, width=0.015,
+             edgecolor='black', facecolor='green', lw=2, zorder=5)
 axs[0].set_xlim(thetar.min(), thetar.max())
 
 axs[1].plot(thetar, mar.M_r(thetai2, thetar), label="Mr")
 axs[1].plot(thetar, mar.M_tt(thetai2, thetar), label="Mtt")
 axs[1].plot(thetar, mar.M_trt(thetai2, thetar), label="Mtrt")
 axs[1].set_xlim(thetar.min(), thetar.max())
+axs[1].arrow(0, 5, 0, -5, alpha=0.5, width=0.015,
+             edgecolor='black', facecolor='green', lw=2, zorder=5)
 
 axs[2].plot(thetar, mar.M_r(thetai3, thetar), label="Mr")
 axs[2].plot(thetar, mar.M_tt(thetai3, thetar), label="Mtt")
 axs[2].plot(thetar, mar.M_trt(thetai3, thetar), label="Mtrt")
 axs[2].set_xlim(thetar.min(), thetar.max())
+axs[2].arrow(np.pi/4, 5, 0, -5, alpha=0.5, width=0.015,
+             edgecolor='black', facecolor='green', lw=2, zorder=5)
 
 # c = ax.scatter(thetar, r, c=colors, s=area, cmap='hsv', alpha=0.75)
 plt.show()

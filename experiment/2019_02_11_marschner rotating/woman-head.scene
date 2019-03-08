@@ -16,7 +16,7 @@ Camera "perspective" "float fov" [ $camera_fov ]
 WorldBegin
 	MakeNamedMaterial "black_hair" "string type" [ "marschner" ]
 	MakeNamedMaterial "red_hair" "string type" [ "marschner" ]
-	MakeNamedMaterial "brown_hair" "string type" [ "marschner" ]
+	MakeNamedMaterial "brown_hair" "string type" [ "marschner" ] "color sigmaA" [0.544700 0.906100 1.781000]
     MakeNamedMaterial "brown_hair_ref" "string type" [ "hair" ]
 	MakeNamedMaterial "blonde_hair" "string type" [ "marschner" ]
 
