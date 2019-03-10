@@ -257,15 +257,20 @@ namespace pbrt {
         Float q = d / a;
 
         Float D = DiscriminantCardano(p, q);
+        //printf("p = %f -- q = %f -- D = %f\n", p, q, D);
 
         if (D >= 0) {
-            Float alpha = pow(-0.5 * q + sqrt(D), Float(1.0 / 3.0));
-            Float beta = -p / (3.0 * alpha);
+            Float alpha = cbrt(-0.5 * q + sqrt(D));
+            //Float beta = -p / (3.0 * alpha);
+            Float beta = cbrt(-0.5 * q - sqrt(D));
 
+            //printf("Found root: %f + %f = %f\n", alpha, beta, alpha + beta);
             roots[0] = alpha + beta;
+
             return 1;
         } else {
-            Float R = 2.0 * pow(sqrt(0.25 * q * q - D), 1.0 / 3.0);
+            CHECK_GE(0.25 * q * q - D, 0.0);
+            Float R = 2.0 * cbrt(sqrt(0.25 * q * q - D));
             Float tanPhi = -2.0 * sqrt(-D) / q;
             Float phi = atan(tanPhi);
 
@@ -303,13 +308,20 @@ namespace pbrt {
         Float c = 6.0 * constant / Pi - 2.0;
         Float d = Pi - phi;
 
+        //
+        while (d > Pi) d -= 2 * Pi;
+        while (d < -Pi) d += 2 * Pi;
+
         // TODO: check if this is needed?
         //        while (d > Pi) d -= 2 * Pi;
         //        while (d < -Pi) d += 2 * Pi;
 
         Float roots[3];
         int numberRoots = SolveDepressedCubic(a, c, d, roots);
+
+        // make sure there is always 1 root and always between [-Pi/2, Pi/2]
         CHECK_EQ(numberRoots, 1);
+        //CHECK_LE(fabs(roots[0]), .5 * Pi);
 
         return roots[0];
     }
@@ -317,18 +329,24 @@ namespace pbrt {
     static int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]) {
         CHECK_GT(etaPerp, 0.0);
         CHECK(1.0 / etaPerp >= 0.0 && 1.0 / etaPerp <= 1.0);
+
         Float C = asin(1.0 / etaPerp);
 
         Float a = -8.0 * p * C / (Pi * Pi * Pi);
         Float c = 6.0 * p * C / Pi - 2.0;
         Float d = p * Pi - phi;
 
-        // TODO: check if this is needed?
-        //        while (d > Pi) d -= 2 * Pi;
-        //        while (d < -Pi) d += 2 * Pi;
+        //
+        while (d > Pi) d -= 2 * Pi;
+        while (d < -Pi) d += 2 * Pi;
 
         int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
+
+        // make sure there is always 1 or 3 root(s) and gamma always between [-Pi/2, Pi/2]
         CHECK(numberRoots == 1 || numberRoots == 3);
+        //        for (int i = 0; i < numberRoots; ++i) {
+        //            CHECK_LE(fabs(gammaRoots[i]), .5 * Pi);
+        //        }
 
         return numberRoots;
     }
@@ -536,8 +554,6 @@ namespace pbrt {
         Float causticIntensity;
         Float phiC;
 
-        // Compute Ntrt
-        //
         Float roots[3];
         int nRoots = SolveGammaRoots(2, phi, etaPerp, roots);
 
@@ -549,10 +565,9 @@ namespace pbrt {
 
             Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp); //Fresnel(etaPerp, etaPar, gammaI);
             Float fresnelI = Fresnel(1.0 / etaPerp, 1.0 / etaPar, gammaT);
-            //printf("fresnel: %f, fresnelI: %f  ---  gammaI: %f, gammaT: %f\n", fresnel, fresnelI, gammaI, gammaT);
 
             Spectrum T = Transmittance(mSigmaA, gammaT, cosThetaT);
-            Spectrum Absorption = Sqr(1.0 - fresnel) * fresnel * T * T;
+            Spectrum Absorption = Sqr(1.0 - fresnel) * fresnelI * T * T;
             Spectrum L = Absorption / (fabs(2.0 * DPhiDh(ScatteringMode::TRT, gammaI, etaPerp)));
 
             if (etaPerp < 2.0) {
@@ -573,7 +588,6 @@ namespace pbrt {
                 causticIntensity = mCausticIntensityLimit;
                 t = smoothstep(2.0, 2.0 + mFadeRangeCausticMerge, etaPerp);
             }
-            //printf("t = %f\n", t);
 
             // compute roughness
             Float gaussianCenter = Gaussian(mCausticWidth, .0);
@@ -596,8 +610,6 @@ namespace pbrt {
 
         //PrintSpectrum("sum", sum);
         return sum;
-        //        return Spectrum(0.0);
-
     }
 
 
@@ -645,12 +657,6 @@ namespace pbrt {
 
         // TODO: check if bravais index is based on theta_r or theta_i or maybe theta_d ??
         ToBravais(mEta, theta_r, etaPerp, etaPar);
-
-        // Compute all useful properties
-        Float gammaI = SafeASin(mH);
-        Float sinGammaT = mH / etaPerp;
-        Float cosGammaT = SafeSqrt(1.0 - Sqr(sinGammaT));
-        Float gammaT = SafeASin(sinGammaT);
 
         Float sinThetaR = sin(theta_r);
         Float sinThetaT = sinThetaR / mEta;
