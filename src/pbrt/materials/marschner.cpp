@@ -342,6 +342,11 @@ namespace pbrt {
 
         int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
 
+        //assure roots are within range
+        for (int i = 0; i < numberRoots; ++i) {
+            gammaRoots[i] = asin(sin(gammaRoots))
+        }
+
         // make sure there is always 1 or 3 root(s) and gamma always between [-Pi/2, Pi/2]
         CHECK(numberRoots == 1 || numberRoots == 3);
         //        for (int i = 0; i < numberRoots; ++i) {
@@ -354,12 +359,12 @@ namespace pbrt {
     static Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT) {
 
         // PBRT implementation
-        Float cosGammaT = cos(gammaT);
-        return Exp(-sigmaA * (2 * cosGammaT / cosThetaT));
+        //Float cosGammaT = cos(gammaT);
+        //return Exp(-sigmaA * (2 * cosGammaT / cosThetaT));
 
         // My implementation, which is correct?
-        // Float cosGamma2T = AssurePositiveNonZero(cos(2.0 * gammaT));
-        // return Exp(-2.0 * (sigmaA / cosThetaT) * (1.0 + cosGamma2T));
+        Float cosGamma2T = AssurePositiveNonZero(cos(2.0 * gammaT));
+        return Exp(-2.0 * (sigmaA / cosThetaT) * (1.0 + cosGamma2T));
     }
 
     static Float DPhiDh_R(Float gamma_i) {
