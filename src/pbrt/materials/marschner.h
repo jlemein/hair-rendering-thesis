@@ -23,8 +23,8 @@ namespace pbrt {
     // PlasticMaterial Declarations
     class MarschnerMaterial : public Material {
       public:
-        MarschnerMaterial(Float Ar, 
-                        Float Br, 
+        MarschnerMaterial(const Float alpha[], 
+                        const Float beta[], 
                         Float hairRadius,
                         Float eta, 
                         Float eccentricity, 
@@ -32,19 +32,18 @@ namespace pbrt {
                         Float causticWidth, 
                         Float causticFade, 
                         Float causticLimit,
-                        const std::shared_ptr<Texture<Spectrum>> &sigmaA, 
-                        const std::shared_ptr<Texture<Spectrum>> &Kd) 
-            : mAr(Ar), mAtt(-.5 * Ar), mAtrt(-1.5*Ar),                
-            mBr(Br), mBtt(0.5*Br), mBtrt(2.0*Br),
+                        const std::shared_ptr<Texture<Spectrum>> &sigmaA) 
+            : mAr(alpha[0]), mAtt(alpha[1]), mAtrt(alpha[2]),                
+            mBr(beta[0]), mBtt(beta[1]), mBtrt(beta[2]),
             mHairRadius(hairRadius), 
             mEta(eta), 
             mEccentricity(eccentricity), 
             mGlintScaleFactor(glintScaleFactor), 
             mCausticWidth(causticWidth), 
-            mCausticFade(causticFade), 
-            mCausticLimit(causticLimit),
-            mSigmaA(sigmaA), 
-            mKd(Kd) {}
+            mCausticFadeRange(causticFade), 
+            mCausticIntensityLimit(causticLimit),
+            mSigmaA(sigmaA)
+            {}
 
         void ComputeScatteringFunctions(SurfaceInteraction *si, MemoryArena &arena,
                                         TransportMode mode,
@@ -53,7 +52,8 @@ namespace pbrt {
       private:
         Float mAr, mAtt, mAtrt;
         Float mBr, mBtt, mBtrt;
-        Float mHairRadius, mEta, mEccentricity, mGlintScaleFactor, mCausticWidth, mCausticFade, mCausticLimit;
+        Float mHairRadius, mEta, mEccentricity, mGlintScaleFactor, 
+        mCausticWidth, mCausticFadeRange, mCausticIntensityLimit;
         std::shared_ptr<Texture<Spectrum>> mSigmaA, mKd;
     };
     
@@ -63,7 +63,8 @@ namespace pbrt {
         MarschnerBSDF(const SurfaceInteraction& si, Float h, 
                 Float alphaR, Float alphaTT, Float alphaTRT, 
                 Float betaR, Float betaTT, Float betaTRT, 
-                Float eta, Spectrum sigmaA);
+                Float hairRadius, Float eta, Spectrum sigmaA,
+                Float eccentricity, Float glintScaleFactor, Float causticWidth, Float causticFadeRange, Float causticIntensityLimit);
         
         /**
          * (Required) Returns the value of the distribution function for the given pair of directions
@@ -117,8 +118,11 @@ namespace pbrt {
 
         // Marschner params
         const Float mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT;
-        Float mEta;
+        const Float mHairRadius = 1.0;
+        const Float mEta, mEccentricity, mGlintScaleFactor, 
+        mCausticWidth, mCausticFadeRange, mCausticIntensityLimit;
         Spectrum mSigmaA;
+        
 
         Float M_r(Float theta_h) const;
         Float M_tt(Float theta_h) const;
