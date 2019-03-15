@@ -383,11 +383,12 @@ namespace pbrt {
         // This succeeds, so it means even when range bounding d, the roots still solve for
         // for the original phi values. Next step is to check whether range bounding gammaI
         // between [-pi/2, pi/2] also gives the correct results
-        //        for (int i = 0; i < numberRoots; ++i) {
-        //            Float gammaI = RangeBoundGamma(gammaRoots[i]);
-        //
-        //            //CHECK_NEAR(ClampPhi(Phi(p, gammaI, GammaT(gammaI, etaPerp)) - phi), 0.0, 0.3);
-        //        }
+        for (int i = 0; i < numberRoots; ++i) {
+            Float gammaI = RangeBoundGamma(gammaRoots[i]);
+            gammaRoots[i] = gammaI;
+
+            //CHECK_NEAR(ClampPhi(Phi(p, gammaI, GammaT(gammaI, etaPerp)) - phi), 0.0, 0.3);
+        }
 
         //assure roots are within range
         //        for (int i = 0; i < numberRoots; ++i) {
@@ -435,6 +436,18 @@ namespace pbrt {
         Float b = 6.0 * p * c / Pi - 2.0;
 
         return (-3.0 * a * gammaI * gammaI + b) / SafeSqrt(1.0 - SineSquared(gammaI));
+    }
+
+    /**
+     * Second derivative of root function
+     * @param p
+     * @param gammaI
+     * @param etaPerp
+     * @return
+     */
+    static Float DPhi2Dh2(int p, Float gammaI, Float etaPerp) {
+        //TODO: implement second derivative
+        return 1.0;
     }
 
     /*******************************
@@ -596,7 +609,7 @@ namespace pbrt {
 
             Spectrum T = Transmittance(mSigmaA, gammaT, cosThetaT);
             Spectrum Absorption = Sqr(1.0 - fresnel) * fresnelI * T * T;
-            Spectrum L = Absorption / (fabs(2.0 * DPhiDh(ScatteringMode::TRT, gammaI, etaPerp)));
+            Spectrum L = Absorption / (fabs(2.0 * DPhiDh(2, gammaI, etaPerp)));
 
             if (etaPerp < 2.0) {
                 // root for caustic is (hc or -hc)
@@ -605,11 +618,8 @@ namespace pbrt {
                 Float gammaTC = GammaT(gammaC, etaPerp);
                 phiC = Phi(2, gammaI, gammaTC);
 
-                //TODO: Check if this is correct
-                Float squaredDPhiDH = Sqr(DPhiDh(2, gammaC, etaPerp));
-                //Float squaredDPhiDH = Sqr(DPhiDh(2, gammaC*gammaC));
-
-                causticIntensity = std::min(mCausticIntensityLimit, (Float) (2.0 * sqrt(2.0 * mCausticWidth / fabs(squaredDPhiDH))));
+                causticIntensity = std::min(mCausticIntensityLimit,
+                        (Float) (2.0 * sqrt(2.0 * mCausticWidth / fabs(DPhi2Dh2(2, gammaI, etaPerp)))));
                 t = 1.0;
             } else {
                 phiC = 0.0;
