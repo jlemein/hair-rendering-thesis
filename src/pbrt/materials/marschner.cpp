@@ -435,7 +435,18 @@ namespace pbrt {
         Float a = 8.0 * p * c / (Pi * Pi * Pi);
         Float b = 6.0 * p * c / Pi - 2.0;
 
-        return (-3.0 * a * gammaI * gammaI + b) / SafeSqrt(1.0 - SineSquared(gammaI));
+        Float x = (-3.0 * a * gammaI * gammaI + b) / SafeSqrt(1.0 - SineSquared(gammaI));
+
+        if (fabs(x) <= 1e-5) {
+            Float h2 = (4.0 - etaPerp * etaPerp) / 3.0;
+            Float expectedRoot = asin(sqrt(h2));
+            Float h = sin(gammaI);
+            //printf("Glint: h^2 value is now: %f, glint should occur at h^2 = %f\n", h*h, h2);
+            printf("Glint at gammaI: %f, it should occur at gammaI: %f\n", gammaI, expectedRoot);
+            //printf("Glint at gammaI = %f, should occurr\n", p, gammaI, etaPerp);
+            return 1.0;
+        }
+        return x;
     }
 
     /**
@@ -447,7 +458,9 @@ namespace pbrt {
      */
     static Float DPhi2Dh2(int p, Float gammaI, Float etaPerp) {
         //TODO: implement second derivative
-        return 1.0;
+        Float c = asin(1.0 / etaPerp);
+        Float a = 8.0 * p * c / (Pi * Pi * Pi);
+        return (-6.0 * a * gammaI) / (1.0 - Sqr(sin(gammaI)));
     }
 
     /*******************************
@@ -488,8 +501,8 @@ namespace pbrt {
         Float eccentricity = mp.FindFloat("eccentricity", Float(1.0));
 
         Float glintScaleFactor = mp.FindFloat("glintScaleFactor", Float(2.5));
-        if (glintScaleFactor < 0.5 || glintScaleFactor > 5.0)
-            Warning("Glint scale factor should be between 0.5 and 5.0, but is %f", glintScaleFactor);
+        //        if (glintScaleFactor < 0.5 || glintScaleFactor > 5.0)
+        //            Warning("Glint scale factor should be between 0.5 and 5.0, but is %f", glintScaleFactor);
 
         Float causticWidth = mp.FindFloat("causticWidth", 15.0);
         if (causticWidth < 10.0 || causticWidth > 25.0)
@@ -582,7 +595,7 @@ namespace pbrt {
 
         return Sqr(1.0 - fresnel)
                 * Transmittance(mSigmaA, gammaT, cosThetaT)
-                / (fabs(2.0 * DPhiDh(ScatteringMode::TT, gammaI, etaPerp)));
+                / (fabs(2.0 * DPhiDh(1, gammaI, etaPerp)));
     }
 
     Float smoothstep(Float a, Float b, Float x) {

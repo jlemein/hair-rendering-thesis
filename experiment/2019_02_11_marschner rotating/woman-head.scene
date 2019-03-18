@@ -23,8 +23,16 @@ WorldBegin
         "float glintScaleFactor" [0.4]
         "float causticWidth" [1.5]
         "float eccentricity" [0.9]
+
     MakeNamedMaterial "brown_hair_ref" "string type" [ "hair" ]
+
 	MakeNamedMaterial "blonde_hair" "string type" [ "marschner" ]
+        "color sigmaA" [0.36 0.72 0.94] 
+        "float alphaR" [3]
+        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float glintScaleFactor" [0.4]
+        "float causticWidth" [1.5]
+        "float eccentricity" [0.9]
 
 $useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 
 $useAreaLight    LightSource "infinite" 
