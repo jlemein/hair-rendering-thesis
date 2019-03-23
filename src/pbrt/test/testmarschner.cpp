@@ -27,46 +27,58 @@ static Float EvaluateCubic(Float a, Float b, Float c, Float x) {
     return a * x * x * x + b * x + c;
 }
 
-TEST(Marschner, RangeBoundGamma) {
-    EXPECT_FLOAT_EQ(.5 * Pi - 0.1, RangeBoundGamma(.5 * Pi - 0.1));
-    EXPECT_FLOAT_EQ(.5 * Pi - 0.1, RangeBoundGamma(.5 * Pi + 0.1));
-    EXPECT_FLOAT_EQ(.5 * Pi - 0.1, RangeBoundGamma(-1.5 * Pi - 0.1));
-    EXPECT_FLOAT_EQ(.5 * Pi - 0.1, RangeBoundGamma(-1.5 * Pi + 0.1));
-
-    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(-.5 * Pi - 0.1));
-    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(-.5 * Pi + 0.1));
-    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(1.5 * Pi + 0.1));
-    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(1.5 * Pi - 0.1));
-
-    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(-.5 * Pi - 0.1));
-    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(-.5 * Pi + 0.1));
-
-
-    EXPECT_FLOAT_EQ(.0, RangeBoundGamma(Pi));
-    EXPECT_FLOAT_EQ(.0, RangeBoundGamma(2.0 * Pi));
-    EXPECT_FLOAT_EQ(.0, RangeBoundGamma(-2.0 * Pi));
-
-    // testing with near, because of precision errors
-    EXPECT_NEAR(.0, RangeBoundGamma(3.0 * Pi), 1e-3);
-    EXPECT_NEAR(.0, RangeBoundGamma(-3.0 * Pi), 1e-3);
-    EXPECT_NEAR(.0, RangeBoundGamma(4.0 * Pi), 1e-3);
-    EXPECT_NEAR(.0, RangeBoundGamma(-4.0 * Pi), 1e-3);
+/**
+ This test assures that when we wrap gamma around its boundaries, that
+ the root h = sin(gamma) still holds.
+ **/
+TEST(Marschner, RangeBoundGammaInversed) {
+    for (Float gammaI = -Pi; gammaI < Pi; gammaI += 0.01) {
+        EXPECT_NEAR(sin(gammaI), sin(RangeBoundGammaInversed(gammaI)), 1e-5);
+    }
 }
+
+
 //
-//TEST(Marschner, SolveRoot) {
-//    Float a = 16.0;
-//    Float b = 0.0;
-//    Float c = -6.0;
-//    Float d = -9.0;
+//TEST(Marschner, RangeBoundGamma) {
+//    EXPECT_FLOAT_EQ(.5 * Pi - 0.1, RangeBoundGamma(.5 * Pi - 0.1));
+//    EXPECT_FLOAT_EQ(.5 * Pi - 0.1, RangeBoundGamma(.5 * Pi + 0.1));
+//    EXPECT_FLOAT_EQ(.5 * Pi - 0.1, RangeBoundGamma(-1.5 * Pi - 0.1));
+//    EXPECT_FLOAT_EQ(.5 * Pi - 0.1, RangeBoundGamma(-1.5 * Pi + 0.1));
 //
-//    // ax^3 + bx^2 -c = d
-//    Float root;
-//    int nRoots = SolveDepressedCubic(a, c, d, &root);
-//    printf("Root is %f\n", root);
+//    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(-.5 * Pi - 0.1));
+//    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(-.5 * Pi + 0.1));
+//    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(1.5 * Pi + 0.1));
+//    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(1.5 * Pi - 0.1));
 //
-//    EXPECT_EQ(1, nRoots);
-//    EXPECT_NEAR(0.0, EvaluateCubic(a, c, d, root), 1e-5);
+//    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(-.5 * Pi - 0.1));
+//    EXPECT_FLOAT_EQ(-.5 * Pi + 0.1, RangeBoundGamma(-.5 * Pi + 0.1));
+//
+//
+//    EXPECT_FLOAT_EQ(.0, RangeBoundGamma(Pi));
+//    EXPECT_FLOAT_EQ(.0, RangeBoundGamma(2.0 * Pi));
+//    EXPECT_FLOAT_EQ(.0, RangeBoundGamma(-2.0 * Pi));
+//
+//    // testing with near, because of precision errors
+//    EXPECT_NEAR(.0, RangeBoundGamma(3.0 * Pi), 1e-3);
+//    EXPECT_NEAR(.0, RangeBoundGamma(-3.0 * Pi), 1e-3);
+//    EXPECT_NEAR(.0, RangeBoundGamma(4.0 * Pi), 1e-3);
+//    EXPECT_NEAR(.0, RangeBoundGamma(-4.0 * Pi), 1e-3);
 //}
+//
+
+TEST(Marschner, SolveRoot) {
+    Float a = 16.0;
+    Float b = 0.0;
+    Float c = -6.0;
+    Float d = -9.0;
+
+    // ax^3 + bx^2 -c = d
+    Float root;
+    int nRoots = SolveDepressedCubic(a, c, d, &root);
+
+    EXPECT_EQ(1, nRoots);
+    EXPECT_NEAR(0.0, EvaluateCubic(a, c, d, root), 1e-5);
+}
 //
 //TEST(Marschner, SolveRootsForTT) {
 //    Float eta = 1.55;
@@ -131,14 +143,19 @@ TEST(Marschner, RangeBoundGamma) {
 //    EXPECT_NEAR(fabs(fn(roots[2])), .0, 1e-4);
 //}
 //
+
 //TEST(Marschner, SolveRootsForTRT) {
-//    Float eta = 1.9;
-//    const Float C = asin(1.0 / eta);
-//    const Float a = -8.0 * 2.0 * C / (Pi * Pi * Pi);
-//    const Float c = 6.0 * 2.0 * C / Pi - 2.0;
+//    //Float eta = 1.55;
+//    //const Float C = asin(1.0 / eta);
+//    //const Float a = -8.0 * 2.0 * C / (Pi * Pi * Pi);
+//    //const Float c = 6.0 * 2.0 * C / Pi - 2.0;
+//
+//    const Float a = -0.352144;
+//    const Float c = 0.606644;
+//    // const Float d = 0.024114;
 //
 //    // walk around cylinder for incoming phi values
-//    for (Float phi = -Pi; phi <= Pi; phi += 0.01 * Pi) {
+//    for (Float phi = -Pi; phi <= Pi; phi += 0.01) {
 //
 //        // make sure that phi stays between [-Pi, Pi] due to floating point
 //        // precision errors
@@ -150,6 +167,12 @@ TEST(Marschner, RangeBoundGamma) {
 //        Float roots[3];
 //        int nRoots = SolveDepressedCubic(a, c, d, roots);
 //
+//        printf("roots: %d\n", nRoots);
+//        if (nRoots == 3) {
+//            printf("phi = %f\n", phi);
+//            printf("roots: %f -- %f -- %f\n\n", roots[0], roots[1], roots[2]);
+//        }
+//
 //        // TRT could result in one or three roots
 //        EXPECT_TRUE(nRoots == 1 || nRoots == 3);
 //
@@ -160,6 +183,57 @@ TEST(Marschner, RangeBoundGamma) {
 //        }
 //    }
 //}
+
+TEST(Marschner, SolveThreeRootsForTRT) {
+
+    const Float a = -0.352144;
+    const Float c = 0.606644;
+    const Float d = 0.024114;
+
+    Float roots[3];
+    int nRoots = SolveDepressedCubic(a, c, d, roots);
+
+    printf("roots: %d\n", nRoots);
+    if (nRoots == 3) {
+        //printf("phi = %f\n", phi);
+        printf("roots: %f -- %f -- %f\n\n", roots[0], roots[1], roots[2]);
+    }
+
+    // TRT could result in one or three roots
+    EXPECT_TRUE(nRoots == 3);
+
+    for (int i = 0; i < nRoots; ++i) {
+        // expect evaluation of function to be zero
+
+        EXPECT_LT(fabs(EvaluateCubic(a, c, d, roots[i])), 1e-3);
+    }
+}
+
+TEST(Marschner, SolveThreeOutOfBoundsRootsForTRT) {
+
+    const Float etaPerp = 1.550605;
+    const Float phi = 0.346892;
+    const Float a = -0.361684;
+    const Float c = 0.677259;
+    const Float d = -phi;
+
+    Float roots[3];
+    int nRoots = SolveDepressedCubic(a, c, d, roots);
+
+    printf("roots: %d\n", nRoots);
+    if (nRoots == 3) {
+        //printf("phi = %f\n", phi);
+        printf("roots: %f -- %f -- %f\n\n", roots[0], roots[1], roots[2]);
+    }
+
+    // TRT could result in one or three roots
+    //EXPECT_TRUE(nRoots == 3);
+
+    for (int i = 0; i < nRoots; ++i) {
+        EXPECT_LT(fabs(EvaluateCubic(a, c, d, roots[i])), 1e-3);
+        EXPECT_NEAR(PhiApprox(2, roots[i], etaPerp), phi, 1e-5);
+    }
+}
 //
 //TEST(Marschner, SolveRootsForTRT_LowEta) {
 //    Float eta = 2.5;

@@ -35,11 +35,11 @@ WorldBegin
         "float eccentricity" [0.9]
 
 $useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 
-$useAreaLight    LightSource "infinite" 
-$useAreaLight            "rgb L" [ $infinite_light_power $infinite_light_power $infinite_light_power ] 
-$useAreaLight            "rgb scale" [ 1 1 1 ] 
-$useAreaLight            "integer samples" [ $infinite_light_samples ] 
-$useAreaLight            "string mapname" [ "textures/$infinite_light_environment_map" ]
+$useInfiniteLight    LightSource "infinite" 
+$useInfiniteLight            "rgb L" [ $infinite_light_power $infinite_light_power $infinite_light_power ] 
+$useInfiniteLight            "rgb scale" [ 1 1 1 ] 
+$useInfiniteLight            "integer samples" [ $infinite_light_samples ] 
+$useInfiniteLight            "string mapname" [ "textures/$infinite_light_environment_map" ]
 
 $useAreaLight TransformBegin
 $useAreaLight    AttributeBegin

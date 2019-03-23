@@ -147,10 +147,19 @@ namespace pbrt {
      * @return
      */
     Float Phi(int p, Float gammaI, Float gammaT) {
-        Float phi = 2.0 * p * gammaT - 2.0 * gammaI + p * Pi;
+        Float phi = 2.0 * p * gammaT - 2.0 * gammaI + p % 2 * Pi;
         //        while (phi > Pi) phi -= 2.0 * Pi;
         //        while (phi < -Pi) phi += 2.0 * Pi;
         return phi;
+    }
+
+    Float PhiApprox(int p, Float gammaI, Float etaPerp) {
+        Float c = asin(1.0 / etaPerp);
+        Float a = 8.0 * p * c / (Pi * Pi * Pi);
+        Float b = 6.0 * p * c / Pi - 2.0;
+
+
+        return b * gammaI - a * gammaI * gammaI * gammaI + p % 2 * Pi;
     }
 
     Float PhiR(Float gammaI) {
@@ -291,14 +300,11 @@ namespace pbrt {
         Float q = d / a;
 
         Float D = DiscriminantCardano(p, q);
-        //printf("p = %f -- q = %f -- D = %f\n", p, q, D);
 
         if (D >= 0) {
             Float alpha = cbrt(-0.5 * q + sqrt(D));
-            //Float beta = -p / (3.0 * alpha);
             Float beta = cbrt(-0.5 * q - sqrt(D));
 
-            //printf("Found root: %f + %f = %f\n", alpha, beta, alpha + beta);
             roots[0] = alpha + beta;
 
             return 1;
@@ -371,35 +377,28 @@ namespace pbrt {
 
         Float a = -8.0 * p * C / (Pi * Pi * Pi);
         Float c = 6.0 * p * C / Pi - 2.0;
-        Float d = p * Pi - phi;
+        Float d = (p % 2) * Pi - phi;
 
-        // by wrapping like this, we have exactly one possible d value to solve
-        // for
+        // by wrapping like this, we have exactly one possible d value to solve for
         while (d > Pi) d -= 2 * Pi;
         while (d < -Pi) d += 2 * Pi;
 
         int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
 
-        // This succeeds, so it means even when range bounding d, the roots still solve for
-        // for the original phi values. Next step is to check whether range bounding gammaI
-        // between [-pi/2, pi/2] also gives the correct results
         for (int i = 0; i < numberRoots; ++i) {
-            Float gammaI = RangeBoundGamma(gammaRoots[i]);
-            gammaRoots[i] = gammaI;
+            //            if (fabs(gammaRoots[i]) > .5 * Pi) {
+            //                printf("GammaI: %f\n", gammaRoots[i]);
+            //            }
+            gammaRoots[i] = Clamp(gammaRoots[i], -.5 * Pi, .5 * Pi);
 
             //CHECK_NEAR(ClampPhi(Phi(p, gammaI, GammaT(gammaI, etaPerp)) - phi), 0.0, 0.3);
         }
 
-        //assure roots are within range
-        //        for (int i = 0; i < numberRoots; ++i) {
-        //            gammaRoots[i] = sin(sin(gammaRoots[i]));
-        //        }
-
         // make sure there is always 1 or 3 root(s) and gamma always between [-Pi/2, Pi/2]
         CHECK(numberRoots == 1 || numberRoots == 3);
-        //        for (int i = 0; i < numberRoots; ++i) {
-        //            CHECK_LE(fabs(gammaRoots[i]), .5 * Pi);
-        //        }
+        for (int i = 0; i < numberRoots; ++i) {
+            CHECK_LE(fabs(gammaRoots[i]), .5 * Pi);
+        }
 
         return numberRoots;
     }
@@ -410,7 +409,7 @@ namespace pbrt {
 
         // make sure there is always 1 root and always between [-Pi/2, Pi/2]
         CHECK_EQ(numberRoots, 1);
-        //CHECK_LE(fabs(roots[0]), .5 * Pi);
+        CHECK_LE(fabs(roots[0]), .5 * Pi);
 
         return roots[0];
     }
@@ -435,18 +434,7 @@ namespace pbrt {
         Float a = 8.0 * p * c / (Pi * Pi * Pi);
         Float b = 6.0 * p * c / Pi - 2.0;
 
-        Float x = (-3.0 * a * gammaI * gammaI + b) / SafeSqrt(1.0 - SineSquared(gammaI));
-
-        if (fabs(x) <= 1e-5) {
-            Float h2 = (4.0 - etaPerp * etaPerp) / 3.0;
-            Float expectedRoot = asin(sqrt(h2));
-            Float h = sin(gammaI);
-            //printf("Glint: h^2 value is now: %f, glint should occur at h^2 = %f\n", h*h, h2);
-            printf("Glint at gammaI: %f, it should occur at gammaI: %f\n", gammaI, expectedRoot);
-            //printf("Glint at gammaI = %f, should occurr\n", p, gammaI, etaPerp);
-            return 1.0;
-        }
-        return x;
+        return (-3.0 * a * gammaI * gammaI + b) / SafeSqrt(1.0 - SineSquared(gammaI));
     }
 
     /**
@@ -457,7 +445,6 @@ namespace pbrt {
      * @return
      */
     static Float DPhi2Dh2(int p, Float gammaI, Float etaPerp) {
-        //TODO: implement second derivative
         Float c = asin(1.0 / etaPerp);
         Float a = 8.0 * p * c / (Pi * Pi * Pi);
         return (-6.0 * a * gammaI) / (1.0 - Sqr(sin(gammaI)));
@@ -568,10 +555,6 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::N_r(Float dphi, Float etaPerp, Float etaPar) const {
 
-        // Compute the phi offset between incoming and reflected direction
-        //Float offsetPhi = PhiR(gammaI);
-        //Float dphi = DifferencePhi(phi, offsetPhi);
-
         // we only know phi_r at the moment [-pi, pi]
         // now find the gamma that contributes to this scattering direction
         Float gammaI = SolveGammaRoot_R(dphi);
@@ -585,7 +568,6 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::N_tt(Float dphi, Float etaPerp, Float etaPar, Float cosThetaT) const {
 
-        //Float dphi = DifferencePhi(phi, Phi(ScatteringMode::TT, gammaI, gammaT));
         Float gammaI = SolveGammaRoot_TT(dphi, etaPerp);
         Float gammaT = GammaT(gammaI, etaPerp);
 
@@ -606,7 +588,7 @@ namespace pbrt {
     Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float etaPar, Float cosThetaT) const {
         Float t;
         Float causticIntensity;
-        Float phiC;
+        Float phiCaustic;
 
         Float roots[3];
         int nRoots = SolveGammaRoots(2, phi, etaPerp, roots);
@@ -622,44 +604,68 @@ namespace pbrt {
 
             Spectrum T = Transmittance(mSigmaA, gammaT, cosThetaT);
             Spectrum Absorption = Sqr(1.0 - fresnel) * fresnelI * T * T;
-            Spectrum L = Absorption / (fabs(2.0 * DPhiDh(2, gammaI, etaPerp)));
 
+            Float dphidh = DPhiDh(2, gammaI, etaPerp);
+            //bool isCaustic = fabs(dphidh) <= 1e-2;
+            Spectrum L = Absorption / (fabs(2.0 * dphidh));
+
+            Float gammaCaustic;
             if (etaPerp < 2.0) {
                 // root for caustic is (hc or -hc)
                 Float hc = sqrt((4.0 - Sqr(etaPerp)) / 3.0);
-                Float gammaC = SafeASin(hc);
-                Float gammaTC = GammaT(gammaC, etaPerp);
-                phiC = Phi(2, gammaI, gammaTC);
+                gammaCaustic = SafeASin(-hc);
+                Float gammaTCaustic = GammaT(gammaCaustic, etaPerp);
+
+                //TODO: check if phiC is computes based on caustic like this?
+                //phiC = Phi(2, gammaICaustic, gammaTCaustic);
+                phiCaustic = PhiApprox(2, gammaCaustic, etaPerp);
+                Float phiBack = PhiApprox(2, gammaI, etaPerp);
+
+                //                if (isCaustic) {
+                //                    printf("phiCaustic: %f -- phi (original): %f  -> should equal phi (root): %f\n", phiCaustic, phi, phiBack);
+                //                }
+                //phiCaustic2 = PhiApprox(2, gammaICaustic, etaPerp);
 
                 causticIntensity = std::min(mCausticIntensityLimit,
-                        (Float) (2.0 * sqrt(2.0 * mCausticWidth / fabs(DPhi2Dh2(2, gammaI, etaPerp)))));
+                        (Float) (2.0 * sqrt(2.0 * mCausticWidth / fabs(DPhi2Dh2(2, gammaCaustic, etaPerp)))));
                 t = 1.0;
             } else {
-                phiC = 0.0;
+                phiCaustic = 0.0;
                 causticIntensity = mCausticIntensityLimit;
                 t = smoothstep(2.0, 2.0 + mCausticFadeRange, etaPerp);
             }
 
             // compute roughness
+
+
+            //TODO: because the root of the equation should lead to phi,
+            //dphi should then be equal to original phi (passed in this function)
+            // by wrapping gammaI around itś boundary, we end up with a different phi
+            // and this is very strange. Possibly a bug. Find out more about why
+            // and how else gammaI should be wrapped
+            Float dphi = PhiApprox(2, gammaI, etaPerp);
+            Float gaussianL = Gaussian(mCausticWidth, ClampPhi(dphi - phiCaustic));
+            Float gaussianR = Gaussian(mCausticWidth, ClampPhi(dphi + phiCaustic));
             Float gaussianCenter = Gaussian(mCausticWidth, .0);
-            Float gaussianL = Gaussian(mCausticWidth, ClampPhi(phi - phiC));
-            Float gaussianR = Gaussian(mCausticWidth, ClampPhi(phi + phiC));
+
+            //            if (isCaustic) {
+            //                printf("t: %f, gammaI: %f, gammaCaustic: %f\n", t, gammaI, gammaCaustic);
+            //                printf("phi - phiC: %f - %f = %f -- gaussianL: %f\n", phi, phiCaustic, ClampPhi(phi - phiCaustic), gaussianL);
+            //                printf("phi + phiC: %f + %f = %f -- gaussianR: %f\n\n", phi, phiCaustic, ClampPhi(phi + phiCaustic), gaussianR);
+            //            }
 
             CHECK_GE(gaussianL, 0.0);
             CHECK_GE(gaussianR, 0.0);
             CHECK_GT(gaussianCenter, 0.0);
             CHECK(t >= 0.0 && t <= 1.0);
 
-            //printf("phiC: %f\n", phiC);
-            //PrintSpectrum("Np", L);
             L *= (1.0 - t * gaussianL / gaussianCenter);
             L *= (1.0 - t * gaussianR / gaussianCenter);
             L += t * mGlintScaleFactor * Absorption * causticIntensity * (gaussianL + gaussianR);
-            //PrintSpectrum("L", L);
+
             sum += L;
         }
 
-        //PrintSpectrum("sum", sum);
         return sum;
     }
 
@@ -692,9 +698,9 @@ namespace pbrt {
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
 
         Spectrum result = (
-                M_r(theta_h) * N_r(phi, etaPerp, etaPar)
-                + M_tt(theta_h) * N_tt(phi, etaPerp, etaPar, cosThetaT)
-                + M_trt(theta_h) * N_trt(phi, etaPerp, etaPar, cosThetaT)
+                M_r(2.0 * theta_h) * N_r(phi, etaPerp, etaPar)
+                + M_tt(2.0 * theta_h) * N_tt(phi, etaPerp, etaPar, cosThetaT)
+                + M_trt(2.0 * theta_h) * N_trt(phi, etaPerp, etaPar, cosThetaT)
                 ) / CosineSquared(theta_d);
 
         return result;
