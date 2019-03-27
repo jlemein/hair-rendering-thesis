@@ -38,6 +38,7 @@
 #include "paramset.h"
 #include "texture.h"
 #include "interaction.h"
+#include "materials/marschner.h"
 
 namespace pbrt {
 
@@ -46,42 +47,52 @@ namespace pbrt {
     void DualscatteringMaterial::ComputeScatteringFunctions(
             SurfaceInteraction *si, MemoryArena &arena, TransportMode mode,
             bool allowMultipleLobes) const {
-        // Perform bump mapping with _bumpMap_, if present
-        if (bumpMap) Bump(bumpMap, si);
-        si->bsdf = ARENA_ALLOC(arena, BSDF)(*si);
-        // Initialize diffuse component of plastic material
-        Spectrum kd = Kd->Evaluate(*si).Clamp();
-        if (!kd.IsBlack())
-            si->bsdf->Add(ARENA_ALLOC(arena, LambertianReflection)(kd));
 
-        // Initialize specular component of plastic material
-        Spectrum ks = Ks->Evaluate(*si).Clamp();
-        if (!ks.IsBlack()) {
-            Fresnel *fresnel = ARENA_ALLOC(arena, FresnelDielectric)(1.5f, 1.f);
-            // Create microfacet distribution _distrib_ for plastic material
-            Float rough = roughness->Evaluate(*si);
-            if (remapRoughness)
-                rough = TrowbridgeReitzDistribution::RoughnessToAlpha(rough);
-            MicrofacetDistribution *distrib =
-                    ARENA_ALLOC(arena, TrowbridgeReitzDistribution)(rough, rough);
-            BxDF *spec =
-                    ARENA_ALLOC(arena, MicrofacetReflection)(ks, distrib, fresnel);
-            si->bsdf->Add(spec);
-        }
+        // Allocate a bsdf that contains the collection of BRDFs and BTDFs
+        si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
+
+        MarschnerBSDF* marschnerBSDF = mMarschnerMaterial->CreateMarschnerBSDF(si, arena);
+
+        si->bsdf->Add(ARENA_ALLOC(arena, DualScatteringBSDF)(*si, mEta, marschnerBSDF));
     }
 
     DualscatteringMaterial *CreateDualscatteringMaterial(const TextureParams &mp) {
         Error("Dualscattering material working!!");
-        std::shared_ptr<Texture < Spectrum>> Kd =
-                mp.GetSpectrumTexture("Kd", Spectrum(0.25f));
-        std::shared_ptr<Texture < Spectrum>> Ks =
-                mp.GetSpectrumTexture("Ks", Spectrum(0.25f));
-        std::shared_ptr<Texture < Float>> roughness =
-                mp.GetFloatTexture("roughness", .1f);
-        std::shared_ptr<Texture < Float>> bumpMap =
-                mp.GetFloatTextureOrNull("bumpmap");
-        bool remapRoughness = mp.FindBool("remaproughness", true);
-        return new DualscatteringMaterial(Kd, Ks, roughness, bumpMap, remapRoughness);
+
+        MarschnerMaterial* marschnerMaterial = CreateMarschnerMaterial(mp);
+
+        Float eta = 1.55;
+
+        // collect dual scattering properties
+
+        return new DualscatteringMaterial(eta, marschnerMaterial);
+    }
+
+    /*******************************
+     * DualScatteringBSDF
+     *******************************/
+
+    DualScatteringBSDF::DualScatteringBSDF(const SurfaceInteraction& si, Float eta,
+            MarschnerBSDF* marschnerBSDF)
+    : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)), mEta(eta), mMarschnerBSDF(marschnerBSDF) {
+    };
+
+    Spectrum DualScatteringBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
+        return mMarschnerBSDF->f(wo, wi);
+    }
+
+    Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
+
+        return mMarschnerBSDF->Sample_f(wo, wi, sample, pdf, sampledType);
+    }
+
+    Float DualScatteringBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
+
+        return PiOver4;
+    }
+
+    std::string DualScatteringBSDF::ToString() const {
+        return "DualScatteringBSDF";
     }
 
 } // namespace pbrt

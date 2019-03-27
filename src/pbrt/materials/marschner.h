@@ -17,8 +17,8 @@
 #include "reflection.h"
 
 namespace pbrt {
-
-    enum ScatteringMode { R=0, TT=1, TRT=2 };
+    
+    class MarschnerBSDF;
     
     // PlasticMaterial Declarations
     class MarschnerMaterial : public Material {
@@ -45,6 +45,7 @@ namespace pbrt {
             mSigmaA(sigmaA)
             {}
 
+        MarschnerBSDF* CreateMarschnerBSDF(SurfaceInteraction *si, MemoryArena &arena) const;
         void ComputeScatteringFunctions(SurfaceInteraction *si, MemoryArena &arena,
                                         TransportMode mode,
                                         bool allowMultipleLobes) const;
@@ -60,7 +61,7 @@ namespace pbrt {
     // MarschnerBSDF Declarations
     class MarschnerBSDF : public BxDF {        
       public:
-        MarschnerBSDF(const SurfaceInteraction& si, Float h, 
+        MarschnerBSDF(const SurfaceInteraction& si, 
                 Float alphaR, Float alphaTT, Float alphaTRT, 
                 Float betaR, Float betaTT, Float betaTRT, 
                 Float hairRadius, Float eta, Spectrum sigmaA,

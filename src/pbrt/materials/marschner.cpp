@@ -16,125 +16,9 @@
 
 #include <algorithm>
 
+#include "hairutil.h"
+
 namespace pbrt {
-
-    /**
-     * Safe acos function, to prevent 'nan' as result when parameter x is
-     * (slightly) larger than or smaller than 1.0 or -1.0 respectively
-     * (due to rounding errors).
-     * @param x Argument to the acosine function. Values smaller than
-     * -1.0 and larger than 1.0 are mapped to -1.0 and 1.0 respectively.
-     * @return The inverse cosine result for parameter x.
-     */
-    static inline Float SafeACos(Float x) {
-        if (x <= -1.0) {
-            return Pi;
-        }
-        if (x >= 1.0) {
-            return 0.0;
-        }
-        return acos(x);
-    }
-
-    static void PrintSpectrum(const char* s, const Spectrum& sp) {
-        Float rgb[3];
-        sp.ToRGB(rgb);
-        printf("%s [%f %f %f]\n", s, rgb[0], rgb[1], rgb[2]);
-    }
-
-    /**
-     * Utility function to adjust a value to be positive and nonzero.
-     * Reason for this function is that rounding errors can lead to values
-     * of zero or negative values close to zero.
-     * This value in fact reaches the limit to zero. This function limits the
-     * minium to 1e-5.
-     * @param value Value to assure to be nonzero and positive
-     * @return The input value or 1e-5
-     */
-    static inline Float AssurePositiveNonZero(Float value) {
-        return std::max(Float(1e-5), value);
-    }
-
-    static void ToSphericalCoords(const Vector3f& w, Float& theta, Float& phi) {
-        theta = PiOver2 - SafeACos(w.x);
-        phi = atan2(w.y, w.z);
-
-        CHECK_LE(abs(theta), PiOver2);
-        CHECK_LE(abs(phi), Pi);
-    }
-
-    static Float DifferenceAngle(Float theta_i, Float theta_r) {
-        return 0.5 * (theta_r - theta_i);
-    }
-
-    // TODO: remove this function if DifferencePhi is almost similar
-
-    static Float RelativeAzimuth(Float phi_i, Float phi_r) {
-        Float phi = phi_r - phi_i;
-
-        // map to range [-pi, pi] so that our cubic solver works
-        while (phi > Pi) {
-            phi -= 2.0 * Pi;
-        }
-        while (phi < -Pi) {
-            phi += 2.0 * Pi;
-        }
-
-        CHECK_LE(abs(phi), Pi);
-        return phi;
-    }
-
-    Float DifferencePhi(Float phi1, Float phi2) {
-        Float dphi = phi1 - phi2;
-        while (dphi > Pi) {
-            dphi -= 2 * Pi;
-        }
-        while (dphi < -Pi) {
-            dphi += 2 * Pi;
-        }
-        return dphi;
-    }
-
-    static Float HalfAngle(Float a, Float b) {
-        return 0.5 * (a + b);
-    }
-
-    static inline Float CosineSquared(Float x) {
-        return Sqr(cos(x));
-    }
-
-    static inline Float SineSquared(Float x) {
-        return Sqr(sin(x));
-    }
-
-    static Float ClampPhi(Float phi, Float min = -Pi, Float max = Pi) {
-        while (phi > max) phi -= 2.0 * Pi;
-        while (phi < min) phi += 2.0 * Pi;
-        return phi;
-    }
-
-    /**
-     * Returns the value of a normalized Gaussian function at point 'x', with a standard deviation of 'width'
-     * @param width The width of the gaussian function
-     * @param x Position to sample the gaussian
-     * @returns Sampled position of the gaussian at position x
-     */
-    static Float Gaussian(Float width, Float x) {
-        Float a = 1.0 / (width * sqrt(2.0 * Pi));
-        Float c = width; //width of the curve is beta (might also be 0.5 * sigma)
-
-        Float nom = Sqr(x);
-        Float den = 2.0 * Sqr(width);
-
-        return a * exp(-nom / den);
-    }
-
-    Float inline GammaT(Float gammaI, Float etaPerp) {
-        const Float Pi3 = Pi * Pi*Pi;
-        const Float C = SafeASin(1.0 / etaPerp);
-
-        return gammaI * 3.0 * C / Pi - gammaI * gammaI * gammaI * 4.0 * C / Pi3;
-    }
 
     /**
      * Receives the incoming gammaI direction with the corresponding
@@ -146,14 +30,11 @@ namespace pbrt {
      * @param gammaT
      * @return
      */
-    Float Phi(int p, Float gammaI, Float gammaT) {
-        Float phi = 2.0 * p * gammaT - 2.0 * gammaI + p % 2 * Pi;
-        //        while (phi > Pi) phi -= 2.0 * Pi;
-        //        while (phi < -Pi) phi += 2.0 * Pi;
-        return phi;
+    static Float Phi(int p, Float gammaI, Float gammaT) {
+        return 2.0 * p * gammaT - 2.0 * gammaI + p % 2 * Pi;
     }
 
-    Float PhiApprox(int p, Float gammaI, Float etaPerp) {
+    static Float PhiApprox(int p, Float gammaI, Float etaPerp) {
         Float c = asin(1.0 / etaPerp);
         Float a = 8.0 * p * c / (Pi * Pi * Pi);
         Float b = 6.0 * p * c / Pi - 2.0;
@@ -162,211 +43,8 @@ namespace pbrt {
         return b * gammaI - a * gammaI * gammaI * gammaI + p % 2 * Pi;
     }
 
-    Float PhiR(Float gammaI) {
+    static Float PhiR(Float gammaI) {
         return -2.0 * gammaI;
-    }
-
-    /**
-     * Slightly faster variant when you need to get both Bravais indices
-     * @param eta Index of refraction
-     * @param theta Longitudinal angle of incidence (in radians)
-     * @param bravaisPerpendicular Output value that will hold perpendicular component of bravais index
-     * @param bravaisParallel Output value that will hold parallel component of bravais index
-     */
-    static void ToBravais(Float eta, Float theta, Float& etaPerpendicular, Float& etaParallel) {
-        Float rootPart = sqrt(Sqr(eta) - SineSquared(theta));
-
-        // sin gamma = h, where 1 < h < 1
-        // Gamma represents the angle between the incident ray and the normal of a dielectric cylinder
-        // This means -pi <= gamma <= pi
-        // This also means cos(gamma) is 0 <= cos(gamma) <= 1
-
-        Float cosTheta = Clamp(cos(theta), 1e-5, 1.0);
-        CHECK(cosTheta > 0.0 && cosTheta <= 1.0);
-
-        etaPerpendicular = rootPart / cosTheta;
-        etaParallel = Sqr(eta) * cosTheta / rootPart;
-    }
-
-    static Float BravaisPerpendicular(Float eta, Float theta) {
-        return sqrt(Sqr(eta) - Sqr(sin(theta))) / cos(theta);
-    }
-
-    static Float BravaisParallel(Float eta, Float theta) {
-        return Sqr(eta) * cos(theta) / sqrt(Sqr(eta) - Sqr(sin(theta)));
-    }
-
-    /**
-     * Fresnel reflection for s-polarized light (perpendicular to incidence plane)
-     * @param ni Index of refraction for material of incident side
-     * @param nt Index of refraction for material on transmitted side
-     * @param gamma_i Angle of incidence
-     * @param gamma_t Angle of refraction
-     * @return
-     */
-    static Float FresnelReflectionS(Float ni, Float nt, Float gamma_i) {
-        Float sinGammaT = ni / nt * sin(gamma_i);
-
-        // TODO: check if I can assume total reflection when "absolute" is bigger
-        // than one. I did this, because sinGammaT is occasionally larger than 1
-        // or smaller than -1.
-
-        if (abs(sinGammaT) >= 1.0) {
-            return 1.0;
-        } else {
-            Float gamma_t = SafeASin(sinGammaT);
-            Float cos_gamma_i = cos(gamma_i);
-            Float cos_gamma_t = cos(gamma_t);
-
-            return Clamp(Sqr((ni * cos_gamma_i - nt * cos_gamma_t)
-                    / (ni * cos_gamma_i + nt * cos_gamma_t)), 0.0, 1.0);
-
-        }
-    }
-
-    /**
-     * Fresnel reflection for p-polarized light (parallel to incidence plane)
-     * @param ni Index of refraction for material of incident side
-     * @param nt Index of refraction for material on transmitted side
-     * @param gamma_i Angle of incidence
-     * @param gamma_t Angle of refraction
-     * @return
-     */
-    static Float FresnelReflectionP(Float ni, Float nt, Float gamma_i) {
-        Float sinGammaT = ni / nt * sin(gamma_i);
-
-        // TODO: check if I can assume total reflection when "absolute" is bigger
-        // than one. I did this, because sinGammaT is occasionally larger than 1
-        // or smaller than -1.
-        // I think it can be because gamma_i represents the angle with the surface normal
-        // and reflection is symmetric (if I am right?)
-        // if gamma is +90 or -90 degrees, it doesn't matter for fresnel equations
-
-
-        if (abs(sinGammaT) >= 1.0) {
-            // total reflection
-            return 1.0;
-        } else {
-            Float gamma_t = SafeASin(sinGammaT);
-            Float cos_gamma_i = cos(gamma_i);
-            Float cos_gamma_t = cos(gamma_t);
-            return Clamp(Sqr((nt * cos_gamma_i - ni * cos_gamma_t) / (nt * cos_gamma_i + ni * cos_gamma_t)), 0.0, 1.0);
-        }
-    }
-
-    /**
-     * Fresnel reflection for polarized light
-     * @param etaPerp
-     * @param etaPar
-     * @param gamma_i
-     * @return
-     */
-    static Float Fresnel(Float etaPerp, Float etaPar, Float gammaI) {
-        CHECK_GT(etaPerp, 0.0);
-        CHECK_GT(etaPar, 0.0);
-
-        // TODO: check if gamma_i should be projected for parallel and perpendicular planes
-        // Marschner indicates that by using the altered index of refractions, that you can
-        // just use gamma as angle (appendix B)
-
-        // TODO: must we use gamma_t based on eta, or calculate gamma_t for projected and perpendicular cases
-        // use Snell's law to find transmitted angle
-
-        Float fresnelS = FresnelReflectionS(1.0, etaPerp, gammaI);
-        CHECK(fresnelS >= 0.0 && fresnelS <= 1.0);
-
-        // for s-polarized light
-        Float fresnelP = FresnelReflectionP(1.0, etaPar, gammaI);
-        CHECK(fresnelP > -0.00001 && fresnelP < 1.00001);
-
-        return 0.5 * (fresnelP + fresnelS);
-    }
-
-    static inline Float DiscriminantCardano(Float p, Float q) {
-        return 0.25 * q * q + p * p * p / 27.0;
-    }
-
-    /**
-     * To solve a depressed cubic, which is a cubic polynomial of the form
-     * ax^3 + cx + d = 0
-     * @param a
-     * @param c
-     * @param c
-     * @param roots The solved
-     * @returns then number of roots found
-     */
-    static int SolveDepressedCubic(Float a, Float c, Float d, Float roots[]) {
-        Float p = c / a;
-        Float q = d / a;
-
-        Float D = DiscriminantCardano(p, q);
-
-        if (D >= 0) {
-            Float alpha = cbrt(-0.5 * q + sqrt(D));
-            Float beta = cbrt(-0.5 * q - sqrt(D));
-
-            roots[0] = alpha + beta;
-
-            return 1;
-        } else {
-            CHECK_GE(0.25 * q * q - D, 0.0);
-            Float R = 2.0 * cbrt(sqrt(0.25 * q * q - D));
-            Float tanPhi = -2.0 * sqrt(-D) / q;
-            Float phi = atan(tanPhi);
-
-            // when phi is smaller than 0, then negate result
-            if (phi < 0) {
-                R *= -1.0;
-            }
-
-            roots[0] = R * cos(phi / 3.0);
-            roots[1] = R * cos((phi + 2.0 * Pi) / 3.0);
-            roots[2] = R * cos((phi + 4.0 * Pi) / 3.0);
-            return 3;
-        }
-    }
-
-    /**
-     * Solves the root for reflection (R) mode of Marschner.
-     * Gamma is returned instead of the root h (for efficiency reasons)
-     *
-     *  h = sin gamma, so if you want h, then do arcsin(gamma)
-     *
-     * @param phi
-     * @return Gamma_i
-     */
-    static inline Float SolveGammaRoot_R(Float phi) {
-        return -phi / 2.0;
-    }
-
-    /**
-     * Bounds gamma to it's valid range between [-pi/2; pi/2]
-     * If gamma is higher or lower than this range, then gamma is
-     * adjusted to fall back in this range.
-     * The result is actually asin(sin(gamma)), but this leads to
-     * precision errors.
-     * @param gamma
-     * @return
-     */
-    static Float RangeBoundGammaInversed(Float gamma) {
-        // wrap gamma back to range [-1.5pi ; pi/2]
-        while (gamma > .5 * Pi) gamma -= 2 * Pi;
-        while (gamma < -1.5 * Pi) gamma += 2 * Pi;
-
-        // gamma >= pi/2 is valid and correct
-        if (gamma >= -.5 * Pi) {
-            return gamma;
-        } else {
-            // value below -pi/2 should be inversely mapped to [-pi/2 ; pi/2]
-            return -Pi - gamma;
-        }
-    }
-
-    static Float RangeBoundGamma(Float gamma) {
-        // wrap gamma back to range [-1.5pi ; pi/2]
-        while (gamma > Pi) gamma -= 2.0 * Pi;
-        while (gamma < -Pi) gamma += 2.0 * Pi;
-        return gamma;
     }
 
     static int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]) {
@@ -384,7 +62,7 @@ namespace pbrt {
         while (d < -Pi) d += 2 * Pi;
 
         int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
-
+        CHECK(numberRoots == 1 || numberRoots == 3);
 
         // filter roots that are invalid
         int numberValidRoots = 0;
@@ -395,46 +73,23 @@ namespace pbrt {
             }
         }
 
-
-        //        if (p == 1) {
-        //            printf("a: %f, c: %f. d: %f, phi: %f, root: %f\n", a, c, d + phi, phi, gammaRoots[0]);
-        //        }
-
-        //        for (int i = 0; i < numberRoots; ++i) {
-        //            //            //            if (p == 2 && fabs(gammaRoots[i]) > .5 * Pi) {
-        //            //            //                printf("GammaI: %f\n", gammaRoots[i]);
-        //            //            //                printf("root (%d / %d) =  a: %f -- c: %f -- etaPerp: %f -- phi: %f\n\n", i, numberRoots, a, c, etaPerp, phi);
-        //            //            //            }
-        //            //            //gammaRoots[i] = Clamp(gammaRoots[i], -.5 * Pi, .5 * Pi);
-        //            gammaRoots[i] = RangeBoundGammaInversed(gammaRoots[i]);
-        //            //
-        //            //            //CHECK_NEAR(ClampPhi(Phi(p, gammaI, GammaT(gammaI, etaPerp)) - phi), 0.0, 0.3);
-        //        }
-
-        // make sure there is always 1 or 3 root(s) and gamma always between [-Pi/2, Pi/2]
-        CHECK(numberRoots == 1 || numberRoots == 3);
-        //        for (int i = 0; i < numberRoots; ++i) {
-        //            CHECK_LE(fabs(gammaRoots[i]), .5 * Pi);
-        //        }
-
-        //        int numberRootsWithinBounds = 0;
-        //        for (int i = 0; i < numberRoots; ++i) {
-        //            if (gammaRoots[i] >= -.5 * Pi && gammaRoots[i] <= .5 * Pi) {
-        //                gammaRoots[numberRootsWithinBounds++] = gammaRoots[i];
-        //            }
-        //        }
-        //        return numberRootsWithinBounds;
-        //return numberRoots;
         return numberValidRoots;
     }
 
+    /**
+     * Solves the root for reflection (R) mode of Marschner.
+     * Gamma is returned instead of the root h (for efficiency reasons)
+     *
+     *  h = sin gamma, so if you want h, then do arcsin(gamma)
+     *
+     * @param phi
+     * @return Gamma_i
+     */
+    static inline Float SolveGammaRoot_R(Float phi) {
+        return -phi / 2.0;
+    }
+
     static Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT) {
-
-        // PBRT implementation
-        //Float cosGammaT = cos(gammaT);
-        //return Exp(-sigmaA * (2 * cosGammaT / cosThetaT));
-
-        // My implementation, which is correct?
         Float cosGamma2T = AssurePositiveNonZero(cos(2.0 * gammaT));
         return Exp(-2.0 * (sigmaA / cosThetaT) * (1.0 + cosGamma2T));
     }
@@ -464,9 +119,54 @@ namespace pbrt {
         return (-6.0 * a * gammaI) / (1.0 - Sqr(sin(gammaI)));
     }
 
+    /**
+     *
+     * @param etaPerp should be smaller than 2.0
+     * @return
+     */
+    static Float GammaCaustic(Float etaPerp) {
+        // root for caustic is (hc or -hc)
+        Float hc = sqrt((4.0 - Sqr(etaPerp)) / 3.0);
+        return SafeASin(-hc);
+    }
+
+    static Float GammaT(Float gammaI, Float etaPerp) {
+        const Float Pi3 = Pi * Pi*Pi;
+        const Float C = SafeASin(1.0 / etaPerp);
+
+        return gammaI * 3.0 * C / Pi - gammaI * gammaI * gammaI * 4.0 * C / Pi3;
+    }
+
+    static Float PhiCaustic(Float etaPerp) {
+        if (etaPerp < 2.0) {
+            Float gammaCaustic = GammaCaustic(etaPerp);
+            return Phi(2, gammaCaustic, GammaT(gammaCaustic, etaPerp));
+        } else {
+            return 0.0;
+        }
+    }
+
+    static Float EtaEccentricity(Float eccentricity, Float etaPerp, Float thetaH) {
+        Float eta1 = 2.0 * (etaPerp - 1.0) * Sqr(eccentricity) - etaPerp + 2.0;
+        Float eta2 = 2.0 * (etaPerp - 1.0) / Sqr(eccentricity) - etaPerp + 2.0;
+
+        return 0.5 * ((eta1 + eta2) + cos(2.0 * thetaH)*(eta1 - eta2));
+    }
+
     /*******************************
      * MarschnerMaterial
      *******************************/
+
+    MarschnerBSDF* MarschnerMaterial::CreateMarschnerBSDF(SurfaceInteraction *si,
+            MemoryArena &arena) const {
+
+        Spectrum sigmaA = mSigmaA->Evaluate(*si);
+
+        return ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt,
+                mBr, mBtt, mBtrt,
+                mHairRadius, mEta, sigmaA, mEccentricity, mGlintScaleFactor,
+                mCausticWidth, mCausticFadeRange, mCausticIntensityLimit);
+    }
 
     void MarschnerMaterial::ComputeScatteringFunctions(SurfaceInteraction *si,
             MemoryArena &arena, TransportMode mode, bool allowMultipleLobes) const {
@@ -476,12 +176,7 @@ namespace pbrt {
         // Allocate a bsdf that contains the collection of BRDFs and BTDFs
         si->bsdf = ARENA_ALLOC(arena, BSDF)(*si, this->mEta);
 
-        Float h = 2.0 * si->uv[1] - 1.0;
-
-        si->bsdf->Add(ARENA_ALLOC(arena, MarschnerBSDF)(*si, h, mAr, mAtt, mAtrt,
-                mBr, mBtt, mBtrt,
-                mHairRadius, mEta, sigmaA, mEccentricity, mGlintScaleFactor,
-                mCausticWidth, mCausticFadeRange, mCausticIntensityLimit));
+        si->bsdf->Add(CreateMarschnerBSDF(si, arena));
     }
 
     MarschnerMaterial *CreateMarschnerMaterial(const TextureParams &mp) {
@@ -506,8 +201,8 @@ namespace pbrt {
         //            Warning("Glint scale factor should be between 0.5 and 5.0, but is %f", glintScaleFactor);
 
         Float causticWidth = mp.FindFloat("causticWidth", 15.0);
-        if (causticWidth < 10.0 || causticWidth > 25.0)
-            Warning("Caustic width should be between 10 and 25 degrees, but is %f degrees", causticWidth);
+        //        if (causticWidth < 10.0 || causticWidth > 25.0)
+        //            Warning("Caustic width should be between 10 and 25 degrees, but is %f degrees", causticWidth);
         Float causticWidthRadians = Radians(causticWidth);
 
         Float causticFade = mp.FindFloat("causticFadeRange", 0.3);
@@ -521,9 +216,9 @@ namespace pbrt {
             Warning("caustic intensity limit should not be larger than 0.5, but is %f", causticIntensityLimit);
         }
 
-        Float rgb[3] = {0.432, 0.612, 0.98};
+        Float defaultSigmaA[3] = {0.432, 0.612, 0.98};
 
-        std::shared_ptr<Texture < Spectrum>> sigmaA = mp.GetSpectrumTexture("sigmaA", Spectrum::FromRGB(rgb)); //should be defined as color
+        std::shared_ptr<Texture < Spectrum>> sigmaA = mp.GetSpectrumTexture("sigmaA", Spectrum::FromRGB(defaultSigmaA)); //should be defined as color
 
         return new MarschnerMaterial(alpha, beta, hairRadius, eta, eccentricity, glintScaleFactor, causticWidthRadians, causticFade, causticIntensityLimit, sigmaA);
     }
@@ -533,7 +228,6 @@ namespace pbrt {
      *******************************/
 
     MarschnerBSDF::MarschnerBSDF(const SurfaceInteraction& si,
-            Float h,
             Float alphaR, Float alphaTT, Float alphaTRT,
             Float betaR, Float betaTT, Float betaTRT,
             Float hairRadius,
@@ -542,14 +236,11 @@ namespace pbrt {
             Float causticWidth, Float causticFadeRange, Float causticIntensityLimit
             )
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
-    mH(h), mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv),
+    mNs(si.shading.n), mNg(si.n), mDpdu(si.dpdu), mDpdv(si.dpdv),
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
     mHairRadius(hairRadius), mEta(eta), mSigmaA(sigmaA), mEccentricity(eccentricity), mGlintScaleFactor(glintScaleFactor),
     mCausticWidth(causticWidth), mCausticFadeRange(causticFadeRange), mCausticIntensityLimit(causticIntensityLimit) {
-
-        CHECK(abs(mH) <= 1.0);
-
     };
 
     Float MarschnerBSDF::M_r(Float theta_h) const {
@@ -597,31 +288,6 @@ namespace pbrt {
                 / (fabs(2.0 * DPhiDh(1, gammaI, etaPerp)));
     }
 
-    Float smoothstep(Float a, Float b, Float x) {
-        CHECK_GT(b - a, 0.0);
-        return Clamp((b - x) / (b - a), 0.0, 1.0);
-    }
-
-    /**
-     *
-     * @param etaPerp should be smaller than 2.0
-     * @return
-     */
-    static Float GammaCaustic(float etaPerp) {
-        // root for caustic is (hc or -hc)
-        Float hc = sqrt((4.0 - Sqr(etaPerp)) / 3.0);
-        return SafeASin(-hc);
-    }
-
-    static Float PhiCaustic(Float etaPerp) {
-        if (etaPerp < 2.0) {
-            Float gammaCaustic = GammaCaustic(etaPerp);
-            return Phi(2, gammaCaustic, GammaT(gammaCaustic, etaPerp));
-        } else {
-            return 0.0;
-        }
-    }
-
     Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float cosThetaT) const {
         Float roots[3];
         int nRoots = SolveGammaRoots(2, phi, etaPerp, roots);
@@ -663,7 +329,7 @@ namespace pbrt {
         } else {
             gammaCaustic = 0.0;
             causticIntensity = mCausticIntensityLimit;
-            t = smoothstep(2.0, 2.0 + mCausticFadeRange, etaPerp);
+            t = SmoothStep(2.0, 2.0 + mCausticFadeRange, etaPerp);
         }
 
         Float phiCaustic = PhiCaustic(etaPerp);
@@ -679,13 +345,6 @@ namespace pbrt {
         L *= (1.0 - t * gaussianL / gaussianCenter);
         L *= (1.0 - t * gaussianR / gaussianCenter);
         L += t * mGlintScaleFactor * absorption * causticIntensity * (gaussianL + gaussianR);
-    }
-
-    static Float EtaEccentricity(Float eccentricity, Float etaPerp, Float thetaH) {
-        Float eta1 = 2.0 * (etaPerp - 1.0) * Sqr(eccentricity) - etaPerp + 2.0;
-        Float eta2 = 2.0 * (etaPerp - 1.0) / Sqr(eccentricity) - etaPerp + 2.0;
-
-        return 0.5 * ((eta1 + eta2) + cos(2.0 * thetaH)*(eta1 - eta2));
     }
 
     Spectrum MarschnerBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
