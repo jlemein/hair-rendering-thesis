@@ -364,8 +364,8 @@ namespace pbrt {
 
     static Float RangeBoundGamma(Float gamma) {
         // wrap gamma back to range [-1.5pi ; pi/2]
-        while (gamma > .5 * Pi) gamma -= Pi;
-        while (gamma < -.5 * Pi) gamma += Pi;
+        while (gamma > Pi) gamma -= 2.0 * Pi;
+        while (gamma < -Pi) gamma += 2.0 * Pi;
         return gamma;
     }
 
@@ -385,22 +385,47 @@ namespace pbrt {
 
         int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
 
-        for (int i = 0; i < numberRoots; ++i) {
-            //            if (fabs(gammaRoots[i]) > .5 * Pi) {
-            //                printf("GammaI: %f\n", gammaRoots[i]);
-            //            }
-            gammaRoots[i] = Clamp(gammaRoots[i], -.5 * Pi, .5 * Pi);
 
-            //CHECK_NEAR(ClampPhi(Phi(p, gammaI, GammaT(gammaI, etaPerp)) - phi), 0.0, 0.3);
+        // filter roots that are invalid
+        int numberValidRoots = 0;
+        for (int i = 0; i < numberRoots; ++i) {
+            Float gamma = RangeBoundGamma(gammaRoots[i]);
+            if (fabs(gamma) <= .5 * Pi) {
+                gammaRoots[numberValidRoots++] = gamma;
+            }
         }
+
+
+        //        if (p == 1) {
+        //            printf("a: %f, c: %f. d: %f, phi: %f, root: %f\n", a, c, d + phi, phi, gammaRoots[0]);
+        //        }
+
+        //        for (int i = 0; i < numberRoots; ++i) {
+        //            //            //            if (p == 2 && fabs(gammaRoots[i]) > .5 * Pi) {
+        //            //            //                printf("GammaI: %f\n", gammaRoots[i]);
+        //            //            //                printf("root (%d / %d) =  a: %f -- c: %f -- etaPerp: %f -- phi: %f\n\n", i, numberRoots, a, c, etaPerp, phi);
+        //            //            //            }
+        //            //            //gammaRoots[i] = Clamp(gammaRoots[i], -.5 * Pi, .5 * Pi);
+        //            gammaRoots[i] = RangeBoundGammaInversed(gammaRoots[i]);
+        //            //
+        //            //            //CHECK_NEAR(ClampPhi(Phi(p, gammaI, GammaT(gammaI, etaPerp)) - phi), 0.0, 0.3);
+        //        }
 
         // make sure there is always 1 or 3 root(s) and gamma always between [-Pi/2, Pi/2]
         CHECK(numberRoots == 1 || numberRoots == 3);
-        for (int i = 0; i < numberRoots; ++i) {
-            CHECK_LE(fabs(gammaRoots[i]), .5 * Pi);
-        }
+        //        for (int i = 0; i < numberRoots; ++i) {
+        //            CHECK_LE(fabs(gammaRoots[i]), .5 * Pi);
+        //        }
 
-        return numberRoots;
+        //        int numberRootsWithinBounds = 0;
+        //        for (int i = 0; i < numberRoots; ++i) {
+        //            if (gammaRoots[i] >= -.5 * Pi && gammaRoots[i] <= .5 * Pi) {
+        //                gammaRoots[numberRootsWithinBounds++] = gammaRoots[i];
+        //            }
+        //        }
+        //        return numberRootsWithinBounds;
+        //return numberRoots;
+        return numberValidRoots;
     }
 
     static Float SolveGammaRoot_TT(Float phi, Float etaPerp) {
@@ -408,8 +433,8 @@ namespace pbrt {
         int numberRoots = SolveGammaRoots(1, phi, etaPerp, roots);
 
         // make sure there is always 1 root and always between [-Pi/2, Pi/2]
-        CHECK_EQ(numberRoots, 1);
-        CHECK_LE(fabs(roots[0]), .5 * Pi);
+        //CHECK_EQ(numberRoots, 1);
+        //CHECK_LE(fabs(roots[0]), .5 * Pi);
 
         return roots[0];
     }
@@ -569,6 +594,12 @@ namespace pbrt {
     Spectrum MarschnerBSDF::N_tt(Float dphi, Float etaPerp, Float etaPar, Float cosThetaT) const {
 
         Float gammaI = SolveGammaRoot_TT(dphi, etaPerp);
+
+        if (fabs(gammaI) > .5 * Pi) {
+            //printf("gammaI: %f\n", gammaI);
+            return Spectrum(.0);
+        }
+
         Float gammaT = GammaT(gammaI, etaPerp);
 
         //CHECK_LT(fabs(dphi - Phi(1, gammaI, gammaT)), 0.01);
@@ -595,18 +626,28 @@ namespace pbrt {
 
         Spectrum sum(.0);
 
+        //        if (nRoots == 3) {
+        //            printf("Roots is 3: %f, %f, %f\n", roots[0], roots[1], roots[2]);
+        //            printf("Phi(2, gammaI, gammaT) = %f, %f, %f\n\n",
+        //                    Phi(2, roots[0], GammaT(roots[0], etaPerp)) - phi,
+        //                    Phi(2, roots[1], GammaT(roots[1], etaPerp)) - phi,
+        //                    Phi(2, roots[2], GammaT(roots[2], etaPerp)) - phi);
+        //        }
+
         for (int i = 0; i < nRoots; ++i) {
             Float gammaI = roots[i];
             Float gammaT = GammaT(gammaI, etaPerp);
 
-            Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp); //Fresnel(etaPerp, etaPar, gammaI);
-            Float fresnelI = Fresnel(1.0 / etaPerp, 1.0 / etaPar, gammaT);
+            CHECK_LE(fabs(gammaI), .5 * Pi);
+            CHECK_NEAR(Phi(2, gammaI, gammaT) - phi, 0.0, 1e-2);
+
+
+            Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp);
 
             Spectrum T = Transmittance(mSigmaA, gammaT, cosThetaT);
-            Spectrum Absorption = Sqr(1.0 - fresnel) * fresnelI * T * T;
+            Spectrum Absorption = Sqr(1.0 - fresnel) * fresnel * T * T;
 
             Float dphidh = DPhiDh(2, gammaI, etaPerp);
-            //bool isCaustic = fabs(dphidh) <= 1e-2;
             Spectrum L = Absorption / (fabs(2.0 * dphidh));
 
             Float gammaCaustic;
@@ -674,6 +715,13 @@ namespace pbrt {
         return Spectrum(0.01);
     }
 
+    static Float EtaEccentricity(Float eccentricity, Float etaPerp, Float thetaH) {
+        Float eta1 = 2.0 * (etaPerp - 1.0) * Sqr(eccentricity) - etaPerp + 2.0;
+        Float eta2 = 2.0 * (etaPerp - 1.0) / Sqr(eccentricity) - etaPerp + 2.0;
+
+        return 0.5 * ((eta1 + eta2) + cos(2.0 * thetaH)*(eta1 - eta2));
+    }
+
     Spectrum MarschnerBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
         // x axis goes with the fiber, from root to tip
         // y represents normal to hair fiber (major axis)
@@ -692,6 +740,11 @@ namespace pbrt {
 
         // TODO: check if bravais index is based on theta_r or theta_i or maybe theta_d ??
         ToBravais(mEta, theta_r, etaPerp, etaPar);
+
+        // take into account eccentricity
+        if (mEccentricity != 1.0) {
+            etaPerp = EtaEccentricity(mEccentricity, etaPerp, theta_h);
+        }
 
         Float sinThetaR = sin(theta_r);
         Float sinThetaT = sinThetaR / mEta;
@@ -719,8 +772,8 @@ namespace pbrt {
         *pdf = this->Pdf(wo, *wi);
         *wi = Vector3f(x, y, z);
 
-        //        return Spectrum(.0);
-        return f(wo, *wi);
+        return Spectrum(.0);
+        //return f(wo, *wi);
     }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {

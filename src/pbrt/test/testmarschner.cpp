@@ -37,6 +37,18 @@ TEST(Marschner, RangeBoundGammaInversed) {
     }
 }
 
+TEST(Marschner, EtaEccentricityIdentity) {
+    EXPECT_FLOAT_EQ(1.55, EtaEccentricity(1.0, 1.55, 0.0));
+    EXPECT_FLOAT_EQ(1.55, EtaEccentricity(1.0, 1.55, -.5 * Pi));
+    EXPECT_FLOAT_EQ(1.55, EtaEccentricity(1.0, 1.55, .5 * Pi));
+}
+
+TEST(Marschner, EtaEccentricity) {
+    EXPECT_GT(EtaEccentricity(0.9, 1.55, 0.0), 1.0);
+    EXPECT_GT(EtaEccentricity(0.9, 1.55, -.5 * Pi), 1.0);
+    EXPECT_GT(EtaEccentricity(0.9, 1.55, .5 * Pi), 1.0);
+}
+
 
 //
 //TEST(Marschner, RangeBoundGamma) {
@@ -207,6 +219,28 @@ TEST(Marschner, SolveThreeRootsForTRT) {
 
         EXPECT_LT(fabs(EvaluateCubic(a, c, d, roots[i])), 1e-3);
     }
+}
+
+TEST(Marschner, SolveRootsForTRTWithGammaOutsideRange) {
+
+    Float expectedRoot = 2.017356;
+    //root (0 / 1) =
+
+    Float a = -0.360782;
+    Float c = 0.670584;
+    Float etaPerp = 1.553825;
+    Float phi = -1.609246;
+    Float d = 2.0 * Pi - phi;
+
+    Float roots[3];
+    int nRoots = SolveDepressedCubic(a, c, d, roots);
+
+    // TRT could result in one or three roots
+    EXPECT_TRUE(nRoots == 1);
+    EXPECT_FLOAT_EQ(roots[0], expectedRoot);
+
+    Float root = RangeBoundGammaInversed(roots[0]);
+    EXPECT_NEAR(Phi(2, root, GammaT(root, etaPerp)), phi, 1e-5);
 }
 
 TEST(Marschner, SolveThreeOutOfBoundsRootsForTRT) {

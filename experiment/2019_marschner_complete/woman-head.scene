@@ -3,6 +3,7 @@ Integrator "$integrator_type" "integer maxdepth" [ $integrator_maxdepth ]
 # $light_power
 Translate 0 0 38
 Rotate 0 0 1 0
+Rotate $view_rotation 0 1 0
 Sampler "$sampler_type" "integer pixelsamples" [ $sampler_pixelsamples ]
 
 PixelFilter "triangle" "float xwidth" [ $pixelfilter_xwidth ] "float ywidth" [ $pixelfilter_ywidth ] 
@@ -20,9 +21,9 @@ WorldBegin
         "color sigmaA" [0.432 0.612 0.98] 
         "float alphaR" [3]
         "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
-        "float glintScaleFactor" [0.4]
+        "float glintScaleFactor" [ $glintScaleFactor ]
         "float causticWidth" [ $causticWidth ]
-        "float eccentricity" [0.9]
+        "float eccentricity" [ $eccentricity ]
 
     MakeNamedMaterial "brown_hair_ref" "string type" [ "hair" ]
 
@@ -30,9 +31,9 @@ WorldBegin
         "color sigmaA" [0.36 0.72 0.94] 
         "float alphaR" [3]
         "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
-        "float glintScaleFactor" [0.4]
+        "float glintScaleFactor" [ $glintScaleFactor ]
         "float causticWidth" [ $causticWidth ]
-        "float eccentricity" [0.9]
+        "float eccentricity" [ $eccentricity ]
 
 $useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 
 $useInfiniteLight    LightSource "infinite" 
@@ -51,7 +52,7 @@ $useAreaLight TransformEnd
     
 
     TransformBegin
-        Rotate $view_rotation 0 1 0
+        Rotate $model_rotation 0 1 0
         Rotate 180 0 1 0
         Rotate -90 0 1 0
 
@@ -72,7 +73,7 @@ $useAreaLight TransformEnd
 
             TransformBegin
                 Rotate -90 1 0 0
-                #Include "models/$model_head_filename"
+                Include "models/$model_head_filename"
             TransformEnd
         TransformEnd
     TransformEnd
