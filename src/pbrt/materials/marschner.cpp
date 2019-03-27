@@ -428,17 +428,6 @@ namespace pbrt {
         return numberValidRoots;
     }
 
-    static Float SolveGammaRoot_TT(Float phi, Float etaPerp) {
-        Float roots[3];
-        int numberRoots = SolveGammaRoots(1, phi, etaPerp, roots);
-
-        // make sure there is always 1 root and always between [-Pi/2, Pi/2]
-        //CHECK_EQ(numberRoots, 1);
-        //CHECK_LE(fabs(roots[0]), .5 * Pi);
-
-        return roots[0];
-    }
-
     static Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT) {
 
         // PBRT implementation
@@ -578,12 +567,12 @@ namespace pbrt {
         return Gaussian(mBetaTRT, theta_h - mAlphaTRT);
     }
 
-    Spectrum MarschnerBSDF::N_r(Float dphi, Float etaPerp, Float etaPar) const {
+    Spectrum MarschnerBSDF::N_r(Float dphi, Float etaPerp) const {
 
         // we only know phi_r at the moment [-pi, pi]
         // now find the gamma that contributes to this scattering direction
         Float gammaI = SolveGammaRoot_R(dphi);
-        Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp); //Fresnel(etaPerp, etaPar, gammaI);
+        Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp);
 
         CHECK_EQ(PhiR(gammaI), dphi);
 
@@ -591,23 +580,20 @@ namespace pbrt {
         return fresnel / (2.0 * fabs(DPhiDh_R(gammaI)));
     }
 
-    Spectrum MarschnerBSDF::N_tt(Float dphi, Float etaPerp, Float etaPar, Float cosThetaT) const {
-
-        Float gammaI = SolveGammaRoot_TT(dphi, etaPerp);
-
-        if (fabs(gammaI) > .5 * Pi) {
-            //printf("gammaI: %f\n", gammaI);
+    Spectrum MarschnerBSDF::N_tt(Float dphi, Float etaPerp, Float cosThetaT) const {
+        Float gammaI;
+        int nRoots = SolveGammaRoots(1, dphi, etaPerp, &gammaI);
+        if (nRoots == 0) {
             return Spectrum(.0);
         }
 
-        Float gammaT = GammaT(gammaI, etaPerp);
+        CHECK_LE(nRoots, 1);
+        CHECK_LE(fabs(gammaI), .5 * Pi);
 
-        //CHECK_LT(fabs(dphi - Phi(1, gammaI, gammaT)), 0.01);
-
-        Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp); //Fresnel(etaPerp, etaPar, gammaI);
+        Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp);
 
         return Sqr(1.0 - fresnel)
-                * Transmittance(mSigmaA, gammaT, cosThetaT)
+                * Transmittance(mSigmaA, GammaT(gammaI, etaPerp), cosThetaT)
                 / (fabs(2.0 * DPhiDh(1, gammaI, etaPerp)));
     }
 
@@ -616,23 +602,31 @@ namespace pbrt {
         return Clamp((b - x) / (b - a), 0.0, 1.0);
     }
 
-    Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float etaPar, Float cosThetaT) const {
-        Float t;
-        Float causticIntensity;
-        Float phiCaustic;
+    /**
+     *
+     * @param etaPerp should be smaller than 2.0
+     * @return
+     */
+    static Float GammaCaustic(float etaPerp) {
+        // root for caustic is (hc or -hc)
+        Float hc = sqrt((4.0 - Sqr(etaPerp)) / 3.0);
+        return SafeASin(-hc);
+    }
 
+    static Float PhiCaustic(Float etaPerp) {
+        if (etaPerp < 2.0) {
+            Float gammaCaustic = GammaCaustic(etaPerp);
+            return Phi(2, gammaCaustic, GammaT(gammaCaustic, etaPerp));
+        } else {
+            return 0.0;
+        }
+    }
+
+    Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float cosThetaT) const {
         Float roots[3];
         int nRoots = SolveGammaRoots(2, phi, etaPerp, roots);
 
         Spectrum sum(.0);
-
-        //        if (nRoots == 3) {
-        //            printf("Roots is 3: %f, %f, %f\n", roots[0], roots[1], roots[2]);
-        //            printf("Phi(2, gammaI, gammaT) = %f, %f, %f\n\n",
-        //                    Phi(2, roots[0], GammaT(roots[0], etaPerp)) - phi,
-        //                    Phi(2, roots[1], GammaT(roots[1], etaPerp)) - phi,
-        //                    Phi(2, roots[2], GammaT(roots[2], etaPerp)) - phi);
-        //        }
 
         for (int i = 0; i < nRoots; ++i) {
             Float gammaI = roots[i];
@@ -641,78 +635,50 @@ namespace pbrt {
             CHECK_LE(fabs(gammaI), .5 * Pi);
             CHECK_NEAR(Phi(2, gammaI, gammaT) - phi, 0.0, 1e-2);
 
-
             Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp);
-
             Spectrum T = Transmittance(mSigmaA, gammaT, cosThetaT);
-            Spectrum Absorption = Sqr(1.0 - fresnel) * fresnel * T * T;
-
+            Spectrum absorption = Sqr(1.0 - fresnel) * fresnel * T * T;
             Float dphidh = DPhiDh(2, gammaI, etaPerp);
-            Spectrum L = Absorption / (fabs(2.0 * dphidh));
+            Spectrum L = absorption / (fabs(2.0 * dphidh));
 
-            Float gammaCaustic;
-            if (etaPerp < 2.0) {
-                // root for caustic is (hc or -hc)
-                Float hc = sqrt((4.0 - Sqr(etaPerp)) / 3.0);
-                gammaCaustic = SafeASin(-hc);
-                Float gammaTCaustic = GammaT(gammaCaustic, etaPerp);
-
-                //TODO: check if phiC is computes based on caustic like this?
-                //phiC = Phi(2, gammaICaustic, gammaTCaustic);
-                phiCaustic = PhiApprox(2, gammaCaustic, etaPerp);
-                Float phiBack = PhiApprox(2, gammaI, etaPerp);
-
-                //                if (isCaustic) {
-                //                    printf("phiCaustic: %f -- phi (original): %f  -> should equal phi (root): %f\n", phiCaustic, phi, phiBack);
-                //                }
-                //phiCaustic2 = PhiApprox(2, gammaICaustic, etaPerp);
-
-                causticIntensity = std::min(mCausticIntensityLimit,
-                        (Float) (2.0 * sqrt(2.0 * mCausticWidth / fabs(DPhi2Dh2(2, gammaCaustic, etaPerp)))));
-                t = 1.0;
-            } else {
-                phiCaustic = 0.0;
-                causticIntensity = mCausticIntensityLimit;
-                t = smoothstep(2.0, 2.0 + mCausticFadeRange, etaPerp);
-            }
-
-            // compute roughness
-
-
-            //TODO: because the root of the equation should lead to phi,
-            //dphi should then be equal to original phi (passed in this function)
-            // by wrapping gammaI around itś boundary, we end up with a different phi
-            // and this is very strange. Possibly a bug. Find out more about why
-            // and how else gammaI should be wrapped
-            Float dphi = PhiApprox(2, gammaI, etaPerp);
-            Float gaussianL = Gaussian(mCausticWidth, ClampPhi(dphi - phiCaustic));
-            Float gaussianR = Gaussian(mCausticWidth, ClampPhi(dphi + phiCaustic));
-            Float gaussianCenter = Gaussian(mCausticWidth, .0);
-
-            //            if (isCaustic) {
-            //                printf("t: %f, gammaI: %f, gammaCaustic: %f\n", t, gammaI, gammaCaustic);
-            //                printf("phi - phiC: %f - %f = %f -- gaussianL: %f\n", phi, phiCaustic, ClampPhi(phi - phiCaustic), gaussianL);
-            //                printf("phi + phiC: %f + %f = %f -- gaussianR: %f\n\n", phi, phiCaustic, ClampPhi(phi + phiCaustic), gaussianR);
-            //            }
-
-            CHECK_GE(gaussianL, 0.0);
-            CHECK_GE(gaussianR, 0.0);
-            CHECK_GT(gaussianCenter, 0.0);
-            CHECK(t >= 0.0 && t <= 1.0);
-
-            L *= (1.0 - t * gaussianL / gaussianCenter);
-            L *= (1.0 - t * gaussianR / gaussianCenter);
-            L += t * mGlintScaleFactor * Absorption * causticIntensity * (gaussianL + gaussianR);
-
+            // transform L
+            applySurfaceRoughness(L, absorption, phi, etaPerp);
             sum += L;
         }
 
         return sum;
     }
 
-    Spectrum MarschnerBSDF::N_p(int p, Float relativePhi) const {
+    void MarschnerBSDF::applySurfaceRoughness(Spectrum& L, const Spectrum& absorption, Float phi, Float etaPerp) const {
 
-        return Spectrum(0.01);
+        Float t;
+        Float gammaCaustic;
+        Float causticIntensity;
+
+        if (etaPerp < 2.0) {
+            gammaCaustic = GammaCaustic(etaPerp);
+            causticIntensity = std::min(mCausticIntensityLimit,
+                    (Float) (2.0 * sqrt(2.0 * mCausticWidth / fabs(DPhi2Dh2(2, gammaCaustic, etaPerp)))));
+            t = 1.0;
+        } else {
+            gammaCaustic = 0.0;
+            causticIntensity = mCausticIntensityLimit;
+            t = smoothstep(2.0, 2.0 + mCausticFadeRange, etaPerp);
+        }
+
+        Float phiCaustic = PhiCaustic(etaPerp);
+        Float gaussianL = Gaussian(mCausticWidth, ClampPhi(phi - phiCaustic));
+        Float gaussianR = Gaussian(mCausticWidth, ClampPhi(phi + phiCaustic));
+        Float gaussianCenter = Gaussian(mCausticWidth, .0);
+
+        CHECK_GE(gaussianL, 0.0);
+        CHECK_GE(gaussianR, 0.0);
+        CHECK_GT(gaussianCenter, 0.0);
+        CHECK(t >= 0.0 && t <= 1.0);
+
+        L *= (1.0 - t * gaussianL / gaussianCenter);
+        L *= (1.0 - t * gaussianR / gaussianCenter);
+        L += t * mGlintScaleFactor * absorption * causticIntensity * (gaussianL + gaussianR);
     }
 
     static Float EtaEccentricity(Float eccentricity, Float etaPerp, Float thetaH) {
@@ -751,9 +717,9 @@ namespace pbrt {
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
 
         Spectrum result = (
-                M_r(2.0 * theta_h) * N_r(phi, etaPerp, etaPar)
-                + M_tt(2.0 * theta_h) * N_tt(phi, etaPerp, etaPar, cosThetaT)
-                + M_trt(2.0 * theta_h) * N_trt(phi, etaPerp, etaPar, cosThetaT)
+                M_r(2.0 * theta_h) * N_r(phi, etaPerp)
+                + M_tt(2.0 * theta_h) * N_tt(phi, etaPerp, cosThetaT)
+                + M_trt(2.0 * theta_h) * N_trt(phi, etaPerp, cosThetaT)
                 ) / CosineSquared(theta_d);
 
         return result;
