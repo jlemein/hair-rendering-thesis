@@ -108,7 +108,7 @@ namespace pbrt {
 
     /**
      * Second derivative of root function
-     * @param p
+     * @param p The scattering mode (1=R, 2=TT, 3=TRT)
      * @param gammaI
      * @param etaPerp
      * @return
@@ -120,7 +120,6 @@ namespace pbrt {
     }
 
     /**
-     *
      * @param etaPerp should be smaller than 2.0
      * @return
      */
@@ -130,13 +129,22 @@ namespace pbrt {
         return SafeASin(-hc);
     }
 
+    /**
+     * @param gammaI The incident (reflected) gamma angle (in radians)
+     * @param etaPerp The index of refraction
+     * @return the corresponding refracted angle gammaT, given a reflected angle gammaI
+     */
     static Float GammaT(Float gammaI, Float etaPerp) {
-        const Float Pi3 = Pi * Pi*Pi;
+        const Float Pi3 = Pi * Pi * Pi;
         const Float C = SafeASin(1.0 / etaPerp);
 
         return gammaI * 3.0 * C / Pi - gammaI * gammaI * gammaI * 4.0 * C / Pi3;
     }
 
+    /**
+     * @param etaPerp The index of refraction
+     * @return the angle (in radians) where a caustic will appear
+     */
     static Float PhiCaustic(Float etaPerp) {
         if (etaPerp < 2.0) {
             Float gammaCaustic = GammaCaustic(etaPerp);
@@ -146,6 +154,13 @@ namespace pbrt {
         }
     }
 
+    /**
+     *
+     * @param eccentricity Eccentricity value (1 means circular)
+     * @param etaPerp The index of refraction of the fiber
+     * @param thetaH The longitudinal half angle
+     * @return the adjusted index of refraction taking into account eccentricity
+     */
     static Float EtaEccentricity(Float eccentricity, Float etaPerp, Float thetaH) {
         Float eta1 = 2.0 * (etaPerp - 1.0) * Sqr(eccentricity) - etaPerp + 2.0;
         Float eta2 = 2.0 * (etaPerp - 1.0) / Sqr(eccentricity) - etaPerp + 2.0;
@@ -260,18 +275,17 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::N_r(Float dphi, Float etaPerp) const {
 
-        // we only know phi_r at the moment [-pi, pi]
-        // now find the gamma that contributes to this scattering direction
         Float gammaI = SolveGammaRoot_R(dphi);
         Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp);
 
         CHECK_EQ(PhiR(gammaI), dphi);
 
-        // reflection is only determined by Fresnel
+        // reflection is only determined by Fresnel (no absorption)
         return fresnel / (2.0 * fabs(DPhiDh_R(gammaI)));
     }
 
     Spectrum MarschnerBSDF::N_tt(Float dphi, Float etaPerp, Float cosThetaT) const {
+
         Float gammaI;
         int nRoots = SolveGammaRoots(1, dphi, etaPerp, &gammaI);
         if (nRoots == 0) {
@@ -289,6 +303,7 @@ namespace pbrt {
     }
 
     Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float cosThetaT) const {
+
         Float roots[3];
         int nRoots = SolveGammaRoots(2, phi, etaPerp, roots);
 
@@ -304,11 +319,11 @@ namespace pbrt {
             Float fresnel = FrDielectric(cos(gammaI), 1.0, etaPerp);
             Spectrum T = Transmittance(mSigmaA, gammaT, cosThetaT);
             Spectrum absorption = Sqr(1.0 - fresnel) * fresnel * T * T;
-            Float dphidh = DPhiDh(2, gammaI, etaPerp);
-            Spectrum L = absorption / (fabs(2.0 * dphidh));
+            Spectrum L = absorption / (fabs(2.0 * DPhiDh(2, gammaI, etaPerp)));
 
-            // transform L
+            // remove glints from response
             applySurfaceRoughness(L, absorption, phi, etaPerp);
+
             sum += L;
         }
 
@@ -361,18 +376,24 @@ namespace pbrt {
         Float theta_h = HalfAngle(theta_i, theta_r);
         Float phi_h = HalfAngle(phi_i, phi_r);
 
-        Float etaPerp, etaPar;
+        // If there is a longitudinal inclination, then the cross section is
+        // elliptic, complicating our scattering model.
+        // By adjusting the index of refraction (eta) using Bravais' law,
+        // we have qualitatively the same effects as an elliptic cross section,
+        // but we can now continue to use a circular cross section in the
+        // Marschner scattering model.
 
         // TODO: check if bravais index is based on theta_r or theta_i or maybe theta_d ??
+        Float etaPerp, etaPar;
         ToBravais(mEta, theta_r, etaPerp, etaPar);
 
-        // take into account eccentricity
+        // take into account eccentricity (by again adjusting the eta)
         if (mEccentricity != 1.0) {
             etaPerp = EtaEccentricity(mEccentricity, etaPerp, theta_h);
         }
 
         Float sinThetaR = sin(theta_r);
-        Float sinThetaT = sinThetaR / mEta;
+        Float sinThetaT = sinThetaR / etaPerp;
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
 
         Spectrum result = (
@@ -386,28 +407,29 @@ namespace pbrt {
 
     Spectrum MarschnerBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
 
-        Float theta = Pi * sample.x;
+        Float theta = acos(2.0 * sample.x - 1.0);
         Float phi = 2.0 * Pi * sample.y;
 
         Float x = sin(theta) * cos(phi);
         Float y = sin(theta) * sin(phi);
         Float z = cos(theta);
 
-        //TODO: sampling is not performed uniform, so pdf should be adjusted
-        *pdf = this->Pdf(wo, *wi);
         *wi = Vector3f(x, y, z);
+        *pdf = this->Pdf(wo, *wi);
 
-        return Spectrum(.0);
-        //return f(wo, *wi);
+        return f(wo, *wi);
     }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
-
         return PiOver4;
     }
 
     std::string MarschnerBSDF::ToString() const {
         return "MarschnerBSDF";
+    }
+
+    Float MarschnerBSDF::getEccentricity() const {
+        return mEccentricity;
     }
 
 } // namespace pbrt

@@ -50,7 +50,7 @@ namespace pbrt {
                                         TransportMode mode,
                                         bool allowMultipleLobes) const;
 
-      private:
+      public:
         Float mAr, mAtt, mAtrt;
         Float mBr, mBtt, mBtrt;
         Float mHairRadius, mEta, mEccentricity, mGlintScaleFactor, 
@@ -108,12 +108,23 @@ namespace pbrt {
          */
         virtual std::string ToString() const;
         
+         Float M_r(Float theta_h) const;
+        Float M_tt(Float theta_h) const;
+        Float M_trt(Float theta_h) const;
+        
+        Spectrum N_r(Float relativePhi, Float etaPerp) const;
+        Spectrum N_tt(Float relativePhi, Float etaPerp, Float cosThetaT) const;
+        Spectrum N_trt(Float relativePhi, Float etaPerp, Float cosThetaT) const;
+        
+        //TODO: is this needed to expose?
+        
         // Not implemented for now
         //virtual Spectrum rho(const Vector3f &wo, int nSamples, const Point2f *samples) const;
         //virtual Spectrum rho(int nSamples, const Point2f *samples1, const Point2f *samples2) const;
+        
+        Float getEccentricity() const;
 
     private:
-        Float mH;
         const Normal3f mNs, mNg;
         const Vector3f mDpdu, mDpdv;
 
@@ -125,13 +136,9 @@ namespace pbrt {
         Spectrum mSigmaA;
         
 
-        Float M_r(Float theta_h) const;
-        Float M_tt(Float theta_h) const;
-        Float M_trt(Float theta_h) const;
+       
         
-        Spectrum N_r(Float relativePhi, Float etaPerp) const;
-        Spectrum N_tt(Float relativePhi, Float etaPerp, Float cosThetaT) const;
-        Spectrum N_trt(Float relativePhi, Float etaPerp, Float cosThetaT) const;
+        
         
         void applySurfaceRoughness(Spectrum& L, const Spectrum& absorption, Float relativePhi, Float etaPerp) const;
     };

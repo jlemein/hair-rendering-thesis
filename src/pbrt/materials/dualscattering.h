@@ -22,8 +22,12 @@ namespace pbrt {
 class DualscatteringMaterial : public Material {
   public:
     // PlasticMaterial Public Methods
-    DualscatteringMaterial(Float eta, MarschnerMaterial* marschnerMaterial) 
-    : mEta(eta), mMarschnerMaterial(marschnerMaterial) {}
+    DualscatteringMaterial(Float eta, MarschnerMaterial* marschnerMaterial, 
+            Float alphaR, Float alphaTT, Float alphaTRT, 
+            Float betaR, Float betaTT, Float betaTRT) 
+    : mEta(eta), mMarschnerMaterial(marschnerMaterial), 
+            mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT), 
+            mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT) {}
         
     void ComputeScatteringFunctions(SurfaceInteraction *si, MemoryArena &arena,
                                     TransportMode mode,
@@ -32,12 +36,19 @@ class DualscatteringMaterial : public Material {
   private:
       MarschnerMaterial* mMarschnerMaterial = nullptr;
       Float mEta;
+      Float mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT;
+};
+
+struct GlobalScatteringInformation {
+    Float transmittance, variance, directIlluminationFraction;
 };
 
 class DualScatteringBSDF : public BxDF {
 public:
     DualScatteringBSDF(const SurfaceInteraction& si, Float eta,
-            MarschnerBSDF* marschnerBSDF);
+            MarschnerBSDF* marschnerBSDF,
+            Float alphaR, Float alphaTT, Float alphaTRT,
+            Float betaR, Float betaTT, Float betaTRT);
     
     /**
          * (Required) Returns the value of the distribution function for the given pair of directions
@@ -87,6 +98,27 @@ public:
 private:
     MarschnerBSDF* mMarschnerBSDF;
     Float mEta;
+    Point3f mPosition;
+    Float mDf, mDb;
+    Float mBetaR, mBetaTT, mBetaTRT;
+    Float mAlphaR, mAlphaTT, mAlphaTRT;
+    
+    void GatherGlobalScatteringInformation(const Vector3f& wd, GlobalScatteringInformation& gsi) const;
+    int FindScatteringCount(const Vector3f &wd) const;
+    
+    Float ForwardScatteringTransmittance() const;
+    Float ForwardScatteringVariance(Float theta) const;
+    
+    Float BackscatteringAttenuation(Float theta) const;
+    Float BackscatteringMean(Float theta) const;
+    Float BackscatteringVariance(Float theta) const;  
+    
+    Float MG_r(Float theta, Float forwardScatteringVariance) const;
+    Float MG_tt(Float theta, Float forwardScatteringVariance) const;
+    Float MG_trt(Float theta, Float forwardScatteringVariance) const;
+    
+    Spectrum EvaluateForwardScatteredMarschner(Float theta_r, Float theta_h,
+        Float theta_d, Float phi, Float forwardScatteredVariance) const;
     
 };
 

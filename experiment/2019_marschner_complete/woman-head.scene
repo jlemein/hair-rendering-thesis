@@ -28,7 +28,7 @@ WorldBegin
     MakeNamedMaterial "brown_hair_ref" "string type" [ "hair" ]
 
 	MakeNamedMaterial "blonde_hair" "string type" [ "marschner" ]
-        "color sigmaA" [0.36 0.72 0.94] 
+        "color sigmaA" [0.03 0.07 0.15] 
         "float alphaR" [3]
         "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
         "float glintScaleFactor" [ $glintScaleFactor ]
