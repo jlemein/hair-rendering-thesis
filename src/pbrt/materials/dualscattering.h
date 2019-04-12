@@ -106,10 +106,10 @@ private:
     void GatherGlobalScatteringInformation(const Vector3f& wd, GlobalScatteringInformation& gsi) const;
     int FindScatteringCount(const Vector3f &wd) const;
     
-    Float ForwardScatteringTransmittance() const;
+    Spectrum ForwardScatteringTransmittance() const;
     Float ForwardScatteringVariance(Float theta) const;
     
-    Float BackscatteringAttenuation(Float theta) const;
+    Spectrum BackscatteringAttenuation(Float theta) const;
     Float BackscatteringMean(Float theta) const;
     Float BackscatteringVariance(Float theta) const;  
     

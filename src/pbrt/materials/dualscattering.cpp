@@ -60,8 +60,6 @@ namespace pbrt {
     }
 
     DualscatteringMaterial *CreateDualscatteringMaterial(const TextureParams &mp) {
-        Error("Dualscattering material working!!");
-
         MarschnerMaterial* marschnerMaterial = CreateMarschnerMaterial(mp);
 
         // TODO: Check if dual scattering really wants to square the widths
@@ -139,13 +137,13 @@ namespace pbrt {
         // TODO: Is this correct?
         Float theta = thetaH; //0.0; Is this correct?
 
-        Float Ab = BackscatteringAttenuation(theta);
+        Spectrum Ab = BackscatteringAttenuation(theta);
         Float deltaB = BackscatteringMean(theta);
 
         Float backScatterVariance = BackscatteringVariance(theta);
         Float forwardScatterVariance = ForwardScatteringVariance(theta);
-        Float fBack = 2.0 * Ab * Gaussian(backScatterVariance + forwardScatterVariance,
-                thetaD + thetaR - deltaB) / (Pi * Sqr(cos(theta)));
+        Spectrum fBack = Spectrum(.0); //2.0 * Ab * Gaussian(backScatterVariance + forwardScatterVariance,
+        //thetaD + thetaR - deltaB) / (Pi * Sqr(cos(theta)));
 
         // compute BCSDF of the fiber due to direct illumination
         //TODO: find a way to use beta squared
@@ -158,7 +156,7 @@ namespace pbrt {
         Spectrum FScatter = (gsi.transmittance - gsi.directIlluminationFraction) * mDf * (fScatterS + Pi * mDb * fBack);
 
         // combine direct and forward scattered components
-        return (FDirect + FScatter) * cos(thetaI);
+        return (FDirect + 0.0 * FScatter) * cos(thetaI);
     }
 
     void DualScatteringBSDF::GatherGlobalScatteringInformation(const Vector3f& wd, GlobalScatteringInformation& gsi) const {
@@ -230,17 +228,17 @@ namespace pbrt {
     /**
      * Equation 5 in dual scattering approximation
      */
-    Float DualScatteringBSDF::ForwardScatteringTransmittance() const {
+    Spectrum DualScatteringBSDF::ForwardScatteringTransmittance() const {
         //        Float af = mMarschnerBSDF->f(wo, wi) * cos(thetaD);
         //        return df * pow(af)
-        return 0;
+        return Spectrum(.0);
     }
 
     Float DualScatteringBSDF::ForwardScatteringVariance(Float theta) const {
         return 1.0;
     }
 
-    Float DualScatteringBSDF::BackscatteringAttenuation(Float theta) const {
+    Spectrum DualScatteringBSDF::BackscatteringAttenuation(Float theta) const {
         //        Float response = 0.0;
         //
         //        for (Float phi = -Pi; phi < Pi; phi += 0.001) {
@@ -252,7 +250,7 @@ namespace pbrt {
         //            }
         //        }
         //        return 0.5 * Pi * response * cos(thetaD);
-        return 1.0;
+        return Spectrum(.0);
     }
 
     Float DualScatteringBSDF::BackscatteringMean(Float theta) const {

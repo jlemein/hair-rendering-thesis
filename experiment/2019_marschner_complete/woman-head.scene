@@ -15,9 +15,9 @@ Film "image"
 Camera "perspective" "float fov" [ $camera_fov ] 
 
 WorldBegin
-	MakeNamedMaterial "black_hair" "string type" [ "marschner" ]
-	MakeNamedMaterial "red_hair" "string type" [ "marschner" ]
-	MakeNamedMaterial "brown_hair" "string type" [ "marschner" ] 
+	MakeNamedMaterial "black_hair" "string type" [ "$shader" ]
+	MakeNamedMaterial "red_hair" "string type" [ "$shader" ]
+	MakeNamedMaterial "brown_hair" "string type" [ "$shader" ] 
         "color sigmaA" [0.432 0.612 0.98] 
         "float alphaR" [3]
         "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
@@ -27,7 +27,7 @@ WorldBegin
 
     MakeNamedMaterial "brown_hair_ref" "string type" [ "hair" ]
 
-	MakeNamedMaterial "blonde_hair" "string type" [ "marschner" ]
+	MakeNamedMaterial "blonde_hair" "string type" [ "$shader" ]
         "color sigmaA" [0.03 0.07 0.15] 
         "float alphaR" [3]
         "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
