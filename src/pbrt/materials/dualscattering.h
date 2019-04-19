@@ -15,9 +15,41 @@
 #include "pbrt.h"
 #include "material.h"
 #include "marschner.h"
+#include <vector>
 
 namespace pbrt {
 
+    class DualScatteringBSDF;
+    
+class DualScatteringLookup {
+public:
+    /**
+     * Gets 
+     * @param bsdf
+     * @return 
+     */
+    static const DualScatteringLookup& Get(const DualScatteringBSDF* bsdf);
+    
+    
+    Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;
+    Spectrum AverageBackwardScatteringAttenuation(Float thetaD) const;
+    
+private:
+    static DualScatteringLookup* instance;
+    
+    DualScatteringLookup(const DualScatteringBSDF* dualScatteringBSDF) : mDualScatteringBSDF(dualScatteringBSDF) {}
+    void Init();
+    void PrecomputeAverageScatteringAttenuation();
+    
+    const DualScatteringBSDF* mDualScatteringBSDF;
+    
+    // Lookup data
+    std::vector<Spectrum> mAverageForwardScatteringAttenuation;
+    std::vector<Spectrum> mAverageBackwardScatteringAttenuation;
+    const int LOOKUP_TABLE_SIZE = 100;
+    
+};
+    
 // PlasticMaterial Declarations
 class DualscatteringMaterial : public Material {
   public:
@@ -27,7 +59,8 @@ class DualscatteringMaterial : public Material {
             Float betaR, Float betaTT, Float betaTRT) 
     : mEta(eta), mMarschnerMaterial(marschnerMaterial), 
             mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT), 
-            mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT) {}
+            mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT) {
+    }
         
     void ComputeScatteringFunctions(SurfaceInteraction *si, MemoryArena &arena,
                                     TransportMode mode,
@@ -102,6 +135,7 @@ private:
     Float mDf, mDb;
     Float mBetaR, mBetaTT, mBetaTRT;
     Float mAlphaR, mAlphaTT, mAlphaTRT;
+    const DualScatteringLookup& mLookup;
     
     void GatherGlobalScatteringInformation(const Vector3f& wd, GlobalScatteringInformation& gsi) const;
     int FindScatteringCount(const Vector3f &wd) const;
@@ -120,6 +154,10 @@ private:
     Spectrum EvaluateForwardScatteredMarschner(Float theta_r, Float theta_h,
         Float theta_d, Float phi, Float forwardScatteredVariance) const;
     
+    Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;
+    Spectrum AverageBackwardScatteringAttenuation(Float thetaD) const;
+    
+    friend DualScatteringLookup;
 };
 
 DualscatteringMaterial *CreateDualscatteringMaterial(const TextureParams &mp);

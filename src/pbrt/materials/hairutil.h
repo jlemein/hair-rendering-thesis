@@ -28,7 +28,11 @@ namespace pbrt {
      */
     Float SafeACos(Float x) ;
 
-    void PrintSpectrum(const Spectrum& sp, const char* str = "");
+    void PrintSpectrum(const char* str, const Spectrum& sp);
+    
+    Spectrum Sqr(const Spectrum& s);
+
+    Spectrum Pow3(const Spectrum& s);
 
     /**
      * Utility function to adjust a value to be positive and nonzero.
@@ -42,6 +46,8 @@ namespace pbrt {
     Float AssurePositiveNonZero(Float value) ;
 
     void ToSphericalCoords(const Vector3f& w, Float& theta, Float& phi);
+    
+    Vector3f FromSphericalCoords(Float theta, Float phi);
 
     Float DifferenceAngle(Float theta_i, Float theta_r);
 

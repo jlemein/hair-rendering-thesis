@@ -39,10 +39,18 @@ namespace pbrt {
      * @param s Reference to a PBRT Spectrum
      * @param str Optional descriptive text to use as a prefix
      */
-    void PrintSpectrum(const Spectrum& sp, const char* str) {
+    void PrintSpectrum(const char* str, const Spectrum& sp) {
         Float rgb[3];
         sp.ToRGB(rgb);
         printf("%s [%f %f %f]\n", str, rgb[0], rgb[1], rgb[2]);
+    }
+
+    Spectrum Sqr(const Spectrum& s) {
+        return s*s;
+    }
+
+    Spectrum Pow3(const Spectrum& s) {
+        return s * s*s;
     }
 
     /**
@@ -64,6 +72,14 @@ namespace pbrt {
 
         CHECK_LE(abs(theta), PiOver2);
         CHECK_LE(abs(phi), Pi);
+    }
+
+    Vector3f FromSphericalCoords(Float theta, Float phi) {
+        Float x = sin(theta) * cos(phi);
+        Float y = sin(theta) * sin(phi);
+        Float z = cos(theta);
+
+        return Vector3f(x, y, z);
     }
 
     Float DifferenceAngle(Float theta_i, Float theta_r) {
