@@ -148,6 +148,16 @@ namespace pbrt {
         return a * exp(-nom / den);
     }
 
+    Spectrum Gaussian(const Spectrum& width, const Spectrum& x) {
+        Spectrum a = Spectrum(1.0) / (width * sqrt(2.0 * Pi));
+        Spectrum c = width; //width of the curve is beta (might also be 0.5 * sigma)
+
+        Spectrum nom = Sqr(x);
+        Spectrum den = 2.0 * Sqr(width);
+
+        return a * Exp(-nom / den);
+    }
+
     Float SmoothStep(Float a, Float b, Float x) {
         CHECK_GT(b - a, 0.0);
         return Clamp((b - x) / (b - a), 0.0, 1.0);

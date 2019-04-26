@@ -34,11 +34,17 @@ public:
     Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;
     Spectrum AverageBackwardScatteringAttenuation(Float thetaD) const;
     
+    Spectrum AverageBackwardScatteringAlpha(Float thetaD) const;
+    Spectrum AverageBackwardScatteringBeta(Float thetaD) const;
+    Spectrum AverageForwardScatteringAlpha(Float thetaD) const;
+    Spectrum AverageForwardScatteringBeta(Float thetaD) const;
+    
 private:
     static DualScatteringLookup* instance;
     
     DualScatteringLookup(const DualScatteringBSDF* dualScatteringBSDF) : mDualScatteringBSDF(dualScatteringBSDF) {}
     void Init();
+    
     void PrecomputeAverageScatteringAttenuation();
     
     const DualScatteringBSDF* mDualScatteringBSDF;
@@ -46,6 +52,9 @@ private:
     // Lookup data
     std::vector<Spectrum> mAverageForwardScatteringAttenuation;
     std::vector<Spectrum> mAverageBackwardScatteringAttenuation;
+    std::vector<Spectrum> mAverageForwardScatteringAlpha, mAverageBackwardScatteringAlpha;
+    std::vector<Spectrum> mAverageForwardScatteringBeta, mAverageBackwardScatteringBeta;
+    
     const int LOOKUP_TABLE_SIZE = 100;
     
 };
@@ -144,8 +153,8 @@ private:
     Float ForwardScatteringVariance(Float theta) const;
     
     Spectrum BackscatteringAttenuation(Float theta) const;
-    Float BackscatteringMean(Float theta) const;
-    Float BackscatteringVariance(Float theta) const;  
+    Spectrum BackscatteringMean(Float theta) const;
+    Spectrum BackscatteringVariance(Float theta) const;  
     
     Float MG_r(Float theta, Float forwardScatteringVariance) const;
     Float MG_tt(Float theta, Float forwardScatteringVariance) const;
@@ -154,8 +163,18 @@ private:
     Spectrum EvaluateForwardScatteredMarschner(Float theta_r, Float theta_h,
         Float theta_d, Float phi, Float forwardScatteredVariance) const;
     
+    // expensive functions
     Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;
     Spectrum AverageBackwardScatteringAttenuation(Float thetaD) const;
+    
+    Spectrum AverageForwardScatteringAlpha(Float thetaD) const;
+    Spectrum AverageBackwardScatteringAlpha(Float thetaD) const;
+    Spectrum AverageForwardScatteringBeta(Float thetaD) const;
+    Spectrum AverageBackwardScatteringBeta(Float thetaD) const;
+    
+    Spectrum f_R(const Vector3f& wo, const Vector3f& wi) const;
+    Spectrum f_TT(const Vector3f& wo, const Vector3f& wi) const;
+    Spectrum f_TRT(const Vector3f& wo, const Vector3f& wi) const;
     
     friend DualScatteringLookup;
 };

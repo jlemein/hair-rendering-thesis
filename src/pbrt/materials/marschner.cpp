@@ -405,6 +405,24 @@ namespace pbrt {
         return result;
     }
 
+    Spectrum MarschnerBSDF::f_r(const Vector3f &wo, const Vector3f &wi) const {
+        const MarschnerAngles ma(wo, wi, mEta, mEccentricity);
+
+        return M_r(2.0 * ma.thetaH) * N_r(ma.phi, ma.etaPerp) / CosineSquared(ma.thetaD);
+    }
+
+    Spectrum MarschnerBSDF::f_tt(const Vector3f &wo, const Vector3f &wi) const {
+        const MarschnerAngles ma(wo, wi, mEta, mEccentricity);
+
+        return M_tt(2.0 * ma.thetaH) * N_tt(ma.phi, ma.etaPerp, ma.cosThetaT) / CosineSquared(ma.thetaD);
+    }
+
+    Spectrum MarschnerBSDF::f_trt(const Vector3f &wo, const Vector3f &wi) const {
+        const MarschnerAngles ma(wo, wi, mEta, mEccentricity);
+
+        return M_trt(2.0 * ma.thetaH) * N_trt(ma.phi, ma.etaPerp, ma.cosThetaT) / CosineSquared(ma.thetaD);
+    }
+
     Spectrum MarschnerBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
 
         Float theta = acos(2.0 * sample.x - 1.0);
@@ -430,6 +448,35 @@ namespace pbrt {
 
     Float MarschnerBSDF::getEccentricity() const {
         return mEccentricity;
+    }
+
+    MarschnerAngles::MarschnerAngles(const Vector3f& wo, const Vector3f& wi, Float eta, Float eccentricity) {
+        ToSphericalCoords(wi, this->thetaI, this->phiI);
+        ToSphericalCoords(wo, this->thetaR, this->phiR);
+
+        this->thetaD = DifferenceAngle(this->thetaI, this->thetaR);
+        this->phi = RelativeAzimuth(this->phiI, this->phiR);
+        this->thetaH = HalfAngle(this->thetaI, this->thetaR);
+        this->phiH = HalfAngle(this->phiI, this->phiR);
+
+        // If there is a longitudinal inclination, then the cross section is
+        // elliptic, complicating our scattering model.
+        // By adjusting the index of refraction (eta) using Bravais' law,
+        // we have qualitatively the same effects as an elliptic cross section,
+        // but we can now continue to use a circular cross section in the
+        // Marschner scattering model.
+
+        // TODO: check if bravais index is based on theta_r or theta_i or maybe theta_d ??
+        ToBravais(eta, this->thetaR, this->etaPerp, this->etaPar);
+
+        // take into account eccentricity (by again adjusting the eta)
+        if (eccentricity != 1.0) {
+            this->etaPerp = EtaEccentricity(eccentricity, etaPerp, this->thetaH);
+        }
+
+        this->sinThetaR = sin(this->thetaR);
+        this->sinThetaT = sinThetaR / this->etaPerp;
+        this->cosThetaT = SafeSqrt(1 - Sqr(this->sinThetaT));
     }
 
 } // namespace pbrt

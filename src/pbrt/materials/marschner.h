@@ -20,6 +20,17 @@ namespace pbrt {
     
     class MarschnerBSDF;
     
+    struct MarschnerAngles {
+        MarschnerAngles(const Vector3f& wo, const Vector3f& wi, Float eta = 1.55, Float eccentricity = 1.0);
+        
+        Float thetaI, thetaR, phiI, phiR;
+        Float thetaD, thetaH;
+        Float phi, phiH;
+        Float etaPerp, etaPar;
+        Float sinThetaR, sinThetaT, cosThetaT;
+        
+    };
+    
     // PlasticMaterial Declarations
     class MarschnerMaterial : public Material {
       public:
@@ -75,6 +86,10 @@ namespace pbrt {
          * @return
          */
         virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const;
+        
+        Spectrum f_r(const Vector3f &wo, const Vector3f &wi) const;
+        Spectrum f_tt(const Vector3f &wo, const Vector3f &wi) const;
+        Spectrum f_trt(const Vector3f &wo, const Vector3f &wi) const;
         
         /**
          * Returns the value of the distribution function for the given pair of directions.

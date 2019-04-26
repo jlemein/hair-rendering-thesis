@@ -73,6 +73,7 @@ namespace pbrt {
      * @returns Sampled position of the gaussian at position x
      */
     Float Gaussian(Float width, Float x);
+    Spectrum Gaussian(const Spectrum& width, const Spectrum& x);
     
     Float SmoothStep(Float a, Float b, Float x);   
 

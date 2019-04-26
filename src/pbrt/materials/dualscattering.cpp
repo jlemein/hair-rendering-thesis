@@ -144,15 +144,15 @@ namespace pbrt {
 
         // compute local multiple scattering contribution
         // TODO: Is this correct?
-        Float theta = thetaD; //0.0; Is this correct?
 
-        Spectrum Ab = BackscatteringAttenuation(theta);
-        Float deltaB = BackscatteringMean(theta);
 
-        Float backScatterVariance = BackscatteringVariance(theta);
-        Float forwardScatterVariance = ForwardScatteringVariance(theta);
-        Spectrum fBack = Spectrum(.0); //2.0 * Ab * Gaussian(backScatterVariance + forwardScatterVariance,
-        //thetaD + thetaR - deltaB) / (Pi * Sqr(cos(theta)));
+        Spectrum Ab = BackscatteringAttenuation(thetaD);
+        Spectrum deltaB = BackscatteringMean(thetaD);
+
+        Spectrum backScatterVariance = BackscatteringVariance(thetaD);
+        Spectrum forwardScatterVariance = ForwardScatteringVariance(thetaD);
+        Spectrum fBack = 2.0 * Ab * Gaussian(backScatterVariance + forwardScatterVariance,
+                Spectrum(thetaD + thetaR) - deltaB) / (Pi * Sqr(cos(thetaD)));
 
         // compute BCSDF of the fiber due to direct illumination
         //TODO: find a way to use beta squared
@@ -161,7 +161,7 @@ namespace pbrt {
         //
         //        // Compute BCSDF of the fiber due to forward scattered illumination similarly
         //        Spectrum fScatterS = EvaluateForwardScatteredMarschner(thetaR, thetaH, thetaD, phi, forwardScatterVariance);
-        //        //TODO: Does this Pi belong here, or is it a typo in paper??
+        //        //        //TODO: Does this Pi belong here, or is it a typo in paper??
         //        Spectrum FScatter = (gsi.transmittance - gsi.directIlluminationFraction) * mDf * (fScatterS + Pi * mDb * fBack);
 
         // combine direct and forward scattered components
@@ -256,6 +256,7 @@ namespace pbrt {
 
         // We are locking here, because the singleton requires initialization
         std::lock_guard<std::mutex> myLock(myMutex);
+
         if (DualScatteringLookup::instance == 0) {
             instance = new DualScatteringLookup(bsdf);
             instance->Init();
@@ -276,12 +277,15 @@ namespace pbrt {
 
             mAverageBackwardScatteringAttenuation.push_back(mDualScatteringBSDF->AverageBackwardScatteringAttenuation(thetaD));
             mAverageForwardScatteringAttenuation.push_back(mDualScatteringBSDF->AverageForwardScatteringAttenuation(thetaD));
+
+            mAverageForwardScatteringAlpha.push_back(mDualScatteringBSDF->AverageForwardScatteringAlpha(thetaD));
+            mAverageBackwardScatteringAlpha.push_back(mDualScatteringBSDF->AverageBackwardScatteringAlpha(thetaD));
+
+            mAverageForwardScatteringBeta.push_back(mDualScatteringBSDF->AverageForwardScatteringBeta(thetaD));
+            mAverageBackwardScatteringBeta.push_back(mDualScatteringBSDF->AverageBackwardScatteringBeta(thetaD));
         }
 
-
         printf(" [DONE]\n");
-
-
     }
 
     Spectrum Lookup(Float value, Float min, Float max, const std::vector<Spectrum>& lookupTable) {
@@ -300,6 +304,22 @@ namespace pbrt {
 
     Spectrum DualScatteringLookup::AverageForwardScatteringAttenuation(Float thetaD) const {
         return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageForwardScatteringAttenuation);
+    }
+
+    Spectrum DualScatteringLookup::AverageBackwardScatteringAlpha(Float thetaD) const {
+        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageBackwardScatteringAlpha);
+    }
+
+    Spectrum DualScatteringLookup::AverageBackwardScatteringBeta(Float thetaD) const {
+        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageBackwardScatteringBeta);
+    }
+
+    Spectrum DualScatteringLookup::AverageForwardScatteringAlpha(Float thetaD) const {
+        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageForwardScatteringAlpha);
+    }
+
+    Spectrum DualScatteringLookup::AverageForwardScatteringBeta(Float thetaD) const {
+        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageForwardScatteringBeta);
     }
 
     static Vector3f SampleFrontHemisphere(const Point2f& uv) {
@@ -383,6 +403,107 @@ namespace pbrt {
         return sum / static_cast<Float> (SAMPLES);
     }
 
+    Spectrum DualScatteringBSDF::AverageForwardScatteringAlpha(Float thetaD) const {
+        const int SAMPLES = 1000;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(0.0, 1.0);
+
+        Spectrum sum(.0);
+        Spectrum denominator(.0);
+
+        for (int i = 0; i < SAMPLES; ++i) {
+            Float phi = (-.5 + dis(gen)) * Pi;
+
+            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
+            const Vector3f woForward = SampleFrontHemisphere(Point2f(dis(gen), dis(gen)));
+
+            Spectrum fR = mMarschnerBSDF->f_r(woForward, wi);
+            Spectrum fTT = mMarschnerBSDF->f_tt(woForward, wi);
+            Spectrum fTRT = mMarschnerBSDF->f_trt(woForward, wi);
+
+            sum += fR * mAlphaR + fTT * mAlphaTT + fTRT * mAlphaTRT;
+            denominator += (fR + fTT + fTRT);
+        }
+
+        return sum / denominator;
+    }
+
+    Spectrum DualScatteringBSDF::AverageBackwardScatteringAlpha(Float thetaD) const {
+        const int SAMPLES = 1000;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(0.0, 1.0);
+
+        Spectrum sum(.0), denominator(.0);
+
+        for (int i = 0; i < SAMPLES; ++i) {
+            Float phi = (-.5 + dis(gen)) * Pi;
+
+            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
+            const Vector3f woBackward = SampleBackHemisphere(Point2f(dis(gen), dis(gen)));
+
+            Spectrum fR = mMarschnerBSDF->f_r(woBackward, wi);
+            Spectrum fTT = mMarschnerBSDF->f_tt(woBackward, wi);
+            Spectrum fTRT = mMarschnerBSDF->f_trt(woBackward, wi);
+
+            sum += fR * mAlphaR + fTT * mAlphaTT + fTRT * mAlphaTRT;
+            denominator += (fR + fTT + fTRT);
+        }
+
+        return sum / denominator;
+    }
+
+    Spectrum DualScatteringBSDF::AverageForwardScatteringBeta(Float thetaD) const {
+        const int SAMPLES = 1000;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(0.0, 1.0);
+
+        Spectrum sum(.0), denominator(.0);
+
+        for (int i = 0; i < SAMPLES; ++i) {
+            Float phi = (-.5 + dis(gen)) * Pi;
+
+            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
+            const Vector3f woForward = SampleFrontHemisphere(Point2f(dis(gen), dis(gen)));
+
+            Spectrum fR = mMarschnerBSDF->f_r(woForward, wi);
+            Spectrum fTT = mMarschnerBSDF->f_tt(woForward, wi);
+            Spectrum fTRT = mMarschnerBSDF->f_trt(woForward, wi);
+
+            sum += fR * mBetaR + fTT * mBetaTT + fTRT * mBetaTRT;
+            denominator += (fR + fTT + fTRT);
+        }
+
+        return sum / denominator;
+    }
+
+    Spectrum DualScatteringBSDF::AverageBackwardScatteringBeta(Float thetaD) const {
+        const int SAMPLES = 1000;
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_real_distribution<> dis(0.0, 1.0);
+
+        Spectrum sum(.0), denominator(.0);
+
+        for (int i = 0; i < SAMPLES; ++i) {
+            Float phi = (-.5 + dis(gen)) * Pi;
+
+            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
+            const Vector3f woBackward = SampleBackHemisphere(Point2f(dis(gen), dis(gen)));
+
+            Spectrum fR = mMarschnerBSDF->f_r(woBackward, wi);
+            Spectrum fTT = mMarschnerBSDF->f_tt(woBackward, wi);
+            Spectrum fTRT = mMarschnerBSDF->f_trt(woBackward, wi);
+
+            sum += fR * mBetaR + fTT * mBetaTT + fTRT * mBetaTRT;
+            denominator += (fR + fTT + fTRT);
+        }
+
+        return sum / denominator;
+    }
+
     Spectrum DualScatteringBSDF::BackscatteringAttenuation(Float thetaD) const {
         Spectrum afSquared = Sqr(mLookup.AverageForwardScatteringAttenuation(thetaD));
         Spectrum ab = mLookup.AverageBackwardScatteringAttenuation(thetaD);
@@ -397,12 +518,49 @@ namespace pbrt {
         return A1 + A3;
     }
 
-    Float DualScatteringBSDF::BackscatteringMean(Float theta) const {
-        return 1.0;
+    //! equation 16
+
+    Spectrum DualScatteringBSDF::BackscatteringMean(Float thetaD) const {
+        //TODO: how to compute alphaF and alphaB?
+        // according to paper these are average forward scattering means based on BCSDF of hair fiber
+
+        // average forward and backward scattering shifts, taken from BCSDF of the hair fiber
+        Spectrum alphaF = mLookup.AverageForwardScatteringAlpha(thetaD);
+        Spectrum alphaB = mLookup.AverageBackwardScatteringAlpha(thetaD);
+
+        Spectrum ab = mLookup.AverageBackwardScatteringAttenuation(thetaD);
+        Spectrum af = mLookup.AverageForwardScatteringAttenuation(thetaD);
+
+        Spectrum oneMinSquaredAf = Spectrum(1.0) - Sqr(af);
+        Spectrum oneMinSquaredAfSquared = Sqr(oneMinSquaredAf);
+        Spectrum oneMinSquaredAfPow3 = Pow3(oneMinSquaredAf);
+
+        Spectrum part1 = Spectrum(1.0) - (2.0 * Sqr(ab) / oneMinSquaredAfSquared);
+        Spectrum part2 = (2.0 * oneMinSquaredAfSquared + 4.0 * Sqr(af) * Sqr(ab)) / oneMinSquaredAfPow3;
+
+        return alphaB * part1 + alphaF * part2;
     }
 
-    Float DualScatteringBSDF::BackscatteringVariance(Float theta) const {
-        return 1.0;
+    //! equation 17
+
+    Spectrum DualScatteringBSDF::BackscatteringVariance(Float thetaD) const {
+        //TODO: how to compute betaF and betaB?
+        // according to paper these are average backward scattering means based on BCSDF of hair fiber
+        Spectrum betaF = mLookup.AverageForwardScatteringBeta(thetaD);
+        Spectrum betaB = mLookup.AverageBackwardScatteringBeta(thetaD);
+
+        Spectrum ab = mLookup.AverageBackwardScatteringAttenuation(thetaD);
+        Spectrum af = mLookup.AverageForwardScatteringAttenuation(thetaD);
+
+        Spectrum sqrt1 = Sqrt(2.0 * Sqr(betaF) + Sqr(betaB));
+        Spectrum sqrt2 = Sqrt(2.0 * Sqr(betaF) + 3.0 * Sqr(betaB));
+        Spectrum abPow3 = Pow3(ab);
+
+        Spectrum factor = Spectrum(1.0) + this->mDb * Sqr(af);
+        Spectrum nom = ab * sqrt1 + abPow3 * sqrt2;
+        Spectrum denom = ab + abPow3 * (2.0 * betaF + 3.0 * betaB);
+
+        return factor * nom / denom;
     }
 
     Float DualScatteringBSDF::Pdf(const Vector3f &wo, const Vector3f & wi) const {
