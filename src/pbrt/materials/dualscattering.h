@@ -156,12 +156,12 @@ private:
     Spectrum BackscatteringMean(Float theta) const;
     Spectrum BackscatteringVariance(Float theta) const;  
     
-    Float MG_r(Float theta, Float forwardScatteringVariance) const;
-    Float MG_tt(Float theta, Float forwardScatteringVariance) const;
-    Float MG_trt(Float theta, Float forwardScatteringVariance) const;
+    Spectrum MG_r(Float theta, Spectrum forwardScatteringVariance) const;
+    Spectrum MG_tt(Float theta, Spectrum forwardScatteringVariance) const;
+    Spectrum MG_trt(Float theta, Spectrum forwardScatteringVariance) const;
     
     Spectrum EvaluateForwardScatteredMarschner(Float theta_r, Float theta_h,
-        Float theta_d, Float phi, Float forwardScatteredVariance) const;
+        Float theta_d, Float phi, Spectrum forwardScatteredVariance) const;
     
     // expensive functions
     Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;

@@ -159,14 +159,13 @@ namespace pbrt {
         Spectrum fDirectS = mMarschnerBSDF->f(wo, wi);
         Spectrum FDirect = gsi.directIlluminationFraction * (fDirectS + mDb * fBack);
         //
-        //        // Compute BCSDF of the fiber due to forward scattered illumination similarly
-        //        Spectrum fScatterS = EvaluateForwardScatteredMarschner(thetaR, thetaH, thetaD, phi, forwardScatterVariance);
-        //        //        //TODO: Does this Pi belong here, or is it a typo in paper??
-        //        Spectrum FScatter = (gsi.transmittance - gsi.directIlluminationFraction) * mDf * (fScatterS + Pi * mDb * fBack);
+        // Compute BCSDF of the fiber due to forward scattered illumination similarly
+        Spectrum fScatterS = EvaluateForwardScatteredMarschner(thetaR, thetaH, thetaD, phi, forwardScatterVariance);
+        //        //TODO: Does this Pi belong here, or is it a typo in paper??
+        Spectrum FScatter = (gsi.transmittance - gsi.directIlluminationFraction) * mDf * (fScatterS + Pi * mDb * fBack);
 
         // combine direct and forward scattered components
-        //return (FDirect + FScatter) * cos(thetaI);
-        return FDirect * cos(thetaI);
+        return (FDirect + FScatter) * cos(thetaI);
     }
 
     void DualScatteringBSDF::GatherGlobalScatteringInformation(const Vector3f& wd, GlobalScatteringInformation& gsi) const {
@@ -187,7 +186,7 @@ namespace pbrt {
     }
 
     Spectrum DualScatteringBSDF::EvaluateForwardScatteredMarschner(Float thetaR, Float thetaH, Float thetaD,
-            Float phi, Float forwardScatteredVariance) const {
+            Float phi, Spectrum forwardScatteredVariance) const {
 
         // TODO: check if we can remove eta perp calculation and let marschner
         // be responsible for it
@@ -220,19 +219,19 @@ namespace pbrt {
         return mMarschnerBSDF->Sample_f(wo, wi, sample, pdf, sampledType);
     }
 
-    Float DualScatteringBSDF::MG_r(Float theta, Float forwardScatteringVariance) const {
+    Spectrum DualScatteringBSDF::MG_r(Float theta, Spectrum forwardScatteringVariance) const {
         // WATCHOUT: do not square betaR, already squared at material creation
-        return Gaussian(mBetaR + forwardScatteringVariance, theta - mAlphaR);
+        return Gaussian(Spectrum(mBetaR) + forwardScatteringVariance, theta - mAlphaR);
     }
 
-    Float DualScatteringBSDF::MG_tt(Float theta, Float forwardScatteringVariance) const {
+    Spectrum DualScatteringBSDF::MG_tt(Float theta, Spectrum forwardScatteringVariance) const {
         // WATCHOUT: do not square betaTT, already squared at material creation
-        return Gaussian(mBetaTT + forwardScatteringVariance, theta - mAlphaTT);
+        return Gaussian(Spectrum(mBetaTT) + forwardScatteringVariance, theta - mAlphaTT);
     }
 
-    Float DualScatteringBSDF::MG_trt(Float theta, Float forwardScatteringVariance) const {
+    Spectrum DualScatteringBSDF::MG_trt(Float theta, Spectrum forwardScatteringVariance) const {
         // WATCHOUT: do not square betaTRT, already squared at material creation
-        return Gaussian(mBetaTRT + forwardScatteringVariance, theta - mAlphaTRT);
+        return Gaussian(Spectrum(mBetaTRT) + forwardScatteringVariance, theta - mAlphaTRT);
     }
 
     /**
