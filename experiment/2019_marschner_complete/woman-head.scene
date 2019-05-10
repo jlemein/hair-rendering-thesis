@@ -15,8 +15,14 @@ Film "image"
 Camera "perspective" "float fov" [ $camera_fov ] 
 
 WorldBegin
-	MakeNamedMaterial "black_hair" "string type" [ "$shader" ]
-	MakeNamedMaterial "red_hair" "string type" [ "$shader" ]
+	MakeNamedMaterial "black_hair" 
+        "string type" [ "$shader" ]
+        "string vdbFileName" [ "./output/models/$model_hair_filename.vdb" ]
+
+	MakeNamedMaterial "red_hair" 
+        "string type" [ "$shader" ]
+        "string vdbFileName" [ "./output/models/$model_hair_filename.vdb" ]
+
 	MakeNamedMaterial "brown_hair" "string type" [ "$shader" ] 
         "color sigmaA" [0.432 0.612 0.98] 
         "float alphaR" [3]
@@ -24,16 +30,21 @@ WorldBegin
         "float glintScaleFactor" [ $glintScaleFactor ]
         "float causticWidth" [ $causticWidth ]
         "float eccentricity" [ $eccentricity ]
+        "string vdbFileName" [ "./output/models/$model_hair_filename.vdb" ]
 
-    MakeNamedMaterial "brown_hair_ref" "string type" [ "hair" ]
+    MakeNamedMaterial "brown_hair_ref"
+        "string type" [ "hair" ]
+        "string vdbFileName" [ "./output/models/$model_hair_filename.vdb" ]
 
-	MakeNamedMaterial "blonde_hair" "string type" [ "$shader" ]
+	MakeNamedMaterial "blonde_hair" 
+        "string type" [ "$shader" ]
         "color sigmaA" [0.03 0.07 0.15] 
         "float alphaR" [3]
         "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
         "float glintScaleFactor" [ $glintScaleFactor ]
         "float causticWidth" [ $causticWidth ]
         "float eccentricity" [ $eccentricity ]
+        "string vdbFileName" [ "./output/models/$model_hair_filename.vdb" ]
 
 $useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 
 $useInfiniteLight    LightSource "infinite" 

@@ -18,6 +18,8 @@
 
 namespace pbrt {
 
+    bool CHECK_SPECTRUM_GE(const Spectrum& Ab, Float value);
+    
 /**
      * Safe acos function, to prevent 'nan' as result when parameter x is
      * (slightly) larger than or smaller than 1.0 or -1.0 respectively

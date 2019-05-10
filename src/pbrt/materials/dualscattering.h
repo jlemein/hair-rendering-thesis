@@ -16,10 +16,13 @@
 #include "material.h"
 #include "marschner.h"
 #include <vector>
+#include <string>
+#include "OpenVdbReader.h"
 
 namespace pbrt {
 
     class DualScatteringBSDF;
+    
     
 class DualScatteringLookup {
 public:
@@ -28,7 +31,7 @@ public:
      * @param bsdf
      * @return 
      */
-    static const DualScatteringLookup& Get(const DualScatteringBSDF* bsdf);
+    static const DualScatteringLookup* Get(const DualScatteringBSDF* bsdf);
     
     
     Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;
@@ -39,17 +42,23 @@ public:
     Spectrum AverageForwardScatteringAlpha(Float thetaD) const;
     Spectrum AverageForwardScatteringBeta(Float thetaD) const;
     
+    const OpenVdbReader* getVdbReader() const;
+    
 private:
     static DualScatteringLookup* instance;
+    
+    
     
     DualScatteringLookup(const DualScatteringBSDF* dualScatteringBSDF) : mDualScatteringBSDF(dualScatteringBSDF) {}
     void Init();
     
+    void ReadVoxelGrid();
     void PrecomputeAverageScatteringAttenuation();
     
     const DualScatteringBSDF* mDualScatteringBSDF;
     
     // Lookup data
+    OpenVdbReader* mVdbReader;
     std::vector<Spectrum> mAverageForwardScatteringAttenuation;
     std::vector<Spectrum> mAverageBackwardScatteringAttenuation;
     std::vector<Spectrum> mAverageForwardScatteringAlpha, mAverageBackwardScatteringAlpha;
@@ -65,10 +74,11 @@ class DualscatteringMaterial : public Material {
     // PlasticMaterial Public Methods
     DualscatteringMaterial(Float eta, MarschnerMaterial* marschnerMaterial, 
             Float alphaR, Float alphaTT, Float alphaTRT, 
-            Float betaR, Float betaTT, Float betaTRT) 
+            Float betaR, Float betaTT, Float betaTRT,
+            std::string voxelGridFileName) 
     : mEta(eta), mMarschnerMaterial(marschnerMaterial), 
             mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT), 
-            mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT) {
+            mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT), mVoxelGridFileName(voxelGridFileName) {
     }
         
     void ComputeScatteringFunctions(SurfaceInteraction *si, MemoryArena &arena,
@@ -79,10 +89,12 @@ class DualscatteringMaterial : public Material {
       MarschnerMaterial* mMarschnerMaterial = nullptr;
       Float mEta;
       Float mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT;
+      std::string mVoxelGridFileName;
 };
 
 struct GlobalScatteringInformation {
-    Float transmittance, variance, directIlluminationFraction;
+    Float transmittance, directIlluminationFraction;
+    Spectrum variance;
 };
 
 class DualScatteringBSDF : public BxDF {
@@ -90,7 +102,8 @@ public:
     DualScatteringBSDF(const SurfaceInteraction& si, Float eta,
             MarschnerBSDF* marschnerBSDF,
             Float alphaR, Float alphaTT, Float alphaTRT,
-            Float betaR, Float betaTT, Float betaTRT);
+            Float betaR, Float betaTT, Float betaTRT,
+            std::string voxelGridFileName);
     
     /**
          * (Required) Returns the value of the distribution function for the given pair of directions
@@ -136,6 +149,15 @@ public:
         // Not implemented for now
         //virtual Spectrum rho(const Vector3f &wo, int nSamples, const Point2f *samples) const;
         //virtual Spectrum rho(int nSamples, const Point2f *samples1, const Point2f *samples2) const;
+        
+        // expensive functions
+    Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;
+    Spectrum AverageBackwardScatteringAttenuation(Float thetaD) const;
+    
+    Spectrum AverageForwardScatteringAlpha(Float thetaD) const;
+    Spectrum AverageBackwardScatteringAlpha(Float thetaD) const;
+    Spectrum AverageForwardScatteringBeta(Float thetaD) const;
+    Spectrum AverageBackwardScatteringBeta(Float thetaD) const;
     
 private:
     MarschnerBSDF* mMarschnerBSDF;
@@ -144,13 +166,13 @@ private:
     Float mDf, mDb;
     Float mBetaR, mBetaTT, mBetaTRT;
     Float mAlphaR, mAlphaTT, mAlphaTRT;
-    const DualScatteringLookup& mLookup;
+    const DualScatteringLookup* mLookup;
+    std::string mVoxelGridFileName;
     
     void GatherGlobalScatteringInformation(const Vector3f& wd, GlobalScatteringInformation& gsi) const;
-    int FindScatteringCount(const Vector3f &wd) const;
     
-    Spectrum ForwardScatteringTransmittance() const;
-    Float ForwardScatteringVariance(Float theta) const;
+    Float ForwardScatteringTransmittance(const InterpolationResult& interpolationResult) const;
+    Spectrum ForwardScatteringVariance(const InterpolationResult& interpolationResult) const;
     
     Spectrum BackscatteringAttenuation(Float theta) const;
     Spectrum BackscatteringMean(Float theta) const;
@@ -163,14 +185,7 @@ private:
     Spectrum EvaluateForwardScatteredMarschner(Float theta_r, Float theta_h,
         Float theta_d, Float phi, Spectrum forwardScatteredVariance) const;
     
-    // expensive functions
-    Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;
-    Spectrum AverageBackwardScatteringAttenuation(Float thetaD) const;
     
-    Spectrum AverageForwardScatteringAlpha(Float thetaD) const;
-    Spectrum AverageBackwardScatteringAlpha(Float thetaD) const;
-    Spectrum AverageForwardScatteringBeta(Float thetaD) const;
-    Spectrum AverageBackwardScatteringBeta(Float thetaD) const;
     
     Spectrum f_R(const Vector3f& wo, const Vector3f& wi) const;
     Spectrum f_TT(const Vector3f& wo, const Vector3f& wi) const;

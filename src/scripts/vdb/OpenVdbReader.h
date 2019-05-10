@@ -19,6 +19,10 @@
 #include "../bezier.h"
 #include <openvdb/openvdb.h>
 
+struct InterpolationResult {
+    float scatterCount;
+    float averageThetaD;
+};
 class OpenVdbReader {
 public:
     OpenVdbReader(std::string fileName);
@@ -35,6 +39,7 @@ public:
      * @return 
      */
     float interpolate(const Point3& from, const Point3& to, unsigned int sampleCount = 100);
+    InterpolationResult interpolate(const Point3& from, const Point3& to, unsigned int sampleCount = 100) const;
     float interpolateToInfinity(const Point3& from, const Point3& direction);
     
     void printMetaDataForAllGrids() const;

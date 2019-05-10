@@ -2415,64 +2415,342 @@
         <df name="scripts">
         </df>
       </df>
-      <df name="build2">
-        <df name=".\output\2018-Mar-24 17:05:30">
-        </df>
-        <df name="bin">
-        </df>
+      <df name="build_pbrt">
         <df name="CMakeFiles">
           <df name="3.5.1">
+            <df name="CompilerIdC">
+              <in>CMakeCCompilerId.c</in>
+            </df>
             <df name="CompilerIdCXX">
               <in>CMakeCXXCompilerId.cpp</in>
             </df>
           </df>
-          <df name="analyzehair.dir">
+          <df name="bsdftest.dir">
             <df name="src">
-              <df name="scripts">
-                <df name="src">
-                </df>
+              <df name="tools">
               </df>
             </df>
+          </df>
+          <df name="CheckTypeSize">
+            <in>HAVE_UINT16_T.c</in>
+            <in>HAVE_U_INT16_T.c</in>
+            <in>HAVE___UINT16.c</in>
+          </df>
+          <df name="CMakeRelink.dir">
           </df>
           <df name="CMakeTmp">
           </df>
-          <df name="prepare.dir">
+          <df name="cyhair2pbrt.dir">
             <df name="src">
-              <df name="scripts">
-                <df name="src">
+              <df name="tools">
+              </df>
+            </df>
+          </df>
+          <df name="hair_test.dir">
+            <df name="src">
+              <df name="tests">
+                <df name="gtest">
                 </df>
               </df>
             </df>
           </df>
-          <df name="preprocess.dir">
+          <df name="imgtool.dir">
             <df name="src">
-              <df name="scripts">
-                <df name="src">
+              <df name="tools">
+              </df>
+            </df>
+          </df>
+          <df name="obj2pbrt.dir">
+            <df name="src">
+              <df name="tools">
+              </df>
+            </df>
+          </df>
+          <df name="pbrt.dir">
+            <df name="src">
+              <df name="accelerators">
+              </df>
+              <df name="cameras">
+              </df>
+              <df name="core">
+              </df>
+              <df name="ext">
+              </df>
+              <df name="filters">
+              </df>
+              <df name="integrators">
+              </df>
+              <df name="lights">
+              </df>
+              <df name="materials">
+              </df>
+              <df name="media">
+              </df>
+              <df name="samplers">
+              </df>
+              <df name="shapes">
+              </df>
+              <df name="textures">
+              </df>
+            </df>
+          </df>
+          <df name="pbrt_exe.dir">
+            <df name="src">
+              <df name="main">
+              </df>
+            </df>
+          </df>
+          <df name="pbrt_test.dir">
+            <df name="src">
+              <df name="tests">
+                <df name="gtest">
                 </df>
               </df>
             </df>
           </df>
-          <df name="processhair.dir">
-            <df name="src">
-              <df name="scripts">
-                <df name="src">
-                </df>
-              </df>
-            </df>
-          </df>
-          <df name="sayhello.dir">
-            <df name="src">
-              <df name="scripts">
-              </df>
-            </df>
-          </df>
-          <df name="simplify.dir">
-            <df name="src">
-              <df name="scripts">
-              </df>
-            </df>
-          </df>
+          <in>feature_tests.c</in>
           <in>feature_tests.cxx</in>
+        </df>
+        <df name="src">
+          <df name="ext">
+            <df name="glog">
+              <df name="CMakeFiles">
+                <df name="CMakeTmp">
+                </df>
+                <df name="demangle_unittest.dir">
+                  <df name="src">
+                  </df>
+                </df>
+                <df name="Export">
+                  <df name="lib">
+                    <df name="cmake">
+                      <df name="glog">
+                      </df>
+                    </df>
+                  </df>
+                </df>
+                <df name="glog.dir">
+                  <df name="src">
+                  </df>
+                </df>
+                <df name="logging_unittest.dir">
+                  <df name="src">
+                  </df>
+                </df>
+                <df name="signalhandler_unittest.dir">
+                  <df name="src">
+                  </df>
+                </df>
+                <df name="stacktrace_unittest.dir">
+                  <df name="src">
+                  </df>
+                </df>
+                <df name="stl_logging_unittest.dir">
+                  <df name="src">
+                  </df>
+                </df>
+                <df name="symbolize_unittest.dir">
+                  <df name="src">
+                  </df>
+                </df>
+                <df name="utilities_unittest.dir">
+                  <df name="src">
+                  </df>
+                </df>
+              </df>
+              <df name="glog">
+                <in>logging.h</in>
+                <in>raw_logging.h</in>
+                <in>stl_logging.h</in>
+                <in>vlog_is_on.h</in>
+              </df>
+              <in>config.h</in>
+            </df>
+            <df name="openexr">
+              <df name="CMakeFiles">
+                <df name="CopyIlmBaseLibs.dir">
+                </df>
+              </df>
+              <df name="IlmBase">
+                <df name="CMakeFiles">
+                </df>
+                <df name="config">
+                  <in>IlmBaseConfig.h</in>
+                </df>
+                <df name="Half">
+                  <df name="CMakeFiles">
+                    <df name="eLut.dir">
+                    </df>
+                    <df name="Half.dir">
+                    </df>
+                    <df name="toFloat.dir">
+                    </df>
+                  </df>
+                  <in>eLut.h</in>
+                  <in>toFloat.h</in>
+                </df>
+                <df name="Iex">
+                  <df name="CMakeFiles">
+                    <df name="Iex.dir">
+                    </df>
+                  </df>
+                </df>
+                <df name="IexMath">
+                  <df name="CMakeFiles">
+                    <df name="IexMath.dir">
+                    </df>
+                  </df>
+                </df>
+                <df name="IlmThread">
+                  <df name="CMakeFiles">
+                    <df name="IlmThread.dir">
+                    </df>
+                  </df>
+                </df>
+                <df name="Imath">
+                  <df name="CMakeFiles">
+                    <df name="Imath.dir">
+                    </df>
+                  </df>
+                </df>
+              </df>
+              <df name="OpenEXR">
+                <df name="CMakeFiles">
+                </df>
+                <df name="config">
+                  <in>OpenEXRConfig.h</in>
+                </df>
+                <df name="IlmImf">
+                  <df name="CMakeFiles">
+                    <df name="b44ExpLogTable.dir">
+                    </df>
+                    <df name="dwaLookups.dir">
+                    </df>
+                    <df name="eLut.dir">
+                    </df>
+                    <df name="Half.dir">
+                    </df>
+                    <df name="Iex.dir">
+                    </df>
+                    <df name="IlmImf-obj.dir">
+                    </df>
+                    <df name="IlmImf.dir">
+                    </df>
+                    <df name="IlmThread.dir">
+                    </df>
+                    <df name="Imath.dir">
+                    </df>
+                    <df name="toFloat.dir">
+                    </df>
+                  </df>
+                  <in>b44ExpLogTable.h</in>
+                  <in>dwaLookups.h</in>
+                  <in>eLut.h</in>
+                  <in>toFloat.h</in>
+                </df>
+              </df>
+            </df>
+            <df name="ptex">
+              <df name="CMakeFiles">
+                <df name="Continuous.dir">
+                </df>
+                <df name="ContinuousBuild.dir">
+                </df>
+                <df name="ContinuousConfigure.dir">
+                </df>
+                <df name="ContinuousCoverage.dir">
+                </df>
+                <df name="ContinuousMemCheck.dir">
+                </df>
+                <df name="ContinuousStart.dir">
+                </df>
+                <df name="ContinuousSubmit.dir">
+                </df>
+                <df name="ContinuousTest.dir">
+                </df>
+                <df name="ContinuousUpdate.dir">
+                </df>
+                <df name="Experimental.dir">
+                </df>
+                <df name="ExperimentalBuild.dir">
+                </df>
+                <df name="ExperimentalConfigure.dir">
+                </df>
+                <df name="ExperimentalCoverage.dir">
+                </df>
+                <df name="ExperimentalMemCheck.dir">
+                </df>
+                <df name="ExperimentalStart.dir">
+                </df>
+                <df name="ExperimentalSubmit.dir">
+                </df>
+                <df name="ExperimentalTest.dir">
+                </df>
+                <df name="ExperimentalUpdate.dir">
+                </df>
+                <df name="Nightly.dir">
+                </df>
+                <df name="NightlyBuild.dir">
+                </df>
+                <df name="NightlyConfigure.dir">
+                </df>
+                <df name="NightlyCoverage.dir">
+                </df>
+                <df name="NightlyMemCheck.dir">
+                </df>
+                <df name="NightlyMemoryCheck.dir">
+                </df>
+                <df name="NightlyStart.dir">
+                </df>
+                <df name="NightlySubmit.dir">
+                </df>
+                <df name="NightlyTest.dir">
+                </df>
+                <df name="NightlyUpdate.dir">
+                </df>
+              </df>
+              <df name="src">
+                <df name="doc">
+                  <df name="CMakeFiles">
+                    <df name="doc.dir">
+                    </df>
+                    <df name="doxygen.dir">
+                    </df>
+                  </df>
+                </df>
+                <df name="ptex">
+                  <df name="CMakeFiles">
+                    <df name="Ptex_static.dir">
+                    </df>
+                  </df>
+                </df>
+                <df name="tests">
+                  <df name="CMakeFiles">
+                    <df name="ftest.dir">
+                    </df>
+                    <df name="halftest.dir">
+                    </df>
+                    <df name="rtest.dir">
+                    </df>
+                    <df name="wtest.dir">
+                    </df>
+                  </df>
+                </df>
+                <df name="utils">
+                  <df name="CMakeFiles">
+                    <df name="CMakeRelink.dir">
+                    </df>
+                    <df name="ptxinfo.dir">
+                    </df>
+                  </df>
+                </df>
+              </df>
+              <df name="Testing">
+                <df name="Temporary">
+                </df>
+              </df>
+            </df>
+          </df>
         </df>
       </df>
       <df name="build_real">
@@ -2647,6 +2925,66 @@
           <df name="output">
           </df>
           <df name="png">
+          </df>
+        </df>
+        <df name="2019_02_11_marschner">
+          <df name="models">
+            <df name="archive">
+            </df>
+            <df name="tmp">
+            </df>
+            <df name="woman">
+            </df>
+          </df>
+          <df name="output">
+          </df>
+          <df name="textures">
+          </df>
+        </df>
+        <df name="2019_02_11_marschner rotating">
+          <df name="output">
+            <df name="initial_results_with_TRT">
+            </df>
+            <df name="maxdepth32_samples64">
+            </df>
+            <df name="maxdepth8_samples32">
+            </df>
+            <df name="models">
+              <df name="archive">
+              </df>
+              <df name="tmp">
+              </df>
+              <df name="woman">
+              </df>
+            </df>
+            <df name="results_with_TRT_aftercbrt">
+            </df>
+            <df name="textures">
+            </df>
+            <df name="TRT without divide dphidh">
+            </df>
+          </df>
+        </df>
+        <df name="2019_marschner_complete">
+          <df name="output">
+            <df name="high quality">
+            </df>
+            <df name="models">
+              <df name="archive">
+              </df>
+              <df name="tmp">
+              </df>
+              <df name="woman">
+              </df>
+            </df>
+            <df name="textures">
+            </df>
+            <df name="trt without fresnel">
+            </df>
+            <df name="trt without fresnel eccentricity 0.85">
+            </df>
+            <df name="trt without fresnel eccentricity 0.9">
+            </df>
           </df>
         </df>
         <df name="archive">
@@ -22087,6 +22425,22 @@
                 <in>perf_tbb_accumulate.cpp</in>
                 <in>perf_tbb_merge.cpp</in>
                 <in>perf_tbb_sort.cpp</in>
+                <in>perf_thrust_accumulate.cu</in>
+                <in>perf_thrust_count.cu</in>
+                <in>perf_thrust_exclusive_scan.cu</in>
+                <in>perf_thrust_find.cu</in>
+                <in>perf_thrust_inner_product.cu</in>
+                <in>perf_thrust_merge.cu</in>
+                <in>perf_thrust_partial_sum.cu</in>
+                <in>perf_thrust_partition.cu</in>
+                <in>perf_thrust_reduce_by_key.cu</in>
+                <in>perf_thrust_reverse.cu</in>
+                <in>perf_thrust_reverse_copy.cu</in>
+                <in>perf_thrust_rotate.cu</in>
+                <in>perf_thrust_saxpy.cu</in>
+                <in>perf_thrust_set_difference.cu</in>
+                <in>perf_thrust_sort.cu</in>
+                <in>perf_thrust_unique.cu</in>
                 <in>perf_uniform_int_distribution.cpp</in>
                 <in>perf_unique.cpp</in>
                 <in>perf_unique_copy.cpp</in>
@@ -23809,6 +24163,8 @@
                   <in>yield.hpp</in>
                 </df>
                 <df name="cuda">
+                  <in>multiple_streams.cu</in>
+                  <in>single_stream.cu</in>
                 </df>
                 <df name="hip">
                   <in>multiple_streams.cpp</in>
@@ -32490,6 +32846,10 @@
                     <in>black_hole.cpp</in>
                   </df>
                   <df name="thrust">
+                    <in>lorenz_parameters.cu</in>
+                    <in>phase_oscillator_chain.cu</in>
+                    <in>phase_oscillator_ensemble.cu</in>
+                    <in>relaxation.cu</in>
                   </df>
                   <df name="ublas">
                     <in>lorenz_ublas.cpp</in>
@@ -32654,6 +33014,7 @@
                     <in>resize.cpp</in>
                   </df>
                   <df name="thrust">
+                    <in>check_thrust.cu</in>
                   </df>
                   <df name="vexcl">
                     <in>lorenz.cpp</in>
@@ -41286,7 +41647,2192 @@
           <df name="project">
           </df>
         </df>
-        <df name="pbrt-v3">
+        <df name="pbrt">
+          <df name="build">
+            <df name="CMakeFiles">
+              <df name="3.5.1">
+                <df name="CompilerIdC">
+                  <in>CMakeCCompilerId.c</in>
+                </df>
+                <df name="CompilerIdCXX">
+                  <in>CMakeCXXCompilerId.cpp</in>
+                </df>
+              </df>
+              <df name="bsdftest.dir">
+                <df name="src">
+                  <df name="tools">
+                  </df>
+                </df>
+              </df>
+              <df name="CheckTypeSize">
+                <in>HAVE_UINT16_T.c</in>
+                <in>HAVE_U_INT16_T.c</in>
+                <in>HAVE___UINT16.c</in>
+              </df>
+              <df name="CMakeRelink.dir">
+              </df>
+              <df name="CMakeTmp">
+              </df>
+              <df name="cyhair2pbrt.dir">
+                <df name="src">
+                  <df name="tools">
+                  </df>
+                </df>
+              </df>
+              <df name="imgtool.dir">
+                <df name="src">
+                  <df name="tools">
+                  </df>
+                </df>
+              </df>
+              <df name="obj2pbrt.dir">
+                <df name="src">
+                  <df name="tools">
+                  </df>
+                </df>
+              </df>
+              <df name="pbrt.dir">
+                <df name="src">
+                  <df name="accelerators">
+                  </df>
+                  <df name="cameras">
+                  </df>
+                  <df name="core">
+                  </df>
+                  <df name="ext">
+                  </df>
+                  <df name="filters">
+                  </df>
+                  <df name="integrators">
+                  </df>
+                  <df name="lights">
+                  </df>
+                  <df name="materials">
+                  </df>
+                  <df name="media">
+                  </df>
+                  <df name="samplers">
+                  </df>
+                  <df name="shapes">
+                  </df>
+                  <df name="textures">
+                  </df>
+                </df>
+              </df>
+              <df name="pbrt_exe.dir">
+                <df name="src">
+                  <df name="main">
+                  </df>
+                </df>
+              </df>
+              <df name="pbrt_test.dir">
+                <df name="src">
+                  <df name="tests">
+                    <df name="gtest">
+                    </df>
+                  </df>
+                </df>
+              </df>
+              <in>feature_tests.c</in>
+              <in>feature_tests.cxx</in>
+            </df>
+            <df name="src">
+              <df name="ext">
+                <df name="glog">
+                  <df name="CMakeFiles">
+                    <df name="CMakeTmp">
+                    </df>
+                    <df name="demangle_unittest.dir">
+                      <df name="src">
+                      </df>
+                    </df>
+                    <df name="Export">
+                      <df name="lib">
+                        <df name="cmake">
+                          <df name="glog">
+                          </df>
+                        </df>
+                      </df>
+                    </df>
+                    <df name="glog.dir">
+                      <df name="src">
+                      </df>
+                    </df>
+                    <df name="logging_unittest.dir">
+                      <df name="src">
+                      </df>
+                    </df>
+                    <df name="signalhandler_unittest.dir">
+                      <df name="src">
+                      </df>
+                    </df>
+                    <df name="stacktrace_unittest.dir">
+                      <df name="src">
+                      </df>
+                    </df>
+                    <df name="stl_logging_unittest.dir">
+                      <df name="src">
+                      </df>
+                    </df>
+                    <df name="symbolize_unittest.dir">
+                      <df name="src">
+                      </df>
+                    </df>
+                    <df name="utilities_unittest.dir">
+                      <df name="src">
+                      </df>
+                    </df>
+                  </df>
+                  <df name="glog">
+                    <in>logging.h</in>
+                    <in>raw_logging.h</in>
+                    <in>stl_logging.h</in>
+                    <in>vlog_is_on.h</in>
+                  </df>
+                  <in>config.h</in>
+                </df>
+                <df name="openexr">
+                  <df name="CMakeFiles">
+                    <df name="CopyIlmBaseLibs.dir">
+                    </df>
+                  </df>
+                  <df name="IlmBase">
+                    <df name="CMakeFiles">
+                    </df>
+                    <df name="config">
+                      <in>IlmBaseConfig.h</in>
+                    </df>
+                    <df name="Half">
+                      <df name="CMakeFiles">
+                        <df name="eLut.dir">
+                        </df>
+                        <df name="Half.dir">
+                        </df>
+                        <df name="toFloat.dir">
+                        </df>
+                      </df>
+                      <in>eLut.h</in>
+                      <in>toFloat.h</in>
+                    </df>
+                    <df name="Iex">
+                      <df name="CMakeFiles">
+                        <df name="Iex.dir">
+                        </df>
+                      </df>
+                    </df>
+                    <df name="IexMath">
+                      <df name="CMakeFiles">
+                        <df name="IexMath.dir">
+                        </df>
+                      </df>
+                    </df>
+                    <df name="IlmThread">
+                      <df name="CMakeFiles">
+                        <df name="IlmThread.dir">
+                        </df>
+                      </df>
+                    </df>
+                    <df name="Imath">
+                      <df name="CMakeFiles">
+                        <df name="Imath.dir">
+                        </df>
+                      </df>
+                    </df>
+                  </df>
+                  <df name="OpenEXR">
+                    <df name="CMakeFiles">
+                    </df>
+                    <df name="config">
+                      <in>OpenEXRConfig.h</in>
+                    </df>
+                    <df name="IlmImf">
+                      <df name="CMakeFiles">
+                        <df name="b44ExpLogTable.dir">
+                        </df>
+                        <df name="dwaLookups.dir">
+                        </df>
+                        <df name="eLut.dir">
+                        </df>
+                        <df name="Half.dir">
+                        </df>
+                        <df name="Iex.dir">
+                        </df>
+                        <df name="IlmImf-obj.dir">
+                        </df>
+                        <df name="IlmImf.dir">
+                        </df>
+                        <df name="IlmThread.dir">
+                        </df>
+                        <df name="Imath.dir">
+                        </df>
+                        <df name="toFloat.dir">
+                        </df>
+                      </df>
+                      <in>b44ExpLogTable.h</in>
+                      <in>dwaLookups.h</in>
+                      <in>eLut.h</in>
+                      <in>toFloat.h</in>
+                    </df>
+                  </df>
+                </df>
+                <df name="ptex">
+                  <df name="CMakeFiles">
+                    <df name="Continuous.dir">
+                    </df>
+                    <df name="ContinuousBuild.dir">
+                    </df>
+                    <df name="ContinuousConfigure.dir">
+                    </df>
+                    <df name="ContinuousCoverage.dir">
+                    </df>
+                    <df name="ContinuousMemCheck.dir">
+                    </df>
+                    <df name="ContinuousStart.dir">
+                    </df>
+                    <df name="ContinuousSubmit.dir">
+                    </df>
+                    <df name="ContinuousTest.dir">
+                    </df>
+                    <df name="ContinuousUpdate.dir">
+                    </df>
+                    <df name="Experimental.dir">
+                    </df>
+                    <df name="ExperimentalBuild.dir">
+                    </df>
+                    <df name="ExperimentalConfigure.dir">
+                    </df>
+                    <df name="ExperimentalCoverage.dir">
+                    </df>
+                    <df name="ExperimentalMemCheck.dir">
+                    </df>
+                    <df name="ExperimentalStart.dir">
+                    </df>
+                    <df name="ExperimentalSubmit.dir">
+                    </df>
+                    <df name="ExperimentalTest.dir">
+                    </df>
+                    <df name="ExperimentalUpdate.dir">
+                    </df>
+                    <df name="Nightly.dir">
+                    </df>
+                    <df name="NightlyBuild.dir">
+                    </df>
+                    <df name="NightlyConfigure.dir">
+                    </df>
+                    <df name="NightlyCoverage.dir">
+                    </df>
+                    <df name="NightlyMemCheck.dir">
+                    </df>
+                    <df name="NightlyMemoryCheck.dir">
+                    </df>
+                    <df name="NightlyStart.dir">
+                    </df>
+                    <df name="NightlySubmit.dir">
+                    </df>
+                    <df name="NightlyTest.dir">
+                    </df>
+                    <df name="NightlyUpdate.dir">
+                    </df>
+                  </df>
+                  <df name="src">
+                    <df name="doc">
+                      <df name="CMakeFiles">
+                        <df name="doc.dir">
+                        </df>
+                        <df name="doxygen.dir">
+                        </df>
+                      </df>
+                    </df>
+                    <df name="ptex">
+                      <df name="CMakeFiles">
+                        <df name="Ptex_static.dir">
+                        </df>
+                      </df>
+                    </df>
+                    <df name="tests">
+                      <df name="CMakeFiles">
+                        <df name="ftest.dir">
+                        </df>
+                        <df name="halftest.dir">
+                        </df>
+                        <df name="rtest.dir">
+                        </df>
+                        <df name="wtest.dir">
+                        </df>
+                      </df>
+                    </df>
+                    <df name="utils">
+                      <df name="CMakeFiles">
+                        <df name="CMakeRelink.dir">
+                        </df>
+                        <df name="ptxinfo.dir">
+                        </df>
+                      </df>
+                    </df>
+                  </df>
+                  <df name="Testing">
+                    <df name="Temporary">
+                    </df>
+                  </df>
+                </df>
+              </df>
+            </df>
+            <df name="Testing">
+              <df name="Temporary">
+              </df>
+            </df>
+          </df>
+          <df name="cmake">
+          </df>
+          <df name="exporters">
+            <df name="cinema4d">
+              <df name="PBRT Export">
+                <df name="res">
+                  <df name="dialogs">
+                  </df>
+                  <df name="strings_us">
+                    <df name="dialogs">
+                    </df>
+                  </df>
+                  <in>c4d_symbols.h</in>
+                </df>
+              </df>
+            </df>
+          </df>
+          <df name="scenes">
+            <df name="geometry">
+            </df>
+          </df>
+          <df name="src">
+            <df name="accelerators">
+              <in>bvh.cpp</in>
+              <in>bvh.h</in>
+              <in>kdtreeaccel.cpp</in>
+              <in>kdtreeaccel.h</in>
+            </df>
+            <df name="cameras">
+              <in>environment.cpp</in>
+              <in>environment.h</in>
+              <in>orthographic.cpp</in>
+              <in>orthographic.h</in>
+              <in>perspective.cpp</in>
+              <in>perspective.h</in>
+              <in>realistic.cpp</in>
+              <in>realistic.h</in>
+            </df>
+            <df name="core">
+              <in>api.cpp</in>
+              <in>api.h</in>
+              <in>bssrdf.cpp</in>
+              <in>bssrdf.h</in>
+              <in>camera.cpp</in>
+              <in>camera.h</in>
+              <in>efloat.cpp</in>
+              <in>efloat.h</in>
+              <in>error.cpp</in>
+              <in>error.h</in>
+              <in>fileutil.cpp</in>
+              <in>fileutil.h</in>
+              <in>film.cpp</in>
+              <in>film.h</in>
+              <in>filter.cpp</in>
+              <in>filter.h</in>
+              <in>floatfile.cpp</in>
+              <in>floatfile.h</in>
+              <in>geometry.cpp</in>
+              <in>geometry.h</in>
+              <in>imageio.cpp</in>
+              <in>imageio.h</in>
+              <in>integrator.cpp</in>
+              <in>integrator.h</in>
+              <in>interaction.cpp</in>
+              <in>interaction.h</in>
+              <in>interpolation.cpp</in>
+              <in>interpolation.h</in>
+              <in>light.cpp</in>
+              <in>light.h</in>
+              <in>lightdistrib.cpp</in>
+              <in>lightdistrib.h</in>
+              <in>lowdiscrepancy.cpp</in>
+              <in>lowdiscrepancy.h</in>
+              <in>material.cpp</in>
+              <in>material.h</in>
+              <in>medium.cpp</in>
+              <in>medium.h</in>
+              <in>memory.cpp</in>
+              <in>memory.h</in>
+              <in>microfacet.cpp</in>
+              <in>microfacet.h</in>
+              <in>mipmap.h</in>
+              <in>parallel.cpp</in>
+              <in>parallel.h</in>
+              <in>paramset.cpp</in>
+              <in>paramset.h</in>
+              <in>parser.cpp</in>
+              <in>parser.h</in>
+              <in>pbrt.h</in>
+              <in>primitive.cpp</in>
+              <in>primitive.h</in>
+              <in>progressreporter.cpp</in>
+              <in>progressreporter.h</in>
+              <in>quaternion.cpp</in>
+              <in>quaternion.h</in>
+              <in>reflection.cpp</in>
+              <in>reflection.h</in>
+              <in>rng.h</in>
+              <in>sampler.cpp</in>
+              <in>sampler.h</in>
+              <in>sampling.cpp</in>
+              <in>sampling.h</in>
+              <in>scene.cpp</in>
+              <in>scene.h</in>
+              <in>shape.cpp</in>
+              <in>shape.h</in>
+              <in>sobolmatrices.cpp</in>
+              <in>sobolmatrices.h</in>
+              <in>spectrum.cpp</in>
+              <in>spectrum.h</in>
+              <in>stats.cpp</in>
+              <in>stats.h</in>
+              <in>stringprint.h</in>
+              <in>texture.cpp</in>
+              <in>texture.h</in>
+              <in>transform.cpp</in>
+              <in>transform.h</in>
+            </df>
+            <df name="ext">
+              <df name="glog">
+                <df name="cmake">
+                </df>
+                <df name="doc">
+                </df>
+                <df name="m4">
+                </df>
+                <df name="packages">
+                  <df name="deb">
+                  </df>
+                  <df name="rpm">
+                  </df>
+                </df>
+                <df name="src">
+                  <df name="base">
+                    <in>commandlineflags.h</in>
+                    <in>googleinit.h</in>
+                    <in>mutex.h</in>
+                  </df>
+                  <df name="glog">
+                    <in>log_severity.h</in>
+                  </df>
+                  <df name="windows">
+                    <df name="glog">
+                      <in>log_severity.h</in>
+                      <in>logging.h</in>
+                      <in>raw_logging.h</in>
+                      <in>stl_logging.h</in>
+                      <in>vlog_is_on.h</in>
+                    </df>
+                    <in>config.h</in>
+                    <in>port.cc</in>
+                    <in>port.h</in>
+                  </df>
+                  <in>config_for_unittests.h</in>
+                  <in>demangle.cc</in>
+                  <in>demangle.h</in>
+                  <in>demangle_unittest.cc</in>
+                  <in>googletest.h</in>
+                  <in>logging.cc</in>
+                  <in>logging_striptest10.cc</in>
+                  <in>logging_striptest2.cc</in>
+                  <in>logging_striptest_main.cc</in>
+                  <in>logging_unittest.cc</in>
+                  <in>mock-log.h</in>
+                  <in>mock-log_test.cc</in>
+                  <in>raw_logging.cc</in>
+                  <in>signalhandler.cc</in>
+                  <in>signalhandler_unittest.cc</in>
+                  <in>stacktrace.h</in>
+                  <in>stacktrace_generic-inl.h</in>
+                  <in>stacktrace_libunwind-inl.h</in>
+                  <in>stacktrace_powerpc-inl.h</in>
+                  <in>stacktrace_unittest.cc</in>
+                  <in>stacktrace_x86-inl.h</in>
+                  <in>stacktrace_x86_64-inl.h</in>
+                  <in>stl_logging_unittest.cc</in>
+                  <in>symbolize.cc</in>
+                  <in>symbolize.h</in>
+                  <in>symbolize_unittest.cc</in>
+                  <in>utilities.cc</in>
+                  <in>utilities.h</in>
+                  <in>utilities_unittest.cc</in>
+                  <in>vlog_is_on.cc</in>
+                </df>
+                <df name="vsprojects">
+                  <df name="libglog">
+                  </df>
+                  <df name="libglog_static">
+                  </df>
+                  <df name="logging_unittest">
+                  </df>
+                  <df name="logging_unittest_static">
+                  </df>
+                </df>
+              </df>
+              <df name="openexr">
+                <df name="Contrib">
+                  <df name="d_exr">
+                    <in>d_exr.C</in>
+                  </df>
+                  <df name="DtexToExr">
+                    <df name="m4">
+                    </df>
+                    <in>DtexToExr.cpp</in>
+                    <in>PxBaseDeepHelper.h</in>
+                    <in>PxDeepOutPixel.h</in>
+                    <in>PxDeepOutRow.h</in>
+                    <in>PxDeepUtils.cpp</in>
+                    <in>PxDeepUtils.h</in>
+                    <in>PxFourChanDeepRgba.h</in>
+                    <in>PxOneChanDeepAlpha.h</in>
+                    <in>PxOneChanDeepOpacity.h</in>
+                  </df>
+                  <df name="Photoshop">
+                    <df name="doc">
+                      <df name="images">
+                      </df>
+                    </df>
+                    <df name="mac">
+                      <df name="prefix">
+                        <in>EXRFormatPrefix.h</in>
+                        <in>ExrFormatCarbonPrefix.h</in>
+                        <in>ExrFormatCarbonRezPrefix.h</in>
+                        <in>ExrFormatClassicRezPrefix.h</in>
+                      </df>
+                    </df>
+                    <df name="rsrc">
+                    </df>
+                    <df name="src">
+                      <df name="framework">
+                        <in>PSAutoBuffer.cpp</in>
+                        <in>PSAutoBuffer.h</in>
+                        <in>PSBuffer.cpp</in>
+                        <in>PSBuffer.h</in>
+                        <in>PSFormatGlobals.h</in>
+                        <in>PSFormatPlugin.cpp</in>
+                        <in>PSFormatPlugin.h</in>
+                      </df>
+                      <df name="main">
+                        <in>EXRFormatGlobals.h</in>
+                        <in>EXRFormatPlugin.cpp</in>
+                        <in>EXRFormatPlugin.h</in>
+                        <in>ExrFormatGlobals.cpp</in>
+                        <in>RefNumIO.cpp</in>
+                        <in>RefNumIO.h</in>
+                      </df>
+                      <df name="resample">
+                        <in>EXRResample.cpp</in>
+                        <in>EXRResample.h</in>
+                      </df>
+                      <df name="ui">
+                        <in>EXRExportDialog.cpp</in>
+                        <in>EXRExportDialog.h</in>
+                        <in>EXRImportDialog.cpp</in>
+                        <in>EXRImportDialog.h</in>
+                      </df>
+                    </df>
+                    <df name="win32">
+                      <in>EXRformat-sym.h</in>
+                    </df>
+                  </df>
+                </df>
+                <df name="IlmBase">
+                  <df name="config">
+                  </df>
+                  <df name="config.windows">
+                    <in>IlmBaseConfig.h</in>
+                  </df>
+                  <df name="Half">
+                    <in>eLut.cpp</in>
+                    <in>half.cpp</in>
+                    <in>half.h</in>
+                    <in>halfExport.h</in>
+                    <in>halfFunction.h</in>
+                    <in>halfLimits.h</in>
+                    <in>toFloat.cpp</in>
+                  </df>
+                  <df name="HalfTest">
+                    <in>main.cpp</in>
+                    <in>testArithmetic.cpp</in>
+                    <in>testArithmetic.h</in>
+                    <in>testBitPatterns.cpp</in>
+                    <in>testBitPatterns.h</in>
+                    <in>testClassification.cpp</in>
+                    <in>testClassification.h</in>
+                    <in>testError.cpp</in>
+                    <in>testError.h</in>
+                    <in>testFunction.cpp</in>
+                    <in>testFunction.h</in>
+                    <in>testLimits.cpp</in>
+                    <in>testLimits.h</in>
+                    <in>testSize.cpp</in>
+                    <in>testSize.h</in>
+                  </df>
+                  <df name="Iex">
+                    <in>Iex.h</in>
+                    <in>IexBaseExc.cpp</in>
+                    <in>IexBaseExc.h</in>
+                    <in>IexErrnoExc.h</in>
+                    <in>IexExport.h</in>
+                    <in>IexForward.h</in>
+                    <in>IexMacros.h</in>
+                    <in>IexMathExc.h</in>
+                    <in>IexNamespace.h</in>
+                    <in>IexThrowErrnoExc.cpp</in>
+                    <in>IexThrowErrnoExc.h</in>
+                  </df>
+                  <df name="IexMath">
+                    <in>IexMathFloatExc.cpp</in>
+                    <in>IexMathFloatExc.h</in>
+                    <in>IexMathFpu.cpp</in>
+                    <in>IexMathFpu.h</in>
+                    <in>IexMathIeeeExc.h</in>
+                  </df>
+                  <df name="IexTest">
+                    <in>main.cpp</in>
+                    <in>testBaseExc.cpp</in>
+                    <in>testBaseExc.h</in>
+                  </df>
+                  <df name="IlmThread">
+                    <in>IlmThread.cpp</in>
+                    <in>IlmThread.h</in>
+                    <in>IlmThreadExport.h</in>
+                    <in>IlmThreadForward.h</in>
+                    <in>IlmThreadMutex.cpp</in>
+                    <in>IlmThreadMutex.h</in>
+                    <in>IlmThreadMutexPosix.cpp</in>
+                    <in>IlmThreadMutexWin32.cpp</in>
+                    <in>IlmThreadNamespace.h</in>
+                    <in>IlmThreadPool.cpp</in>
+                    <in>IlmThreadPool.h</in>
+                    <in>IlmThreadPosix.cpp</in>
+                    <in>IlmThreadSemaphore.cpp</in>
+                    <in>IlmThreadSemaphore.h</in>
+                    <in>IlmThreadSemaphorePosix.cpp</in>
+                    <in>IlmThreadSemaphorePosixCompat.cpp</in>
+                    <in>IlmThreadSemaphoreWin32.cpp</in>
+                    <in>IlmThreadWin32.cpp</in>
+                  </df>
+                  <df name="Imath">
+                    <in>ImathBox.cpp</in>
+                    <in>ImathBox.h</in>
+                    <in>ImathBoxAlgo.h</in>
+                    <in>ImathColor.h</in>
+                    <in>ImathColorAlgo.cpp</in>
+                    <in>ImathColorAlgo.h</in>
+                    <in>ImathEuler.h</in>
+                    <in>ImathExc.h</in>
+                    <in>ImathExport.h</in>
+                    <in>ImathForward.h</in>
+                    <in>ImathFrame.h</in>
+                    <in>ImathFrustum.h</in>
+                    <in>ImathFrustumTest.h</in>
+                    <in>ImathFun.cpp</in>
+                    <in>ImathFun.h</in>
+                    <in>ImathGL.h</in>
+                    <in>ImathGLU.h</in>
+                    <in>ImathHalfLimits.h</in>
+                    <in>ImathInt64.h</in>
+                    <in>ImathInterval.h</in>
+                    <in>ImathLimits.h</in>
+                    <in>ImathLine.h</in>
+                    <in>ImathLineAlgo.h</in>
+                    <in>ImathMath.h</in>
+                    <in>ImathMatrix.h</in>
+                    <in>ImathMatrixAlgo.cpp</in>
+                    <in>ImathMatrixAlgo.h</in>
+                    <in>ImathNamespace.h</in>
+                    <in>ImathPlane.h</in>
+                    <in>ImathPlatform.h</in>
+                    <in>ImathQuat.h</in>
+                    <in>ImathRandom.cpp</in>
+                    <in>ImathRandom.h</in>
+                    <in>ImathRoots.h</in>
+                    <in>ImathShear.cpp</in>
+                    <in>ImathShear.h</in>
+                    <in>ImathSphere.h</in>
+                    <in>ImathVec.cpp</in>
+                    <in>ImathVec.h</in>
+                    <in>ImathVecAlgo.h</in>
+                  </df>
+                  <df name="ImathTest">
+                    <in>main.cpp</in>
+                    <in>testBox.cpp</in>
+                    <in>testBox.h</in>
+                    <in>testBoxAlgo.cpp</in>
+                    <in>testBoxAlgo.h</in>
+                    <in>testColor.cpp</in>
+                    <in>testColor.h</in>
+                    <in>testExtractEuler.cpp</in>
+                    <in>testExtractEuler.h</in>
+                    <in>testExtractSHRT.cpp</in>
+                    <in>testExtractSHRT.h</in>
+                    <in>testFrustum.cpp</in>
+                    <in>testFrustum.h</in>
+                    <in>testFrustumTest.cpp</in>
+                    <in>testFrustumTest.h</in>
+                    <in>testFun.cpp</in>
+                    <in>testFun.h</in>
+                    <in>testInvert.cpp</in>
+                    <in>testInvert.h</in>
+                    <in>testJacobiEigenSolver.cpp</in>
+                    <in>testJacobiEigenSolver.h</in>
+                    <in>testLineAlgo.cpp</in>
+                    <in>testLineAlgo.h</in>
+                    <in>testMatrix.cpp</in>
+                    <in>testMatrix.h</in>
+                    <in>testMiscMatrixAlgo.cpp</in>
+                    <in>testMiscMatrixAlgo.h</in>
+                    <in>testProcrustes.cpp</in>
+                    <in>testProcrustes.h</in>
+                    <in>testQuat.cpp</in>
+                    <in>testQuat.h</in>
+                    <in>testQuatSetRotation.cpp</in>
+                    <in>testQuatSetRotation.h</in>
+                    <in>testQuatSlerp.cpp</in>
+                    <in>testQuatSlerp.h</in>
+                    <in>testRandom.cpp</in>
+                    <in>testRandom.h</in>
+                    <in>testRoots.cpp</in>
+                    <in>testRoots.h</in>
+                    <in>testShear.cpp</in>
+                    <in>testShear.h</in>
+                    <in>testTinySVD.cpp</in>
+                    <in>testTinySVD.h</in>
+                    <in>testVec.cpp</in>
+                    <in>testVec.h</in>
+                  </df>
+                  <df name="m4">
+                  </df>
+                </df>
+                <df name="OpenEXR">
+                  <df name="config">
+                  </df>
+                  <df name="config.windows">
+                    <in>OpenEXRConfig.h</in>
+                  </df>
+                  <df name="doc">
+                    <df name="images">
+                    </df>
+                    <df name="source_images">
+                    </df>
+                  </df>
+                  <df name="exr2aces">
+                    <in>main.cpp</in>
+                  </df>
+                  <df name="exrbuild">
+                    <in>exrbuild.cpp</in>
+                  </df>
+                  <df name="exrenvmap">
+                    <in>EnvmapImage.cpp</in>
+                    <in>EnvmapImage.h</in>
+                    <in>blurImage.cpp</in>
+                    <in>blurImage.h</in>
+                    <in>main.cpp</in>
+                    <in>makeCubeMap.cpp</in>
+                    <in>makeCubeMap.h</in>
+                    <in>makeLatLongMap.cpp</in>
+                    <in>makeLatLongMap.h</in>
+                    <in>namespaceAlias.h</in>
+                    <in>readInputImage.cpp</in>
+                    <in>readInputImage.h</in>
+                    <in>resizeImage.cpp</in>
+                    <in>resizeImage.h</in>
+                  </df>
+                  <df name="exrheader">
+                    <in>main.cpp</in>
+                  </df>
+                  <df name="exrmakepreview">
+                    <in>main.cpp</in>
+                    <in>makePreview.cpp</in>
+                    <in>makePreview.h</in>
+                  </df>
+                  <df name="exrmaketiled">
+                    <in>Image.cpp</in>
+                    <in>Image.h</in>
+                    <in>main.cpp</in>
+                    <in>makeTiled.cpp</in>
+                    <in>makeTiled.h</in>
+                    <in>namespaceAlias.h</in>
+                  </df>
+                  <df name="exrmultipart">
+                    <in>exrmultipart.cpp</in>
+                  </df>
+                  <df name="exrmultiview">
+                    <in>Image.cpp</in>
+                    <in>Image.h</in>
+                    <in>main.cpp</in>
+                    <in>makeMultiView.cpp</in>
+                    <in>makeMultiView.h</in>
+                    <in>namespaceAlias.h</in>
+                  </df>
+                  <df name="exrstdattr">
+                    <in>main.cpp</in>
+                  </df>
+                  <df name="IlmImf">
+                    <in>ImfAcesFile.cpp</in>
+                    <in>ImfAcesFile.h</in>
+                    <in>ImfArray.h</in>
+                    <in>ImfAttribute.cpp</in>
+                    <in>ImfAttribute.h</in>
+                    <in>ImfAutoArray.h</in>
+                    <in>ImfB44Compressor.cpp</in>
+                    <in>ImfB44Compressor.h</in>
+                    <in>ImfBoxAttribute.cpp</in>
+                    <in>ImfBoxAttribute.h</in>
+                    <in>ImfCRgbaFile.cpp</in>
+                    <in>ImfCRgbaFile.h</in>
+                    <in>ImfChannelList.cpp</in>
+                    <in>ImfChannelList.h</in>
+                    <in>ImfChannelListAttribute.cpp</in>
+                    <in>ImfChannelListAttribute.h</in>
+                    <in>ImfCheckedArithmetic.h</in>
+                    <in>ImfChromaticities.cpp</in>
+                    <in>ImfChromaticities.h</in>
+                    <in>ImfChromaticitiesAttribute.cpp</in>
+                    <in>ImfChromaticitiesAttribute.h</in>
+                    <in>ImfCompositeDeepScanLine.cpp</in>
+                    <in>ImfCompositeDeepScanLine.h</in>
+                    <in>ImfCompression.h</in>
+                    <in>ImfCompressionAttribute.cpp</in>
+                    <in>ImfCompressionAttribute.h</in>
+                    <in>ImfCompressor.cpp</in>
+                    <in>ImfCompressor.h</in>
+                    <in>ImfConvert.cpp</in>
+                    <in>ImfConvert.h</in>
+                    <in>ImfDeepCompositing.cpp</in>
+                    <in>ImfDeepCompositing.h</in>
+                    <in>ImfDeepFrameBuffer.cpp</in>
+                    <in>ImfDeepFrameBuffer.h</in>
+                    <in>ImfDeepImageState.h</in>
+                    <in>ImfDeepImageStateAttribute.cpp</in>
+                    <in>ImfDeepImageStateAttribute.h</in>
+                    <in>ImfDeepScanLineInputFile.cpp</in>
+                    <in>ImfDeepScanLineInputFile.h</in>
+                    <in>ImfDeepScanLineInputPart.cpp</in>
+                    <in>ImfDeepScanLineInputPart.h</in>
+                    <in>ImfDeepScanLineOutputFile.cpp</in>
+                    <in>ImfDeepScanLineOutputFile.h</in>
+                    <in>ImfDeepScanLineOutputPart.cpp</in>
+                    <in>ImfDeepScanLineOutputPart.h</in>
+                    <in>ImfDeepTiledInputFile.cpp</in>
+                    <in>ImfDeepTiledInputFile.h</in>
+                    <in>ImfDeepTiledInputPart.cpp</in>
+                    <in>ImfDeepTiledInputPart.h</in>
+                    <in>ImfDeepTiledOutputFile.cpp</in>
+                    <in>ImfDeepTiledOutputFile.h</in>
+                    <in>ImfDeepTiledOutputPart.cpp</in>
+                    <in>ImfDeepTiledOutputPart.h</in>
+                    <in>ImfDoubleAttribute.cpp</in>
+                    <in>ImfDoubleAttribute.h</in>
+                    <in>ImfDwaCompressor.cpp</in>
+                    <in>ImfDwaCompressor.h</in>
+                    <in>ImfDwaCompressorSimd.h</in>
+                    <in>ImfEnvmap.cpp</in>
+                    <in>ImfEnvmap.h</in>
+                    <in>ImfEnvmapAttribute.cpp</in>
+                    <in>ImfEnvmapAttribute.h</in>
+                    <in>ImfExport.h</in>
+                    <in>ImfFastHuf.cpp</in>
+                    <in>ImfFastHuf.h</in>
+                    <in>ImfFloatAttribute.cpp</in>
+                    <in>ImfFloatAttribute.h</in>
+                    <in>ImfFloatVectorAttribute.cpp</in>
+                    <in>ImfFloatVectorAttribute.h</in>
+                    <in>ImfForward.h</in>
+                    <in>ImfFrameBuffer.cpp</in>
+                    <in>ImfFrameBuffer.h</in>
+                    <in>ImfFramesPerSecond.cpp</in>
+                    <in>ImfFramesPerSecond.h</in>
+                    <in>ImfGenericInputFile.cpp</in>
+                    <in>ImfGenericInputFile.h</in>
+                    <in>ImfGenericOutputFile.cpp</in>
+                    <in>ImfGenericOutputFile.h</in>
+                    <in>ImfHeader.cpp</in>
+                    <in>ImfHeader.h</in>
+                    <in>ImfHuf.cpp</in>
+                    <in>ImfHuf.h</in>
+                    <in>ImfIO.cpp</in>
+                    <in>ImfIO.h</in>
+                    <in>ImfInputFile.cpp</in>
+                    <in>ImfInputFile.h</in>
+                    <in>ImfInputPart.cpp</in>
+                    <in>ImfInputPart.h</in>
+                    <in>ImfInputPartData.cpp</in>
+                    <in>ImfInputPartData.h</in>
+                    <in>ImfInputStreamMutex.h</in>
+                    <in>ImfInt64.h</in>
+                    <in>ImfIntAttribute.cpp</in>
+                    <in>ImfIntAttribute.h</in>
+                    <in>ImfKeyCode.cpp</in>
+                    <in>ImfKeyCode.h</in>
+                    <in>ImfKeyCodeAttribute.cpp</in>
+                    <in>ImfKeyCodeAttribute.h</in>
+                    <in>ImfLineOrder.h</in>
+                    <in>ImfLineOrderAttribute.cpp</in>
+                    <in>ImfLineOrderAttribute.h</in>
+                    <in>ImfLut.cpp</in>
+                    <in>ImfLut.h</in>
+                    <in>ImfMatrixAttribute.cpp</in>
+                    <in>ImfMatrixAttribute.h</in>
+                    <in>ImfMisc.cpp</in>
+                    <in>ImfMisc.h</in>
+                    <in>ImfMultiPartInputFile.cpp</in>
+                    <in>ImfMultiPartInputFile.h</in>
+                    <in>ImfMultiPartOutputFile.cpp</in>
+                    <in>ImfMultiPartOutputFile.h</in>
+                    <in>ImfMultiView.cpp</in>
+                    <in>ImfMultiView.h</in>
+                    <in>ImfName.h</in>
+                    <in>ImfNamespace.h</in>
+                    <in>ImfOpaqueAttribute.cpp</in>
+                    <in>ImfOpaqueAttribute.h</in>
+                    <in>ImfOptimizedPixelReading.h</in>
+                    <in>ImfOutputFile.cpp</in>
+                    <in>ImfOutputFile.h</in>
+                    <in>ImfOutputPart.cpp</in>
+                    <in>ImfOutputPart.h</in>
+                    <in>ImfOutputPartData.cpp</in>
+                    <in>ImfOutputPartData.h</in>
+                    <in>ImfOutputStreamMutex.h</in>
+                    <in>ImfPartHelper.h</in>
+                    <in>ImfPartType.cpp</in>
+                    <in>ImfPartType.h</in>
+                    <in>ImfPixelType.h</in>
+                    <in>ImfPizCompressor.cpp</in>
+                    <in>ImfPizCompressor.h</in>
+                    <in>ImfPreviewImage.cpp</in>
+                    <in>ImfPreviewImage.h</in>
+                    <in>ImfPreviewImageAttribute.cpp</in>
+                    <in>ImfPreviewImageAttribute.h</in>
+                    <in>ImfPxr24Compressor.cpp</in>
+                    <in>ImfPxr24Compressor.h</in>
+                    <in>ImfRational.cpp</in>
+                    <in>ImfRational.h</in>
+                    <in>ImfRationalAttribute.cpp</in>
+                    <in>ImfRationalAttribute.h</in>
+                    <in>ImfRgba.h</in>
+                    <in>ImfRgbaFile.cpp</in>
+                    <in>ImfRgbaFile.h</in>
+                    <in>ImfRgbaYca.cpp</in>
+                    <in>ImfRgbaYca.h</in>
+                    <in>ImfRle.cpp</in>
+                    <in>ImfRle.h</in>
+                    <in>ImfRleCompressor.cpp</in>
+                    <in>ImfRleCompressor.h</in>
+                    <in>ImfScanLineInputFile.cpp</in>
+                    <in>ImfScanLineInputFile.h</in>
+                    <in>ImfSimd.h</in>
+                    <in>ImfStandardAttributes.cpp</in>
+                    <in>ImfStandardAttributes.h</in>
+                    <in>ImfStdIO.cpp</in>
+                    <in>ImfStdIO.h</in>
+                    <in>ImfStringAttribute.cpp</in>
+                    <in>ImfStringAttribute.h</in>
+                    <in>ImfStringVectorAttribute.cpp</in>
+                    <in>ImfStringVectorAttribute.h</in>
+                    <in>ImfSystemSpecific.cpp</in>
+                    <in>ImfSystemSpecific.h</in>
+                    <in>ImfTestFile.cpp</in>
+                    <in>ImfTestFile.h</in>
+                    <in>ImfThreading.cpp</in>
+                    <in>ImfThreading.h</in>
+                    <in>ImfTileDescription.h</in>
+                    <in>ImfTileDescriptionAttribute.cpp</in>
+                    <in>ImfTileDescriptionAttribute.h</in>
+                    <in>ImfTileOffsets.cpp</in>
+                    <in>ImfTileOffsets.h</in>
+                    <in>ImfTiledInputFile.cpp</in>
+                    <in>ImfTiledInputFile.h</in>
+                    <in>ImfTiledInputPart.cpp</in>
+                    <in>ImfTiledInputPart.h</in>
+                    <in>ImfTiledMisc.cpp</in>
+                    <in>ImfTiledMisc.h</in>
+                    <in>ImfTiledOutputFile.cpp</in>
+                    <in>ImfTiledOutputFile.h</in>
+                    <in>ImfTiledOutputPart.cpp</in>
+                    <in>ImfTiledOutputPart.h</in>
+                    <in>ImfTiledRgbaFile.cpp</in>
+                    <in>ImfTiledRgbaFile.h</in>
+                    <in>ImfTimeCode.cpp</in>
+                    <in>ImfTimeCode.h</in>
+                    <in>ImfTimeCodeAttribute.cpp</in>
+                    <in>ImfTimeCodeAttribute.h</in>
+                    <in>ImfVecAttribute.cpp</in>
+                    <in>ImfVecAttribute.h</in>
+                    <in>ImfVersion.cpp</in>
+                    <in>ImfVersion.h</in>
+                    <in>ImfWav.cpp</in>
+                    <in>ImfWav.h</in>
+                    <in>ImfXdr.h</in>
+                    <in>ImfZip.cpp</in>
+                    <in>ImfZip.h</in>
+                    <in>ImfZipCompressor.cpp</in>
+                    <in>ImfZipCompressor.h</in>
+                    <in>b44ExpLogTable.cpp</in>
+                    <in>dwaLookups.cpp</in>
+                  </df>
+                  <df name="IlmImfExamples">
+                    <in>drawImage.cpp</in>
+                    <in>drawImage.h</in>
+                    <in>generalInterfaceExamples.cpp</in>
+                    <in>generalInterfaceExamples.h</in>
+                    <in>generalInterfaceTiledExamples.cpp</in>
+                    <in>generalInterfaceTiledExamples.h</in>
+                    <in>lowLevelIoExamples.cpp</in>
+                    <in>lowLevelIoExamples.h</in>
+                    <in>main.cpp</in>
+                    <in>namespaceAlias.h</in>
+                    <in>previewImageExamples.cpp</in>
+                    <in>previewImageExamples.h</in>
+                    <in>rgbaInterfaceExamples.cpp</in>
+                    <in>rgbaInterfaceExamples.h</in>
+                    <in>rgbaInterfaceTiledExamples.cpp</in>
+                    <in>rgbaInterfaceTiledExamples.h</in>
+                  </df>
+                  <df name="IlmImfFuzzTest">
+                    <in>fuzzFile.cpp</in>
+                    <in>fuzzFile.h</in>
+                    <in>main.cpp</in>
+                    <in>testFuzzDeepScanLines.cpp</in>
+                    <in>testFuzzDeepScanLines.h</in>
+                    <in>testFuzzDeepTiles.cpp</in>
+                    <in>testFuzzDeepTiles.h</in>
+                    <in>testFuzzScanLines.cpp</in>
+                    <in>testFuzzScanLines.h</in>
+                    <in>testFuzzTiles.cpp</in>
+                    <in>testFuzzTiles.h</in>
+                    <in>tmpDir.h</in>
+                  </df>
+                  <df name="IlmImfTest">
+                    <in>compareB44.cpp</in>
+                    <in>compareB44.h</in>
+                    <in>compareDwa.cpp</in>
+                    <in>compareDwa.h</in>
+                    <in>compareFloat.cpp</in>
+                    <in>compareFloat.h</in>
+                    <in>main.cpp</in>
+                    <in>testAttributes.cpp</in>
+                    <in>testAttributes.h</in>
+                    <in>testBackwardCompatibility.cpp</in>
+                    <in>testBackwardCompatibility.h</in>
+                    <in>testBadTypeAttributes.cpp</in>
+                    <in>testBadTypeAttributes.h</in>
+                    <in>testChannels.cpp</in>
+                    <in>testChannels.h</in>
+                    <in>testCompositeDeepScanLine.cpp</in>
+                    <in>testCompositeDeepScanLine.h</in>
+                    <in>testCompression.cpp</in>
+                    <in>testCompression.h</in>
+                    <in>testConversion.cpp</in>
+                    <in>testConversion.h</in>
+                    <in>testCopyDeepScanLine.cpp</in>
+                    <in>testCopyDeepScanLine.h</in>
+                    <in>testCopyDeepTiled.cpp</in>
+                    <in>testCopyDeepTiled.h</in>
+                    <in>testCopyMultiPartFile.cpp</in>
+                    <in>testCopyMultiPartFile.h</in>
+                    <in>testCopyPixels.cpp</in>
+                    <in>testCopyPixels.h</in>
+                    <in>testCustomAttributes.cpp</in>
+                    <in>testCustomAttributes.h</in>
+                    <in>testDeepScanLineBasic.cpp</in>
+                    <in>testDeepScanLineBasic.h</in>
+                    <in>testDeepScanLineHuge.cpp</in>
+                    <in>testDeepScanLineHuge.h</in>
+                    <in>testDeepScanLineMultipleRead.cpp</in>
+                    <in>testDeepScanLineMultipleRead.h</in>
+                    <in>testDeepTiledBasic.cpp</in>
+                    <in>testDeepTiledBasic.h</in>
+                    <in>testDwaCompressorSimd.cpp</in>
+                    <in>testDwaCompressorSimd.h</in>
+                    <in>testExistingStreams.cpp</in>
+                    <in>testExistingStreams.h</in>
+                    <in>testFutureProofing.cpp</in>
+                    <in>testFutureProofing.h</in>
+                    <in>testHuf.cpp</in>
+                    <in>testHuf.h</in>
+                    <in>testInputPart.cpp</in>
+                    <in>testInputPart.h</in>
+                    <in>testIsComplete.cpp</in>
+                    <in>testIsComplete.h</in>
+                    <in>testLineOrder.cpp</in>
+                    <in>testLineOrder.h</in>
+                    <in>testLut.cpp</in>
+                    <in>testLut.h</in>
+                    <in>testMagic.cpp</in>
+                    <in>testMagic.h</in>
+                    <in>testMultiPartApi.cpp</in>
+                    <in>testMultiPartApi.h</in>
+                    <in>testMultiPartFileMixingBasic.cpp</in>
+                    <in>testMultiPartFileMixingBasic.h</in>
+                    <in>testMultiPartSharedAttributes.cpp</in>
+                    <in>testMultiPartSharedAttributes.h</in>
+                    <in>testMultiPartThreading.cpp</in>
+                    <in>testMultiPartThreading.h</in>
+                    <in>testMultiScanlinePartThreading.cpp</in>
+                    <in>testMultiScanlinePartThreading.h</in>
+                    <in>testMultiTiledPartThreading.cpp</in>
+                    <in>testMultiTiledPartThreading.h</in>
+                    <in>testMultiView.cpp</in>
+                    <in>testMultiView.h</in>
+                    <in>testNativeFormat.cpp</in>
+                    <in>testNativeFormat.h</in>
+                    <in>testOptimized.cpp</in>
+                    <in>testOptimized.h</in>
+                    <in>testOptimizedInterleavePatterns.cpp</in>
+                    <in>testOptimizedInterleavePatterns.h</in>
+                    <in>testPartHelper.cpp</in>
+                    <in>testPartHelper.h</in>
+                    <in>testPreviewImage.cpp</in>
+                    <in>testPreviewImage.h</in>
+                    <in>testRgba.cpp</in>
+                    <in>testRgba.h</in>
+                    <in>testRgbaThreading.cpp</in>
+                    <in>testRgbaThreading.h</in>
+                    <in>testRle.cpp</in>
+                    <in>testRle.h</in>
+                    <in>testSampleImages.cpp</in>
+                    <in>testSampleImages.h</in>
+                    <in>testScanLineApi.cpp</in>
+                    <in>testScanLineApi.h</in>
+                    <in>testSharedFrameBuffer.cpp</in>
+                    <in>testSharedFrameBuffer.h</in>
+                    <in>testStandardAttributes.cpp</in>
+                    <in>testStandardAttributes.h</in>
+                    <in>testTiledCompression.cpp</in>
+                    <in>testTiledCompression.h</in>
+                    <in>testTiledCopyPixels.cpp</in>
+                    <in>testTiledCopyPixels.h</in>
+                    <in>testTiledLineOrder.cpp</in>
+                    <in>testTiledLineOrder.h</in>
+                    <in>testTiledRgba.cpp</in>
+                    <in>testTiledRgba.h</in>
+                    <in>testTiledYa.cpp</in>
+                    <in>testTiledYa.h</in>
+                    <in>testWav.cpp</in>
+                    <in>testWav.h</in>
+                    <in>testXdr.cpp</in>
+                    <in>testXdr.h</in>
+                    <in>testYca.cpp</in>
+                    <in>testYca.h</in>
+                    <in>tmpDir.h</in>
+                  </df>
+                  <df name="IlmImfUtil">
+                    <in>ImfDeepImage.cpp</in>
+                    <in>ImfDeepImage.h</in>
+                    <in>ImfDeepImageChannel.cpp</in>
+                    <in>ImfDeepImageChannel.h</in>
+                    <in>ImfDeepImageIO.cpp</in>
+                    <in>ImfDeepImageIO.h</in>
+                    <in>ImfDeepImageLevel.cpp</in>
+                    <in>ImfDeepImageLevel.h</in>
+                    <in>ImfFlatImage.cpp</in>
+                    <in>ImfFlatImage.h</in>
+                    <in>ImfFlatImageChannel.cpp</in>
+                    <in>ImfFlatImageChannel.h</in>
+                    <in>ImfFlatImageIO.cpp</in>
+                    <in>ImfFlatImageIO.h</in>
+                    <in>ImfFlatImageLevel.cpp</in>
+                    <in>ImfFlatImageLevel.h</in>
+                    <in>ImfImage.cpp</in>
+                    <in>ImfImage.h</in>
+                    <in>ImfImageChannel.cpp</in>
+                    <in>ImfImageChannel.h</in>
+                    <in>ImfImageChannelRenaming.h</in>
+                    <in>ImfImageDataWindow.cpp</in>
+                    <in>ImfImageDataWindow.h</in>
+                    <in>ImfImageIO.cpp</in>
+                    <in>ImfImageIO.h</in>
+                    <in>ImfImageLevel.cpp</in>
+                    <in>ImfImageLevel.h</in>
+                    <in>ImfSampleCountChannel.cpp</in>
+                    <in>ImfSampleCountChannel.h</in>
+                  </df>
+                  <df name="IlmImfUtilTest">
+                    <in>main.cpp</in>
+                    <in>testDeepImage.cpp</in>
+                    <in>testDeepImage.h</in>
+                    <in>testFlatImage.cpp</in>
+                    <in>testFlatImage.h</in>
+                    <in>testIO.cpp</in>
+                    <in>testIO.h</in>
+                    <in>tmpDir.h</in>
+                  </df>
+                  <df name="m4">
+                  </df>
+                </df>
+                <df name="OpenEXR_Viewers">
+                  <df name="config">
+                  </df>
+                  <df name="doc">
+                  </df>
+                  <df name="exrdisplay">
+                    <in>GlWindow3d.cpp</in>
+                    <in>GlWindow3d.h</in>
+                    <in>ImageView.cpp</in>
+                    <in>ImageView.h</in>
+                    <in>applyCtl.cpp</in>
+                    <in>applyCtl.h</in>
+                    <in>loadImage.cpp</in>
+                    <in>loadImage.h</in>
+                    <in>main.cpp</in>
+                    <in>namespaceAlias.h</in>
+                    <in>scaleImage.cpp</in>
+                    <in>scaleImage.h</in>
+                  </df>
+                  <df name="m4">
+                  </df>
+                  <df name="playexr">
+                    <in>FileReadingThread.cpp</in>
+                    <in>FileReadingThread.h</in>
+                    <in>ImageBuffers.cpp</in>
+                    <in>ImageBuffers.h</in>
+                    <in>Timer.cpp</in>
+                    <in>Timer.h</in>
+                    <in>ctlToLut.cpp</in>
+                    <in>ctlToLut.h</in>
+                    <in>fileNameForFrame.cpp</in>
+                    <in>fileNameForFrame.h</in>
+                    <in>main.cpp</in>
+                    <in>osDependent.cpp</in>
+                    <in>osDependent.h</in>
+                    <in>playExr.cpp</in>
+                    <in>playExr.h</in>
+                  </df>
+                </df>
+                <df name="PyIlmBase">
+                  <df name="config">
+                  </df>
+                  <df name="config.windows">
+                    <in>PyIlmBaseConfig.h</in>
+                  </df>
+                  <df name="doc">
+                  </df>
+                  <df name="m4">
+                  </df>
+                  <df name="PyIex">
+                    <in>PyIex.cpp</in>
+                    <in>PyIex.h</in>
+                    <in>PyIexExport.h</in>
+                    <in>PyIexTypeTranslator.h</in>
+                    <in>iexmodule.cpp</in>
+                  </df>
+                  <df name="PyIexTest">
+                  </df>
+                  <df name="PyImath">
+                    <in>PyImath.cpp</in>
+                    <in>PyImath.h</in>
+                    <in>PyImathAutovectorize.cpp</in>
+                    <in>PyImathAutovectorize.h</in>
+                    <in>PyImathBasicTypes.cpp</in>
+                    <in>PyImathBasicTypes.h</in>
+                    <in>PyImathBox.cpp</in>
+                    <in>PyImathBox.h</in>
+                    <in>PyImathBox2Array.cpp</in>
+                    <in>PyImathBox3Array.cpp</in>
+                    <in>PyImathBoxArrayImpl.h</in>
+                    <in>PyImathColor.h</in>
+                    <in>PyImathColor3.cpp</in>
+                    <in>PyImathColor3ArrayImpl.h</in>
+                    <in>PyImathColor4.cpp</in>
+                    <in>PyImathColor4Array2DImpl.h</in>
+                    <in>PyImathColor4ArrayImpl.h</in>
+                    <in>PyImathDecorators.h</in>
+                    <in>PyImathEuler.cpp</in>
+                    <in>PyImathEuler.h</in>
+                    <in>PyImathExport.h</in>
+                    <in>PyImathFixedArray.cpp</in>
+                    <in>PyImathFixedArray.h</in>
+                    <in>PyImathFixedArray2D.h</in>
+                    <in>PyImathFixedMatrix.h</in>
+                    <in>PyImathFixedVArray.cpp</in>
+                    <in>PyImathFixedVArray.h</in>
+                    <in>PyImathFrustum.cpp</in>
+                    <in>PyImathFrustum.h</in>
+                    <in>PyImathFun.cpp</in>
+                    <in>PyImathFun.h</in>
+                    <in>PyImathLine.cpp</in>
+                    <in>PyImathLine.h</in>
+                    <in>PyImathM44Array.cpp</in>
+                    <in>PyImathM44Array.h</in>
+                    <in>PyImathMathExc.h</in>
+                    <in>PyImathMatrix.h</in>
+                    <in>PyImathMatrix33.cpp</in>
+                    <in>PyImathMatrix44.cpp</in>
+                    <in>PyImathOperators.h</in>
+                    <in>PyImathPlane.cpp</in>
+                    <in>PyImathPlane.h</in>
+                    <in>PyImathQuat.cpp</in>
+                    <in>PyImathQuat.h</in>
+                    <in>PyImathRandom.cpp</in>
+                    <in>PyImathRandom.h</in>
+                    <in>PyImathShear.cpp</in>
+                    <in>PyImathShear.h</in>
+                    <in>PyImathStringArray.cpp</in>
+                    <in>PyImathStringArray.h</in>
+                    <in>PyImathStringArrayRegister.h</in>
+                    <in>PyImathStringTable.cpp</in>
+                    <in>PyImathStringTable.h</in>
+                    <in>PyImathTask.cpp</in>
+                    <in>PyImathTask.h</in>
+                    <in>PyImathUtil.cpp</in>
+                    <in>PyImathUtil.h</in>
+                    <in>PyImathVec.h</in>
+                    <in>PyImathVec2Impl.h</in>
+                    <in>PyImathVec2fd.cpp</in>
+                    <in>PyImathVec2si.cpp</in>
+                    <in>PyImathVec3ArrayImpl.h</in>
+                    <in>PyImathVec3Impl.h</in>
+                    <in>PyImathVec3fd.cpp</in>
+                    <in>PyImathVec3si.cpp</in>
+                    <in>PyImathVec3siArray.cpp</in>
+                    <in>PyImathVec4ArrayImpl.h</in>
+                    <in>PyImathVec4Impl.h</in>
+                    <in>PyImathVec4fd.cpp</in>
+                    <in>PyImathVec4si.cpp</in>
+                    <in>PyImathVec4siArray.cpp</in>
+                    <in>PyImathVecOperators.h</in>
+                    <in>imathmodule.cpp</in>
+                  </df>
+                  <df name="PyImathNumpy">
+                    <in>imathnumpymodule.cpp</in>
+                  </df>
+                  <df name="PyImathNumpyTest">
+                  </df>
+                  <df name="PyImathTest">
+                  </df>
+                </df>
+              </df>
+              <df name="ptex">
+                <df name="src">
+                  <df name="doc">
+                    <df name="ptex">
+                    </df>
+                  </df>
+                  <df name="ptex">
+                    <in>PtexCache.cpp</in>
+                    <in>PtexCache.h</in>
+                    <in>PtexFilters.cpp</in>
+                    <in>PtexHalf.cpp</in>
+                    <in>PtexHalf.h</in>
+                    <in>PtexHalfTableGen.cpp</in>
+                    <in>PtexHalfTables.h</in>
+                    <in>PtexHashMap.h</in>
+                    <in>PtexIO.h</in>
+                    <in>PtexInt.h</in>
+                    <in>PtexMutex.h</in>
+                    <in>PtexPlatform.h</in>
+                    <in>PtexReader.cpp</in>
+                    <in>PtexReader.h</in>
+                    <in>PtexSeparableFilter.cpp</in>
+                    <in>PtexSeparableFilter.h</in>
+                    <in>PtexSeparableKernel.cpp</in>
+                    <in>PtexSeparableKernel.h</in>
+                    <in>PtexTriangleFilter.cpp</in>
+                    <in>PtexTriangleFilter.h</in>
+                    <in>PtexTriangleKernel.cpp</in>
+                    <in>PtexTriangleKernel.h</in>
+                    <in>PtexUtils.cpp</in>
+                    <in>PtexUtils.h</in>
+                    <in>PtexVersion.h</in>
+                    <in>PtexWriter.cpp</in>
+                    <in>PtexWriter.h</in>
+                    <in>Ptexture.h</in>
+                  </df>
+                  <df name="tests">
+                    <in>ftest.cpp</in>
+                    <in>halftest.cpp</in>
+                    <in>rtest.cpp</in>
+                    <in>wtest.cpp</in>
+                  </df>
+                  <df name="utils">
+                    <in>ptxinfo.cpp</in>
+                  </df>
+                </df>
+              </df>
+              <df name="zlib">
+                <df name="amiga">
+                </df>
+                <df name="as400">
+                </df>
+                <df name="contrib">
+                  <df name="ada">
+                  </df>
+                  <df name="amd64">
+                    <in>amd64-match.S</in>
+                  </df>
+                  <df name="asm686">
+                    <in>match.S</in>
+                  </df>
+                  <df name="blast">
+                    <in>blast.c</in>
+                    <in>blast.h</in>
+                  </df>
+                  <df name="delphi">
+                  </df>
+                  <df name="dotzlib">
+                    <df name="DotZLib">
+                    </df>
+                  </df>
+                  <df name="gcc_gvmat64">
+                    <in>gvmat64.S</in>
+                  </df>
+                  <df name="infback9">
+                    <in>infback9.c</in>
+                    <in>infback9.h</in>
+                    <in>inffix9.h</in>
+                    <in>inflate9.h</in>
+                    <in>inftree9.c</in>
+                    <in>inftree9.h</in>
+                  </df>
+                  <df name="inflate86">
+                    <in>inffas86.c</in>
+                    <in>inffast.S</in>
+                  </df>
+                  <df name="iostream">
+                    <in>test.cpp</in>
+                    <in>zfstream.cpp</in>
+                    <in>zfstream.h</in>
+                  </df>
+                  <df name="iostream2">
+                    <in>zstream.h</in>
+                    <in>zstream_test.cpp</in>
+                  </df>
+                  <df name="iostream3">
+                    <in>test.cc</in>
+                    <in>zfstream.cc</in>
+                    <in>zfstream.h</in>
+                  </df>
+                  <df name="masmx64">
+                    <in>gvmat64.asm</in>
+                    <in>inffas8664.c</in>
+                    <in>inffasx64.asm</in>
+                  </df>
+                  <df name="masmx86">
+                    <in>inffas32.asm</in>
+                    <in>match686.asm</in>
+                  </df>
+                  <df name="minizip">
+                    <in>crypt.h</in>
+                    <in>ioapi.c</in>
+                    <in>ioapi.h</in>
+                    <in>iowin32.c</in>
+                    <in>iowin32.h</in>
+                    <in>miniunz.c</in>
+                    <in>minizip.c</in>
+                    <in>mztools.c</in>
+                    <in>mztools.h</in>
+                    <in>unzip.c</in>
+                    <in>unzip.h</in>
+                    <in>zip.c</in>
+                    <in>zip.h</in>
+                  </df>
+                  <df name="pascal">
+                  </df>
+                  <df name="puff">
+                    <in>puff.c</in>
+                    <in>puff.h</in>
+                    <in>pufftest.c</in>
+                  </df>
+                  <df name="testzlib">
+                    <in>testzlib.c</in>
+                  </df>
+                  <df name="untgz">
+                    <in>untgz.c</in>
+                  </df>
+                  <df name="vstudio">
+                    <df name="vc10">
+                    </df>
+                    <df name="vc11">
+                    </df>
+                    <df name="vc9">
+                    </df>
+                  </df>
+                </df>
+                <df name="doc">
+                </df>
+                <df name="examples">
+                  <in>enough.c</in>
+                  <in>fitblk.c</in>
+                  <in>gun.c</in>
+                  <in>gzappend.c</in>
+                  <in>gzjoin.c</in>
+                  <in>gzlog.c</in>
+                  <in>gzlog.h</in>
+                  <in>zpipe.c</in>
+                  <in>zran.c</in>
+                </df>
+                <df name="msdos">
+                </df>
+                <df name="nintendods">
+                </df>
+                <df name="old">
+                  <df name="os2">
+                  </df>
+                </df>
+                <df name="qnx">
+                </df>
+                <df name="test">
+                  <in>example.c</in>
+                  <in>infcover.c</in>
+                  <in>minigzip.c</in>
+                </df>
+                <df name="watcom">
+                </df>
+                <df name="win32">
+                </df>
+                <in>adler32.c</in>
+                <in>compress.c</in>
+                <in>crc32.c</in>
+                <in>crc32.h</in>
+                <in>deflate.c</in>
+                <in>deflate.h</in>
+                <in>gzclose.c</in>
+                <in>gzguts.h</in>
+                <in>gzlib.c</in>
+                <in>gzread.c</in>
+                <in>gzwrite.c</in>
+                <in>infback.c</in>
+                <in>inffast.c</in>
+                <in>inffast.h</in>
+                <in>inffixed.h</in>
+                <in>inflate.c</in>
+                <in>inflate.h</in>
+                <in>inftrees.c</in>
+                <in>inftrees.h</in>
+                <in>trees.c</in>
+                <in>trees.h</in>
+                <in>uncompr.c</in>
+                <in>zlib.h</in>
+                <in>zutil.c</in>
+                <in>zutil.h</in>
+              </df>
+              <in>ArHosekSkyModel.c</in>
+              <in>ArHosekSkyModel.h</in>
+              <in>ArHosekSkyModelData_CIEXYZ.h</in>
+              <in>ArHosekSkyModelData_RGB.h</in>
+              <in>ArHosekSkyModelData_Spectral.h</in>
+              <in>lodepng.cpp</in>
+              <in>lodepng.h</in>
+              <in>rply.cpp</in>
+              <in>rply.h</in>
+              <in>targa.cpp</in>
+              <in>targa.h</in>
+            </df>
+            <df name="filters">
+              <in>box.cpp</in>
+              <in>box.h</in>
+              <in>gaussian.cpp</in>
+              <in>gaussian.h</in>
+              <in>mitchell.cpp</in>
+              <in>mitchell.h</in>
+              <in>sinc.cpp</in>
+              <in>sinc.h</in>
+              <in>triangle.cpp</in>
+              <in>triangle.h</in>
+            </df>
+            <df name="integrators">
+              <in>ao.cpp</in>
+              <in>ao.h</in>
+              <in>bdpt.cpp</in>
+              <in>bdpt.h</in>
+              <in>directlighting.cpp</in>
+              <in>directlighting.h</in>
+              <in>mlt.cpp</in>
+              <in>mlt.h</in>
+              <in>path.cpp</in>
+              <in>path.h</in>
+              <in>sppm.cpp</in>
+              <in>sppm.h</in>
+              <in>volpath.cpp</in>
+              <in>volpath.h</in>
+              <in>whitted.cpp</in>
+              <in>whitted.h</in>
+            </df>
+            <df name="lights">
+              <in>diffuse.cpp</in>
+              <in>diffuse.h</in>
+              <in>distant.cpp</in>
+              <in>distant.h</in>
+              <in>goniometric.cpp</in>
+              <in>goniometric.h</in>
+              <in>infinite.cpp</in>
+              <in>infinite.h</in>
+              <in>point.cpp</in>
+              <in>point.h</in>
+              <in>projection.cpp</in>
+              <in>projection.h</in>
+              <in>spot.cpp</in>
+              <in>spot.h</in>
+            </df>
+            <df name="main">
+              <in>pbrt.cpp</in>
+            </df>
+            <df name="materials">
+              <in>OpenVdbReader.cpp</in>
+              <in>OpenVdbReader.h</in>
+              <in>bezier.cpp</in>
+              <in>bezier.h</in>
+              <in>disney.cpp</in>
+              <in>disney.h</in>
+              <in>dualscattering.cpp</in>
+              <in>dualscattering.h</in>
+              <in>fourier.cpp</in>
+              <in>fourier.h</in>
+              <in>glass.cpp</in>
+              <in>glass.h</in>
+              <in>hair.cpp</in>
+              <in>hair.h</in>
+              <in>hairutil.cpp</in>
+              <in>hairutil.h</in>
+              <in>kdsubsurface.cpp</in>
+              <in>kdsubsurface.h</in>
+              <in>marschner.cpp</in>
+              <in>marschner.h</in>
+              <in>matte.cpp</in>
+              <in>matte.h</in>
+              <in>metal.cpp</in>
+              <in>metal.h</in>
+              <in>mirror.cpp</in>
+              <in>mirror.h</in>
+              <in>mixmat.cpp</in>
+              <in>mixmat.h</in>
+              <in>plastic.cpp</in>
+              <in>plastic.h</in>
+              <in>substrate.cpp</in>
+              <in>substrate.h</in>
+              <in>subsurface.cpp</in>
+              <in>subsurface.h</in>
+              <in>translucent.cpp</in>
+              <in>translucent.h</in>
+              <in>uber.cpp</in>
+              <in>uber.h</in>
+            </df>
+            <df name="media">
+              <in>grid.cpp</in>
+              <in>grid.h</in>
+              <in>homogeneous.cpp</in>
+              <in>homogeneous.h</in>
+            </df>
+            <df name="samplers">
+              <in>halton.cpp</in>
+              <in>halton.h</in>
+              <in>maxmin.cpp</in>
+              <in>maxmin.h</in>
+              <in>random.cpp</in>
+              <in>random.h</in>
+              <in>sobol.cpp</in>
+              <in>sobol.h</in>
+              <in>stratified.cpp</in>
+              <in>stratified.h</in>
+              <in>zerotwosequence.cpp</in>
+              <in>zerotwosequence.h</in>
+            </df>
+            <df name="shapes">
+              <in>cone.cpp</in>
+              <in>cone.h</in>
+              <in>curve.cpp</in>
+              <in>curve.h</in>
+              <in>cylinder.cpp</in>
+              <in>cylinder.h</in>
+              <in>disk.cpp</in>
+              <in>disk.h</in>
+              <in>heightfield.cpp</in>
+              <in>heightfield.h</in>
+              <in>hyperboloid.cpp</in>
+              <in>hyperboloid.h</in>
+              <in>loopsubdiv.cpp</in>
+              <in>loopsubdiv.h</in>
+              <in>nurbs.cpp</in>
+              <in>nurbs.h</in>
+              <in>paraboloid.cpp</in>
+              <in>paraboloid.h</in>
+              <in>plymesh.cpp</in>
+              <in>plymesh.h</in>
+              <in>sphere.cpp</in>
+              <in>sphere.h</in>
+              <in>triangle.cpp</in>
+              <in>triangle.h</in>
+            </df>
+            <df name="tests">
+              <df name="gtest">
+                <in>gtest-all.cc</in>
+                <in>gtest.h</in>
+                <in>gtest_main.cc</in>
+              </df>
+              <in>analytic_scenes.cpp</in>
+              <in>animatedtransform.cpp</in>
+              <in>bitops.cpp</in>
+              <in>bounds.cpp</in>
+              <in>bsdfs.cpp</in>
+              <in>fileutil.cpp</in>
+              <in>find_interval.cpp</in>
+              <in>fourierbsdf.cpp</in>
+              <in>fp_tests.cpp</in>
+              <in>hair.cpp</in>
+              <in>hg.cpp</in>
+              <in>imageio.cpp</in>
+              <in>parallel.cpp</in>
+              <in>parser.cpp</in>
+              <in>print.cpp</in>
+              <in>sampling.cpp</in>
+              <in>shapes.cpp</in>
+              <in>spectrum.cpp</in>
+              <in>testdualscattering.cpp</in>
+              <in>testmarschner.cpp</in>
+            </df>
+            <df name="textures">
+              <in>bilerp.cpp</in>
+              <in>bilerp.h</in>
+              <in>checkerboard.cpp</in>
+              <in>checkerboard.h</in>
+              <in>constant.cpp</in>
+              <in>constant.h</in>
+              <in>dots.cpp</in>
+              <in>dots.h</in>
+              <in>fbm.cpp</in>
+              <in>fbm.h</in>
+              <in>imagemap.cpp</in>
+              <in>imagemap.h</in>
+              <in>marble.cpp</in>
+              <in>marble.h</in>
+              <in>mix.cpp</in>
+              <in>mix.h</in>
+              <in>ptex.cpp</in>
+              <in>ptex.h</in>
+              <in>scale.cpp</in>
+              <in>scale.h</in>
+              <in>uv.cpp</in>
+              <in>uv.h</in>
+              <in>windy.cpp</in>
+              <in>windy.h</in>
+              <in>wrinkled.cpp</in>
+              <in>wrinkled.h</in>
+            </df>
+            <df name="tools">
+              <in>bsdftest.cpp</in>
+              <in>cyhair2pbrt.cpp</in>
+              <in>imgtool.cpp</in>
+              <in>obj2pbrt.cpp</in>
+            </df>
+          </df>
+        </df>
+        <df name="pbrt-v3-scenes">
+          <df name="barcelona-pavilion">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="bathroom">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="bmw-m6">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="breakfast">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="bsdfs">
+          </df>
+          <df name="buddha-fractal">
+            <df name="geometry">
+            </df>
+          </df>
+          <df name="bunny-fur">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="caustic-glass">
+            <df name="geometry">
+            </df>
+          </df>
+          <df name="chopper-titan">
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="cloud">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="coffee-splash">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="contemporary-bathroom">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="crown">
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+              <df name="arc">
+              </df>
+              <df name="b_lily">
+              </df>
+              <df name="diamond_tray">
+              </df>
+              <df name="mitra">
+              </df>
+              <df name="pearl_tray">
+              </df>
+              <df name="s_lily">
+              </df>
+            </df>
+          </df>
+          <df name="dambreak">
+            <df name="geometry">
+            </df>
+          </df>
+          <df name="dragon">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="ecosys">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="figures">
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="ganesha">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="hair">
+            <df name="models">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="head">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="html">
+          </df>
+          <df name="images">
+            <df name="barcelona-pavilion">
+            </df>
+            <df name="bathroom">
+            </df>
+            <df name="bmw-m6">
+            </df>
+            <df name="breakfast">
+            </df>
+            <df name="buddha-fractal">
+            </df>
+            <df name="bunny-fur">
+            </df>
+            <df name="caustic-glass">
+            </df>
+            <df name="chopper-titan">
+            </df>
+            <df name="cloud">
+            </df>
+            <df name="coffee-splash">
+            </df>
+            <df name="contemporary-bathroom">
+            </df>
+            <df name="crown">
+            </df>
+            <df name="dambreak">
+            </df>
+            <df name="dragon">
+            </df>
+            <df name="ecosys">
+            </df>
+            <df name="figures">
+            </df>
+            <df name="ganesha">
+            </df>
+            <df name="hair">
+            </df>
+            <df name="head">
+            </df>
+            <df name="killeroos">
+            </df>
+            <df name="landscape">
+            </df>
+            <df name="lte-orb">
+            </df>
+            <df name="measure-one">
+            </df>
+            <df name="pbrt-book">
+            </df>
+            <df name="sanmiguel">
+            </df>
+            <df name="simple">
+            </df>
+            <df name="smoke-plume">
+            </df>
+            <df name="sportscar">
+            </df>
+            <df name="sssdragon">
+            </df>
+            <df name="structuresynth">
+            </df>
+            <df name="transparent-machines">
+            </df>
+            <df name="tt">
+            </df>
+            <df name="veach-bidir">
+            </df>
+            <df name="veach-mis">
+            </df>
+            <df name="villa">
+            </df>
+            <df name="volume-caustic">
+            </df>
+            <df name="vw-van">
+            </df>
+            <df name="white-room">
+            </df>
+            <df name="yeahright">
+            </df>
+          </df>
+          <df name="killeroos">
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="landscape">
+            <df name="geometry">
+            </df>
+            <df name="lenses">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="lenses">
+          </df>
+          <df name="lte-orb">
+            <df name="bsdfs">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="measure-one">
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="pbrt-book">
+            <df name="geometry">
+            </df>
+            <df name="texture">
+            </df>
+          </df>
+          <df name="sanmiguel">
+            <df name="geometry">
+            </df>
+            <df name="lenses">
+            </df>
+            <df name="mlt-exrs">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="simple">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="smoke-plume">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="spds">
+            <df name="lights">
+            </df>
+            <df name="metals">
+            </df>
+          </df>
+          <df name="sportscar">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="sssdragon">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="structuresynth">
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="transparent-machines">
+            <df name="geometry">
+              <df name="1266">
+              </df>
+              <df name="542">
+              </df>
+              <df name="675">
+              </df>
+              <df name="812">
+              </df>
+              <df name="888">
+              </df>
+            </df>
+          </df>
+          <df name="tt">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="veach-bidir">
+            <df name="geometry">
+            </df>
+          </df>
+          <df name="veach-mis">
+            <df name="geometry">
+            </df>
+          </df>
+          <df name="villa">
+            <df name="geometry">
+            </df>
+            <df name="lenses">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="volume-caustic">
+            <df name="textures">
+            </df>
+          </df>
+          <df name="vw-van">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="white-room">
+            <df name="bsdfs">
+            </df>
+            <df name="geometry">
+            </df>
+            <df name="spds">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+          <df name="wip">
+            <df name="glass">
+              <df name="geometry">
+              </df>
+              <df name="textures">
+              </df>
+            </df>
+          </df>
+          <df name="yeahright">
+            <df name="geometry">
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+        </df>
+        <df name="pbrt-v3_backup old">
           <df name="cmake">
           </df>
           <df name="exporters">
@@ -42721,412 +45267,6 @@
             </df>
           </df>
         </df>
-        <df name="pbrt-v3-scenes">
-          <df name="barcelona-pavilion">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="bathroom">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="bmw-m6">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="breakfast">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="bsdfs">
-          </df>
-          <df name="buddha-fractal">
-            <df name="geometry">
-            </df>
-          </df>
-          <df name="bunny-fur">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="caustic-glass">
-            <df name="geometry">
-            </df>
-          </df>
-          <df name="chopper-titan">
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="cloud">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="coffee-splash">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="contemporary-bathroom">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="crown">
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-              <df name="arc">
-              </df>
-              <df name="b_lily">
-              </df>
-              <df name="diamond_tray">
-              </df>
-              <df name="mitra">
-              </df>
-              <df name="pearl_tray">
-              </df>
-              <df name="s_lily">
-              </df>
-            </df>
-          </df>
-          <df name="dambreak">
-            <df name="geometry">
-            </df>
-          </df>
-          <df name="dragon">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="ecosys">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="figures">
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="ganesha">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="hair">
-            <df name="models">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="head">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="html">
-          </df>
-          <df name="images">
-            <df name="barcelona-pavilion">
-            </df>
-            <df name="bathroom">
-            </df>
-            <df name="bmw-m6">
-            </df>
-            <df name="breakfast">
-            </df>
-            <df name="buddha-fractal">
-            </df>
-            <df name="bunny-fur">
-            </df>
-            <df name="caustic-glass">
-            </df>
-            <df name="chopper-titan">
-            </df>
-            <df name="cloud">
-            </df>
-            <df name="coffee-splash">
-            </df>
-            <df name="contemporary-bathroom">
-            </df>
-            <df name="crown">
-            </df>
-            <df name="dambreak">
-            </df>
-            <df name="dragon">
-            </df>
-            <df name="ecosys">
-            </df>
-            <df name="figures">
-            </df>
-            <df name="ganesha">
-            </df>
-            <df name="hair">
-            </df>
-            <df name="head">
-            </df>
-            <df name="killeroos">
-            </df>
-            <df name="landscape">
-            </df>
-            <df name="lte-orb">
-            </df>
-            <df name="measure-one">
-            </df>
-            <df name="pbrt-book">
-            </df>
-            <df name="sanmiguel">
-            </df>
-            <df name="simple">
-            </df>
-            <df name="smoke-plume">
-            </df>
-            <df name="sportscar">
-            </df>
-            <df name="sssdragon">
-            </df>
-            <df name="structuresynth">
-            </df>
-            <df name="transparent-machines">
-            </df>
-            <df name="tt">
-            </df>
-            <df name="veach-bidir">
-            </df>
-            <df name="veach-mis">
-            </df>
-            <df name="villa">
-            </df>
-            <df name="volume-caustic">
-            </df>
-            <df name="vw-van">
-            </df>
-            <df name="white-room">
-            </df>
-            <df name="yeahright">
-            </df>
-          </df>
-          <df name="killeroos">
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="landscape">
-            <df name="geometry">
-            </df>
-            <df name="lenses">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="lenses">
-          </df>
-          <df name="lte-orb">
-            <df name="bsdfs">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="measure-one">
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="pbrt-book">
-            <df name="geometry">
-            </df>
-            <df name="texture">
-            </df>
-          </df>
-          <df name="sanmiguel">
-            <df name="geometry">
-            </df>
-            <df name="lenses">
-            </df>
-            <df name="mlt-exrs">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="simple">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="smoke-plume">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="spds">
-            <df name="lights">
-            </df>
-            <df name="metals">
-            </df>
-          </df>
-          <df name="sportscar">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="sssdragon">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="structuresynth">
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="transparent-machines">
-            <df name="geometry">
-              <df name="1266">
-              </df>
-              <df name="542">
-              </df>
-              <df name="675">
-              </df>
-              <df name="812">
-              </df>
-              <df name="888">
-              </df>
-            </df>
-          </df>
-          <df name="tt">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="veach-bidir">
-            <df name="geometry">
-            </df>
-          </df>
-          <df name="veach-mis">
-            <df name="geometry">
-            </df>
-          </df>
-          <df name="villa">
-            <df name="geometry">
-            </df>
-            <df name="lenses">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="volume-caustic">
-            <df name="textures">
-            </df>
-          </df>
-          <df name="vw-van">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="white-room">
-            <df name="bsdfs">
-            </df>
-            <df name="geometry">
-            </df>
-            <df name="spds">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-          <df name="wip">
-            <df name="glass">
-              <df name="geometry">
-              </df>
-              <df name="textures">
-              </df>
-            </df>
-          </df>
-          <df name="yeahright">
-            <df name="geometry">
-            </df>
-            <df name="textures">
-            </df>
-          </df>
-        </df>
       </df>
       <df name="results">
         <df name="18_08_25">
@@ -43136,6 +45276,14 @@
         <df name="2019_02_05 bezier_renderer">
         </df>
         <df name="2019_02_07_writingvdb">
+        </df>
+        <df name="2019_03_25 marschner trt without fresnel and correction glints">
+        </df>
+        <df name="marschner">
+        </df>
+        <df name="marschner working">
+        </df>
+        <df name="mm">
         </df>
       </df>
       <df name="scenes">
@@ -43177,9 +45325,31 @@
       <df name="src">
         <df name="blender-scripts">
         </df>
-        <df name="dualscattering">
-          <in>dualscattering.cpp</in>
-          <in>dualscattering.h</in>
+        <df name="pbrt">
+          <df name="core">
+            <in>api.cpp</in>
+            <in>api.h</in>
+          </df>
+          <df name="materials">
+            <in>OpenVdbReader.cpp</in>
+            <in>OpenVdbReader.h</in>
+            <in>bezier.cpp</in>
+            <in>bezier.h</in>
+            <in>dualscattering.cpp</in>
+            <in>dualscattering.h</in>
+            <in>hairutil.cpp</in>
+            <in>hairutil.h</in>
+            <in>marschner.cpp</in>
+            <in>marschner.h</in>
+          </df>
+          <df name="test">
+            <in>testdualscattering.cpp</in>
+            <in>testmarschner.cpp</in>
+          </df>
+        </df>
+        <df name="python">
+          <df name="__pycache__">
+          </df>
         </df>
         <df name="scripts">
           <df name="bezier">

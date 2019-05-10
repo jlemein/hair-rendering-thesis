@@ -143,6 +143,61 @@ float OpenVdbReader::interpolate(const Point3& from, const Point3& to, unsigned 
     return integratedValue;
 }
 
+/**
+ * Interpolates the voxel grid from a 3D point in space to another point
+ * in 3D space.
+ * The point of origin is not taken into account when interpolating. The samples are divided
+ * equally over the line, from origin to destination, including the destination point, but not including the origin point.
+ * @param from
+ * @param to
+ * @param sampleCount The amount of samples to take along the ray from origin to destination
+ * @return
+ */
+InterpolationResult OpenVdbReader::interpolate(const Point3& from, const Point3& to, unsigned int sampleCount) const {
+    // there is a choice of different interpolators, mainly PointSampler, BoxSampler and QuadraticSampler
+    // in addition to StaggeredPointSampler, StaggeredBoxSampler and StaggeredQuadraticSampler for staggered velocity grids.
+
+    // convert to openvdb world space coordinates
+    Vec3d wsFrom(from.x, from.y, from.z);
+    Vec3d wsTo(to.x, to.y, to.z);
+    Vec3d isFrom = mHairDensityGrid->transform().worldToIndex(wsFrom);
+    Vec3d isTo = mHairDensityGrid->transform().worldToIndex(wsTo);
+    std::cout << "Interpolating from world space " << wsFrom << " -> " << wsTo << std::endl;
+    std::cout << "Interpolating from index space " << isFrom << " -> " << isTo << std::endl;
+
+    const FloatGrid::Ptr grid = openvdb::gridPtrCast<openvdb::FloatGrid>(mHairDensityGrid);
+
+    // Request a value accessor for accelerated access.
+    // (Because value accessors employ a cache, it is important to declare one accessor per thread.)
+    FloatGrid::ConstAccessor accessor = grid->getConstAccessor();
+    GridSampler<FloatGrid::ConstAccessor, BoxSampler> fastSampler(accessor, grid->transform());
+
+    Vec3d stepIncrement = (wsTo - wsFrom) / sampleCount;
+    openvdb::FloatGrid::ValueType value = 0.0f;
+
+    for (int i = 1; i <= sampleCount; ++i) {
+        Vec3d wsSamplePosition = wsFrom + i * stepIncrement;
+        //FloatGrid::ValueType vv = fastSampler.wsSample(wsSamplePosition);
+        //std::cout << "Sampling at index: [" << grid->transform().worldToIndex(wsSamplePosition) << "] = " << vv << std::endl;
+        FloatGrid::ValueType sampledValue = fastSampler.wsSample(wsSamplePosition);
+        if (sampledValue < 0.0) {
+            sampledValue = 0.0;
+        }
+        value += sampledValue;
+    }
+
+    // normalize the sampling
+    double numVoxelCellsCrossed = Point3::DistanceBetween(from, to) / this->getVoxelSize();
+    std::cout << "Voxels crossed: " << numVoxelCellsCrossed << std::endl;
+    std::cout << "Value: " << value << std::endl;
+
+    InterpolationResult result;
+    result.scatterCount = numVoxelCellsCrossed * (value / static_cast<double> (sampleCount));
+    result.averageThetaD = 0.0;
+
+    return result;
+}
+
 float OpenVdbReader::interpolateToInfinity(const Point3& from, const Point3& direction) {
     std::cout << "[WARNING]: interpolateToInfinity(Point3&, Point$) is not implemented\n";
 

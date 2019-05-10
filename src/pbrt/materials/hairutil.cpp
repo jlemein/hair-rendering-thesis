@@ -16,6 +16,14 @@
 
 namespace pbrt {
 
+    bool CHECK_SPECTRUM_GE(const Spectrum& Ab, Float value) {
+        static Float rgb[3];
+        Ab.ToRGB(rgb);
+        CHECK_GE(rgb[0], value);
+        CHECK_GE(rgb[1], value);
+        CHECK_GE(rgb[2], value);
+    }
+
     /**
      * Safe acos function, to prevent 'nan' as result when parameter x is
      * (slightly) larger than or smaller than 1.0 or -1.0 respectively
