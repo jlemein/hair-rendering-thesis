@@ -34,7 +34,6 @@ WorldBegin
 
     MakeNamedMaterial "brown_hair_ref"
         "string type" [ "hair" ]
-        "string vdbFileName" [ "./output/models/$model_hair_filename.vdb" ]
 
 	MakeNamedMaterial "blonde_hair" 
         "string type" [ "$shader" ]

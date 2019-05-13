@@ -65,10 +65,6 @@ namespace pbrt {
                 ARENA_ALLOC(arena, DualScatteringBSDF)(*si, mEta, marschnerBSDF,
                 mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT, mVoxelGridFileName);
 
-
-        //static DualScatteringLookup* lookup = DualScatteringLookup::Get(arena, dualScatteringBSDF);
-        //ARENA_ALLOC(arena, DualScatteringLookup)(dualScatteringBSDF);
-
         si->bsdf->Add(dualScatteringBSDF);
     }
 
@@ -81,20 +77,11 @@ namespace pbrt {
         //        marschnerMaterial->mBtrt = Sqr(marschnerMaterial->mBtrt);
 
         std::string vdbFileName = mp.FindString("vdbFileName", "voxelgrid.vdb");
-        printf("Finding vdbFileName: %s\n", vdbFileName.c_str());
 
         return new DualscatteringMaterial(marschnerMaterial->mEta, marschnerMaterial,
                 marschnerMaterial->mAr, marschnerMaterial->mAtt, marschnerMaterial->mAtrt,
                 marschnerMaterial->mBr, marschnerMaterial->mBtt, marschnerMaterial->mBtrt,
                 vdbFileName);
-    }
-
-    static Float Transmittance() {
-        return 5.0;
-    }
-
-    static Float Variance() {
-        return 0.2;
     }
 
     /*******************************
@@ -109,13 +96,15 @@ namespace pbrt {
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
     mEta(eta), mDb(0.7), mDf(0.7),
     mMarschnerBSDF(marschnerBSDF),
-    mPosition(si.p),
+    mPosition(si.p), mWorldToObject(*si.shape->WorldToObject),
+    mObjectBound(si.shape->ObjectBound()), mWorldBound(si.shape->WorldBound()),
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
     mVoxelGridFileName(voxelGridFileName) {
         // lookup table initialized here, so that all members
         // of this reference are initialized
         mLookup = DualScatteringLookup::Get(this);
+
     };
 
     /**
@@ -177,7 +166,13 @@ namespace pbrt {
 
         // @ref Dual-Scattering Approximation, Zinke et al (2007), section 4.1.1.
 
-        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolate(Vector3f(mPosition), wd);
+
+        Vector3f from = static_cast<Vector3f> (mWorldToObject(mPosition));
+        Vector3f to = from + wd * mObjectBound.Diagonal().Length();
+
+        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolate(from, to);
+        //5;
+        //interpolationResult.averageThetaD = 1.2;
 
         if (interpolationResult.scatterCount <= 1e-5) {
             gsi.directIlluminationFraction = 1.0;
@@ -185,7 +180,7 @@ namespace pbrt {
             gsi.variance = Spectrum(.0);
         } else {
             gsi.directIlluminationFraction = 0.0;
-            gsi.transmittance = 1; //this->ForwardScatteringTransmittance(interpolationResult);
+            gsi.transmittance = this->ForwardScatteringTransmittance(interpolationResult);
             gsi.variance = this->ForwardScatteringVariance(interpolationResult);
         }
     }
@@ -282,6 +277,13 @@ namespace pbrt {
     void DualScatteringLookup::Init() {
         this->ReadVoxelGrid();
         this->PrecomputeAverageScatteringAttenuation();
+
+        const Bounds3f& worldBound = this->mDualScatteringBSDF->mWorldBound;
+        const Bounds3f& objectBound = this->mDualScatteringBSDF->mObjectBound;
+        printf("\rWorldBound: [ %f %f %f ] x [ %f %f %f ]\n", worldBound.pMin.x, worldBound.pMin.y, worldBound.pMin.z,
+                worldBound.pMax.x, worldBound.pMax.y, worldBound.pMax.z);
+        printf("\rObjectBound: [ %f %f %f ] x [ %f %f %f ]\n", objectBound.pMin.x, objectBound.pMin.y, objectBound.pMin.z,
+                objectBound.pMax.x, objectBound.pMax.y, objectBound.pMax.z);
     }
 
     void DualScatteringLookup::ReadVoxelGrid() {

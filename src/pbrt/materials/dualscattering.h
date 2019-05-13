@@ -163,6 +163,8 @@ private:
     MarschnerBSDF* mMarschnerBSDF;
     Float mEta;
     Point3f mPosition;
+    const Transform mWorldToObject;
+    const Bounds3f mObjectBound, mWorldBound;
     Float mDf, mDb;
     Float mBetaR, mBetaTT, mBetaTRT;
     Float mAlphaR, mAlphaTT, mAlphaTRT;

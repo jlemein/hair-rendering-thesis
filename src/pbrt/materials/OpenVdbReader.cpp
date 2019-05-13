@@ -196,7 +196,7 @@ namespace pbrt {
 
         InterpolationResult result;
         result.scatterCount = numVoxelCellsCrossed * (value / static_cast<double> (sampleCount));
-        result.averageThetaD = 0.0;
+        result.averageThetaD = 1.2;
 
         return result;
     }
