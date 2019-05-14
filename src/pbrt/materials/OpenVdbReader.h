@@ -46,13 +46,13 @@ namespace pbrt {
         Float interpolate(const Vector3f& from, const Vector3f& to, unsigned int sampleCount = 100);
         InterpolationResult interpolate(const Vector3f& from, const Vector3f& to, unsigned int sampleCount = 100) const;
         
-        Float interpolateToInfinity(const Vector3f& from, const Vector3f& direction);
+        InterpolationResult interpolateToInfinity(const Vector3f& from, const Vector3f& direction) const;
 
         void printMetaDataForAllGrids() const;
         void printMetaDataForHairDensityGrid() const;
 
         void printVdbInfo() const;
-        void getBoundingBox(Vector3f* from, Vector3f* p2) const;
+        const Bounds3<Float>& getBounds() const;
         Float getVoxelSize() const;
         openvdb::FloatGrid::Ptr getHairDensityGrid() const;
 
@@ -62,7 +62,8 @@ namespace pbrt {
         openvdb::FloatGrid::Ptr mHairDensityGrid;
         Float mInfinity = 1000.0f;
 
-        Vector3f mBoundingBoxMin, mBoundingBoxMax;
+        //Vector3f mBoundingBoxMin, mBoundingBoxMax;
+        Bounds3f mBounds;
 
          void printMetaDataForGrid(openvdb::GridBase::Ptr) const;
 

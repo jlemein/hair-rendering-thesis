@@ -33,7 +33,7 @@ using namespace openvdb::v3_1::tools;
 namespace pbrt {
 
     OpenVdbReader::OpenVdbReader(std::string fileName)
-    : mInputFileName(fileName), mBoundingBoxMin(0.0, 0.0, 0.0), mBoundingBoxMax(0.0, 0.0, 0.0) {
+    : mInputFileName(fileName) {
     }
 
     OpenVdbReader::OpenVdbReader(const OpenVdbReader& orig) {
@@ -65,8 +65,12 @@ namespace pbrt {
 
                     std::stringstream bbMin(bbMinStr);
                     std::stringstream bbMax(bbMaxStr);
-                    bbMin >> this->mBoundingBoxMin.x >> this->mBoundingBoxMin.y >> this->mBoundingBoxMin.z;
-                    bbMax >> this->mBoundingBoxMax.x >> this->mBoundingBoxMax.y >> this->mBoundingBoxMax.z;
+
+                    Point3<Float> p1, p2;
+                    bbMin >> p1.x >> p1.y >> p1.z;
+                    bbMax >> p2.x >> p2.y >> p2.z;
+                    mBounds = Bounds3<Float>(p1, p2);
+
                 } catch (const std::exception& e) {
                     std::cout << "[ERROR]: No bounding box value is stored in hair density grid" << std::endl;
                 }
@@ -80,14 +84,8 @@ namespace pbrt {
         return mHairDensityGrid;
     }
 
-    void OpenVdbReader::getBoundingBox(Vector3f* bbMin, Vector3f* bbMax) const {
-        bbMin->x = this->mBoundingBoxMin.x;
-        bbMin->y = this->mBoundingBoxMin.y;
-        bbMin->z = this->mBoundingBoxMin.z;
-
-        bbMax->x = this->mBoundingBoxMax.x;
-        bbMax->y = this->mBoundingBoxMax.y;
-        bbMax->z = this->mBoundingBoxMax.z;
+    const Bounds3<Float>& OpenVdbReader::getBounds() const {
+        return mBounds;
     }
 
     Float OpenVdbReader::getVoxelSize() const {
@@ -201,11 +199,10 @@ namespace pbrt {
         return result;
     }
 
-    Float OpenVdbReader::interpolateToInfinity(const Vector3f& from, const Vector3f& direction) {
-        std::cout << "[WARNING]: interpolateToInfinity(Point3f&, Point3f$) is not implemented\n";
-
-        //return interpolate(from, direction.normalize() * mInfinity);
-        return -1.0f;
+    InterpolationResult OpenVdbReader::interpolateToInfinity(const Vector3f& from, const Vector3f& direction) const {
+        Vector3f normalizedDirection = direction / direction.Length();
+        Vector3f to = from + normalizedDirection * mBounds.Diagonal().Length();
+        return this->interpolate(from, to);
     }
 
     void OpenVdbReader::printMetaDataForGrid(openvdb::GridBase::Ptr grid) const {

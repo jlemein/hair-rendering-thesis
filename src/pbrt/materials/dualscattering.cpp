@@ -131,6 +131,17 @@ namespace pbrt {
         static GlobalScatteringInformation gsi;
         GatherGlobalScatteringInformation(wd, gsi);
 
+        Vector3f red(1.0, 0.0, 0.0), green(0.0, 1.0, 0.0);
+        if (gsi.directIlluminationFraction == 1.0) {
+            Float rgb[3] = {1.0, 1.0, 1.0};
+            return RGBSpectrum::FromRGB(rgb);
+        } else {
+            Float ratio = Clamp(gsi.transmittance / 20.0f, 0.0f, 1.0f);
+            Float rgb[3] = {ratio, 1.0f - ratio, 0.0f};
+            return RGBSpectrum::FromRGB(rgb);
+        }
+
+
         // Shading
 
         // compute local multiple scattering contribution
@@ -170,18 +181,19 @@ namespace pbrt {
         Vector3f from = static_cast<Vector3f> (mWorldToObject(mPosition));
         Vector3f to = from + wd * mObjectBound.Diagonal().Length();
 
-        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolate(from, to);
+        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(from, to);
         //5;
         //interpolationResult.averageThetaD = 1.2;
 
         if (interpolationResult.scatterCount <= 1e-5) {
+
             gsi.directIlluminationFraction = 1.0;
             gsi.transmittance = 1.0;
             gsi.variance = Spectrum(.0);
         } else {
             gsi.directIlluminationFraction = 0.0;
             gsi.transmittance = this->ForwardScatteringTransmittance(interpolationResult);
-            gsi.variance = this->ForwardScatteringVariance(interpolationResult);
+            gsi.variance = 0.2; //this->ForwardScatteringVariance(interpolationResult);
         }
     }
 
@@ -190,6 +202,7 @@ namespace pbrt {
      * Simplified
      */
     Float DualScatteringBSDF::ForwardScatteringTransmittance(const InterpolationResult& interpolationResult) const {
+        //        printf("\rIndirect illuminated: %f\n", interpolationResult.scatterCount);
 
         return mDf * pow(interpolationResult.averageThetaD, interpolationResult.scatterCount);
     }
