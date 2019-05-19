@@ -96,7 +96,14 @@ namespace pbrt {
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
     mEta(eta), mDb(0.7), mDf(0.7),
     mMarschnerBSDF(marschnerBSDF),
-    mPosition(si.p), mWorldToObject(*si.shape->WorldToObject),
+    mPosition(si.p),
+    ns(si.shading.n),
+    ng(si.n),
+    ss(Normalize(si.shading.dpdu)),
+    ts(Cross(ns, ss)),
+    mWorldToObject(*si.shape->WorldToObject),
+    mObjectToWorld(*si.shape->ObjectToWorld),
+    mShape(si.shape),
     mObjectBound(si.shape->ObjectBound()), mWorldBound(si.shape->WorldBound()),
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
@@ -106,6 +113,16 @@ namespace pbrt {
         mLookup = DualScatteringLookup::Get(this);
 
     };
+
+    Vector3f DualScatteringBSDF::WorldToLocal(const Vector3f &v) const {
+        return Vector3f(Dot(v, ss), Dot(v, ts), Dot(v, ns));
+    }
+
+    Vector3f DualScatteringBSDF::LocalToWorld(const Vector3f &v) const {
+        return Vector3f(ss.x * v.x + ts.x * v.y + ns.x * v.z,
+                ss.y * v.x + ts.y * v.y + ns.y * v.z,
+                ss.z * v.x + ts.z * v.y + ns.z * v.z);
+    }
 
     /**
      *
@@ -121,90 +138,127 @@ namespace pbrt {
         return 0.5 * ((eta1 + eta2) + cos(2.0 * thetaH)*(eta1 - eta2));
     }
 
-    Spectrum DualScatteringBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
+    std::once_flag flag;
 
-        const MarschnerAngles ma(wo, wi, mEta, this->mMarschnerBSDF->getEccentricity());
+    /**
+     *
+     * @param wo Local space
+     * @param wi Local space
+     * @return
+     */
+    Spectrum DualScatteringBSDF::f(const Vector3f &woLocal, const Vector3f &wiLocal) const {
+
+        const MarschnerAngles ma(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
+
+        const Vector3f wiWorld = LocalToWorld(wiLocal);
+        const Vector3f woWorld = LocalToWorld(woLocal);
+
+        Point3f pObject = mWorldToObject(mPosition);
+        const Vector3f wd = wiWorld;
+        const Ray ray(pObject, wd);
+
 
         // Global multiple scattering
         // TODO: Check if wd = wi?
-        const Vector3f& wd = wi;
-        static GlobalScatteringInformation gsi;
-        GatherGlobalScatteringInformation(wd, gsi);
-
-        Vector3f red(1.0, 0.0, 0.0), green(0.0, 1.0, 0.0);
-        if (gsi.directIlluminationFraction == 1.0) {
-            Float rgb[3] = {1.0, 1.0, 1.0};
-            return RGBSpectrum::FromRGB(rgb);
-        } else {
-            Float ratio = Clamp(gsi.transmittance / 20.0f, 0.0f, 1.0f);
-            Float rgb[3] = {ratio, 1.0f - ratio, 0.0f};
-            return RGBSpectrum::FromRGB(rgb);
-        }
 
 
-        // Shading
+        //TODO: Check world or local coordinate space
+        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(-wd, ma.thetaD);
+
+        //        if (gsi.isDirectIlluminated) {
+        //            Float rgb[3] = {1.0, 1.0, 1.0};
+        //            return RGBSpectrum::FromRGB(rgb);
+        //        } else {
+        //            Float ratio = Clamp(gsi.transmittance.y() / 20.0f, 0.0f, 1.0f);
+        //            Float rgb[3] = {ratio, 1.0f - ratio, 0.0f};
+        //            return RGBSpectrum::FromRGB(rgb);
+        //        }
 
         // compute local multiple scattering contribution
         // TODO: Is this correct?
-
 
         Spectrum Ab = BackscatteringAttenuation(ma.thetaD);
         Spectrum deltaB = BackscatteringMean(ma.thetaD);
 
         Spectrum backScatterVariance = BackscatteringVariance(ma.thetaD);
-        Spectrum forwardScatterVariance = gsi.variance; //ForwardScatteringVariance(ma.thetaD);
+        Spectrum forwardScatterVariance = gsi.variance;
+        CHECK_GE(forwardScatterVariance.y(), 0.0);
 
-        Spectrum fBack = 2.0 * Ab * Gaussian(backScatterVariance + forwardScatterVariance,
-                Spectrum(ma.thetaD + ma.thetaR) - deltaB) / (Pi * Sqr(cos(ma.thetaD)));
+        Spectrum fBack = 2.0 * Ab
+                * Gaussian(backScatterVariance + forwardScatterVariance, Spectrum(ma.thetaD + ma.thetaR) - deltaB)
+                / (Pi * Sqr(cos(ma.thetaD)));
 
-        // compute BCSDF of the fiber due to direct illumination
-        //TODO: find a way to use beta squared
-        Spectrum fDirectS = mMarschnerBSDF->f(wo, wi);
-        Spectrum FDirect = gsi.directIlluminationFraction * (fDirectS + mDb * fBack);
-        //PrintSpectrum("FDirect: ", FDirect);
 
-        //
-        // Compute BCSDF of the fiber due to forward scattered illumination similarly
-        Spectrum fScatterS = EvaluateForwardScatteredMarschner(ma.thetaR, ma.thetaH, ma.thetaD, ma.phi, forwardScatterVariance);
-        //        //TODO: Does this Pi belong here, or is it a typo in paper??
-        Spectrum FScatter = (gsi.transmittance - gsi.directIlluminationFraction) * mDf * (fScatterS + Pi * mDb * fBack);
+        Spectrum F;
+
+        if (gsi.isDirectIlluminated) {
+            Spectrum fDirectS = mMarschnerBSDF->f(woLocal, wiLocal);
+            F = fDirectS + mDb * fBack;
+        } else {
+            Spectrum fScatterS = EvaluateForwardScatteredMarschner(ma.thetaR, ma.thetaH, ma.thetaD, ma.phi, forwardScatterVariance);
+
+            //TODO: Does this Pi belong here, or is it a typo in paper??
+            PrintSpectrum("transmittance: ", gsi.transmittance);
+            F = gsi.transmittance * mDf * (fScatterS + Pi * mDb * fBack);
+        }
+
+        CHECK_GE(F.y(), 0.0);
 
         // combine direct and forward scattered components
-        return (FDirect + FScatter) * cos(ma.thetaI);
+        return F * cos(ma.thetaI);
     }
 
-    void DualScatteringBSDF::GatherGlobalScatteringInformation(const Vector3f& wd, GlobalScatteringInformation& gsi) const {
+    GlobalScatteringInformation DualScatteringBSDF::GatherGlobalScatteringInformation(const Vector3f& wd, Float thetaD) const {
+        GlobalScatteringInformation gsi;
 
         // @ref Dual-Scattering Approximation, Zinke et al (2007), section 4.1.1.
+        Point3f pObject = mWorldToObject(mPosition);
+        Point3f pLight = mPosition + wd * this->mLookup->getVdbReader()->getBounds().Diagonal().Length();
+        const Ray ray(pObject, wd);
+        //printf("ray.o: %f %f %f -- d: %f %f %f\n", ray.o.x, ray.o.y, ray.o.z, ray.d.x, ray.d.y, ray.d.z);
 
 
-        Vector3f from = static_cast<Vector3f> (mWorldToObject(mPosition));
-        Vector3f to = from + wd * mObjectBound.Diagonal().Length();
-
-        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(from, to);
-        //5;
-        //interpolationResult.averageThetaD = 1.2;
+        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, wd);
+        interpolationResult.scatterCount = 0;
 
         if (interpolationResult.scatterCount <= 1e-5) {
-
-            gsi.directIlluminationFraction = 1.0;
+            gsi.isDirectIlluminated = true;
             gsi.transmittance = 1.0;
             gsi.variance = Spectrum(.0);
         } else {
-            gsi.directIlluminationFraction = 0.0;
-            gsi.transmittance = this->ForwardScatteringTransmittance(interpolationResult);
-            gsi.variance = 0.2; //this->ForwardScatteringVariance(interpolationResult);
+
+            gsi.isDirectIlluminated = false;
+            gsi.transmittance = this->ForwardScatteringTransmittance(interpolationResult.scatterCount, thetaD);
+            gsi.variance = this->ForwardScatteringVariance(interpolationResult.scatterCount, thetaD);
         }
+
+        return gsi;
+    }
+
+    Float IntersectRecursive(const Shape* shape, const Point3f pt, const Vector3f & d) {
+        SurfaceInteraction si;
+        Float tHit;
+
+        int hitCount = 0;
+        Ray ray(pt, d);
+        while (shape->Intersect(ray, &tHit, &si)) {
+
+            hitCount++;
+            ray = Ray(si.p, d);
+        }
+        return hitCount;
     }
 
     /**
      * Equation 5 in dual scattering approximation
-     * Simplified
+     * @param scatterCount the amount of intersections along the shadow ray
+     * @param thetaD the average orientation (thetaD) for all intersection along the shadow ray
      */
-    Float DualScatteringBSDF::ForwardScatteringTransmittance(const InterpolationResult& interpolationResult) const {
-        //        printf("\rIndirect illuminated: %f\n", interpolationResult.scatterCount);
+    Spectrum DualScatteringBSDF::ForwardScatteringTransmittance(Float scatterCount, Float thetaD) const {
 
-        return mDf * pow(interpolationResult.averageThetaD, interpolationResult.scatterCount);
+        Spectrum s = this->mLookup->AverageForwardScatteringAttenuation(thetaD);
+
+        return mDf * Pow(s, scatterCount);
     }
 
     /**
@@ -212,9 +266,10 @@ namespace pbrt {
      * @param interpolationResult
      * @return
      */
-    Spectrum DualScatteringBSDF::ForwardScatteringVariance(const InterpolationResult& interpolationResult) const {
+    Spectrum DualScatteringBSDF::ForwardScatteringVariance(Float scatterCount, Float thetaD) const {
+        CHECK_GE(scatterCount, 0.0);
 
-        return Spectrum(interpolationResult.scatterCount * this->mLookup->AverageForwardScatteringBeta(interpolationResult.averageThetaD));
+        return scatterCount * this->mLookup->AverageForwardScatteringBeta(thetaD);
     }
 
     Spectrum DualScatteringBSDF::EvaluateForwardScatteredMarschner(Float thetaR, Float thetaH, Float thetaD,
@@ -246,9 +301,24 @@ namespace pbrt {
         return result;
     }
 
-    Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType) const {
+    Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType * sampledType) const {
 
-        return mMarschnerBSDF->Sample_f(wo, wi, sample, pdf, sampledType);
+        Float theta = acos(2.0 * sample.x - 1.0);
+        Float phi = 2.0 * Pi * sample.y;
+
+        Float x = sin(theta) * cos(phi);
+        Float y = sin(theta) * sin(phi);
+        Float z = cos(theta);
+
+        *wi = Vector3f(x, y, z);
+        *pdf = this->Pdf(wo, *wi);
+
+        *pdf = 1.0;
+        Float r [3] = {0.0, 0.0, 1.0};
+        return RGBSpectrum::FromRGB(r);
+        //return f(wo, *wi);
+
+        //return mMarschnerBSDF->Sample_f(wo, wi, sample, pdf, sampledType);
     }
 
     Spectrum DualScatteringBSDF::MG_r(Float theta, Spectrum forwardScatteringVariance) const {
@@ -269,11 +339,11 @@ namespace pbrt {
         return Gaussian(Spectrum(mBetaTRT) + forwardScatteringVariance, theta - mAlphaTRT);
     }
 
-    DualScatteringLookup* DualScatteringLookup::instance = 0;
+    DualScatteringLookup * DualScatteringLookup::instance = 0;
 
     std::mutex myMutex;
 
-    const DualScatteringLookup* DualScatteringLookup::Get(const DualScatteringBSDF* bsdf) {
+    const DualScatteringLookup * DualScatteringLookup::Get(const DualScatteringBSDF * bsdf) {
 
         // We are locking here, because the singleton requires initialization
         std::lock_guard<std::mutex> myLock(myMutex);
@@ -288,15 +358,9 @@ namespace pbrt {
     }
 
     void DualScatteringLookup::Init() {
+
         this->ReadVoxelGrid();
         this->PrecomputeAverageScatteringAttenuation();
-
-        const Bounds3f& worldBound = this->mDualScatteringBSDF->mWorldBound;
-        const Bounds3f& objectBound = this->mDualScatteringBSDF->mObjectBound;
-        printf("\rWorldBound: [ %f %f %f ] x [ %f %f %f ]\n", worldBound.pMin.x, worldBound.pMin.y, worldBound.pMin.z,
-                worldBound.pMax.x, worldBound.pMax.y, worldBound.pMax.z);
-        printf("\rObjectBound: [ %f %f %f ] x [ %f %f %f ]\n", objectBound.pMin.x, objectBound.pMin.y, objectBound.pMin.z,
-                objectBound.pMax.x, objectBound.pMax.y, objectBound.pMax.z);
     }
 
     void DualScatteringLookup::ReadVoxelGrid() {
@@ -305,13 +369,15 @@ namespace pbrt {
             mVdbReader = new OpenVdbReader(this->mDualScatteringBSDF->mVoxelGridFileName);
             mVdbReader->initialize();
         } catch (const std::exception& e) {
+
             printf("\r[ERROR]: Reading VoxelGrid failed: %s\n", e.what());
             throw e;
         }
         printf("[SUCCESS]: Read voxel grid\n");
     }
 
-    const OpenVdbReader* DualScatteringLookup::getVdbReader() const {
+    const OpenVdbReader * DualScatteringLookup::getVdbReader() const {
+
         return mVdbReader;
     }
 
@@ -384,7 +450,7 @@ namespace pbrt {
         return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageForwardScatteringBeta);
     }
 
-    static Vector3f SampleFrontHemisphere(const Point2f& uv) {
+    static Vector3f SampleFrontHemisphere(const Point2f & uv) {
         Vector3f w = UniformSampleSphere(uv);
         if (w.x < 0.0) {
 
@@ -410,7 +476,7 @@ namespace pbrt {
         return w;
     }
 
-    static Vector3f SampleBackHemisphere(const Point2f& uv) {
+    static Vector3f SampleBackHemisphere(const Point2f & uv) {
         Vector3f w = UniformSampleSphere(uv);
         if (w.x > 0.0) {
 

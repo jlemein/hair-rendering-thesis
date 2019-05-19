@@ -23,7 +23,7 @@ namespace pbrt {
 
     class DualScatteringBSDF;
     
-    
+   
 class DualScatteringLookup {
 public:
     /**
@@ -93,7 +93,8 @@ class DualscatteringMaterial : public Material {
 };
 
 struct GlobalScatteringInformation {
-    Float transmittance, directIlluminationFraction;
+    Spectrum transmittance;
+    bool isDirectIlluminated;
     Spectrum variance;
 };
 
@@ -104,6 +105,9 @@ public:
             Float alphaR, Float alphaTT, Float alphaTRT,
             Float betaR, Float betaTT, Float betaTRT,
             std::string voxelGridFileName);
+    
+    Vector3f WorldToLocal(const Vector3f& v) const;
+    Vector3f LocalToWorld(const Vector3f& v) const;
     
     /**
          * (Required) Returns the value of the distribution function for the given pair of directions
@@ -163,18 +167,21 @@ private:
     MarschnerBSDF* mMarschnerBSDF;
     Float mEta;
     Point3f mPosition;
-    const Transform mWorldToObject;
+    const Shape* mShape;
+    const Transform mWorldToObject, mObjectToWorld;
     const Bounds3f mObjectBound, mWorldBound;
     Float mDf, mDb;
     Float mBetaR, mBetaTT, mBetaTRT;
     Float mAlphaR, mAlphaTT, mAlphaTRT;
     const DualScatteringLookup* mLookup;
     std::string mVoxelGridFileName;
+    const Normal3f ns, ng;
+    const Vector3f ss, ts;
     
-    void GatherGlobalScatteringInformation(const Vector3f& wd, GlobalScatteringInformation& gsi) const;
+    GlobalScatteringInformation GatherGlobalScatteringInformation(const Vector3f& wd, Float thetaD) const;
     
-    Float ForwardScatteringTransmittance(const InterpolationResult& interpolationResult) const;
-    Spectrum ForwardScatteringVariance(const InterpolationResult& interpolationResult) const;
+    Spectrum ForwardScatteringTransmittance(Float n, Float thetaD) const;
+    Spectrum ForwardScatteringVariance(Float n, Float thetaD) const;
     
     Spectrum BackscatteringAttenuation(Float theta) const;
     Spectrum BackscatteringMean(Float theta) const;

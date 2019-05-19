@@ -2969,6 +2969,22 @@
           <df name="output">
             <df name="high quality">
             </df>
+            <df name="may17">
+              <df name="debug-view-scattercount-fullmodel-vdb">
+              </df>
+              <df name="debug-view-scattercount-vdb">
+              </df>
+              <df name="dualscattering-0">
+              </df>
+              <df name="dualscattering-1">
+              </df>
+              <df name="dualscattering-2">
+              </df>
+              <df name="dualscattering-now">
+              </df>
+              <df name="intersect_and_vdb">
+              </df>
+            </df>
             <df name="models">
               <df name="archive">
               </df>

@@ -43,10 +43,10 @@ namespace pbrt {
          * @param to
          * @return 
          */
-        Float interpolate(const Vector3f& from, const Vector3f& to, unsigned int sampleCount = 100);
-        InterpolationResult interpolate(const Vector3f& from, const Vector3f& to, unsigned int sampleCount = 100) const;
+        Float interpolate(const Point3f& from, const Point3f& to, unsigned int sampleCount = 100);
+        InterpolationResult interpolate(const Point3f& from, const Point3f& to, unsigned int sampleCount = 100) const;
         
-        InterpolationResult interpolateToInfinity(const Vector3f& from, const Vector3f& direction) const;
+        InterpolationResult interpolateToInfinity(const Point3f& from, const Vector3f& direction) const;
 
         void printMetaDataForAllGrids() const;
         void printMetaDataForHairDensityGrid() const;

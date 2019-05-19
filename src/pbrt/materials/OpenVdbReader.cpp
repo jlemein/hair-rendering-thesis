@@ -102,7 +102,7 @@ namespace pbrt {
      * @param sampleCount The amount of samples to take along the ray from origin to destination
      * @return
      */
-    Float OpenVdbReader::interpolate(const Vector3f& from, const Vector3f& to, unsigned int sampleCount) {
+    Float OpenVdbReader::interpolate(const Point3f& from, const Point3f& to, unsigned int sampleCount) {
         // there is a choice of different interpolators, mainly PointSampler, BoxSampler and QuadraticSampler
         // in addition to StaggeredPointSampler, StaggeredBoxSampler and StaggeredQuadraticSampler for staggered velocity grids.
 
@@ -154,7 +154,7 @@ namespace pbrt {
      * @param sampleCount The amount of samples to take along the ray from origin to destination
      * @return
      */
-    InterpolationResult OpenVdbReader::interpolate(const Vector3f& from, const Vector3f& to, unsigned int sampleCount) const {
+    InterpolationResult OpenVdbReader::interpolate(const Point3f& from, const Point3f& to, unsigned int sampleCount) const {
         // there is a choice of different interpolators, mainly PointSampler, BoxSampler and QuadraticSampler
         // in addition to StaggeredPointSampler, StaggeredBoxSampler and StaggeredQuadraticSampler for staggered velocity grids.
 
@@ -199,11 +199,29 @@ namespace pbrt {
         return result;
     }
 
-    InterpolationResult OpenVdbReader::interpolateToInfinity(const Vector3f& from, const Vector3f& direction) const {
+    InterpolationResult OpenVdbReader::interpolateToInfinity(const Point3f& from, const Vector3f& direction) const {
         Vector3f normalizedDirection = direction / direction.Length();
-        Vector3f to = from + normalizedDirection * mBounds.Diagonal().Length();
+        Point3f to = from + normalizedDirection * mBounds.Diagonal().Length();
+
+        CHECK_LE(mBounds.pMin.x - 1, from.x);
+        CHECK_LE(mBounds.pMin.y - 1, from.y);
+        CHECK_LE(mBounds.pMin.z - 1, from.z);
+
+        CHECK_GE(mBounds.pMax.x + 1, from.x);
+        CHECK_GE(mBounds.pMax.y + 1, from.y);
+        CHECK_GE(mBounds.pMax.z + 1, from.z);
+
+        //        printf("Bounds: [ %f %f %f ] - [ %f %f %f ]\n",
+        //                mBounds.pMin.x, mBounds.pMin.y, mBounds.pMin.z,
+        //                mBounds.pMax.x, mBounds.pMax.y, mBounds.pMax.z);
+        //        printf("P: %f %f %f\n", from.x, from.y, from.z);
+
         return this->interpolate(from, to);
     }
+
+    //    bool IsInsideBounds(Bounds3f bounds, Point3f p) {
+    //        return bounds.pMin.x
+    //    }
 
     void OpenVdbReader::printMetaDataForGrid(openvdb::GridBase::Ptr grid) const {
         std::cout << "Metadata for grid with name '" << grid->getName() << "':\n";
