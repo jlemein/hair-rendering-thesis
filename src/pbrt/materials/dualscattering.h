@@ -22,6 +22,7 @@
 namespace pbrt {
 
     class DualScatteringBSDF;
+    class VisibilityTester;
     
    
 class DualScatteringLookup {
@@ -117,6 +118,8 @@ public:
          * @return
          */
         virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const;
+        virtual Spectrum f(const Vector3f &wo, const Vector3f &wi, const Scene &scene, const VisibilityTester& visibilityTester) const;
+        virtual Spectrum Li(const Vector3f& wi, const Spectrum& Li, const Scene& scene, const VisibilityTester& visibilityTester) const;
         
         /**
          * Returns the value of the distribution function for the given pair of directions.
@@ -178,7 +181,22 @@ private:
     const Normal3f ns, ng;
     const Vector3f ss, ts;
     
-    GlobalScatteringInformation GatherGlobalScatteringInformation(const Vector3f& wd, Float thetaD) const;
+    
+    /**
+     * Approximates the global scattering contribution.
+     * This method is needed, because dual scattering approximation is self
+     * proposing.
+     * @param scene Used to query scene properties
+     * @param wi Sampled light direction
+     * @param Li Sampled light radiance
+     * @return 
+     */
+//    Spectrum Li(const Scene& scene, const Vector3f& wi, const Spectrum& Li) {
+//        // untouched, leave as default
+//        return Li;
+//    }
+    
+    GlobalScatteringInformation GatherGlobalScatteringInformation(const Scene& scene, const VisibilityTester& visiblityTester, const Vector3f& wd, Float thetaD) const;
     
     Spectrum ForwardScatteringTransmittance(Float n, Float thetaD) const;
     Spectrum ForwardScatteringVariance(Float n, Float thetaD) const;

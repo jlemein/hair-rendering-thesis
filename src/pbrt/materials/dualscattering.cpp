@@ -41,12 +41,14 @@
 #include "materials/marschner.h"
 #include "hairutil.h"
 #include "hair.h"
+#include "light.h"
 #include "samplers/random.h"
 #include "sampling.h"
 #include <random>
 #include <mutex>
 #include "OpenVdbReader.h"
 #include "materials/dualscattering.h"
+#include "scene.h"
 
 namespace pbrt {
 
@@ -140,42 +142,27 @@ namespace pbrt {
 
     std::once_flag flag;
 
+    Spectrum DualScatteringBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
+        return Spectrum(.0);
+    }
+
+    Spectrum DualScatteringBSDF::Li(const Vector3f& wi, const Spectrum& Li, const Scene& scene, const VisibilityTester& visibilityTester) const {
+        return Li;
+    }
+
     /**
      *
      * @param wo Local space
      * @param wi Local space
      * @return
      */
-    Spectrum DualScatteringBSDF::f(const Vector3f &woLocal, const Vector3f &wiLocal) const {
-
-        const MarschnerAngles ma(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
+    Spectrum DualScatteringBSDF::f(const Vector3f &woLocal, const Vector3f &wiLocal, const Scene &scene, const VisibilityTester& visibilityTester) const {
 
         const Vector3f wiWorld = LocalToWorld(wiLocal);
         const Vector3f woWorld = LocalToWorld(woLocal);
 
-        Point3f pObject = mWorldToObject(mPosition);
-        const Vector3f wd = wiWorld;
-        const Ray ray(pObject, wd);
-
-
-        // Global multiple scattering
-        // TODO: Check if wd = wi?
-
-
-        //TODO: Check world or local coordinate space
-        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(-wd, ma.thetaD);
-
-        //        if (gsi.isDirectIlluminated) {
-        //            Float rgb[3] = {1.0, 1.0, 1.0};
-        //            return RGBSpectrum::FromRGB(rgb);
-        //        } else {
-        //            Float ratio = Clamp(gsi.transmittance.y() / 20.0f, 0.0f, 1.0f);
-        //            Float rgb[3] = {ratio, 1.0f - ratio, 0.0f};
-        //            return RGBSpectrum::FromRGB(rgb);
-        //        }
-
-        // compute local multiple scattering contribution
-        // TODO: Is this correct?
+        const MarschnerAngles ma(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
+        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(scene, visibilityTester, wiWorld, ma.thetaD);
 
         Spectrum Ab = BackscatteringAttenuation(ma.thetaD);
         Spectrum deltaB = BackscatteringMean(ma.thetaD);
@@ -196,57 +183,37 @@ namespace pbrt {
             F = fDirectS + mDb * fBack;
         } else {
             Spectrum fScatterS = EvaluateForwardScatteredMarschner(ma.thetaR, ma.thetaH, ma.thetaD, ma.phi, forwardScatterVariance);
-
             //TODO: Does this Pi belong here, or is it a typo in paper??
-            PrintSpectrum("transmittance: ", gsi.transmittance);
             F = gsi.transmittance * mDf * (fScatterS + Pi * mDb * fBack);
         }
 
         CHECK_GE(F.y(), 0.0);
-
-        // combine direct and forward scattered components
         return F * cos(ma.thetaI);
     }
 
-    GlobalScatteringInformation DualScatteringBSDF::GatherGlobalScatteringInformation(const Vector3f& wd, Float thetaD) const {
+    GlobalScatteringInformation DualScatteringBSDF::GatherGlobalScatteringInformation(const Scene& scene, const VisibilityTester& visibilityTester, const Vector3f& wd, Float thetaD) const {
         GlobalScatteringInformation gsi;
 
         // @ref Dual-Scattering Approximation, Zinke et al (2007), section 4.1.1.
         Point3f pObject = mWorldToObject(mPosition);
         Point3f pLight = mPosition + wd * this->mLookup->getVdbReader()->getBounds().Diagonal().Length();
-        const Ray ray(pObject, wd);
-        //printf("ray.o: %f %f %f -- d: %f %f %f\n", ray.o.x, ray.o.y, ray.o.z, ray.d.x, ray.d.y, ray.d.z);
 
+        const Ray ray(mPosition, wd);
+        bool isDirectIlluminated = visibilityTester.Unoccluded(scene);
 
-        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, wd);
-        interpolationResult.scatterCount = 0;
+        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
 
-        if (interpolationResult.scatterCount <= 1e-5) {
+        if (isDirectIlluminated || interpolationResult.scatterCount <= 1e-5) {
             gsi.isDirectIlluminated = true;
             gsi.transmittance = 1.0;
             gsi.variance = Spectrum(.0);
         } else {
-
             gsi.isDirectIlluminated = false;
             gsi.transmittance = this->ForwardScatteringTransmittance(interpolationResult.scatterCount, thetaD);
             gsi.variance = this->ForwardScatteringVariance(interpolationResult.scatterCount, thetaD);
         }
 
         return gsi;
-    }
-
-    Float IntersectRecursive(const Shape* shape, const Point3f pt, const Vector3f & d) {
-        SurfaceInteraction si;
-        Float tHit;
-
-        int hitCount = 0;
-        Ray ray(pt, d);
-        while (shape->Intersect(ray, &tHit, &si)) {
-
-            hitCount++;
-            ray = Ray(si.p, d);
-        }
-        return hitCount;
     }
 
     /**
@@ -313,12 +280,7 @@ namespace pbrt {
         *wi = Vector3f(x, y, z);
         *pdf = this->Pdf(wo, *wi);
 
-        *pdf = 1.0;
-        Float r [3] = {0.0, 0.0, 1.0};
-        return RGBSpectrum::FromRGB(r);
-        //return f(wo, *wi);
-
-        //return mMarschnerBSDF->Sample_f(wo, wi, sample, pdf, sampledType);
+        return f(wo, *wi);
     }
 
     Spectrum DualScatteringBSDF::MG_r(Float theta, Spectrum forwardScatteringVariance) const {
