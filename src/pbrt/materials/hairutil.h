@@ -15,8 +15,27 @@
 #define HAIRUTIL_H
 
 #include "pbrt.h"
+#include <random>
 
 namespace pbrt {
+    
+    class MyRandomSampler {
+    public:
+        /**
+         * @param min minimum value for the range to sample from
+         * @param max maximum value for the range to sample from
+         */
+        MyRandomSampler(Float min, Float max);
+        
+        /**
+         * @returns next sample within the bounds defined in constructor
+         */
+        Float next() const;
+        
+    private:
+        std::mt19937 *mGenerationStrategy;
+        std::uniform_real_distribution<Float> *mDistribution;
+    };
 
     bool CHECK_SPECTRUM_GE(const Spectrum& Ab, Float value);
     
@@ -52,6 +71,9 @@ namespace pbrt {
     Vector3f FromSphericalCoords(Float theta, Float phi);
 
     Float DifferenceAngle(Float theta_i, Float theta_r);
+    
+    Float GetThetaIFromDifferenceAngle(Float thetaD, Float thetaR);
+    Float GetThetaRFromDifferenceAngle(Float thetaD, Float thetaI);
 
     // TODO: remove this function if DifferencePhi is almost similar
 

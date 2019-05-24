@@ -2985,6 +2985,8 @@
               <df name="intersect_and_vdb">
               </df>
             </df>
+            <df name="may22">
+            </df>
             <df name="models">
               <df name="archive">
               </df>
@@ -43302,6 +43304,8 @@
               <in>disney.h</in>
               <in>dualscattering.cpp</in>
               <in>dualscattering.h</in>
+              <in>dualscatteringlookup.cpp</in>
+              <in>dualscatteringlookup.h</in>
               <in>fourier.cpp</in>
               <in>fourier.h</in>
               <in>glass.cpp</in>
@@ -45369,6 +45373,8 @@
             <in>bezier.h</in>
             <in>dualscattering.cpp</in>
             <in>dualscattering.h</in>
+            <in>dualscatteringlookup.cpp</in>
+            <in>dualscatteringlookup.h</in>
             <in>hairutil.cpp</in>
             <in>hairutil.h</in>
             <in>marschner.cpp</in>

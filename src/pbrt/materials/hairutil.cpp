@@ -16,6 +16,23 @@
 
 namespace pbrt {
 
+    /**
+     * @param min minimum value for the range to sample from
+     * @param max maximum value for the range to sample from
+     */
+    MyRandomSampler::MyRandomSampler(Float min, Float max) {
+        std::random_device rd;
+        mDistribution = new std::uniform_real_distribution<Float>(min, max);
+        mGenerationStrategy = new std::mt19937(rd());
+    }
+
+    /**
+     * @returns next sample within the bounds defined in constructor
+     */
+    Float MyRandomSampler::next() const {
+        return (*mDistribution)(*mGenerationStrategy);
+    }
+
     bool CHECK_SPECTRUM_GE(const Spectrum& Ab, Float value) {
         static Float rgb[3];
         Ab.ToRGB(rgb);
@@ -92,6 +109,14 @@ namespace pbrt {
 
     Float DifferenceAngle(Float theta_i, Float theta_r) {
         return 0.5 * (theta_r - theta_i);
+    }
+
+    Float GetThetaRFromDifferenceAngle(Float thetaD, Float thetaI) {
+        return 2.0 * thetaD + thetaI;
+    }
+
+    Float GetThetaIFromDifferenceAngle(Float thetaD, Float thetaR) {
+        return thetaR - 2.0 * thetaD;
     }
 
     // TODO: remove this function if DifferencePhi is almost similar

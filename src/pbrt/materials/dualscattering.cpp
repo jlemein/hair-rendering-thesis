@@ -45,10 +45,10 @@
 #include "samplers/random.h"
 #include "sampling.h"
 #include <random>
-#include <mutex>
 #include "OpenVdbReader.h"
-#include "materials/dualscattering.h"
+#include "materials/dualscatteringlookup.h"
 #include "scene.h"
+#include "materials/hairutil.h"
 
 namespace pbrt {
 
@@ -140,68 +140,73 @@ namespace pbrt {
         return 0.5 * ((eta1 + eta2) + cos(2.0 * thetaH)*(eta1 - eta2));
     }
 
-    std::once_flag flag;
-
     Spectrum DualScatteringBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
         return Spectrum(.0);
     }
 
     Spectrum DualScatteringBSDF::Li(const Vector3f& wi, const Spectrum& Li, const Scene& scene, const VisibilityTester& visibilityTester) const {
+        // Added this function to do occlusion checking in the material itself.
+        // For Dualscattering, occlusion checking is not necessary, because we approximate the global illumination.
         return Li;
     }
 
-    /**
-     *
-     * @param wo Local space
-     * @param wi Local space
-     * @return
-     */
     Spectrum DualScatteringBSDF::f(const Vector3f &woLocal, const Vector3f &wiLocal, const Scene &scene, const VisibilityTester& visibilityTester) const {
 
         const Vector3f wiWorld = LocalToWorld(wiLocal);
         const Vector3f woWorld = LocalToWorld(woLocal);
 
-        const MarschnerAngles ma(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
-        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(scene, visibilityTester, wiWorld, ma.thetaD);
+        const MarschnerAngles angles(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
+        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(scene, visibilityTester, wiWorld, angles.thetaD);
 
-        Spectrum Ab = BackscatteringAttenuation(ma.thetaD);
-        Spectrum deltaB = BackscatteringMean(ma.thetaD);
+        Spectrum forwardTransmittance = gsi.transmittance;
+        Spectrum Ab = BackscatteringAttenuation(angles.thetaD);
+        Spectrum deltaB = BackscatteringMean(angles.thetaD);
 
-        Spectrum backScatterVariance = BackscatteringVariance(ma.thetaD);
+        Spectrum backScatterVariance = BackscatteringVariance(angles.thetaD);
         Spectrum forwardScatterVariance = gsi.variance;
         CHECK_GE(forwardScatterVariance.y(), 0.0);
 
-        Spectrum fBack = 2.0 * Ab
-                * Gaussian(backScatterVariance + forwardScatterVariance, Spectrum(ma.thetaD + ma.thetaR) - deltaB)
-                / (Pi * Sqr(cos(ma.thetaD)));
+        Spectrum fDirectBack = 2.0 * Ab
+                * Gaussian(Sqrt(backScatterVariance), -deltaB + angles.thetaH)
+                / (Pi * Sqr(cos(angles.thetaD)));
+
+        Spectrum fScatterBack = 2.0 * Ab
+                * Gaussian(Sqrt(backScatterVariance + forwardScatterVariance), -deltaB + angles.thetaH)
+                / (Pi * Sqr(cos(angles.thetaD)));
 
 
         Spectrum F;
 
         if (gsi.isDirectIlluminated) {
             Spectrum fDirectS = mMarschnerBSDF->f(woLocal, wiLocal);
-            F = fDirectS + mDb * fBack;
+            F = fDirectS + mDb * fDirectBack;
         } else {
-            Spectrum fScatterS = EvaluateForwardScatteredMarschner(ma.thetaR, ma.thetaH, ma.thetaD, ma.phi, forwardScatterVariance);
-            //TODO: Does this Pi belong here, or is it a typo in paper??
-            F = gsi.transmittance * mDf * (fScatterS + Pi * mDb * fBack);
+            Spectrum fScatterS = EvaluateForwardScatteredMarschner(angles.thetaR,
+                    angles.thetaH, angles.thetaD, angles.phi, forwardScatterVariance);
+            F = forwardTransmittance * mDf * (fScatterS + Pi * mDb * fScatterBack);
         }
 
         CHECK_GE(F.y(), 0.0);
-        return F * cos(ma.thetaI);
+        return F * cos(angles.thetaI);
     }
 
-    GlobalScatteringInformation DualScatteringBSDF::GatherGlobalScatteringInformation(const Scene& scene, const VisibilityTester& visibilityTester, const Vector3f& wd, Float thetaD) const {
+    GlobalScatteringInformation DualScatteringBSDF::GatherGlobalScatteringInformation(
+            const Scene& scene, const VisibilityTester& visibilityTester,
+            const Vector3f& wd, Float thetaD) const {
+
         GlobalScatteringInformation gsi;
 
         // @ref Dual-Scattering Approximation, Zinke et al (2007), section 4.1.1.
-        Point3f pObject = mWorldToObject(mPosition);
-        Point3f pLight = mPosition + wd * this->mLookup->getVdbReader()->getBounds().Diagonal().Length();
 
         const Ray ray(mPosition, wd);
         bool isDirectIlluminated = visibilityTester.Unoccluded(scene);
 
-        InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
+        // Interpolates a ray through a voxel grid, where each voxel contains the hair density
+        // thereby returning the approximated number of hair strands intersected.
+
+        Point3f pObject = mWorldToObject(mPosition);
+        const InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
+        Float scatterCount = interpolationResult.scatterCount;
 
         if (isDirectIlluminated || interpolationResult.scatterCount <= 1e-5) {
             gsi.isDirectIlluminated = true;
@@ -209,8 +214,8 @@ namespace pbrt {
             gsi.variance = Spectrum(.0);
         } else {
             gsi.isDirectIlluminated = false;
-            gsi.transmittance = this->ForwardScatteringTransmittance(interpolationResult.scatterCount, thetaD);
-            gsi.variance = this->ForwardScatteringVariance(interpolationResult.scatterCount, thetaD);
+            gsi.transmittance = this->ForwardScatteringTransmittance(scatterCount, thetaD);
+            gsi.variance = this->ForwardScatteringVariance(scatterCount, thetaD);
         }
 
         return gsi;
@@ -224,7 +229,6 @@ namespace pbrt {
     Spectrum DualScatteringBSDF::ForwardScatteringTransmittance(Float scatterCount, Float thetaD) const {
 
         Spectrum s = this->mLookup->AverageForwardScatteringAttenuation(thetaD);
-
         return mDf * Pow(s, scatterCount);
     }
 
@@ -234,7 +238,6 @@ namespace pbrt {
      * @return
      */
     Spectrum DualScatteringBSDF::ForwardScatteringVariance(Float scatterCount, Float thetaD) const {
-        CHECK_GE(scatterCount, 0.0);
 
         return scatterCount * this->mLookup->AverageForwardScatteringBeta(thetaD);
     }
@@ -242,8 +245,7 @@ namespace pbrt {
     Spectrum DualScatteringBSDF::EvaluateForwardScatteredMarschner(Float thetaR, Float thetaH, Float thetaD,
             Float phi, Spectrum forwardScatteredVariance) const {
 
-        // TODO: check if we can remove eta perp calculation and let marschner
-        // be responsible for it
+        // TODO: remove eta perp calculation and let marschner be responsible for it
         Float etaPerp, etaPar;
         ToBravais(mEta, thetaR, etaPerp, etaPar);
 
@@ -253,8 +255,7 @@ namespace pbrt {
             etaPerp = EtaEccentricity(eccentricity, etaPerp, thetaH);
         }
 
-        // Very similar to Marschner, but MG_r, MG_tt and MG_trt are used
-        // to incorporate the forward scattering variance
+
         Float sinThetaR = sin(thetaR);
         Float sinThetaT = sinThetaR / etaPerp;
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
@@ -301,117 +302,6 @@ namespace pbrt {
         return Gaussian(Spectrum(mBetaTRT) + forwardScatteringVariance, theta - mAlphaTRT);
     }
 
-    DualScatteringLookup * DualScatteringLookup::instance = 0;
-
-    std::mutex myMutex;
-
-    const DualScatteringLookup * DualScatteringLookup::Get(const DualScatteringBSDF * bsdf) {
-
-        // We are locking here, because the singleton requires initialization
-        std::lock_guard<std::mutex> myLock(myMutex);
-
-        if (DualScatteringLookup::instance == 0) {
-
-            instance = new DualScatteringLookup(bsdf);
-            instance->Init();
-        }
-
-        return instance;
-    }
-
-    void DualScatteringLookup::Init() {
-
-        this->ReadVoxelGrid();
-        this->PrecomputeAverageScatteringAttenuation();
-    }
-
-    void DualScatteringLookup::ReadVoxelGrid() {
-        printf("\rReading VoxelGrid FileName: %s\n", this->mDualScatteringBSDF->mVoxelGridFileName.c_str());
-        try {
-            mVdbReader = new OpenVdbReader(this->mDualScatteringBSDF->mVoxelGridFileName);
-            mVdbReader->initialize();
-        } catch (const std::exception& e) {
-
-            printf("\r[ERROR]: Reading VoxelGrid failed: %s\n", e.what());
-            throw e;
-        }
-        printf("[SUCCESS]: Read voxel grid\n");
-    }
-
-    const OpenVdbReader * DualScatteringLookup::getVdbReader() const {
-
-        return mVdbReader;
-    }
-
-    void DualScatteringLookup::PrecomputeAverageScatteringAttenuation() {
-        printf("\rPRECOMPUTING FOR LOOKUP TABLE SIZE: %d\n", LOOKUP_TABLE_SIZE);
-        for (int i = 0; i < LOOKUP_TABLE_SIZE; ++i) {
-
-            Float ratio = i / static_cast<Float> (LOOKUP_TABLE_SIZE - 1);
-            Float thetaD = (-.5 + ratio) * Pi;
-
-            mAverageBackwardScatteringAttenuation.push_back(mDualScatteringBSDF->AverageBackwardScatteringAttenuation(thetaD));
-            mAverageForwardScatteringAttenuation.push_back(mDualScatteringBSDF->AverageForwardScatteringAttenuation(thetaD));
-
-            mAverageForwardScatteringAlpha.push_back(mDualScatteringBSDF->AverageForwardScatteringAlpha(thetaD));
-            mAverageBackwardScatteringAlpha.push_back(mDualScatteringBSDF->AverageBackwardScatteringAlpha(thetaD));
-
-            mAverageForwardScatteringBeta.push_back(mDualScatteringBSDF->AverageForwardScatteringBeta(thetaD));
-            mAverageBackwardScatteringBeta.push_back(mDualScatteringBSDF->AverageBackwardScatteringBeta(thetaD));
-        }
-
-        //        for (int i = 0; i < LOOKUP_TABLE_SIZE; ++i) {
-        //            PrintSpectrum("AvgBackScatterAttenuation:", mAverageBackwardScatteringAttenuation[i]);
-        //            PrintSpectrum("AvgBackScatterAlpha:", mAverageBackwardScatteringAlpha[i]);
-        //            PrintSpectrum("AvgBackScatterBeta:", mAverageBackwardScatteringBeta[i]);
-        //            PrintSpectrum("AvgForwardScatterAttenuation:", mAverageForwardScatteringAttenuation[i]);
-        //            PrintSpectrum("AvgForwardScatterAlpha:", mAverageForwardScatteringAlpha[i]);
-        //            PrintSpectrum("AvgForwardScatterBeta:", mAverageForwardScatteringBeta[i]);
-        //        }
-
-        printf(" [DONE]\n");
-    }
-
-    Spectrum Lookup(Float value, Float min, Float max, const std::vector<Spectrum>& lookupTable) {
-        Float range = max - min;
-        int lookupIndex = round((lookupTable.size() - 1) * (value - min) / range);
-
-        CHECK_GE(lookupIndex, 0);
-        CHECK_LT(lookupIndex, lookupTable.size());
-
-        return lookupTable[lookupIndex];
-    }
-
-    Spectrum DualScatteringLookup::AverageBackwardScatteringAttenuation(Float thetaD) const {
-
-        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageBackwardScatteringAttenuation);
-    }
-
-    Spectrum DualScatteringLookup::AverageForwardScatteringAttenuation(Float thetaD) const {
-
-        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageForwardScatteringAttenuation);
-    }
-
-    Spectrum DualScatteringLookup::AverageBackwardScatteringAlpha(Float thetaD) const {
-
-        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageBackwardScatteringAlpha);
-    }
-
-    Spectrum DualScatteringLookup::AverageBackwardScatteringBeta(Float thetaD) const {
-
-        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageBackwardScatteringBeta);
-    }
-
-    Spectrum DualScatteringLookup::AverageForwardScatteringAlpha(Float thetaD) const {
-
-        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageForwardScatteringAlpha);
-    }
-
-    Spectrum DualScatteringLookup::AverageForwardScatteringBeta(Float thetaD) const {
-
-        return Lookup(thetaD, -.5 * Pi, .5 * Pi, mAverageForwardScatteringBeta);
-    }
-
     static Vector3f SampleFrontHemisphere(const Point2f & uv) {
         Vector3f w = UniformSampleSphere(uv);
         if (w.x < 0.0) {
@@ -425,7 +315,7 @@ namespace pbrt {
      * Samples in the front hemisphere for a given theta
      * @param theta Fixed theta to use
      * @param u random number between 0 and 1 for phi generation
-     * @return
+     * @return Unit vector in the front hemisphere
      */
     static Vector3f SampleFrontHemisphere(Float theta, Float u) {
         Float phi = (-1.0 + 2.0 * u) * Pi;
@@ -438,6 +328,11 @@ namespace pbrt {
         return w;
     }
 
+    /**
+     * Samples in the front hemisphere for a given theta
+     * @param uv 2D sample to be used to sample a vector on unit sphere
+     * @return Unit vector in the back hemisphere
+     */
     static Vector3f SampleBackHemisphere(const Point2f & uv) {
         Vector3f w = UniformSampleSphere(uv);
         if (w.x > 0.0) {
@@ -447,8 +342,15 @@ namespace pbrt {
         return w;
     }
 
+    /**
+     * Samples in the back hemisphere for a given theta
+     * @param theta Fixed theta to use
+     * @param u random number between 0 and 1 for phi generation
+     * @return Unit vector in the back hemisphere
+     */
     static Vector3f SampleBackHemisphere(Float theta, Float u) {
         Float phi = (-1.0 + 2.0 * u) * Pi;
+        //Float phi = (-.5 + u) * Pi;
         Vector3f w = FromSphericalCoords(theta, phi);
         if (w.x > 0.0) {
 
@@ -458,61 +360,60 @@ namespace pbrt {
     }
 
     Spectrum DualScatteringBSDF::AverageForwardScatteringAttenuation(Float thetaD) const {
-        const int SAMPLES = 1000;
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(0.0, 1.0);
 
-        Spectrum sum(.0);
+        Spectrum integral(.0), sum(.0);
+        Float thetaR, phiR;
+        MyRandomSampler sampler(0.0, 1.0);
+
+        const int SAMPLES = 1000;
         for (int i = 0; i < SAMPLES; ++i) {
 
-            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
-            const Vector3f woForward = SampleFrontHemisphere(Point2f(dis(gen), dis(gen)));
+            const Vector3f woForward = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
+            ToSphericalCoords(woForward, thetaR, phiR);
 
-            sum += mMarschnerBSDF->f(woForward, wi);
+            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
+            const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
+
+            integral += mMarschnerBSDF->f(woForward, wi) * cos(thetaD);
         }
 
-        // TODO: is dividing by .5*Pi correct
-        //return sum / (.5 * Pi);
-        return sum / static_cast<Float> (SAMPLES);
+        return integral / static_cast<Float> (SAMPLES);
     }
 
     Spectrum DualScatteringBSDF::AverageBackwardScatteringAttenuation(Float thetaD) const {
-        const int SAMPLES = 1000;
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(0.0, 1.0);
+        Spectrum integral(.0);
+        Float thetaR, phiR;
+        MyRandomSampler sampler(0.0, 1.0);
 
-        Spectrum sum(.0);
+        const int SAMPLES = 1000;
         for (int i = 0; i < SAMPLES; ++i) {
 
-            Float phi = (-.5 + dis(gen)) * Pi;
+            const Vector3f woBackward = SampleBackHemisphere(Point2f(sampler.next(), sampler.next()));
+            ToSphericalCoords(woBackward, thetaR, phiR);
 
-            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
-            const Vector3f woBackward = SampleBackHemisphere(Point2f(dis(gen), dis(gen)));
+            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
+            const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
-            sum += mMarschnerBSDF->f(woBackward, wi);
+            integral += mMarschnerBSDF->f(woBackward, wi) * cos(thetaD);
         }
 
-        // TODO: is dividing by .5*Pi correct
-        return sum / static_cast<Float> (SAMPLES);
+        return integral / static_cast<Float> (SAMPLES);
     }
 
     Spectrum DualScatteringBSDF::AverageForwardScatteringAlpha(Float thetaD) const {
-        const int SAMPLES = 1000;
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(0.0, 1.0);
-
         Spectrum sum(.0);
         Spectrum denominator(.0);
+        Float thetaR, phiR;
+        MyRandomSampler sampler(0.0, 1.0);
 
+        const int SAMPLES = 1000;
         for (int i = 0; i < SAMPLES; ++i) {
 
-            Float phi = (-.5 + dis(gen)) * Pi;
+            const Vector3f woForward = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
+            ToSphericalCoords(woForward, thetaR, phiR);
 
-            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
-            const Vector3f woForward = SampleFrontHemisphere(Point2f(dis(gen), dis(gen)));
+            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
+            const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
             Spectrum fR = mMarschnerBSDF->f_r(woForward, wi);
             Spectrum fTT = mMarschnerBSDF->f_tt(woForward, wi);
@@ -526,19 +427,19 @@ namespace pbrt {
     }
 
     Spectrum DualScatteringBSDF::AverageBackwardScatteringAlpha(Float thetaD) const {
-        const int SAMPLES = 1000;
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(0.0, 1.0);
 
         Spectrum sum(.0), denominator(.0);
+        Float thetaR, phiR;
+        MyRandomSampler sampler(0.0, 1.0);
 
+        const int SAMPLES = 1000;
         for (int i = 0; i < SAMPLES; ++i) {
 
-            Float phi = (-.5 + dis(gen)) * Pi;
+            const Vector3f woBackward = SampleBackHemisphere(Point2f(sampler.next(), sampler.next()));
+            ToSphericalCoords(woBackward, thetaR, phiR);
 
-            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
-            const Vector3f woBackward = SampleBackHemisphere(Point2f(dis(gen), dis(gen)));
+            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
+            const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
             Spectrum fR = mMarschnerBSDF->f_r(woBackward, wi);
             Spectrum fTT = mMarschnerBSDF->f_tt(woBackward, wi);
@@ -552,19 +453,19 @@ namespace pbrt {
     }
 
     Spectrum DualScatteringBSDF::AverageForwardScatteringBeta(Float thetaD) const {
-        const int SAMPLES = 1000;
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(0.0, 1.0);
 
         Spectrum sum(.0), denominator(.0);
+        Float thetaR, phiR;
+        MyRandomSampler sampler(0.0, 1.0);
 
+        const int SAMPLES = 1000;
         for (int i = 0; i < SAMPLES; ++i) {
 
-            Float phi = (-.5 + dis(gen)) * Pi;
+            const Vector3f woForward = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
+            ToSphericalCoords(woForward, thetaR, phiR);
 
-            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
-            const Vector3f woForward = SampleFrontHemisphere(Point2f(dis(gen), dis(gen)));
+            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
+            const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
             Spectrum fR = mMarschnerBSDF->f_r(woForward, wi);
             Spectrum fTT = mMarschnerBSDF->f_tt(woForward, wi);
@@ -578,19 +479,19 @@ namespace pbrt {
     }
 
     Spectrum DualScatteringBSDF::AverageBackwardScatteringBeta(Float thetaD) const {
-        const int SAMPLES = 1000;
-        std::random_device rd;
-        std::mt19937 gen(rd());
-        std::uniform_real_distribution<> dis(0.0, 1.0);
 
         Spectrum sum(.0), denominator(.0);
+        Float thetaR, phiR;
+        MyRandomSampler sampler(0.0, 1.0);
 
+        const int SAMPLES = 1000;
         for (int i = 0; i < SAMPLES; ++i) {
 
-            Float phi = (-.5 + dis(gen)) * Pi;
+            const Vector3f woBackward = SampleBackHemisphere(Point2f(sampler.next(), sampler.next()));
+            ToSphericalCoords(woBackward, thetaR, phiR);
 
-            const Vector3f wi = SampleBackHemisphere(thetaD, dis(gen));
-            const Vector3f woBackward = SampleBackHemisphere(Point2f(dis(gen), dis(gen)));
+            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
+            const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
             Spectrum fR = mMarschnerBSDF->f_r(woBackward, wi);
             Spectrum fTT = mMarschnerBSDF->f_tt(woBackward, wi);
@@ -620,8 +521,6 @@ namespace pbrt {
     //! equation 16
 
     Spectrum DualScatteringBSDF::BackscatteringMean(Float thetaD) const {
-        //TODO: how to compute alphaF and alphaB?
-        // according to paper these are average forward scattering means based on BCSDF of hair fiber
 
         // average forward and backward scattering shifts, taken from BCSDF of the hair fiber
         Spectrum alphaF = mLookup->AverageForwardScatteringAlpha(thetaD);
@@ -643,8 +542,7 @@ namespace pbrt {
     //! equation 17
 
     Spectrum DualScatteringBSDF::BackscatteringVariance(Float thetaD) const {
-        //TODO: how to compute betaF and betaB?
-        // according to paper these are average backward scattering means based on BCSDF of hair fiber
+
         Spectrum betaF = mLookup->AverageForwardScatteringBeta(thetaD);
         Spectrum betaB = mLookup->AverageBackwardScatteringBeta(thetaD);
 
