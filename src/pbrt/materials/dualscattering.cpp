@@ -1,37 +1,4 @@
 
-/*
-    pbrt source code is Copyright(c) 1998-2016
-                        Matt Pharr, Greg Humphreys, and Wenzel Jakob.
-
-    This file is part of pbrt.
-
-    Redistribution and use in source and binary forms, with or without
-    modification, are permitted provided that the following conditions are
-    met:
-
-    - Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-
-    - Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-    IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED
-    TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
-    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
-    HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
-    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
-    LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
-    THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-    (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
-    OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
- */
-
-
-// materials/plastic.cpp*
 #include "dualscattering.h"
 #include "spectrum.h"
 #include "reflection.h"
@@ -73,7 +40,8 @@ namespace pbrt {
     DualscatteringMaterial *CreateDualscatteringMaterial(const TextureParams &mp) {
         MarschnerMaterial* marschnerMaterial = CreateMarschnerMaterial(mp);
 
-        // TODO: Check if dual scattering really wants to square the widths
+        // TODO: Check if dual scattering really wants to square the widths.
+        // In marschner no squared widths are used.
         //        marschnerMaterial->mBr = Sqr(marschnerMaterial->mBr);
         //        marschnerMaterial->mBtt = Sqr(marschnerMaterial->mBtrt);
         //        marschnerMaterial->mBtrt = Sqr(marschnerMaterial->mBtrt);
@@ -232,11 +200,6 @@ namespace pbrt {
         return mDf * Pow(s, scatterCount);
     }
 
-    /**
-     * Equation 8
-     * @param interpolationResult
-     * @return
-     */
     Spectrum DualScatteringBSDF::ForwardScatteringVariance(Float scatterCount, Float thetaD) const {
 
         return scatterCount * this->mLookup->AverageForwardScatteringBeta(thetaD);
@@ -245,16 +208,13 @@ namespace pbrt {
     Spectrum DualScatteringBSDF::EvaluateForwardScatteredMarschner(Float thetaR, Float thetaH, Float thetaD,
             Float phi, Spectrum forwardScatteredVariance) const {
 
-        // TODO: remove eta perp calculation and let marschner be responsible for it
         Float etaPerp, etaPar;
         ToBravais(mEta, thetaR, etaPerp, etaPar);
 
-        // take into account eccentricity (by again adjusting the eta)
         Float eccentricity = mMarschnerBSDF->getEccentricity();
         if (eccentricity != 1.0) {
             etaPerp = EtaEccentricity(eccentricity, etaPerp, thetaH);
         }
-
 
         Float sinThetaR = sin(thetaR);
         Float sinThetaT = sinThetaR / etaPerp;
@@ -304,8 +264,8 @@ namespace pbrt {
 
     static Vector3f SampleFrontHemisphere(const Point2f & uv) {
         Vector3f w = UniformSampleSphere(uv);
-        if (w.x < 0.0) {
 
+        if (w.x < 0.0) {
             w.x *= -1.0;
         }
         return w;
@@ -322,7 +282,6 @@ namespace pbrt {
         Vector3f w = FromSphericalCoords(theta, phi);
 
         if (w.x < 0.0) {
-
             w.x *= -1.0;
         }
         return w;
@@ -359,6 +318,9 @@ namespace pbrt {
         return w;
     }
 
+
+    //! Equation 6 in dual scattering approximation
+
     Spectrum DualScatteringBSDF::AverageForwardScatteringAttenuation(Float thetaD) const {
 
         Spectrum integral(.0), sum(.0);
@@ -371,6 +333,7 @@ namespace pbrt {
             const Vector3f woForward = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
             ToSphericalCoords(woForward, thetaR, phiR);
 
+            // -> thetaI = thetaR - 2.0 * thetaD;
             Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
@@ -379,6 +342,8 @@ namespace pbrt {
 
         return integral / static_cast<Float> (SAMPLES);
     }
+
+    //! equation 12 in dual scattering approximation
 
     Spectrum DualScatteringBSDF::AverageBackwardScatteringAttenuation(Float thetaD) const {
         Spectrum integral(.0);
@@ -391,6 +356,7 @@ namespace pbrt {
             const Vector3f woBackward = SampleBackHemisphere(Point2f(sampler.next(), sampler.next()));
             ToSphericalCoords(woBackward, thetaR, phiR);
 
+            // -> thetaI = thetaR - 2.0 * thetaD;
             Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
@@ -412,6 +378,7 @@ namespace pbrt {
             const Vector3f woForward = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
             ToSphericalCoords(woForward, thetaR, phiR);
 
+            // -> thetaI = thetaR - 2.0 * thetaD;
             Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
@@ -438,6 +405,7 @@ namespace pbrt {
             const Vector3f woBackward = SampleBackHemisphere(Point2f(sampler.next(), sampler.next()));
             ToSphericalCoords(woBackward, thetaR, phiR);
 
+            // -> thetaI = thetaR - 2.0 * thetaD;
             Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
@@ -464,6 +432,7 @@ namespace pbrt {
             const Vector3f woForward = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
             ToSphericalCoords(woForward, thetaR, phiR);
 
+            // -> thetaI = thetaR - 2.0 * thetaD;
             Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
@@ -490,6 +459,7 @@ namespace pbrt {
             const Vector3f woBackward = SampleBackHemisphere(Point2f(sampler.next(), sampler.next()));
             ToSphericalCoords(woBackward, thetaR, phiR);
 
+            // -> thetaI = thetaR - 2.0 * thetaD;
             Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
@@ -503,6 +473,8 @@ namespace pbrt {
 
         return sum / denominator;
     }
+
+    //! equation 14 in dual scattering approximation
 
     Spectrum DualScatteringBSDF::BackscatteringAttenuation(Float thetaD) const {
         Spectrum afSquared = Sqr(mLookup->AverageForwardScatteringAttenuation(thetaD));
@@ -518,7 +490,7 @@ namespace pbrt {
         return A1 + A3;
     }
 
-    //! equation 16
+    //! equation 16 in Dual Scattering Approximation
 
     Spectrum DualScatteringBSDF::BackscatteringMean(Float thetaD) const {
 
@@ -539,7 +511,7 @@ namespace pbrt {
         return alphaB * part1 + alphaF * part2;
     }
 
-    //! equation 17
+    //! equation 17 in Dual Scattering Approximation
 
     Spectrum DualScatteringBSDF::BackscatteringVariance(Float thetaD) const {
 

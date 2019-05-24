@@ -21,12 +21,12 @@
 namespace pbrt {
 
     DualScatteringLookup * DualScatteringLookup::instance = 0;
-
     std::mutex myMutex;
 
     const DualScatteringLookup * DualScatteringLookup::Get(const DualScatteringBSDF * bsdf) {
 
         // We are locking here, because the singleton requires initialization
+        // otherwise multiple threads all want the lookup table
         std::lock_guard<std::mutex> myLock(myMutex);
 
         if (DualScatteringLookup::instance == 0) {
