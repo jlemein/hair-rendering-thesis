@@ -2508,6 +2508,8 @@
               </df>
             </df>
           </df>
+          <df name="Progress">
+          </df>
           <in>feature_tests.c</in>
           <in>feature_tests.cxx</in>
         </df>
@@ -2968,6 +2970,8 @@
         <df name="2019_marschner_complete">
           <df name="output">
             <df name="high quality">
+            </df>
+            <df name="lookupdata">
             </df>
             <df name="may17">
               <df name="debug-view-scattercount-fullmodel-vdb">
@@ -45387,6 +45391,10 @@
         </df>
         <df name="python">
           <df name="__pycache__">
+          </df>
+          <df name="files">
+          </df>
+          <df name="lookup">
           </df>
         </df>
         <df name="scripts">

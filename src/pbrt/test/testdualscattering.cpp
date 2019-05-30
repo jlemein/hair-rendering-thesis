@@ -71,6 +71,57 @@ TEST(DualScattering, NumberGeneration) {
     EXPECT_NEAR(avg, .5, 0.02);
 }
 
+TEST(DualScattering, FromToSphericalCoordsVaryingTheta) {
+    Float theta, phi, theta2, phi2;
+
+    for (int i = 0; i < 10; ++i) {
+        // we explicitly don't test theta= -/+ Pi, because phi can then be anything
+        theta = -.49 * Pi + .98 * Pi * (i / 9.0);
+        phi = 0.0;
+        Vector3f w = FromSphericalCoords(theta, phi);
+        ToSphericalCoords(w, theta2, phi2);
+
+        //printf("w: %f %f %f (phi original: %f) --> returned phi: %f\n", w.x, w.y, w.z, phi, phi2);
+
+        EXPECT_NEAR(theta, theta2, 1e-5);
+        EXPECT_NEAR(phi, phi2, 1e-5);
+    }
+}
+
+TEST(DualScattering, FromToSphericalCoordsVaryingPhi) {
+    Float theta, phi, theta2, phi2;
+
+    for (int i = 0; i < 10; ++i) {
+        theta = 0.0;
+        // we explicitly don't test phi = -/+ Pi, because of numeric issues, it can be 2Pi apart, which is still correct
+        phi = -.99 * Pi + 1.98 * Pi * (i / 9.0);
+        Vector3f w = FromSphericalCoords(theta, phi);
+        ToSphericalCoords(w, theta2, phi2);
+
+        //printf("w: %f %f %f (phi original: %f) --> returned phi: %f\n", w.x, w.y, w.z, phi, phi2);
+
+        EXPECT_NEAR(theta, theta2, 1e-5);
+        EXPECT_NEAR(phi, phi2, 1e-5);
+    }
+}
+//
+
+TEST(DualScattering, SampleBackHemisphereToSphericalCoordsMustBeSame) {
+    Float theta = 0.0;
+    Float theta2, phi2;
+
+    for (Float sample = 0.01; sample < .98; sample += 0.09) {
+        theta = -.49 * Pi + sample * Pi;
+        const Vector3f wBack = SampleBackHemisphere(theta, sample);
+
+        ToSphericalCoords(wBack, theta2, phi2);
+        EXPECT_FLOAT_EQ(theta, theta2);
+        printf("theta: %f -- theta2: %f\n", theta, theta2);
+        EXPECT_GE(phi2, -Pi);
+        EXPECT_LE(phi2, Pi);
+    }
+}
+
 //TEST(DualScattering, RandomSamplerNumberGeneration) {
 //    const int N_SAMPLES = 10000;
 //    RandomSampler sampler(N_SAMPLES);

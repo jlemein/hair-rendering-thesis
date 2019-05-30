@@ -94,9 +94,9 @@ namespace pbrt {
     }
 
     Vector3f FromSphericalCoords(Float theta, Float phi) {
-        Float x = sin(theta) * cos(phi);
-        Float y = sin(theta) * sin(phi);
-        Float z = cos(theta);
+        Float x = cos(PiOver2 - theta);
+        Float y = sin(phi) * cos(theta);
+        Float z = cos(phi) * cos(theta);
 
         return Vector3f(x, y, z);
     }

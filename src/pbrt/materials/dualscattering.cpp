@@ -12,10 +12,13 @@
 #include "samplers/random.h"
 #include "sampling.h"
 #include <random>
+#include <fstream>
 #include "OpenVdbReader.h"
 #include "materials/dualscatteringlookup.h"
 #include "scene.h"
 #include "materials/hairutil.h"
+
+#include <fstream>
 
 namespace pbrt {
 
@@ -265,8 +268,8 @@ namespace pbrt {
     static Vector3f SampleFrontHemisphere(const Point2f & uv) {
         Vector3f w = UniformSampleSphere(uv);
 
-        if (w.x < 0.0) {
-            w.x *= -1.0;
+        if (w.z < 0.0) {
+            w.z *= -1.0;
         }
         return w;
     }
@@ -281,8 +284,8 @@ namespace pbrt {
         Float phi = (-1.0 + 2.0 * u) * Pi;
         Vector3f w = FromSphericalCoords(theta, phi);
 
-        if (w.x < 0.0) {
-            w.x *= -1.0;
+        if (w.z < 0.0) {
+            w.z *= -1.0;
         }
         return w;
     }
@@ -294,9 +297,9 @@ namespace pbrt {
      */
     static Vector3f SampleBackHemisphere(const Point2f & uv) {
         Vector3f w = UniformSampleSphere(uv);
-        if (w.x > 0.0) {
+        if (w.z > 0.0) {
 
-            w.x *= -1.0;
+            w.z *= -1.0;
         }
         return w;
     }
@@ -311,9 +314,9 @@ namespace pbrt {
         Float phi = (-1.0 + 2.0 * u) * Pi;
         //Float phi = (-.5 + u) * Pi;
         Vector3f w = FromSphericalCoords(theta, phi);
-        if (w.x > 0.0) {
+        if (w.z > 0.0) {
 
-            w.x *= -1.0;
+            w.z *= -1.0;
         }
         return w;
     }
@@ -327,6 +330,13 @@ namespace pbrt {
         Float thetaR, phiR;
         MyRandomSampler sampler(0.0, 1.0);
 
+        //        std::string outFile = "output/lookupdata/af_attenuation_" + std::to_string(thetaD) + ".txt";
+        //        std::ofstream out(outFile.c_str());
+        //        if (out.fail()) {
+        //            std::cout << "ERROR\n";
+        //            exit(1);
+        //        }
+
         const int SAMPLES = 1000;
         for (int i = 0; i < SAMPLES; ++i) {
 
@@ -337,9 +347,16 @@ namespace pbrt {
             Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
+            // remove below later
+            //            Float phiI;
+            //            ToSphericalCoords(wi, thetaI, phiI);
+            //            Spectrum r = mMarschnerBSDF->f(woForward, wi) * cos(thetaD);
+            //            out << thetaI << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
+
             integral += mMarschnerBSDF->f(woForward, wi) * cos(thetaD);
         }
 
+        //out.close();
         return integral / static_cast<Float> (SAMPLES);
     }
 
@@ -349,6 +366,13 @@ namespace pbrt {
         Spectrum integral(.0);
         Float thetaR, phiR;
         MyRandomSampler sampler(0.0, 1.0);
+
+        //        std::string outFile = "output/lookupdata/ab_attenuation_" + std::to_string(thetaD) + ".txt";
+        //        std::ofstream out(outFile.c_str());
+        //        if (out.fail()) {
+        //            std::cout << "ERROR\n";
+        //            exit(1);
+        //        }
 
         const int SAMPLES = 1000;
         for (int i = 0; i < SAMPLES; ++i) {
@@ -360,8 +384,17 @@ namespace pbrt {
             Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
+            // remove below later
+            //            Float phiI;
+            //            ToSphericalCoords(wi, thetaI, phiI);
+            //            Spectrum r = mMarschnerBSDF->f(woBackward, wi) * cos(thetaD);
+            //            out << thetaI << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
+            // -- stop removing
+
             integral += mMarschnerBSDF->f(woBackward, wi) * cos(thetaD);
         }
+
+        //out.close();
 
         return integral / static_cast<Float> (SAMPLES);
     }
