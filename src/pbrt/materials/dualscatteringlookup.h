@@ -60,7 +60,7 @@ namespace pbrt {
         std::vector<Spectrum> mAverageForwardScatteringAlpha, mAverageBackwardScatteringAlpha;
         std::vector<Spectrum> mAverageForwardScatteringBeta, mAverageBackwardScatteringBeta;
 
-        const int LOOKUP_TABLE_SIZE = 100;
+        const int LOOKUP_TABLE_SIZE = 400;
 
     };
 }

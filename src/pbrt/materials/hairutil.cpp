@@ -6,6 +6,7 @@
  */
 
 #include "hair.h"
+#include "sampling.h"
 #include "hairutil.h"
 
 namespace pbrt {
@@ -365,6 +366,69 @@ namespace pbrt {
         while (gamma > Pi) gamma -= 2.0 * Pi;
         while (gamma < -Pi) gamma += 2.0 * Pi;
         return gamma;
+    }
+
+    /**
+     * Samples a vector in the front hemisphere.
+     * This means theta can vary from -Pi/2 to Pi/2
+     * Phi is bounded between [-Pi, -Pi/2] U [Pi/2, Pi]
+     * @param uv
+     * @return
+     */
+    Vector3f SampleBackHemisphere(const Point2f & uv) {
+        Vector3f w = UniformSampleSphere(uv);
+
+        if (w.z < 0.0) {
+            w.z *= -1.0;
+        }
+        return w;
+    }
+
+    /**
+     * Samples in the front hemisphere for a given theta
+     * @param theta Fixed theta to use
+     * @param u random number between 0 and 1 for phi generation
+     * @return Unit vector in the front hemisphere
+     */
+    Vector3f SampleBackHemisphere(Float theta, Float u) {
+        Float phi = (-1.0 + 2.0 * u) * Pi;
+        Vector3f w = FromSphericalCoords(theta, phi);
+
+        if (w.z < 0.0) {
+            w.z *= -1.0;
+        }
+        return w;
+    }
+
+    /**
+     * Samples in the front hemisphere for a given theta
+     * @param uv 2D sample to be used to sample a vector on unit sphere
+     * @return Unit vector in the back hemisphere
+     */
+    Vector3f SampleFrontHemisphere(const Point2f & uv) {
+        Vector3f w = UniformSampleSphere(uv);
+        if (w.z > 0.0) {
+
+            w.z *= -1.0;
+        }
+        return w;
+    }
+
+    /**
+     * Samples in the back hemisphere for a given theta
+     * @param theta Fixed theta to use
+     * @param u random number between 0 and 1 for phi generation
+     * @return Unit vector in the back hemisphere
+     */
+    Vector3f SampleFrontHemisphere(Float theta, Float u) {
+        Float phi = (-1.0 + 2.0 * u) * Pi;
+        //Float phi = (-.5 + u) * Pi;
+        Vector3f w = FromSphericalCoords(theta, phi);
+        if (w.z > 0.0) {
+
+            w.z *= -1.0;
+        }
+        return w;
     }
 
 }

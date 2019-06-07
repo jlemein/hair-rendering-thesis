@@ -1,6 +1,7 @@
 
 #include "tests/gtest/gtest.h"
 #include "pbrt.h"
+#include "sampler.h"
 #include "materials/marschner.cpp"
 #include <atomic>
 
@@ -346,3 +347,108 @@ TEST(Marschner, SolveThreeOutOfBoundsRootsForTRT) {
 //    //    EXPECT_FLOAT_EQ(Pi, fabs(RelativeAzimuth(-Pi, 4.0 * Pi)));
 //    //    EXPECT_FLOAT_EQ(Pi, fabs(RelativeAzimuth(4.0 * Pi, -Pi)));
 //}
+
+double _integrateMonteCarloFront(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+    double V = 2.0 * Pi;
+    double sum = .0;
+
+    for (int i = 0; i < nSamples; ++i) {
+        //Vector3f wi = Vector3f(-1.0, 0.0, 0.0);
+        Vector3f wr = SampleFrontHemisphere(Point2f(distribution(generator), distribution(generator)));
+        sum += f(wr, wi);
+    }
+
+    return V / static_cast<double> (nSamples) * sum;
+}
+
+double _integrateMonteCarloBack(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+    double V = 2.0 * Pi;
+    double sum = .0;
+
+    for (int i = 0; i < nSamples; ++i) {
+        //Vector3f wi = Vector3f(-1.0, 0.0, 0.0);
+        Vector3f wr = SampleBackHemisphere(Point2f(distribution(generator), distribution(generator)));
+        sum += f(wr, wi);
+    }
+
+    return V / static_cast<double> (nSamples) * sum;
+}
+
+Vector3f UniformSampleSphere(const Point2f &u) {
+    Float z = 1 - 2 * u[0];
+    Float r = std::sqrt(std::max((Float) 0, (Float) 1 - z * z));
+    Float phi = 2 * Pi * u[1];
+    return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
+}
+
+double _integrateMonteCarlo(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+    double V = 4.0 * Pi;
+    double sum = .0;
+
+    for (int i = 0; i < nSamples; ++i) {
+        //Vector3f wi = Vector3f(-1.0, 0.0, 0.0);
+        Vector3f wr = UniformSampleSphere(Point2f(distribution(generator), distribution(generator)));
+        sum += f(wr, wi);
+    }
+
+    return V / static_cast<double> (nSamples) * sum;
+}
+
+//alphaR: 0.0523599 alphaTT: -0.0261799 alphaTRT: -0.0785398 betaR: 0.244346 betaTT: 0.139626 betaTRT: 0.383972
+//causticFadeRange: 0.3 causticIntensityLimit: 0.5 causticWidth: 0.174533
+//eccentricity: 0.9 eta: 1.55 glintScaleFactor: 0.4 hairRadius: 1
+//sigmaA: 0.432, 0.612, 0.98
+const Float eta = 1.55;
+const Float eccentricity = 0.9;
+const Vector3f alpha = Vector3f(0.0523599, -0.0261799, -0.0785398);
+const Vector3f alphaSquared = Vector3f(alpha.x*alpha.x, alpha.y*alpha.y, alpha.z*alpha.z);
+const Vector3f alphaSqrt = Vector3f(sqrt(alpha.x), sqrt(alpha.y), sqrt(alpha.z));
+
+const Vector3f beta = Vector3f(0.244346, 0.139626, 0.383972);
+const Vector3f betaSquared = Vector3f(beta.x*beta.x, beta.y*beta.y, beta.z*beta.z);
+const Vector3f betaSqrt = Vector3f(sqrt(beta.x), sqrt(beta.y), sqrt(beta.z));
+
+const Float glintScale = 0.4;
+const Float causticWidth = 0.174533;
+const Float causticFade = 0.3;
+const Float causticIntensityLimit = 0.5;
+const Float hairRadius = 1.0;
+const Float sigmaARgb[3] = {0.432, 0.612, 0.98};
+const Spectrum sigmaA = Spectrum::FromRGB(sigmaARgb);
+const SurfaceInteraction si = SurfaceInteraction();
+MarschnerBSDF* marschner = new MarschnerBSDF(si, alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2], hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+
+TEST(Marschner, IntegralSphereSumsToOne) {
+    MyRandomSampler sampler(0.0, 1.0);
+
+    auto fn = [&](const Vector3f wr, const Vector3f wi) {
+        Float cosAngle = Dot(wr, wi);
+        return marschner->f(wr, wi).y() * fabs(cosAngle);
+    };
+    auto fnSphereSurface = [&](const Vector3f wr, const Vector3f wi) {
+        return 1.0;
+    };
+    //printf("Integrating around sphere = %f\n", integrateMonteCarlo(fn, 10000));
+    Vector3f wii = SampleBackHemisphere(0.0, sampler.next());
+
+    Float front = _integrateMonteCarloFront(wii, fn, 10000);
+    Float back = _integrateMonteCarloBack(wii, fn, 10000);
+    Float sphere = _integrateMonteCarlo(wii, fn, 10000);
+
+    printf("front: %f -- back: %f -- sum: %f\n", front, back, sphere);
+
+    EXPECT_LE(sphere, 1.0);
+    EXPECT_GE(sphere, .6);
+}

@@ -165,9 +165,41 @@ namespace pbrt {
      * @param gamma
      * @return
      */
-    Float RangeBoundGammaInversed(Float gamma) ;
+    Float RangeBoundGammaInversed(Float gamma);
 
-    Float RangeBoundGamma(Float gamma) ;
+    Float RangeBoundGamma(Float gamma);
+    
+    /**
+     * Samples a vector in the front hemisphere.
+     * This means theta can vary from -Pi/2 to Pi/2
+     * Phi is bounded between [-Pi, -Pi/2] U [Pi/2, Pi]
+     * @param uv
+     * @return
+     */
+    Vector3f SampleBackHemisphere(const Point2f & uv);
+
+    /**
+     * Samples in the front hemisphere for a given theta
+     * @param theta Fixed theta to use
+     * @param u random number between 0 and 1 for phi generation
+     * @return Unit vector in the front hemisphere
+     */
+    Vector3f SampleBackHemisphere(Float theta, Float u);
+
+    /**
+     * Samples in the front hemisphere for a given theta
+     * @param uv 2D sample to be used to sample a vector on unit sphere
+     * @return Unit vector in the back hemisphere
+     */
+    Vector3f SampleFrontHemisphere(const Point2f & uv);
+
+    /**
+     * Samples in the back hemisphere for a given theta
+     * @param theta Fixed theta to use
+     * @param u random number between 0 and 1 for phi generation
+     * @return Unit vector in the back hemisphere
+     */
+    Vector3f SampleFrontHemisphere(Float theta, Float u);
     
 }
     

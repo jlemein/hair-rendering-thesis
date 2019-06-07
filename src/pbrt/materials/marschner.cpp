@@ -443,7 +443,28 @@ namespace pbrt {
     }
 
     std::string MarschnerBSDF::ToString() const {
-        return "MarschnerBSDF";
+        std::stringstream ss;
+
+
+        Float rgb[3];
+        this->mSigmaA.ToRGB(rgb);
+
+        ss << "alphaR: " << this->mAlphaR
+                << " alphaTT: " << this->mAlphaTT
+                << " alphaTRT: " << this->mAlphaTRT
+                << " betaR: " << this->mBetaR
+                << " betaTT: " << this->mBetaTT
+                << " betaTRT: " << this->mBetaTRT
+                << " causticFadeRange: " << this->mCausticFadeRange
+                << " causticIntensityLimit: " << this->mCausticIntensityLimit
+                << " causticWidth: " << this->mCausticWidth
+                << " eccentricity: " << this->mEccentricity
+                << " eta: " << this->mEta
+                << " glintScaleFactor: " << this->mGlintScaleFactor
+                << " hairRadius: " << this->mHairRadius
+                << " sigmaA: " << rgb[0] << ", " << rgb[1] << ", " << rgb[2];
+
+        return "MarschnerBSDF -> " + ss.str();
     }
 
     Float MarschnerBSDF::getEccentricity() const {

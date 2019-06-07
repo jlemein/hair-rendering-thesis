@@ -85,6 +85,8 @@ namespace pbrt {
         // of this reference are initialized
         mLookup = DualScatteringLookup::Get(this);
 
+        printf("%s\n\n", mMarschnerBSDF->ToString().c_str());
+
     };
 
     Vector3f DualScatteringBSDF::WorldToLocal(const Vector3f &v) const {
@@ -265,99 +267,100 @@ namespace pbrt {
         return Gaussian(Spectrum(mBetaTRT) + forwardScatteringVariance, theta - mAlphaTRT);
     }
 
-    static Vector3f SampleFrontHemisphere(const Point2f & uv) {
-        Vector3f w = UniformSampleSphere(uv);
-
-        if (w.z < 0.0) {
-            w.z *= -1.0;
-        }
-        return w;
-    }
-
-    /**
-     * Samples in the front hemisphere for a given theta
-     * @param theta Fixed theta to use
-     * @param u random number between 0 and 1 for phi generation
-     * @return Unit vector in the front hemisphere
-     */
-    static Vector3f SampleFrontHemisphere(Float theta, Float u) {
-        Float phi = (-1.0 + 2.0 * u) * Pi;
-        Vector3f w = FromSphericalCoords(theta, phi);
-
-        if (w.z < 0.0) {
-            w.z *= -1.0;
-        }
-        return w;
-    }
-
-    /**
-     * Samples in the front hemisphere for a given theta
-     * @param uv 2D sample to be used to sample a vector on unit sphere
-     * @return Unit vector in the back hemisphere
-     */
-    static Vector3f SampleBackHemisphere(const Point2f & uv) {
-        Vector3f w = UniformSampleSphere(uv);
-        if (w.z > 0.0) {
-
-            w.z *= -1.0;
-        }
-        return w;
-    }
-
-    /**
-     * Samples in the back hemisphere for a given theta
-     * @param theta Fixed theta to use
-     * @param u random number between 0 and 1 for phi generation
-     * @return Unit vector in the back hemisphere
-     */
-    static Vector3f SampleBackHemisphere(Float theta, Float u) {
-        Float phi = (-1.0 + 2.0 * u) * Pi;
-        //Float phi = (-.5 + u) * Pi;
-        Vector3f w = FromSphericalCoords(theta, phi);
-        if (w.z > 0.0) {
-
-            w.z *= -1.0;
-        }
-        return w;
-    }
-
 
     //! Equation 6 in dual scattering approximation
 
-    Spectrum DualScatteringBSDF::AverageForwardScatteringAttenuation(Float thetaD) const {
+    //    Spectrum DualScatteringBSDF::AverageForwardScatteringAttenuation(Float thetaD) const {
+    //
+    //        Spectrum sum(.0);
+    //        MyRandomSampler sampler(0.0, 1.0);
+    //
+    //        std::string outFile = "output/lookupdata/af_attenuation_" + std::to_string(thetaD) + ".txt";
+    //        std::ofstream out(outFile.c_str());
+    //        if (out.fail()) {
+    //            std::cout << "ERROR\n";
+    //            exit(1);
+    //        }
+    //
+    //        Float cosThetaD = std::max(cos(thetaD), .0);
+    //
+    //        const int SAMPLES = 100;
+    //        for (int i = 0; i < SAMPLES; ++i) {
+    //            Vector3f wr = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
+    //            //            Vector3f wr = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
+    //
+    //            Float thetaR, phiR;
+    //            ToSphericalCoords(wr, thetaR, phiR);
+    //            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
+    //            Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
+    //
+    //            Float phiI;
+    //            ToSphericalCoords(wi, thetaI, phiI);
+    //
+    //            Spectrum r = 2.0 * mMarschnerBSDF->f(wr, wi) * cosThetaD;
+    //            out << thetaI << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
+    //
+    //            sum += r;
+    //        }
+    //
+    //
+    //        sum /= static_cast<Float> (SAMPLES);
+    //
+    //
+    //        out.close();
+    //        std::ofstream outIntegral("output/lookupdata/af.txt", std::ios_base::app);
+    //        outIntegral << thetaD << " " << sum.y() << std::endl;
+    //        outIntegral.close();
+    //
+    //        CHECK_GE(sum.y(), 0.0);
+    //
+    //        return sum;
+    //    }
 
-        Spectrum integral(.0), sum(.0);
-        Float thetaR, phiR;
+    Spectrum DualScatteringBSDF::AverageForwardScatteringAttenuation(Float thetaD) const {
+        // this method is just for trying to integrate around sphere = 1
+        Spectrum sum(.0);
         MyRandomSampler sampler(0.0, 1.0);
 
-        //        std::string outFile = "output/lookupdata/af_attenuation_" + std::to_string(thetaD) + ".txt";
-        //        std::ofstream out(outFile.c_str());
-        //        if (out.fail()) {
-        //            std::cout << "ERROR\n";
-        //            exit(1);
-        //        }
-
-        const int SAMPLES = 1000;
-        for (int i = 0; i < SAMPLES; ++i) {
-
-            const Vector3f woForward = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
-            ToSphericalCoords(woForward, thetaR, phiR);
-
-            // -> thetaI = thetaR - 2.0 * thetaD;
-            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
-            const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
-
-            // remove below later
-            //            Float phiI;
-            //            ToSphericalCoords(wi, thetaI, phiI);
-            //            Spectrum r = mMarschnerBSDF->f(woForward, wi) * cos(thetaD);
-            //            out << thetaI << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
-
-            integral += mMarschnerBSDF->f(woForward, wi) * cos(thetaD);
+        std::string outFile = "output/lookupdata/af_attenuation_" + std::to_string(thetaD) + ".txt";
+        std::ofstream out(outFile.c_str());
+        if (out.fail()) {
+            std::cout << "ERROR\n";
+            exit(1);
         }
 
-        //out.close();
-        return integral / static_cast<Float> (SAMPLES);
+        Float cosThetaD = std::max(cos(thetaD), .0);
+
+        const int SAMPLES = 10000;
+
+        for (int i = 0; i < SAMPLES; ++i) {
+            Vector3f wi = SampleBackHemisphere(thetaD, sampler.next());
+            Vector3f wr = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
+
+            Float thetaR, phiR;
+            ToSphericalCoords(wr, thetaR, phiR);
+
+            Float phiI;
+            ToSphericalCoords(wi, thetaD, phiI);
+
+            Spectrum r = 2.0 * Pi * mMarschnerBSDF->f(wr, wi) * cosThetaD;
+            out << thetaD << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
+
+            sum += r;
+        }
+
+
+        sum /= static_cast<Float> (SAMPLES);
+
+
+        out.close();
+        std::ofstream outIntegral("output/lookupdata/af.txt", std::ios_base::app);
+        outIntegral << thetaD << " " << sum.y() << std::endl;
+        outIntegral.close();
+
+        CHECK_GE(sum.y(), 0.0);
+
+        return sum;
     }
 
     //! equation 12 in dual scattering approximation
@@ -381,22 +384,26 @@ namespace pbrt {
             ToSphericalCoords(woBackward, thetaR, phiR);
 
             // -> thetaI = thetaR - 2.0 * thetaD;
-            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
+            Float thetaI = thetaD; //GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
             // remove below later
-            //            Float phiI;
-            //            ToSphericalCoords(wi, thetaI, phiI);
-            //            Spectrum r = mMarschnerBSDF->f(woBackward, wi) * cos(thetaD);
+            Float phiI;
+            ToSphericalCoords(wi, thetaI, phiI);
+            Spectrum r = mMarschnerBSDF->f(woBackward, wi) * cos(thetaD);
             //            out << thetaI << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
             // -- stop removing
 
             integral += mMarschnerBSDF->f(woBackward, wi) * cos(thetaD);
         }
 
-        //out.close();
+        //        out.close();
 
-        return integral / static_cast<Float> (SAMPLES);
+        std::ofstream outIntegral("output/lookupdata/ab.txt", std::ios_base::app);
+        outIntegral << thetaD << " " << 2.0 * Pi * integral.y() / static_cast<Float> (SAMPLES) << std::endl;
+        outIntegral.close();
+
+        return 2.0 * Pi * integral / static_cast<Float> (SAMPLES);
     }
 
     Spectrum DualScatteringBSDF::AverageForwardScatteringAlpha(Float thetaD) const {

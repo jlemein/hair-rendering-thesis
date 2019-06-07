@@ -98,8 +98,6 @@ TEST(DualScattering, FromToSphericalCoordsVaryingPhi) {
         Vector3f w = FromSphericalCoords(theta, phi);
         ToSphericalCoords(w, theta2, phi2);
 
-        //printf("w: %f %f %f (phi original: %f) --> returned phi: %f\n", w.x, w.y, w.z, phi, phi2);
-
         EXPECT_NEAR(theta, theta2, 1e-5);
         EXPECT_NEAR(phi, phi2, 1e-5);
     }
@@ -115,8 +113,8 @@ TEST(DualScattering, SampleBackHemisphereToSphericalCoordsMustBeSame) {
         const Vector3f wBack = SampleBackHemisphere(theta, sample);
 
         ToSphericalCoords(wBack, theta2, phi2);
+
         EXPECT_FLOAT_EQ(theta, theta2);
-        printf("theta: %f -- theta2: %f\n", theta, theta2);
         EXPECT_GE(phi2, -Pi);
         EXPECT_LE(phi2, Pi);
     }
@@ -164,31 +162,40 @@ TEST(DualScattering, SampleFrontHemisphere) {
     frontVectors.push_back(SampleFrontHemisphere(Point2f(1.0, 1.0)));
 
     for (const auto& w : frontVectors) {
+        Float theta, phi;
+        ToSphericalCoords(w, theta, phi);
+
         EXPECT_FLOAT_EQ(w.Length(), 1.0);
-        EXPECT_GE(w.x, 0.0);
+        EXPECT_GE(fabs(phi), .5 * Pi);
+        EXPECT_LE(w.z, 0.0);
     }
 }
 //
-//TEST(DualScattering, SampleBackHemisphere) {
-//    std::vector<Vector3f> backVectors;
-//
-//    backVectors.push_back(SampleBackHemisphere(-.5 * Pi, 0.0));
-//    backVectors.push_back(SampleBackHemisphere(-.5 * Pi, 0.5));
-//    backVectors.push_back(SampleBackHemisphere(-.5 * Pi, 1.0));
-//    backVectors.push_back(SampleBackHemisphere(.0, 0.0));
-//    backVectors.push_back(SampleBackHemisphere(.0, 0.5));
-//    backVectors.push_back(SampleBackHemisphere(.0, 1.0));
-//    backVectors.push_back(SampleBackHemisphere(.5 * Pi, 0.0));
-//    backVectors.push_back(SampleBackHemisphere(.5 * Pi, 0.5));
-//    backVectors.push_back(SampleBackHemisphere(.5 * Pi, 1.0));
-//    backVectors.push_back(SampleBackHemisphere(Point2f(0.0, 0.0)));
-//    backVectors.push_back(SampleBackHemisphere(Point2f(0.5, 0.5)));
-//    backVectors.push_back(SampleBackHemisphere(Point2f(0.1, 0.9)));
-//    backVectors.push_back(SampleBackHemisphere(Point2f(0.9, 0.1)));
-//    backVectors.push_back(SampleBackHemisphere(Point2f(1.0, 1.0)));
-//
-//    for (const auto& w : backVectors) {
-//        EXPECT_FLOAT_EQ(w.Length(), 1.0);
-//        EXPECT_LE(w.x, 0.0);
-//    }
-//}
+
+TEST(DualScattering, SampleBackHemisphere) {
+    std::vector<Vector3f> backVectors;
+
+    backVectors.push_back(SampleBackHemisphere(-.5 * Pi, 0.0));
+    backVectors.push_back(SampleBackHemisphere(-.5 * Pi, 0.5));
+    backVectors.push_back(SampleBackHemisphere(-.5 * Pi, 1.0));
+    backVectors.push_back(SampleBackHemisphere(.0, 0.0));
+    backVectors.push_back(SampleBackHemisphere(.0, 0.5));
+    backVectors.push_back(SampleBackHemisphere(.0, 1.0));
+    backVectors.push_back(SampleBackHemisphere(.5 * Pi, 0.0));
+    backVectors.push_back(SampleBackHemisphere(.5 * Pi, 0.5));
+    backVectors.push_back(SampleBackHemisphere(.5 * Pi, 1.0));
+    backVectors.push_back(SampleBackHemisphere(Point2f(0.0, 0.0)));
+    backVectors.push_back(SampleBackHemisphere(Point2f(0.5, 0.5)));
+    backVectors.push_back(SampleBackHemisphere(Point2f(0.1, 0.9)));
+    backVectors.push_back(SampleBackHemisphere(Point2f(0.9, 0.1)));
+    backVectors.push_back(SampleBackHemisphere(Point2f(1.0, 1.0)));
+
+    for (const auto& w : backVectors) {
+        Float theta, phi;
+        ToSphericalCoords(w, theta, phi);
+
+        EXPECT_FLOAT_EQ(w.Length(), 1.0);
+        EXPECT_LE(fabs(phi), .5 * Pi);
+        EXPECT_GE(w.z, 0.0);
+    }
+}

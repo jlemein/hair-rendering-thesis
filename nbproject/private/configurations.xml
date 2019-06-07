@@ -2417,6 +2417,18 @@
       </df>
       <df name="build_pbrt">
         <df name="CMakeFiles">
+          <df name="3.14.5">
+            <df name="CompilerIdC">
+              <df name="tmp">
+              </df>
+              <in>CMakeCCompilerId.c</in>
+            </df>
+            <df name="CompilerIdCXX">
+              <df name="tmp">
+              </df>
+              <in>CMakeCXXCompilerId.cpp</in>
+            </df>
+          </df>
           <df name="3.5.1">
             <df name="CompilerIdC">
               <in>CMakeCCompilerId.c</in>
@@ -41672,6 +41684,18 @@
         <df name="pbrt">
           <df name="build">
             <df name="CMakeFiles">
+              <df name="3.14.5">
+                <df name="CompilerIdC">
+                  <df name="tmp">
+                  </df>
+                  <in>CMakeCCompilerId.c</in>
+                </df>
+                <df name="CompilerIdCXX">
+                  <df name="tmp">
+                  </df>
+                  <in>CMakeCXXCompilerId.cpp</in>
+                </df>
+              </df>
               <df name="3.5.1">
                 <df name="CompilerIdC">
                   <in>CMakeCCompilerId.c</in>
@@ -41698,6 +41722,14 @@
               <df name="cyhair2pbrt.dir">
                 <df name="src">
                   <df name="tools">
+                  </df>
+                </df>
+              </df>
+              <df name="hair_test.dir">
+                <df name="src">
+                  <df name="tests">
+                    <df name="gtest">
+                    </df>
                   </df>
                 </df>
               </df>
