@@ -86,7 +86,7 @@ namespace pbrt {
             Float ratio = i / static_cast<Float> (LOOKUP_TABLE_SIZE - 1);
             Float thetaD = (-.5 + ratio) * Pi;
 
-            printf("thetaD: %f -- forw: %f -- backw: %f\n", thetaD, mAverageForwardScatteringAttenuation[i].y(), mAverageBackwardScatteringAttenuation[i].y());
+            //printf("thetaD: %f -- forw: %f -- backw: %f\n", thetaD, mAverageForwardScatteringAttenuation[i].y(), mAverageBackwardScatteringAttenuation[i].y());
             //                    PrintSpectrum("AvgForwardScatterAttenuation:", mAverageForwardScatteringAttenuation[i]);
             //                    PrintSpectrum("AvgForwardScatterAlpha:", mAverageForwardScatteringAlpha[i]);
             //                    PrintSpectrum("AvgForwardScatterBeta:", mAverageForwardScatteringBeta[i]);
@@ -97,12 +97,20 @@ namespace pbrt {
 
     Spectrum Lookup(Float value, Float min, Float max, const std::vector<Spectrum>& lookupTable) {
         Float range = max - min;
-        int lookupIndex = round((lookupTable.size() - 1) * (value - min) / range);
+        Float offset = (value - min);
+        Float ratio = offset / range;
 
-        CHECK_GE(lookupIndex, 0);
-        CHECK_LT(lookupIndex, lookupTable.size());
+        if (ratio >= 1.0) {
+            return lookupTable[lookupTable.size() - 1];
+        } else {
+            Float realIndex = (lookupTable.size() - 1) * ratio;
+            int lookupIndex = floor(realIndex);
+            Float r = realIndex - lookupIndex;
 
-        return lookupTable[lookupIndex];
+            CHECK_GE(lookupIndex, 0);
+            CHECK_LT(lookupIndex, lookupTable.size());
+            return lookupTable[lookupIndex] * (1.0 - r) + r * lookupTable[lookupIndex + 1];
+        }
     }
 
     Spectrum DualScatteringLookup::AverageBackwardScatteringAttenuation(Float thetaD) const {

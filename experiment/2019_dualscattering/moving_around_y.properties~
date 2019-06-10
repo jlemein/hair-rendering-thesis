@@ -1,0 +1,49 @@
+# -----------------------------
+#  LIGHT PROPERTIES
+# -----------------------------
+# light direction is specified as the from direction to origin (0,0,0).
+#              y=1 z=1
+#               | /
+#               |/ 
+#  x=-1 <---------------> x=1
+#              /|
+#             / |
+#         z=-1 y=-1
+
+# dist light, the distant (or directional light) moving around the head
+# always use distant light by default (empty means use it)
+useDistantLight 
+light_power 8.0
+light_from_x 0.333333313 
+light_from_y 0.0
+light_from_z -0.666666627
+
+# infinite light, or environmental light to create ambiance light in the scene
+# always use infinite light by default (empty means use it)
+useInfiniteLight 
+infinite_light_power 3.0
+infinite_light_samples 16
+infinite_light_environment_map day.exr
+
+# always use area light by default (empty means use it)
+useAreaLight
+area_light_power 320
+area_light_x 8.33333302
+area_light_y 10
+area_light_z 16.6666641
+
+# -----------------------------
+#  VIEW PROPERTIES
+# -----------------------------
+model_rotation 0
+@view_rotation #0: 0 ~ #13: 360 ;
+camera_fov 32
+
+# ----------------------------
+#  IMAGE PROPERTIES
+# ----------------------------
+
+image_output_basename distantlight_around_y
+image_output_extension .png
+
+

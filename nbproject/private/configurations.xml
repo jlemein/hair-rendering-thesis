@@ -2520,8 +2520,6 @@
               </df>
             </df>
           </df>
-          <df name="Progress">
-          </df>
           <in>feature_tests.c</in>
           <in>feature_tests.cxx</in>
         </df>
@@ -2771,6 +2769,13 @@
         <df name="bin">
         </df>
         <df name="CMakeFiles">
+          <df name="3.14.5">
+            <df name="CompilerIdCXX">
+              <df name="tmp">
+              </df>
+              <in>CMakeCXXCompilerId.cpp</in>
+            </df>
+          </df>
           <df name="3.5.1">
             <df name="CompilerIdCXX">
               <in>CMakeCXXCompilerId.cpp</in>
@@ -2979,9 +2984,39 @@
             </df>
           </df>
         </df>
+        <df name="2019_dualscattering">
+          <df name="output">
+            <df name="directionallight_powers">
+            </df>
+            <df name="infinite_light">
+            </df>
+            <df name="models">
+              <df name="archive">
+              </df>
+              <df name="tmp">
+              </df>
+              <df name="woman">
+              </df>
+            </df>
+            <df name="textures">
+            </df>
+          </df>
+        </df>
         <df name="2019_marschner_complete">
           <df name="output">
             <df name="high quality">
+            </df>
+            <df name="june7_n0">
+            </df>
+            <df name="june7_n1">
+            </df>
+            <df name="june7_n16">
+            </df>
+            <df name="june7_n2">
+            </df>
+            <df name="june7_n4">
+            </df>
+            <df name="june7_n8">
             </df>
             <df name="lookupdata">
             </df>

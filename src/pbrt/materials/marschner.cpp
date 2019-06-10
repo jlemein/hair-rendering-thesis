@@ -90,8 +90,13 @@ namespace pbrt {
     }
 
     static Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT) {
-        Float cosGamma2T = AssurePositiveNonZero(cos(2.0 * gammaT));
-        return Exp(-2.0 * (sigmaA / cosThetaT) * (1.0 + cosGamma2T));
+        // my way
+        //        Float cosGamma2T = AssurePositiveNonZero(cos(2.0 * gammaT));
+        //        return Exp(-2.0 * (sigmaA / cosThetaT) * (1.0 + cosGamma2T));
+
+        // pbrt way
+        Float cosGammaT = AssurePositiveNonZero(cos(gammaT));
+        return Exp(-2.0 * sigmaA * (cosGammaT / cosThetaT));
     }
 
     static Float DPhiDh_R(Float gamma_i) {
@@ -175,7 +180,7 @@ namespace pbrt {
     MarschnerBSDF* MarschnerMaterial::CreateMarschnerBSDF(SurfaceInteraction *si,
             MemoryArena &arena) const {
 
-        Spectrum sigmaA = mSigmaA->Evaluate(*si);
+        Spectrum sigmaA = mHairRadius * mSigmaA->Evaluate(*si);
 
         return ARENA_ALLOC(arena, MarschnerBSDF)(*si, mAr, mAtt, mAtrt,
                 mBr, mBtt, mBtrt,
@@ -207,7 +212,7 @@ namespace pbrt {
         Float alpha[3] = {Radians(alphaR), Radians(alphaTT), Radians(alphaTRT)};
         Float beta[3] = {Radians(betaR), Radians(betaTT), Radians(betaTRT)};
 
-        Float hairRadius = 1.0;
+        Float hairRadius = mp.FindFloat("hairRadius", Float(1.0));
         Float eta = 1.55;
         Float eccentricity = mp.FindFloat("eccentricity", Float(1.0));
 

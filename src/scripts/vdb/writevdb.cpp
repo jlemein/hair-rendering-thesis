@@ -245,6 +245,15 @@ int main(int argc, const char** argv) {
 
     cout << "Longest distance between two samples points is: " << maxSampleLength << endl;
 
+    float summedVoxelValue = .0;
+    int count = 0;
+    for (openvdb::FloatGrid::ValueOnIter iter = grid->beginValueOn(); iter; ++iter) {
+        summedVoxelValue += iter.getValue();
+        ++count;
+    }
+    float avgVoxelValue = summedVoxelValue / count;
+    cout << "Average value in voxel (count: " << count << "): " << avgVoxelValue << endl;
+
 
     // Create a VDB file object.
     cout << "Writing VDB grid to " << outputVdbFile << endl;

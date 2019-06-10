@@ -406,6 +406,23 @@ double _integrateMonteCarlo(const Vector3f& wi, std::function<double(const Vecto
     return V / static_cast<double> (nSamples) * sum;
 }
 
+double _integrateMonteCarlo(std::function<double(const Float) > f, int nSamples) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(.0, 1.0);
+
+    double V = Pi;
+    double sum = .0;
+
+    for (int i = 0; i < nSamples; ++i) {
+        //Vector3f wi = Vector3f(-1.0, 0.0, 0.0);
+        Float x = -.5 * Pi + distribution(generator) * Pi;
+        sum += f(x);
+    }
+
+    return V / static_cast<double> (nSamples) * sum;
+}
+
 //alphaR: 0.0523599 alphaTT: -0.0261799 alphaTRT: -0.0785398 betaR: 0.244346 betaTT: 0.139626 betaTRT: 0.383972
 //causticFadeRange: 0.3 causticIntensityLimit: 0.5 causticWidth: 0.174533
 //eccentricity: 0.9 eta: 1.55 glintScaleFactor: 0.4 hairRadius: 1
@@ -425,30 +442,53 @@ const Float causticWidth = 0.174533;
 const Float causticFade = 0.3;
 const Float causticIntensityLimit = 0.5;
 const Float hairRadius = 1.0;
-const Float sigmaARgb[3] = {0.432, 0.612, 0.98};
+const Float sigmaARgb[3] = {.0, .0, .0};
 const Spectrum sigmaA = Spectrum::FromRGB(sigmaARgb);
 const SurfaceInteraction si = SurfaceInteraction();
-MarschnerBSDF* marschner = new MarschnerBSDF(si, alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2], hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
 
-TEST(Marschner, IntegralSphereSumsToOne) {
+MarschnerBSDF* marschner = new MarschnerBSDF(si, alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2], hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+MarschnerBSDF* marschnerSquared = new MarschnerBSDF(si, alphaSquared[0], alphaSquared[1], alphaSquared[2], betaSquared[0], betaSquared[1], betaSquared[2], hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+MarschnerBSDF* marschnerSqrt = new MarschnerBSDF(si, alphaSqrt[0], alphaSqrt[1], alphaSqrt[2], betaSqrt[0], betaSqrt[1], betaSqrt[2], hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+
+TEST(Marschner, BsdfShouldBeEnergyConservant) {
     MyRandomSampler sampler(0.0, 1.0);
 
     auto fn = [&](const Vector3f wr, const Vector3f wi) {
         Float cosAngle = Dot(wr, wi);
-        return marschner->f(wr, wi).y() * fabs(cosAngle);
+        return marschner->f(wr, wi).y(); // * fabs(cosAngle);
     };
+
+    auto fnSquared = [&](const Vector3f wr, const Vector3f wi) {
+        Float cosAngle = Dot(wr, wi);
+        return marschnerSquared->f(wr, wi).y() * fabs(cosAngle);
+    };
+
+    auto fnSqrt = [&](const Vector3f wr, const Vector3f wi) {
+        Float cosAngle = Dot(wr, wi);
+        return marschnerSqrt->f(wr, wi).y() * fabs(cosAngle);
+    };
+
     auto fnSphereSurface = [&](const Vector3f wr, const Vector3f wi) {
         return 1.0;
     };
-    //printf("Integrating around sphere = %f\n", integrateMonteCarlo(fn, 10000));
+
     Vector3f wii = SampleBackHemisphere(0.0, sampler.next());
 
-    Float front = _integrateMonteCarloFront(wii, fn, 10000);
-    Float back = _integrateMonteCarloBack(wii, fn, 10000);
     Float sphere = _integrateMonteCarlo(wii, fn, 10000);
 
-    printf("front: %f -- back: %f -- sum: %f\n", front, back, sphere);
+    printf("integrated BSDF energy: %f\n", sphere);
 
-    EXPECT_LE(sphere, 1.0);
-    EXPECT_GE(sphere, .6);
+    EXPECT_LE(sphere, 1.2);
+    EXPECT_GE(sphere, .8);
+}
+
+TEST(Marschner, NormalizedGaussianSumsToOne) {
+    MyRandomSampler sampler(0.0, 1.0);
+    auto fn = [&](const Float thetaH) {
+        return Gaussian(beta.x, thetaH);
+    };
+
+    Float area = _integrateMonteCarlo(fn, 10000);
+    printf("area under normalized gaussian graph: %f\n", area);
+    EXPECT_NEAR(1.0, area, 0.03);
 }

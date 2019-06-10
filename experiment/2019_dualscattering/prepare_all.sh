@@ -27,8 +27,14 @@ rm output/*.pbrt
 #
 # moving viewer around
 #
-prepare --input woman-head.scene --output output/ms_brunette_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ms_brunette_move_around_y,material_name=brown_hair,model_hair_filename=wStraight,shader=marschner,useDistantLight=,useAreaLight=#,useInfiniteLight=
-prepare --input woman-head.scene --output output/ds_brunette_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ds_brunette_move_around_y,material_name=brown_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/ds_brunette_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ms_brunette_move_around_y,material_name=brown_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#
+#prepare --input woman-head.scene --output output/ds_brunette_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ds_brunette_move_around_y,material_name=brown_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#,hairRadius=0.1
+
+#prepare --input woman-head.scene --output output/ds_hardlyabsorbing_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ds_hardlyabsorbing_move_around_y,material_name=hardly_absorbing_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#
+
+#prepare --input woman-head.scene --output output/ds_littleabsorbing_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ds_littleabsorbing_move_around_y,material_name=little_absorbing_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#
+
+#prepare --input woman-head.scene --output output/ds_absorbing_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ds_absorbing_move_around_y,material_name=absorbing_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#
 
 #
 # rotating model

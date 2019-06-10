@@ -203,13 +203,13 @@ namespace pbrt {
         Vector3f normalizedDirection = direction / direction.Length();
         Point3f to = from + normalizedDirection * mBounds.Diagonal().Length();
 
-        CHECK_LE(mBounds.pMin.x - 1, from.x);
-        CHECK_LE(mBounds.pMin.y - 1, from.y);
-        CHECK_LE(mBounds.pMin.z - 1, from.z);
+        CHECK_LE(mBounds.pMin.x - 2, from.x);
+        CHECK_LE(mBounds.pMin.y - 2, from.y);
+        CHECK_LE(mBounds.pMin.z - 2, from.z);
 
-        CHECK_GE(mBounds.pMax.x + 1, from.x);
-        CHECK_GE(mBounds.pMax.y + 1, from.y);
-        CHECK_GE(mBounds.pMax.z + 1, from.z);
+        CHECK_GE(mBounds.pMax.x + 2, from.x);
+        CHECK_GE(mBounds.pMax.y + 2, from.y);
+        CHECK_GE(mBounds.pMax.z + 2, from.z);
 
         //        printf("Bounds: [ %f %f %f ] - [ %f %f %f ]\n",
         //                mBounds.pMin.x, mBounds.pMin.y, mBounds.pMin.z,

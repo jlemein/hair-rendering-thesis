@@ -17,6 +17,7 @@
 #include "materials/dualscatteringlookup.h"
 #include "scene.h"
 #include "materials/hairutil.h"
+#include <mutex>
 
 #include <fstream>
 
@@ -84,9 +85,6 @@ namespace pbrt {
         // lookup table initialized here, so that all members
         // of this reference are initialized
         mLookup = DualScatteringLookup::Get(this);
-
-        printf("%s\n\n", mMarschnerBSDF->ToString().c_str());
-
     };
 
     Vector3f DualScatteringBSDF::WorldToLocal(const Vector3f &v) const {
@@ -163,6 +161,8 @@ namespace pbrt {
         return F * cos(angles.thetaI);
     }
 
+    std::once_flag flag1;
+
     GlobalScatteringInformation DualScatteringBSDF::GatherGlobalScatteringInformation(
             const Scene& scene, const VisibilityTester& visibilityTester,
             const Vector3f& wd, Float thetaD) const {
@@ -181,7 +181,11 @@ namespace pbrt {
         const InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
         Float scatterCount = interpolationResult.scatterCount;
 
-        if (isDirectIlluminated || interpolationResult.scatterCount <= 1e-5) {
+        //        std::call_once(flag1, [&]() {
+        //            std::cout << std::endl << "Scatter count is " << scatterCount << std::endl;
+        //        });
+
+        if (isDirectIlluminated || scatterCount <= .5) {
             gsi.isDirectIlluminated = true;
             gsi.transmittance = 1.0;
             gsi.variance = Spectrum(.0);
@@ -322,12 +326,12 @@ namespace pbrt {
         Spectrum sum(.0);
         MyRandomSampler sampler(0.0, 1.0);
 
-        std::string outFile = "output/lookupdata/af_attenuation_" + std::to_string(thetaD) + ".txt";
-        std::ofstream out(outFile.c_str());
-        if (out.fail()) {
-            std::cout << "ERROR\n";
-            exit(1);
-        }
+        //        std::string outFile = "output/lookupdata/af_attenuation_" + std::to_string(thetaD) + ".txt";
+        //        std::ofstream out(outFile.c_str());
+        //        if (out.fail()) {
+        //            std::cout << "ERROR\n";
+        //            exit(1);
+        //        }
 
         Float cosThetaD = std::max(cos(thetaD), .0);
 
@@ -344,7 +348,7 @@ namespace pbrt {
             ToSphericalCoords(wi, thetaD, phiI);
 
             Spectrum r = 2.0 * Pi * mMarschnerBSDF->f(wr, wi) * cosThetaD;
-            out << thetaD << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
+            //out << thetaD << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
 
             sum += r;
         }
@@ -353,10 +357,10 @@ namespace pbrt {
         sum /= static_cast<Float> (SAMPLES);
 
 
-        out.close();
-        std::ofstream outIntegral("output/lookupdata/af.txt", std::ios_base::app);
-        outIntegral << thetaD << " " << sum.y() << std::endl;
-        outIntegral.close();
+        //out.close();
+        //        std::ofstream outIntegral("output/lookupdata/af.txt", std::ios_base::app);
+        //        outIntegral << thetaD << " " << sum.y() << std::endl;
+        //        outIntegral.close();
 
         CHECK_GE(sum.y(), 0.0);
 
@@ -399,9 +403,9 @@ namespace pbrt {
 
         //        out.close();
 
-        std::ofstream outIntegral("output/lookupdata/ab.txt", std::ios_base::app);
-        outIntegral << thetaD << " " << 2.0 * Pi * integral.y() / static_cast<Float> (SAMPLES) << std::endl;
-        outIntegral.close();
+        //        std::ofstream outIntegral("output/lookupdata/ab.txt", std::ios_base::app);
+        //        outIntegral << thetaD << " " << 2.0 * Pi * integral.y() / static_cast<Float> (SAMPLES) << std::endl;
+        //        outIntegral.close();
 
         return 2.0 * Pi * integral / static_cast<Float> (SAMPLES);
     }
