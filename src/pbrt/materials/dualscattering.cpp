@@ -36,7 +36,7 @@ namespace pbrt {
 
         DualScatteringBSDF* dualScatteringBSDF =
                 ARENA_ALLOC(arena, DualScatteringBSDF)(*si, mEta, marschnerBSDF,
-                mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT, mVoxelGridFileName);
+                mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT, mDf, mDb, mVoxelGridFileName);
 
         si->bsdf->Add(dualScatteringBSDF);
     }
@@ -50,12 +50,14 @@ namespace pbrt {
         //        marschnerMaterial->mBtt = Sqr(marschnerMaterial->mBtrt);
         //        marschnerMaterial->mBtrt = Sqr(marschnerMaterial->mBtrt);
 
+        Float df = mp.FindFloat("df", 0.7);
+        Float db = mp.FindFloat("db", 0.7);
         std::string vdbFileName = mp.FindString("vdbFileName", "voxelgrid.vdb");
 
         return new DualscatteringMaterial(marschnerMaterial->mEta, marschnerMaterial,
                 marschnerMaterial->mAr, marschnerMaterial->mAtt, marschnerMaterial->mAtrt,
                 marschnerMaterial->mBr, marschnerMaterial->mBtt, marschnerMaterial->mBtrt,
-                vdbFileName);
+                df, db, vdbFileName);
     }
 
     /*******************************
@@ -66,9 +68,9 @@ namespace pbrt {
             MarschnerBSDF* marschnerBSDF,
             Float alphaR, Float alphaTT, Float alphaTRT,
             Float betaR, Float betaTT, Float betaTRT,
-            std::string voxelGridFileName)
+            Float df, Float db, std::string voxelGridFileName)
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
-    mEta(eta), mDb(0.7), mDf(0.7),
+    mEta(eta), mDb(db), mDf(df),
     mMarschnerBSDF(marschnerBSDF),
     mPosition(si.p),
     ns(si.shading.n),
@@ -128,6 +130,10 @@ namespace pbrt {
 
         const MarschnerAngles angles(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
         GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(scene, visibilityTester, wiWorld, angles.thetaD);
+
+        //        if (!gsi.isDirectIlluminated) {
+        //            return Spectrum(.0);
+        //        }
 
         Spectrum forwardTransmittance = gsi.transmittance;
         Spectrum Ab = BackscatteringAttenuation(angles.thetaD);
