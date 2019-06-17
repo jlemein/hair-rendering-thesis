@@ -29,11 +29,13 @@ namespace pbrt {
         DualscatteringMaterial(Float eta, MarschnerMaterial* marschnerMaterial, 
                 Float alphaR, Float alphaTT, Float alphaTRT, 
                 Float betaR, Float betaTT, Float betaTRT,
-                Float df, Float db, std::string voxelGridFileName) 
+                Float df, Float db, Float scatterCount,
+                std::string voxelGridFileName) 
         : mEta(eta), mMarschnerMaterial(marschnerMaterial), 
                 mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT), 
                 mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT), 
-                mDf(df), mDb(db), mVoxelGridFileName(voxelGridFileName) {
+                mDf(df), mDb(db), mScatterCount(scatterCount), 
+                mVoxelGridFileName(voxelGridFileName) {
         }
 
         void ComputeScatteringFunctions(SurfaceInteraction *si, MemoryArena &arena,
@@ -45,6 +47,7 @@ namespace pbrt {
           Float mEta;
           Float mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT;
           Float mDf, mDb;
+          Float mScatterCount;
           std::string mVoxelGridFileName;
     };
 
@@ -60,7 +63,8 @@ namespace pbrt {
                 MarschnerBSDF* marschnerBSDF,
                 Float alphaR, Float alphaTT, Float alphaTRT,
                 Float betaR, Float betaTT, Float betaTRT,
-                Float df, Float db, std::string voxelGridFileName);
+                Float df, Float db, Float scatterCount,
+                std::string voxelGridFileName);
 
         Vector3f WorldToLocal(const Vector3f& v) const;
         Vector3f LocalToWorld(const Vector3f& v) const;
@@ -135,6 +139,7 @@ namespace pbrt {
         const Transform mWorldToObject, mObjectToWorld;
         const Bounds3f mObjectBound, mWorldBound;
         Float mDf, mDb;
+        Float mScatterCount;
         Float mBetaR, mBetaTT, mBetaTRT;
         Float mAlphaR, mAlphaTT, mAlphaTRT;
         const DualScatteringLookup* mLookup;

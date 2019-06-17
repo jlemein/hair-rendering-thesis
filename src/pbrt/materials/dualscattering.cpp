@@ -36,7 +36,8 @@ namespace pbrt {
 
         DualScatteringBSDF* dualScatteringBSDF =
                 ARENA_ALLOC(arena, DualScatteringBSDF)(*si, mEta, marschnerBSDF,
-                mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT, mDf, mDb, mVoxelGridFileName);
+                mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT,
+                mDf, mDb, mScatterCount, mVoxelGridFileName);
 
         si->bsdf->Add(dualScatteringBSDF);
     }
@@ -52,12 +53,13 @@ namespace pbrt {
 
         Float df = mp.FindFloat("df", 0.7);
         Float db = mp.FindFloat("db", 0.7);
+        Float scatterCount = mp.FindFloat("scatterCount", -1.0);
         std::string vdbFileName = mp.FindString("vdbFileName", "voxelgrid.vdb");
 
         return new DualscatteringMaterial(marschnerMaterial->mEta, marschnerMaterial,
                 marschnerMaterial->mAr, marschnerMaterial->mAtt, marschnerMaterial->mAtrt,
                 marschnerMaterial->mBr, marschnerMaterial->mBtt, marschnerMaterial->mBtrt,
-                df, db, vdbFileName);
+                df, db, scatterCount, vdbFileName);
     }
 
     /*******************************
@@ -68,7 +70,8 @@ namespace pbrt {
             MarschnerBSDF* marschnerBSDF,
             Float alphaR, Float alphaTT, Float alphaTRT,
             Float betaR, Float betaTT, Float betaTRT,
-            Float df, Float db, std::string voxelGridFileName)
+            Float df, Float db, Float scatterCount,
+            std::string voxelGridFileName)
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
     mEta(eta), mDb(db), mDf(df),
     mMarschnerBSDF(marschnerBSDF),
@@ -83,6 +86,7 @@ namespace pbrt {
     mObjectBound(si.shape->ObjectBound()), mWorldBound(si.shape->WorldBound()),
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
+    mScatterCount(scatterCount),
     mVoxelGridFileName(voxelGridFileName) {
         // lookup table initialized here, so that all members
         // of this reference are initialized
@@ -177,19 +181,34 @@ namespace pbrt {
 
         // @ref Dual-Scattering Approximation, Zinke et al (2007), section 4.1.1.
 
-        const Ray ray(mPosition, wd);
-        bool isDirectIlluminated = visibilityTester.Unoccluded(scene);
+        //        const Ray ray(mPosition, wd);
+        //        bool isDirectIlluminated = visibilityTester.Unoccluded(scene);
 
         // Interpolates a ray through a voxel grid, where each voxel contains the hair density
         // thereby returning the approximated number of hair strands intersected.
 
-        Point3f pObject = mWorldToObject(mPosition);
-        const InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
-        Float scatterCount = interpolationResult.scatterCount;
+        //        Point3f pObject = mWorldToObject(mPosition);
+        //        const InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
+        //        Float scatterCount = interpolationResult.scatterCount;
 
-        //        std::call_once(flag1, [&]() {
-        //            std::cout << std::endl << "Scatter count is " << scatterCount << std::endl;
-        //        });
+        Float scatterCount;
+        bool isDirectIlluminated = false;
+
+        if (mScatterCount < 0.0) {
+            isDirectIlluminated = visibilityTester.Unoccluded(scene);
+
+            Point3f pObject = mWorldToObject(mPosition);
+            const InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
+            scatterCount = interpolationResult.scatterCount;
+        } else {
+            scatterCount = mScatterCount;
+
+            std::call_once(flag1, [&](){
+                std::cout << std::endl << "Fixed scatter count: set to " << scatterCount << std::endl;
+            });
+        }
+
+
 
         if (isDirectIlluminated || scatterCount <= .5) {
             gsi.isDirectIlluminated = true;

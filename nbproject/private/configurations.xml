@@ -45387,10 +45387,6 @@
         <df name="2019_03_25 marschner trt without fresnel and correction glints">
         </df>
         <df name="2019_06_11">
-          <df name="directionallight">
-          </df>
-          <df name="infinitelight">
-          </df>
         </df>
         <df name="marschner">
         </df>
