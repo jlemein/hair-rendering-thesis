@@ -80,14 +80,15 @@ namespace pbrt {
     ng(si.n),
     ss(Normalize(si.shading.dpdu)),
     ts(Cross(ns, ss)),
-    mWorldToObject(*si.shape->WorldToObject),
-    mObjectToWorld(*si.shape->ObjectToWorld),
+    mWorldToObject(si.shape != 0 ? *si.shape->WorldToObject : Transform()),
+    mObjectToWorld(si.shape != 0 ? *si.shape->ObjectToWorld : Transform()),
     mShape(si.shape),
-    mObjectBound(si.shape->ObjectBound()), mWorldBound(si.shape->WorldBound()),
+    mObjectBound(si.shape != 0 ? si.shape->ObjectBound() : Bounds3f()), mWorldBound(si.shape != 0 ? si.shape->WorldBound() : Bounds3f()),
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
     mScatterCount(scatterCount),
     mVoxelGridFileName(voxelGridFileName) {
+
         // lookup table initialized here, so that all members
         // of this reference are initialized
         mLookup = DualScatteringLookup::Get(this);
@@ -127,17 +128,13 @@ namespace pbrt {
         return Li;
     }
 
-    Spectrum DualScatteringBSDF::f(const Vector3f &woLocal, const Vector3f &wiLocal, const Scene &scene, const VisibilityTester& visibilityTester) const {
+    Spectrum DualScatteringBSDF::f(const Vector3f &woLocal, const Vector3f &wiLocal, const Scene* scene, const VisibilityTester* visibilityTester) const {
 
-        const Vector3f wiWorld = LocalToWorld(wiLocal);
-        const Vector3f woWorld = LocalToWorld(woLocal);
+        //        const Vector3f wiWorld = LocalToWorld(wiLocal);
+        //        const Vector3f woWorld = LocalToWorld(woLocal);
 
         const MarschnerAngles angles(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
-        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(scene, visibilityTester, wiWorld, angles.thetaD);
-
-        //        if (!gsi.isDirectIlluminated) {
-        //            return Spectrum(.0);
-        //        }
+        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(scene, visibilityTester, wiLocal, angles.thetaD);
 
         Spectrum forwardTransmittance = gsi.transmittance;
         Spectrum Ab = BackscatteringAttenuation(angles.thetaD);
@@ -154,7 +151,6 @@ namespace pbrt {
         Spectrum fScatterBack = 2.0 * Ab
                 * Gaussian(Sqrt(backScatterVariance + forwardScatterVariance), -deltaB + angles.thetaH)
                 / (Pi * Sqr(cos(angles.thetaD)));
-
 
         Spectrum F;
 
@@ -174,8 +170,8 @@ namespace pbrt {
     std::once_flag flag1;
 
     GlobalScatteringInformation DualScatteringBSDF::GatherGlobalScatteringInformation(
-            const Scene& scene, const VisibilityTester& visibilityTester,
-            const Vector3f& wd, Float thetaD) const {
+            const Scene* scene, const VisibilityTester* visibilityTester,
+            const Vector3f& wiLocal, Float thetaD) const {
 
         GlobalScatteringInformation gsi;
 
@@ -195,9 +191,11 @@ namespace pbrt {
         bool isDirectIlluminated = false;
 
         if (mScatterCount < 0.0) {
-            isDirectIlluminated = visibilityTester.Unoccluded(scene);
+
+            isDirectIlluminated = visibilityTester->Unoccluded(*scene);
 
             Point3f pObject = mWorldToObject(mPosition);
+            Vector3f wd = LocalToWorld(wiLocal);
             const InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
             scatterCount = interpolationResult.scatterCount;
         } else {

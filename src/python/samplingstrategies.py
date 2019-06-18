@@ -118,8 +118,8 @@ samplesUniform = sampleUniform(0, 10, 10000)
 samplesFromInversion = sampleFromInversion(invCdfUniform, 0, 10, 1000)
 samplesImportance = importanceSamples(invP, 100000)
 
-samplesImportance1 = sampleUniform(0, 5, 15)#importanceSamples(invP, 10)
-samplesImportance2 = sampleUniform(5, 10, 15)#importanceSamples(invP2, 20)
+samplesImportance1 = sampleUniform(0, 5, 1000)#importanceSamples(invP, 10)
+samplesImportance2 = sampleUniform(5, 10, 1000)#importanceSamples(invP2, 20)
 
 
 # print("Samples for 2 MIS: ", samplesImportance1, samplesImportance2)
@@ -129,7 +129,9 @@ print("Integrated linearly gives: ", integrate(vFancyFn, samplesLinear, lambda x
 # print("Integrated from inversion gives: ", integrate(vFancyFn, samplesFromInversion, 0.1))
 # print("Integrated with importance sampling: ", integrate(vFancyFn, samplesImportance, p))
 print("Integrated with MIS: ", integrateMIS(vFancyFn, [(samplesImportance1, 0.2), (samplesImportance2, 0.2)]))
-print("Integrated with MIS2: ", integrateMIS2(vFancyFn, samplesImportance1, lambda x: 0.2, samplesImportance2, lambda x: 0.2))
+print("Integrated with MIS2: ", integrateMIS2(vFancyFn, 
+    samplesImportance1, lambda x: 0.2 if x >= 0 and x <= 5 else 0, 
+    samplesImportance2, lambda x: 0.2 if x >= 5 and x <= 10 else 0))
 
 # Fixing random state for reproducibility
 np.random.seed(19680801)

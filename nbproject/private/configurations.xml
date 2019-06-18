@@ -2458,6 +2458,12 @@
               </df>
             </df>
           </df>
+          <df name="hair_plot.dir">
+            <df name="src">
+              <df name="plots">
+              </df>
+            </df>
+          </df>
           <df name="hair_test.dir">
             <df name="src">
               <df name="tests">
@@ -43414,6 +43420,9 @@
               <in>homogeneous.cpp</in>
               <in>homogeneous.h</in>
             </df>
+            <df name="plots">
+              <in>dsplot.cpp</in>
+            </df>
             <df name="samplers">
               <in>halton.cpp</in>
               <in>halton.h</in>
@@ -45452,6 +45461,9 @@
             <in>hairutil.h</in>
             <in>marschner.cpp</in>
             <in>marschner.h</in>
+          </df>
+          <df name="plots">
+            <in>dsplot.cpp</in>
           </df>
           <df name="test">
             <in>testdualscattering.cpp</in>

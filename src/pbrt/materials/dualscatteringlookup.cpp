@@ -30,7 +30,6 @@ namespace pbrt {
         std::lock_guard<std::mutex> myLock(myMutex);
 
         if (DualScatteringLookup::instance == 0) {
-
             instance = new DualScatteringLookup(bsdf);
             instance->Init();
         }
@@ -38,9 +37,17 @@ namespace pbrt {
         return instance;
     }
 
-    void DualScatteringLookup::Init() {
+    void DualScatteringLookup::Reset() {
+        if (DualScatteringLookup::instance != 0) {
+            delete DualScatteringLookup::instance;
+            DualScatteringLookup::instance = 0;
+        }
+    }
 
-        this->ReadVoxelGrid();
+    void DualScatteringLookup::Init() {
+        if (this->mDualScatteringBSDF->mScatterCount < 0.0) {
+            this->ReadVoxelGrid();
+        }
         this->PrecomputeAverageScatteringAttenuation();
     }
 
@@ -49,12 +56,13 @@ namespace pbrt {
         try {
             mVdbReader = new OpenVdbReader(this->mDualScatteringBSDF->mVoxelGridFileName);
             mVdbReader->initialize();
+            printf("[SUCCESS]: Read voxel grid\n");
         } catch (const std::exception& e) {
 
             printf("\r[ERROR]: Reading VoxelGrid failed: %s\n", e.what());
             throw e;
         }
-        printf("[SUCCESS]: Read voxel grid\n");
+
     }
 
     const OpenVdbReader * DualScatteringLookup::getVdbReader() const {

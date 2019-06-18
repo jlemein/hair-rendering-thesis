@@ -2,6 +2,10 @@ from mpl_toolkits import mplot3d
 
 import numpy as np
 import matplotlib.pyplot as plt
+import sys
+
+if (len(sys.argv) < 2):
+    print("Specified too little arguments, provide input text file\n")
 
 data = np.array([])
 

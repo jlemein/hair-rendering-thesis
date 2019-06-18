@@ -28,6 +28,15 @@ namespace pbrt {
          * @return 
          */
         static const DualScatteringLookup* Get(const DualScatteringBSDF* bsdf);
+        
+        /**
+         * Resets the lookup table, so that next time lookup table is recalculated.
+         * Necessary for plotting different hair models, so that each hair model will
+         * have it's own lookup data.
+         * TODO: not optimal yet
+         * @return 
+         */
+        static void Reset();
 
 
         Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;

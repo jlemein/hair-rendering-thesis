@@ -77,7 +77,7 @@ namespace pbrt {
             * @return
             */
         virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const;
-        virtual Spectrum f(const Vector3f &wo, const Vector3f &wi, const Scene &scene, const VisibilityTester& visibilityTester) const;
+        virtual Spectrum f(const Vector3f &wo, const Vector3f &wi, const Scene* scene, const VisibilityTester* visibilityTester) const;
 
            /**
             * @override
@@ -147,7 +147,7 @@ namespace pbrt {
         const Normal3f ns, ng;
         const Vector3f ss, ts;
 
-        GlobalScatteringInformation GatherGlobalScatteringInformation(const Scene& scene, const VisibilityTester& visiblityTester, const Vector3f& wd, Float thetaD) const;
+        GlobalScatteringInformation GatherGlobalScatteringInformation(const Scene* scene, const VisibilityTester* visiblityTester, const Vector3f& wd, Float thetaD) const;
 
         Spectrum ForwardScatteringTransmittance(Float n, Float thetaD) const;
         Spectrum ForwardScatteringVariance(Float n, Float thetaD) const;

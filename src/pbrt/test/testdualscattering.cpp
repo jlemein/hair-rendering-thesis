@@ -22,25 +22,32 @@ const Float sigmaARgb[3] = {0.4, 0.5, 0.1};
 const Spectrum sigmaA = Spectrum::FromRGB(sigmaARgb);
 const SurfaceInteraction si = SurfaceInteraction();
 
-//TEST(DualScattering, AverageBackwardScatteringAttenuation) {
-//
-//    MarschnerBSDF* marschner = new MarschnerBSDF(si, alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2], hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
-//    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, eta, marschner, alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2], "unnamed.vdb");
-//    const DualScatteringLookup* lookup = DualScatteringLookup::Get(dualScattering);
-//
-//    const int SAMPLES = 10;
-//    for (int i = 0; i < SAMPLES; ++i) {
-//        Float thetaD = -.5 * Pi + (static_cast<Float> (i) / SAMPLES) * Pi;
-//        Spectrum response = dualScattering->AverageBackwardScatteringAlpha(thetaD);
-//        Float rgb[3];
-//        response.ToRGB(rgb);
-//        printf("thetaD: %f -- rgb: %f %f %f\n", thetaD, rgb[0], rgb[1], rgb[2]);
-//
-//        EXPECT_GE(rgb[0], 0.0);
-//        EXPECT_GE(rgb[1], 0.0);
-//        EXPECT_GE(rgb[2], 0.0);
-//    }
-//}
+TEST(DualScattering, AverageBackwardScatteringAttenuation) {
+
+    MarschnerBSDF* marschner = new MarschnerBSDF(si,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+
+    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si,
+            eta, marschner,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            0.7, 0.7, -1.0, "unnamed.vdb");
+
+    const DualScatteringLookup* lookup = DualScatteringLookup::Get(dualScattering);
+
+    const int SAMPLES = 10;
+    for (int i = 0; i < SAMPLES; ++i) {
+        Float thetaD = -.5 * Pi + (static_cast<Float> (i) / SAMPLES) * Pi;
+        Spectrum response = dualScattering->AverageBackwardScatteringAlpha(thetaD);
+        Float rgb[3];
+        response.ToRGB(rgb);
+        printf("thetaD: %f -- rgb: %f %f %f\n", thetaD, rgb[0], rgb[1], rgb[2]);
+
+        EXPECT_GE(rgb[0], 0.0);
+        EXPECT_GE(rgb[1], 0.0);
+        EXPECT_GE(rgb[2], 0.0);
+    }
+}
 
 //TEST(DualScattering, AverageForwardScatteringAttenuation) {
 //
