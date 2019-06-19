@@ -23,6 +23,9 @@
 
 namespace pbrt {
 
+    static std::default_random_engine generator;
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
     // DualscatteringMaterial Method Definitions
 
     void DualscatteringMaterial::ComputeScatteringFunctions(
@@ -259,21 +262,6 @@ namespace pbrt {
                 ) / CosineSquared(thetaD);
 
         return result;
-    }
-
-    Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType * sampledType) const {
-
-        Float theta = acos(2.0 * sample.x - 1.0);
-        Float phi = 2.0 * Pi * sample.y;
-
-        Float x = sin(theta) * cos(phi);
-        Float y = sin(theta) * sin(phi);
-        Float z = cos(theta);
-
-        *wi = Vector3f(x, y, z);
-        *pdf = this->Pdf(wo, *wi);
-
-        return f(wo, *wi);
     }
 
     Spectrum DualScatteringBSDF::MG_r(Float theta, Spectrum forwardScatteringVariance) const {
@@ -597,6 +585,61 @@ namespace pbrt {
         Spectrum denom = ab + abPow3 * (2.0 * betaF + 3.0 * betaB);
 
         return factor * nom / denom;
+    }
+
+    Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType * sampledType,
+            const Scene* scene, const VisibilityTester* visibilityTester) const {
+
+        //        Float theta = acos(2.0 * sample.x - 1.0);
+        //        Float phi = 2.0 * Pi * sample.y;
+        //
+        //        Float x = sin(theta) * cos(phi);
+        //        Float y = sin(theta) * sin(phi);
+        //        Float z = cos(theta);
+        //
+        //        *wi = Vector3f(x, y, z);
+        //        *pdf = this->Pdf(wo, *wi);
+        //
+        //        return f(wo, *wi);
+
+        Sample_fMarschner(wo, wi, pdf);
+        return f(wo, wi, scene, visibilityTester)
+    }
+
+    //Spectrum UniformSample_f()
+
+    void DualScatteringBSDF::Sample_fMarschner(const Vector3f &wo, Vector3f *wi, Float* pdf) const {
+        Float thetaR, phiR;
+        ToSphericalCoords(wo, thetaR, phiR);
+        Float u[3] = {(Float) distribution(generator), (Float) distribution(generator), (Float) distribution(generator)};
+
+        Float thetaMax = .5 * Pi - fabs(thetaR / (2.0 - mAlphaR));
+
+        // Box Muller transform for sampling M
+        Float thetaS = mBetaR * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
+        if (fabs(thetaS) > thetaMax)
+            thetaS = Sign(thetaS) * thetaMax;
+
+        Float thetaH = thetaS + mAlphaR;
+        Float thetaI = 2.0 * thetaH - thetaR;
+        if (fabs(thetaI) > .5 * Pi)
+            thetaI = Sign(thetaI) * (Pi - fabs(thetaI)); // sets thetaI to [-pi/2; pi/2]
+
+        Float cosThetaI = cos(thetaI);
+
+        // Inverse CDF for N
+        Float deltaPhi = 2.0 * asin(2.0 * u[2] - 1.0);
+        Float phiI = phiR + deltaPhi;
+        *wi = Vector3f(sin(thetaI), cosThetaI * cos(phiI), cosThetaI * sin(phiI));
+        //TODO: do we need to transform wi to world?
+
+        //sample weights and pdf
+        Float denom = -.5 / Sqr(mBetaR);
+        Float M = exp(thetaS * thetaS * denom) / (mBetaR * sqrt(2.0 * Pi));
+        Float N = 2.0 * sqrt(u[2] * (1.0 - u[2]));
+        *pdf = M * N / (8.0 * cosThetaI);
+
+        printf("sampled: wi: %f %f %f -- pdf: %f\n", wi->x, wi->y, wi->z, *pdf);
     }
 
     Float DualScatteringBSDF::Pdf(const Vector3f &wo, const Vector3f & wi) const {

@@ -54,6 +54,8 @@ namespace pbrt {
     Spectrum Sqr(const Spectrum& s);
 
     Spectrum Pow3(const Spectrum& s);
+    
+    Float Sign(Float x);
 
     /**
      * Utility function to adjust a value to be positive and nonzero.

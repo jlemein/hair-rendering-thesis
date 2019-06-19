@@ -101,7 +101,8 @@ namespace pbrt {
             * @return
             */
            virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType = nullptr) const;
-
+           void Sample_fMarschner(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
+           
            /**
             * Returns the probability density function between the incoming and outgoing direction.
             * In other words, how likely is it that incoming radiance is reflected

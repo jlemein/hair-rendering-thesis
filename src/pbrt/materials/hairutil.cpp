@@ -73,6 +73,11 @@ namespace pbrt {
         return s * s*s;
     }
 
+    Float Sign(Float x) {
+        return x > 0 ? 1
+                : x < 0 ? -1 : 0;
+    }
+
     /**
      * Utility function to adjust a value to be positive and nonzero.
      * Reason for this function is that rounding errors can lead to values
