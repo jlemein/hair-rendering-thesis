@@ -38,7 +38,7 @@ namespace pbrt {
         MarschnerBSDF* marschnerBSDF = mMarschnerMaterial->CreateMarschnerBSDF(si, arena);
 
         DualScatteringBSDF* dualScatteringBSDF =
-                ARENA_ALLOC(arena, DualScatteringBSDF)(*si, mEta, marschnerBSDF,
+                ARENA_ALLOC(arena, DualScatteringBSDF)(*si, this->scene, mEta, marschnerBSDF,
                 mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT,
                 mDf, mDb, mScatterCount, mVoxelGridFileName);
 
@@ -69,7 +69,9 @@ namespace pbrt {
      * DualScatteringBSDF
      *******************************/
 
-    DualScatteringBSDF::DualScatteringBSDF(const SurfaceInteraction& si, Float eta,
+    DualScatteringBSDF::DualScatteringBSDF(const SurfaceInteraction& si,
+            const Scene* scene,
+            Float eta,
             MarschnerBSDF* marschnerBSDF,
             Float alphaR, Float alphaTT, Float alphaTRT,
             Float betaR, Float betaTT, Float betaTRT,
@@ -77,6 +79,7 @@ namespace pbrt {
             std::string voxelGridFileName)
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
     mEta(eta), mDb(db), mDf(df),
+    mScene(scene),
     mMarschnerBSDF(marschnerBSDF),
     mPosition(si.p),
     ns(si.shading.n),
@@ -136,8 +139,9 @@ namespace pbrt {
         //        const Vector3f wiWorld = LocalToWorld(wiLocal);
         //        const Vector3f woWorld = LocalToWorld(woLocal);
 
+        //printf("Infinite light count: %d %d\n", (int) scene->infiniteLights.size(), (int) this->mScene->infiniteLights.size());
         const MarschnerAngles angles(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
-        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(scene, visibilityTester, wiLocal, angles.thetaD);
+        GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(mScene, visibilityTester, wiLocal, angles.thetaD);
 
         Spectrum forwardTransmittance = gsi.transmittance;
         Spectrum Ab = BackscatteringAttenuation(angles.thetaD);
@@ -194,11 +198,13 @@ namespace pbrt {
         bool isDirectIlluminated = false;
 
         if (mScatterCount < 0.0) {
-
-            isDirectIlluminated = visibilityTester->Unoccluded(*scene);
-
             Point3f pObject = mWorldToObject(mPosition);
             Vector3f wd = LocalToWorld(wiLocal);
+
+            isDirectIlluminated = visibilityTester != 0 ?
+                    visibilityTester->Unoccluded(*scene) : mScene->IntersectP(Ray(mPosition, wd));
+
+
             const InterpolationResult interpolationResult = this->mLookup->getVdbReader()->interpolateToInfinity(pObject, -wd);
             scatterCount = interpolationResult.scatterCount;
         } else {
@@ -285,64 +291,10 @@ namespace pbrt {
 
     //! Equation 6 in dual scattering approximation
 
-    //    Spectrum DualScatteringBSDF::AverageForwardScatteringAttenuation(Float thetaD) const {
-    //
-    //        Spectrum sum(.0);
-    //        MyRandomSampler sampler(0.0, 1.0);
-    //
-    //        std::string outFile = "output/lookupdata/af_attenuation_" + std::to_string(thetaD) + ".txt";
-    //        std::ofstream out(outFile.c_str());
-    //        if (out.fail()) {
-    //            std::cout << "ERROR\n";
-    //            exit(1);
-    //        }
-    //
-    //        Float cosThetaD = std::max(cos(thetaD), .0);
-    //
-    //        const int SAMPLES = 100;
-    //        for (int i = 0; i < SAMPLES; ++i) {
-    //            Vector3f wr = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
-    //            //            Vector3f wr = SampleFrontHemisphere(Point2f(sampler.next(), sampler.next()));
-    //
-    //            Float thetaR, phiR;
-    //            ToSphericalCoords(wr, thetaR, phiR);
-    //            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
-    //            Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
-    //
-    //            Float phiI;
-    //            ToSphericalCoords(wi, thetaI, phiI);
-    //
-    //            Spectrum r = 2.0 * mMarschnerBSDF->f(wr, wi) * cosThetaD;
-    //            out << thetaI << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
-    //
-    //            sum += r;
-    //        }
-    //
-    //
-    //        sum /= static_cast<Float> (SAMPLES);
-    //
-    //
-    //        out.close();
-    //        std::ofstream outIntegral("output/lookupdata/af.txt", std::ios_base::app);
-    //        outIntegral << thetaD << " " << sum.y() << std::endl;
-    //        outIntegral.close();
-    //
-    //        CHECK_GE(sum.y(), 0.0);
-    //
-    //        return sum;
-    //    }
-
     Spectrum DualScatteringBSDF::AverageForwardScatteringAttenuation(Float thetaD) const {
         // this method is just for trying to integrate around sphere = 1
         Spectrum sum(.0);
         MyRandomSampler sampler(0.0, 1.0);
-
-        //        std::string outFile = "output/lookupdata/af_attenuation_" + std::to_string(thetaD) + ".txt";
-        //        std::ofstream out(outFile.c_str());
-        //        if (out.fail()) {
-        //            std::cout << "ERROR\n";
-        //            exit(1);
-        //        }
 
         Float cosThetaD = std::max(cos(thetaD), .0);
 
@@ -359,20 +311,12 @@ namespace pbrt {
             ToSphericalCoords(wi, thetaD, phiI);
 
             Spectrum r = 2.0 * Pi * mMarschnerBSDF->f(wr, wi) * cosThetaD;
-            //out << thetaD << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
 
             sum += r;
         }
 
 
         sum /= static_cast<Float> (SAMPLES);
-
-
-        //out.close();
-        //        std::ofstream outIntegral("output/lookupdata/af.txt", std::ios_base::app);
-        //        outIntegral << thetaD << " " << sum.y() << std::endl;
-        //        outIntegral.close();
-
         CHECK_GE(sum.y(), 0.0);
 
         return sum;
@@ -385,38 +329,21 @@ namespace pbrt {
         Float thetaR, phiR;
         MyRandomSampler sampler(0.0, 1.0);
 
-        //        std::string outFile = "output/lookupdata/ab_attenuation_" + std::to_string(thetaD) + ".txt";
-        //        std::ofstream out(outFile.c_str());
-        //        if (out.fail()) {
-        //            std::cout << "ERROR\n";
-        //            exit(1);
-        //        }
-
-        const int SAMPLES = 1000;
+        const int SAMPLES = 2000;
         for (int i = 0; i < SAMPLES; ++i) {
 
             const Vector3f woBackward = SampleBackHemisphere(Point2f(sampler.next(), sampler.next()));
             ToSphericalCoords(woBackward, thetaR, phiR);
 
             // -> thetaI = thetaR - 2.0 * thetaD;
-            Float thetaI = thetaD; //GetThetaIFromDifferenceAngle(thetaD, thetaR);
+            Float thetaI = GetThetaIFromDifferenceAngle(thetaD, thetaR);
             const Vector3f wi = SampleBackHemisphere(thetaI, sampler.next());
 
             // remove below later
             Float phiI;
             ToSphericalCoords(wi, thetaI, phiI);
-            Spectrum r = mMarschnerBSDF->f(woBackward, wi) * cos(thetaD);
-            //            out << thetaI << " " << phiI << " " << thetaR << " " << phiR << " " << r.y() << std::endl;
-            // -- stop removing
-
             integral += mMarschnerBSDF->f(woBackward, wi) * cos(thetaD);
         }
-
-        //        out.close();
-
-        //        std::ofstream outIntegral("output/lookupdata/ab.txt", std::ios_base::app);
-        //        outIntegral << thetaD << " " << 2.0 * Pi * integral.y() / static_cast<Float> (SAMPLES) << std::endl;
-        //        outIntegral.close();
 
         return 2.0 * Pi * integral / static_cast<Float> (SAMPLES);
     }
@@ -587,8 +514,7 @@ namespace pbrt {
         return factor * nom / denom;
     }
 
-    Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType * sampledType,
-            const Scene* scene, const VisibilityTester* visibilityTester) const {
+    Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType * sampledType) const {
 
         //        Float theta = acos(2.0 * sample.x - 1.0);
         //        Float phi = 2.0 * Pi * sample.y;
@@ -603,7 +529,9 @@ namespace pbrt {
         //        return f(wo, *wi);
 
         Sample_fMarschner(wo, wi, pdf);
-        return f(wo, wi, scene, visibilityTester)
+        //VisibilityTester vis(mPosition, mPosition + *wi * Infinity);
+
+        return f(wo, *wi, 0, 0); //&vis);
     }
 
     //Spectrum UniformSample_f()
@@ -639,12 +567,24 @@ namespace pbrt {
         Float N = 2.0 * sqrt(u[2] * (1.0 - u[2]));
         *pdf = M * N / (8.0 * cosThetaI);
 
-        printf("sampled: wi: %f %f %f -- pdf: %f\n", wi->x, wi->y, wi->z, *pdf);
+        //printf("sampled: wi: %f %f %f -- pdf: %f\n", wi->x, wi->y, wi->z, *pdf);
     }
 
     Float DualScatteringBSDF::Pdf(const Vector3f &wo, const Vector3f & wi) const {
 
-        return PiOver4;
+        MarschnerAngles angles = MarschnerAngles(wo, wi, mEta, mMarschnerBSDF->getEccentricity());
+        Float cosThetaI = cos(angles.thetaI);
+        Float thetaS = angles.thetaH - mAlphaR;
+
+        Vector3f Rperp = Vector3f(.0, wo.y, wo.z);
+        Rperp /= Rperp.Length();
+        Vector3f Lperp = Vector3f(0.0, wi.y, wi.z);
+        Lperp /= Lperp.Length();
+
+        Float denom = -.5 / Sqr(mBetaR);
+        Float M = exp(thetaS * thetaS * denom) / (mBetaR * sqrt(2.0 * Pi));
+        Float N = sqrt(.5 * (1.0 + Dot(Rperp, Lperp)));
+        return M * N / (8.0 * cosThetaI);
     }
 
     std::string DualScatteringBSDF::ToString() const {

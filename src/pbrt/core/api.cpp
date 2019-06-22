@@ -559,8 +559,7 @@ namespace pbrt {
 
     STAT_COUNTER("Scene/Materials created", nMaterialsCreated);
 
-    std::shared_ptr<Material> MakeMaterial(const std::string &name,
-            const TextureParams &mp) {
+    std::shared_ptr<Material> MakeMaterial(const std::string &name, const TextureParams &mp) {
         Material *material = nullptr;
         if (name == "" || name == "none")
             return nullptr;
@@ -1683,7 +1682,9 @@ namespace pbrt {
         std::shared_ptr<Primitive> accelerator =
                 MakeAccelerator(AcceleratorName, std::move(primitives), AcceleratorParams);
         if (!accelerator) accelerator = std::make_shared<BVHAccel>(primitives);
-        Scene *scene = new Scene(accelerator, lights);
+
+        Scene* scene = new Scene(accelerator, lights);
+
         // Erase primitives and lights from _RenderOptions_
         primitives.clear();
         lights.clear();

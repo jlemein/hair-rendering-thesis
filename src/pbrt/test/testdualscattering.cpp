@@ -28,7 +28,7 @@ TEST(DualScattering, AverageBackwardScatteringAttenuation) {
             alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
             hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
 
-    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si,
+    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
             eta, marschner,
             alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
             0.7, 0.7, -1.0, "unnamed.vdb");

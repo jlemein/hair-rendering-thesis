@@ -22,6 +22,8 @@ Float r() {
 }
 
 void plotResponse(DualScatteringBSDF* bsdf, std::string fileName, int nSamples = 1000);
+void plotAbAf(DualScatteringBSDF* bsdf, std::string fileName, int nSamples = 1000);
+
 void createThetaIData(DualScatteringBSDF* bsdf, std::string outFileName, int nSamples = 1000);
 void createPhiData(DualScatteringBSDF* bsdf, std::string outFileName, int nSamples = 1000);
 
@@ -55,7 +57,7 @@ DualScatteringBSDF* createDualScattering(Spectrum sigmaA, Float scatterCount,
 
     Float df = 0.7, db = 0.7;
 
-    return new DualScatteringBSDF(si,
+    return new DualScatteringBSDF(si, (Scene*) 0,
             eta, marschner,
             alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
             df, db, scatterCount, "unnamed.vdb");
@@ -63,14 +65,17 @@ DualScatteringBSDF* createDualScattering(Spectrum sigmaA, Float scatterCount,
 
 const Float rgbBrunette[3] = {0.432, 0.612, 0.98};
 const Float rgbBlonde[3] = {0.15, 0.20, 0.30};
+const Float rgbWhite[3] = {0.0, 0.0, 0.0};
 
 const Spectrum BLONDE_HAIR = Spectrum::FromRGB(rgbBlonde);
 const Spectrum BRUNETTE_HAIR = Spectrum::FromRGB(rgbBrunette);
+const Spectrum WHITE_HAIR = Spectrum::FromRGB(rgbWhite);
 
 int main(int argc, char** argv) {
 
     DualScatteringBSDF* blonde0 = createDualScattering(BLONDE_HAIR, 0);
     plotResponse(blonde0, "blonde0.data", 1000);
+    plotAbAf(blonde0, "blonde_abaf.data");
     //    DualScatteringLookup::Reset();
 
     DualScatteringBSDF* blonde1 = createDualScattering(BLONDE_HAIR, 1);
@@ -83,6 +88,7 @@ int main(int argc, char** argv) {
 
     DualScatteringBSDF* brunette0 = createDualScattering(BRUNETTE_HAIR, 0, 3.0, 14, 8, 22);
     plotResponse(brunette0, "brunette0.data", 1000);
+    plotAbAf(brunette0, "brunette_abaf.data");
     //    DualScatteringLookup::Reset();
 
     DualScatteringBSDF* brunette1 = createDualScattering(BRUNETTE_HAIR, 1, 3.0, 14, 8, 22);
@@ -91,6 +97,10 @@ int main(int argc, char** argv) {
 
     DualScatteringBSDF* brunette2 = createDualScattering(BRUNETTE_HAIR, 2, 3.0, 14, 8, 22);
     plotResponse(brunette2, "brunette2.data", 1000);
+    DualScatteringLookup::Reset();
+
+    DualScatteringBSDF* white = createDualScattering(WHITE_HAIR, 0, 3.0, 14, 8, 22);
+    plotAbAf(white, "white_abaf.data");
     DualScatteringLookup::Reset();
 
     //    int sampleCount = argc >= 2 ? std::stoi(std::string(argv[1])) : 1000;
@@ -107,6 +117,22 @@ int main(int argc, char** argv) {
 
 
     return 0;
+}
+
+void plotAbAf(DualScatteringBSDF* bsdf, std::string fileName, int nSamples) {
+    std::ofstream out(fileName.c_str());
+    if (out.fail()) {
+        std::cout << "Failed to open filename " << fileName << " for writing ab and af data\n";
+        return;
+    }
+
+    for (int i = 0; i < nSamples; ++i) {
+        Float thetaD = -.5 * Pi + (i / (nSamples - 1.0)) * Pi;
+        Float af = bsdf->AverageForwardScatteringAttenuation(thetaD).y();
+        Float ab = bsdf->AverageBackwardScatteringAttenuation(thetaD).y();
+        out << thetaD << " " << ab << " " << af << std::endl;
+    }
+    out.close();
 }
 
 void plotResponse(DualScatteringBSDF* bsdf, std::string fileName, int nSamples) {

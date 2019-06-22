@@ -59,7 +59,8 @@ namespace pbrt {
 
     class DualScatteringBSDF : public BxDF {
     public:
-        DualScatteringBSDF(const SurfaceInteraction& si, Float eta,
+        DualScatteringBSDF(const SurfaceInteraction& si, const Scene* scene,
+                Float eta,
                 MarschnerBSDF* marschnerBSDF,
                 Float alphaR, Float alphaTT, Float alphaTRT,
                 Float betaR, Float betaTT, Float betaTRT,
@@ -133,6 +134,7 @@ namespace pbrt {
         Spectrum AverageBackwardScatteringBeta(Float thetaD) const;
 
     private:
+        const Scene* mScene = 0;
         MarschnerBSDF* mMarschnerBSDF;
         Float mEta;
         Point3f mPosition;

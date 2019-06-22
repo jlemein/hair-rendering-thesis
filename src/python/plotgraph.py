@@ -15,6 +15,20 @@ def readData(fileName):
             y.append(float(l[0]))
     return y
 
+def readAbAf(fileName):
+    thetaD = []
+    ab = []
+    af = []
+    with open(fileName) as f:
+        lines = f.read().splitlines()
+        for line in lines:
+            l = line.split(" ")
+            thetaD.append(float(l[0]))
+            ab.append(float(l[1]))
+            af.append(float(l[2]))
+    return thetaD, ab, af
+
+
 def readData2D(fileName):
     data = []
     with open(fileName) as f:
@@ -135,49 +149,26 @@ ax.plot(phis, blonde2[50, :], ':', color="orange", label='n=2')
 ax.legend()
 fig.savefig("absorption_after_scatter_amount.pdf", dpi=150)
 
-
-
-# fig = plt.figure(4)
-# fig.canvas.set_window_title('Effect of eccentricity')
-# ax = fig.add_subplot(1, 2, 2)
-# ax.legend()
-# ax.plot(phis, brunette_ecc085[50, :], "-", color="brown", label='n=0')
-# ax.plot(phis, brunette_ecc093[50, :], "--", color="brown", label='n=1')
-# ax.plot(phis, brunette_ecc100[50, :], ":", color="brown", label='n=2')
-# ax.plot(phis, blonde_ecc085[50, :], "-", color="orange", label='n=0')
-# ax.plot(phis, blonde_ecc093[50, :], '--', color="orange", label='n=1')
-# ax.plot(phis, blonde_ecc100[50, :], ':', color="orange", label='n=2')
-
-
-
-#plotFigures(fig, thetas, phis, blonde1)
-
-# axs0.set_zlabel('y')
-#axs0.view_init(60, 35)
-
-# axs0 = fig.add_subplot(1, 2, 1)
-# axs0.set_xlabel(r'$\theta_i$')
-# axs0.set_ylabel('response')
-# # axs0.plot(thetas, y0);
-# axs0.plot(thetas, y1);
-# axs0.plot(thetas, y2);
-# axs0.plot(thetas, y4);
-
-# axs1 = fig.add_subplot(1, 2, 2)
-# axs1.set_xlabel(r'$\phi_i$')
-# axs1.set_ylabel('response')
-# # axs0.plot(phis, phi0);
-# #axs1.plot(phis, phi1);
-# axs1.plot(phis, phi2);
-# axs1.plot(phis, phi4);
-
-
-# # axs0 = fig.add_subplot(1, 1, 1, projection='3d')
-# # axs0.plot_trisurf(thetas, phis, y, cmap='viridis', edgecolor='none');
-# # axs0.set_xlabel(r'$\theta_r$')
-# # axs0.set_ylabel(r'$\phi_r$')
-# # axs0.set_zlabel('y')
-# # axs0.view_init(60, 35)
+#
+# Displaying average forward and backward scattering attentuation
+#
+thetaD, blonde_ab, blonde_af = readAbAf("blonde_abaf.data")
+thetaD, brunette_ab, brunette_af = readAbAf("brunette_abaf.data")
+thetaD, white_ab, white_af = readAbAf("white_abaf.data")
+fig = plt.figure(4)
+fig.canvas.set_window_title('Average forward/backward scattering attenuation')
+ax = fig.add_subplot(1, 1, 1)
+ax.set_ylabel(r'Transmittance')
+ax.set_xlabel(r'Difference angle ($\theta_d$)')
+ax.plot(thetaD, blonde_ab, "-", color="orange", label=r"$a_b$ Blonde hair")
+ax.plot(thetaD, blonde_af, "-", color="yellow", label=r"$a_f$ Blonde hair")
+ax.plot(thetaD, brunette_ab, "-", color="brown", label=r"$a_b$ Brown hair")
+ax.plot(thetaD, brunette_af, "-", color="red", label=r"$a_f$ Brown hair")
+ax.plot(thetaD, white_ab, "-", color="cyan", label=r"$a_b$ No absorption")
+ax.plot(thetaD, white_af, "-", color="blue", label=r"$a_f$ No absorption")
+ax.plot(thetaD, np.cos(np.array(thetaD)), "-", color="black", label=r"$\cos \theta_d$")
+ax.legend()
+fig.savefig("absorption_after_scatter_amount.pdf", dpi=150)
 
 
 
