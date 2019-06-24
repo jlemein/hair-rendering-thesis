@@ -171,6 +171,7 @@ namespace pbrt {
         }
 
         CHECK_GE(F.y(), 0.0);
+        CHECK(!F.HasNaNs());
         return F * cos(angles.thetaI);
     }
 
@@ -529,9 +530,11 @@ namespace pbrt {
         //        return f(wo, *wi);
 
         Sample_fMarschner(wo, wi, pdf);
-        //VisibilityTester vis(mPosition, mPosition + *wi * Infinity);
 
-        return f(wo, *wi, 0, 0); //&vis);
+
+        //VisibilityTester vis(mPosition, mPosition + *wi * Infinity);
+        Spectrum L = f(wo, *wi, 0, 0); //&vis);
+        return L;
     }
 
     //Spectrum UniformSample_f()
@@ -541,31 +544,50 @@ namespace pbrt {
         ToSphericalCoords(wo, thetaR, phiR);
         Float u[3] = {(Float) distribution(generator), (Float) distribution(generator), (Float) distribution(generator)};
 
-        Float thetaMax = .5 * Pi - fabs(thetaR / (2.0 - mAlphaR));
+        Float thetaMax = .5 * Pi - fabs(.5 * thetaR - mAlphaR);
 
         // Box Muller transform for sampling M
         Float thetaS = mBetaR * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
-        if (fabs(thetaS) > thetaMax)
+        if (fabs(thetaS) > thetaMax) {
             thetaS = Sign(thetaS) * thetaMax;
+        }
 
         Float thetaH = thetaS + mAlphaR;
         Float thetaI = 2.0 * thetaH - thetaR;
-        if (fabs(thetaI) > .5 * Pi)
+        if (fabs(thetaI) > .5 * Pi) {
             thetaI = Sign(thetaI) * (Pi - fabs(thetaI)); // sets thetaI to [-pi/2; pi/2]
+
+        }
+        CHECK_GE(thetaI, -.5 * Pi);
+        CHECK_LE(thetaI, .5 * Pi);
 
         Float cosThetaI = cos(thetaI);
 
         // Inverse CDF for N
         Float deltaPhi = 2.0 * asin(2.0 * u[2] - 1.0);
         Float phiI = phiR + deltaPhi;
-        *wi = Vector3f(sin(thetaI), cosThetaI * cos(phiI), cosThetaI * sin(phiI));
+
+        while (phiI > Pi) phiI -= 2 * Pi;
+        while (phiI < -Pi) phiI += 2 * Pi;
+
+
+
+        CHECK_GE(phiI, -Pi);
+        CHECK_LE(phiI, Pi);
+        //*wi = Vector3f(sin(thetaI), cosThetaI * cos(phiI), cosThetaI * sin(phiI));
+
+        // flipped y and z
+        *wi = Vector3f(sin(thetaI), cosThetaI * sin(phiI), cosThetaI * cos(phiI));
         //TODO: do we need to transform wi to world?
 
         //sample weights and pdf
-        Float denom = -.5 / Sqr(mBetaR);
-        Float M = exp(thetaS * thetaS * denom) / (mBetaR * sqrt(2.0 * Pi));
+        Float c = 1.0 / (mBetaR * sqrt(2.0 * Pi));
+        Float M = c * exp(-.5 * Sqr(thetaS / mBetaR));
+        CHECK_GE(M, 0.0);
+
         Float N = 2.0 * sqrt(u[2] * (1.0 - u[2]));
         *pdf = M * N / (8.0 * cosThetaI);
+        CHECK_GE(*pdf, 0.0);
 
         //printf("sampled: wi: %f %f %f -- pdf: %f\n", wi->x, wi->y, wi->z, *pdf);
     }
@@ -585,6 +607,10 @@ namespace pbrt {
         Float M = exp(thetaS * thetaS * denom) / (mBetaR * sqrt(2.0 * Pi));
         Float N = sqrt(.5 * (1.0 + Dot(Rperp, Lperp)));
         return M * N / (8.0 * cosThetaI);
+    }
+
+    void MIS_Pdf() {
+
     }
 
     std::string DualScatteringBSDF::ToString() const {

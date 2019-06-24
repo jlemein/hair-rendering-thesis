@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  22 JUN 2019 15:09
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  24 JUN 2019 23:34
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1203,70 +1203,87 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for U+msa on input line 9.
+LaTeX Font Info:    Try loading font information for U+msa on input line 14.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 9.
+LaTeX Font Info:    Try loading font information for U+msb on input line 14.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 
-LaTeX Warning: Citation `companion' on page 1 undefined on input line 22.
-
-
-LaTeX Warning: Citation `sadeghi:10' on page 1 undefined on input line 26.
-
-
-LaTeX Warning: Citation `pixarmemo' on page 1 undefined on input line 32.
-
-
-LaTeX Warning: Citation `pixarmemo' on page 1 undefined on input line 32.
-
-
-LaTeX Warning: Citation `box-muller' on page 1 undefined on input line 32.
-
-
-LaTeX Warning: Citation `pixarmemo' on page 1 undefined on input line 39.
+LaTeX Warning: Citation `pbrtv3' on page 1 undefined on input line 20.
 
 [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
-
-LaTeX Warning: Reference `a' on page 2 undefined on input line 63.
+Overfull \hbox (6.5212pt too wide) in paragraph at lines 46--46
+[]\OT1/cmr/bx/n/14.4 Identifiying im-por-tance sam-pling func-tions for Dual
+ []
 
 [2]
+Overfull \hbox (24.81535pt too wide) in paragraph at lines 68--68
+[]\OT1/cmr/bx/n/12 Importance sam-pling the lon-gi-tu-di-nal equa-tions from Ma
+rschner
+ []
 
-LaTeX Warning: Citation `sadeghi:10' on page 3 undefined on input line 80.
+
+LaTeX Warning: Citation `pixarmemo' on page 3 undefined on input line 77.
+
+
+LaTeX Warning: Citation `pixarmemo' on page 3 undefined on input line 77.
+
+
+LaTeX Warning: Citation `box-muller' on page 3 undefined on input line 77.
 
 [3]
 
-LaTeX Warning: Reference `inverse_Nr' on page 4 undefined on input line 113.
+LaTeX Warning: Citation `sadeghi:10' on page 4 undefined on input line 102.
 
 
-<average_forward_backward_scattering_attenuation.png, id=22, 841.2228pt x 575.9
-919pt>
+LaTeX Warning: Citation `pixarmemo' on page 4 undefined on input line 110.
+
+
+LaTeX Warning: Citation `sadeghi:10' on page 4 undefined on input line 129.
+
+[4] [5]
+
+LaTeX Warning: Reference `inverse_Nr' on page 6 undefined on input line 162.
+
+[6]
+<average_forward_backward_scattering_attenuation.png, id=32, 835.4412pt x 460.3
+599pt>
 File: average_forward_backward_scattering_attenuation.png Graphic file (type pn
 g)
  <use average_forward_backward_scattering_attenuation.png>
 Package pdftex.def Info: average_forward_backward_scattering_attenuation.png us
-ed on input line 128.
-(pdftex.def)             Requested size: 390.0pt x 267.03366pt.
- [4] [5 <./average_forward_backward_scattering_attenuation.png>] (./dualscatter
-ing_mis.bbl)
-[6] (./dualscattering_mis.aux)
+ed on input line 183.
+(pdftex.def)             Requested size: 390.0pt x 214.90105pt.
+
+Underfull \vbox (badness 2134) has occurred while \output is active []
+
+ [7 <./average_forward_backward_scattering_attenuation.png>]
+<curly_blonde_dualscattering.png, id=39, 1027.84pt x 1027.84pt>
+File: curly_blonde_dualscattering.png Graphic file (type png)
+
+<use curly_blonde_dualscattering.png>
+Package pdftex.def Info: curly_blonde_dualscattering.png used on input line 217
+.
+(pdftex.def)             Requested size: 390.0pt x 390.00296pt.
+ (./dualscattering_mis.bbl) [8] [9 <./curly_blonde_dualscattering.png (PNG copy
+)>] (./dualscattering_mis.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 9639 strings out of 493029
- 175833 string characters out of 6136234
- 209466 words of memory out of 5000000
- 13124 multiletter control sequences out of 15000+600000
- 9237 words of font info for 36 fonts, out of 8000000 for 9000
+ 9648 strings out of 493029
+ 176120 string characters out of 6136234
+ 211494 words of memory out of 5000000
+ 13132 multiletter control sequences out of 15000+600000
+ 9842 words of font info for 38 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  40i,16n,42p,10414b,275s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
@@ -1278,11 +1295,12 @@ mf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist
 type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
 blic/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
 fonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
-cm/cmsy8.pfb>
-Output written on dualscattering_mis.pdf (6 pages, 270571 bytes).
+cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy
+8.pfb>
+Output written on dualscattering_mis.pdf (9 pages, 824987 bytes).
 PDF statistics:
- 66 PDF objects out of 1000 (max. 8388607)
- 45 compressed objects within 1 object stream
+ 82 PDF objects out of 1000 (max. 8388607)
+ 56 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 6 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 11 words of extra memory for PDF output out of 10000 (max. 10000000)
 
