@@ -58,6 +58,7 @@
 #include "integrators/directlighting.h"
 #include "integrators/mlt.h"
 #include "integrators/ao.h"
+#include "integrators/mis.h"
 #include "integrators/path.h"
 #include "integrators/sppm.h"
 #include "integrators/volpath.h"
@@ -1713,6 +1714,8 @@ namespace pbrt {
                 CreateDirectLightingIntegrator(IntegratorParams, sampler, camera);
         else if (IntegratorName == "path")
             integrator = CreatePathIntegrator(IntegratorParams, sampler, camera);
+        else if (IntegratorName == "mis")
+            integrator = CreateMISIntegrator(IntegratorParams, sampler, camera);
         else if (IntegratorName == "volpath")
             integrator = CreateVolPathIntegrator(IntegratorParams, sampler, camera);
         else if (IntegratorName == "bdpt") {
