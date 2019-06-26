@@ -80,49 +80,56 @@ namespace pbrt {
         virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const;
         virtual Spectrum f(const Vector3f &wo, const Vector3f &wi, const Scene* scene, const VisibilityTester* visibilityTester) const;
 
-           /**
-            * @override
-            * Here occlusion is handled. It is in the material description, because some materials have approximations to the amount
-            * of global scattering coming at a point (as the dual scattering approximation has).
-            */
-           virtual Spectrum Li(const Vector3f& wi, const Spectrum& Li, const Scene& scene, const VisibilityTester& visibilityTester) const;
+        /**
+         * @override
+         * Here occlusion is handled. It is in the material description, because some materials have approximations to the amount
+         * of global scattering coming at a point (as the dual scattering approximation has).
+         */
+        virtual Spectrum Li(const Vector3f& wi, const Spectrum& Li, const Scene& scene, const VisibilityTester& visibilityTester) const;
 
-           /**
-            * Returns the value of the distribution function for the given pair of directions.
-            *
-            * Used for handling scattering that is described by delta distributions
-            * as well as for randomly sampling directions from BxDFs that scatter
-            * light along multiple directions.
-            *
-            * @param wo outgoing direction
-            * @param wi incoming direction
-            * @param sample
-            * @param pdf
-            * @param sampledType
-            * @return
-            */
-           virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType = nullptr) const;
-           void Sample_fMarschner(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
+        /**
+         * Returns the value of the distribution function for the given pair of directions.
+         *
+         * Used for handling scattering that is described by delta distributions
+         * as well as for randomly sampling directions from BxDFs that scatter
+         * light along multiple directions.
+         *
+         * @param wo outgoing direction
+         * @param wi incoming direction
+         * @param sample
+         * @param pdf
+         * @param sampledType
+         * @return
+         */
+        virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType = nullptr) const;
+        Spectrum UniformSample_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
+        Spectrum Sample_MarschnerR_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
+        Spectrum Sample_MarschnerTT_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
+        Spectrum Sample_MarschnerTRT_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
            
-           /**
-            * Returns the probability density function between the incoming and outgoing direction.
-            * In other words, how likely is it that incoming radiance is reflected
-            * (or refracted) towards the outgoing direction.
-            * @param wo
-            * @param wi
-            * @return 
-            */       
-           virtual Float Pdf(const Vector3f &wo, const Vector3f &wi) const;
+        /**
+         * Returns the probability density function between the incoming and outgoing direction.
+         * In other words, how likely is it that incoming radiance is reflected
+         * (or refracted) towards the outgoing direction.
+         * @param wo
+         * @param wi
+         * @return 
+         */       
+        virtual Float Pdf(const Vector3f &wo, const Vector3f &wi) const;
+        Float UniformPdf(const Vector3f &wo, const Vector3f &wi) const;
+        Float PdfMarschnerR(const Vector3f &wo, const Vector3f &wi) const;
+        Float PdfMarschnerTT(const Vector3f &wo, const Vector3f &wi) const;
+        Float PdfMarschnerTRT(const Vector3f &wo, const Vector3f &wi) const;
 
-           /**
-            * 
-            * @return 
-            */
-           virtual std::string ToString() const;
+        /**
+         * 
+         * @return 
+         */
+        virtual std::string ToString() const;
 
-           // Not implemented for now
-           //virtual Spectrum rho(const Vector3f &wo, int nSamples, const Point2f *samples) const;
-           //virtual Spectrum rho(int nSamples, const Point2f *samples1, const Point2f *samples2) const;
+        // Not implemented for now
+        //virtual Spectrum rho(const Vector3f &wo, int nSamples, const Point2f *samples) const;
+        //virtual Spectrum rho(int nSamples, const Point2f *samples1, const Point2f *samples2) const;
 
             // expensive functions
         Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;

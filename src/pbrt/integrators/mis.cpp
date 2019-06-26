@@ -24,7 +24,26 @@ namespace pbrt {
             Sampler &sampler, MemoryArena &arena,
             int depth) const {
 
-        return Spectrum(.5);
+        Spectrum L = .0;
+        SurfaceInteraction isect;
+
+        //while (depth < this->maxDepth) {
+        if (!scene.Intersect(ray, &isect)) {
+            //TODO: Add emitted light
+            return L;
+        }
+
+        isect.ComputeScatteringFunctions(ray, arena);
+        for (const auto& light : scene.lights) {
+            Vector3f wi;
+            Float pdf;
+            VisibilityTester vis;
+            L += light->Sample_Li(isect, sampler.Get2D(), &wi, &pdf, &vis);
+        }
+
+        //}
+
+        return L / scene.lights.size();
     }
 
     MISIntegrator* CreateMISIntegrator(const ParamSet &params,

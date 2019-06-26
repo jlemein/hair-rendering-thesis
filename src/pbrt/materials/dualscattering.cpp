@@ -125,7 +125,7 @@ namespace pbrt {
     }
 
     Spectrum DualScatteringBSDF::f(const Vector3f &wo, const Vector3f &wi) const {
-        return Spectrum(.0);
+        return f(wo, wi, 0, 0);
     }
 
     Spectrum DualScatteringBSDF::Li(const Vector3f& wi, const Spectrum& Li, const Scene& scene, const VisibilityTester& visibilityTester) const {
@@ -139,7 +139,6 @@ namespace pbrt {
         //        const Vector3f wiWorld = LocalToWorld(wiLocal);
         //        const Vector3f woWorld = LocalToWorld(woLocal);
 
-        //printf("Infinite light count: %d %d\n", (int) scene->infiniteLights.size(), (int) this->mScene->infiniteLights.size());
         const MarschnerAngles angles(woLocal, wiLocal, mEta, this->mMarschnerBSDF->getEccentricity());
         GlobalScatteringInformation gsi = GatherGlobalScatteringInformation(mScene, visibilityTester, wiLocal, angles.thetaD);
 
@@ -172,7 +171,8 @@ namespace pbrt {
 
         CHECK_GE(F.y(), 0.0);
         CHECK(!F.HasNaNs());
-        return F * cos(angles.thetaI);
+
+        return F * std::fabs(cos(angles.thetaI));
     }
 
     std::once_flag flag1;
@@ -516,30 +516,34 @@ namespace pbrt {
     }
 
     Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType * sampledType) const {
+        Spectrum L = .0;
+        if (sample.x < 0.5) {
+            L = Sample_MarschnerR_f(wo, wi, pdf);
+        } else {
+            L = UniformSample_f(wo, wi, pdf);
+        }
 
-        //        Float theta = acos(2.0 * sample.x - 1.0);
-        //        Float phi = 2.0 * Pi * sample.y;
-        //
-        //        Float x = sin(theta) * cos(phi);
-        //        Float y = sin(theta) * sin(phi);
-        //        Float z = cos(theta);
-        //
-        //        *wi = Vector3f(x, y, z);
-        //        *pdf = this->Pdf(wo, *wi);
-        //
-        //        return f(wo, *wi);
+        *pdf = Pdf(wo, *wi);
 
-        Sample_fMarschner(wo, wi, pdf);
-
-
-        //VisibilityTester vis(mPosition, mPosition + *wi * Infinity);
-        Spectrum L = f(wo, *wi, 0, 0); //&vis);
         return L;
     }
 
-    //Spectrum UniformSample_f()
+    Spectrum DualScatteringBSDF::UniformSample_f(const Vector3f &wo, Vector3f *wi, Float* pdf) const {
+        Float u[2] = {(Float) distribution(generator), (Float) distribution(generator)};
+        Float theta = acos(2.0 * u[0] - 1.0);
+        Float phi = 2.0 * Pi * u[1];
 
-    void DualScatteringBSDF::Sample_fMarschner(const Vector3f &wo, Vector3f *wi, Float* pdf) const {
+        Float x = sin(theta) * cos(phi);
+        Float y = sin(theta) * sin(phi);
+        Float z = cos(theta);
+
+        *wi = Vector3f(x, y, z);
+        *pdf = PiOver4;
+
+        return f(wo, *wi);
+    }
+
+    Spectrum DualScatteringBSDF::Sample_MarschnerR_f(const Vector3f &wo, Vector3f *wi, Float* pdf) const {
         Float thetaR, phiR;
         ToSphericalCoords(wo, thetaR, phiR);
         Float u[3] = {(Float) distribution(generator), (Float) distribution(generator), (Float) distribution(generator)};
@@ -570,8 +574,6 @@ namespace pbrt {
         while (phiI > Pi) phiI -= 2 * Pi;
         while (phiI < -Pi) phiI += 2 * Pi;
 
-
-
         CHECK_GE(phiI, -Pi);
         CHECK_LE(phiI, Pi);
         //*wi = Vector3f(sin(thetaI), cosThetaI * cos(phiI), cosThetaI * sin(phiI));
@@ -589,13 +591,27 @@ namespace pbrt {
         *pdf = M * N / (8.0 * cosThetaI);
         CHECK_GE(*pdf, 0.0);
 
-        //printf("sampled: wi: %f %f %f -- pdf: %f\n", wi->x, wi->y, wi->z, *pdf);
+        return f(wo, *wi);
     }
 
     Float DualScatteringBSDF::Pdf(const Vector3f &wo, const Vector3f & wi) const {
+        Float pdf = .0;
+        pdf += 0.5 * UniformPdf(wo, wi);
+        pdf += 0.5 * PdfMarschnerR(wo, wi);
+        pdf += PdfMarschnerTT(wo, wi);
+        pdf += PdfMarschnerTRT(wo, wi);
 
+        CHECK_GE(pdf, 0.0);
+        return pdf;
+    }
+
+    Float DualScatteringBSDF::UniformPdf(const Vector3f &wo, const Vector3f& wi) const {
+        return PiOver4;
+    }
+
+    Float DualScatteringBSDF::PdfMarschnerR(const Vector3f &wo, const Vector3f & wi) const {
         MarschnerAngles angles = MarschnerAngles(wo, wi, mEta, mMarschnerBSDF->getEccentricity());
-        Float cosThetaI = cos(angles.thetaI);
+        Float cosThetaI = std::max(1e-5, cos(angles.thetaI));
         Float thetaS = angles.thetaH - mAlphaR;
 
         Vector3f Rperp = Vector3f(.0, wo.y, wo.z);
@@ -605,12 +621,19 @@ namespace pbrt {
 
         Float denom = -.5 / Sqr(mBetaR);
         Float M = exp(thetaS * thetaS * denom) / (mBetaR * sqrt(2.0 * Pi));
-        Float N = sqrt(.5 * (1.0 + Dot(Rperp, Lperp)));
-        return M * N / (8.0 * cosThetaI);
+        Float N = sqrt(std::max(0.0, .5 * (1.0 + Dot(Rperp, Lperp))));
+
+        Float pdf = M * N / (8.0 * cosThetaI);
+        CHECK_GE(pdf, 0.0);
+        return pdf;
     }
 
-    void MIS_Pdf() {
+    Float DualScatteringBSDF::PdfMarschnerTT(const Vector3f &wo, const Vector3f & wi) const {
+        return 0.0;
+    }
 
+    Float DualScatteringBSDF::PdfMarschnerTRT(const Vector3f &wo, const Vector3f & wi) const {
+        return 0.0;
     }
 
     std::string DualScatteringBSDF::ToString() const {
