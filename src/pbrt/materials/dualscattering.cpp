@@ -551,9 +551,12 @@ namespace pbrt {
         Float thetaMax = .5 * Pi - fabs(.5 * thetaR - mAlphaR);
 
         // Box Muller transform for sampling M
-        Float thetaS = mBetaR * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
-        if (fabs(thetaS) > thetaMax) {
-            thetaS = Sign(thetaS) * thetaMax;
+        Float thetaS;
+        Float _thetaS = mBetaR * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
+        if (fabs(_thetaS) > thetaMax) {
+            thetaS = Sign(_thetaS) * thetaMax;
+        } else {
+            thetaS = _thetaS;
         }
 
         Float thetaH = thetaS + mAlphaR;
@@ -588,6 +591,57 @@ namespace pbrt {
         CHECK_GE(M, 0.0);
 
         Float N = 2.0 * sqrt(u[2] * (1.0 - u[2]));
+        *pdf = M * N / (8.0 * cosThetaI);
+        //CHECK_GE(*pdf, 0.0);
+
+        return f(wo, *wi);
+    }
+
+    void SampleGaussian(Float beta, Float* sample, Float* pdf) {
+        Float u[2] = {(Float) distribution(generator), (Float) distribution(generator)};
+        *sample = beta * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
+
+        Float c = 1.0 / (beta * sqrt(2.0 * Pi));
+        *pdf = c * exp(-.5 * Sqr(*sample / beta));
+    }
+
+    Spectrum DualScatteringBSDF::Sample_MarschnerTT_f(const Vector3f &wo, Vector3f *wi, Float* pdf) const {
+        Float thetaR, phiR;
+        ToSphericalCoords(wo, thetaR, phiR);
+        Float u[4] = {(Float) distribution(generator), (Float) distribution(generator), (Float) distribution(generator), (Float) distribution(generator)};
+
+        // Box Muller transform for sampling N_TT
+        Float phi = mBetaTT * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
+        Float phiI = UnwrapPhi(phiR - (Pi - phi));
+
+        // Box Muller transform for sampling M_TT
+        Float thetaMax = .5 * Pi - fabs(.5 * thetaR - mAlphaTT);
+        Float thetaS = mBetaTT * sqrt(-2.0 * log(u[2])) * cos(2.0 * Pi * u[3]);
+        if (fabs(thetaS) > thetaMax) {
+            thetaS = Sign(thetaS) * thetaMax;
+        }
+
+        Float thetaH = thetaS + mAlphaTT;
+        Float thetaI = 2.0 * thetaH - thetaR;
+        if (fabs(thetaI) > .5 * Pi) {
+            thetaI = Sign(thetaI) * (Pi - fabs(thetaI)); // sets thetaI to [-pi/2; pi/2]
+        }
+        CHECK_GE(thetaI, -.5 * Pi);
+        CHECK_LE(thetaI, .5 * Pi);
+
+        Float cosThetaI = cos(thetaI);
+
+        // flipped y and z
+        *wi = Vector3f(sin(thetaI), cosThetaI * sin(phiI), cosThetaI * cos(phiI));
+        //TODO: do we need to transform wi to world?
+
+        //sample weights and pdf
+        Float c = 1.0 / (mBetaTT * sqrt(2.0 * Pi));
+        Float M = c * exp(-.5 * Sqr(thetaS / mBetaTT));
+        Float N = c * exp(-.5 * Sqr(phi / mBetaTT));
+        CHECK_GE(M, 0.0);
+        CHECK_GE(N, 0.0);
+
         *pdf = M * N / (8.0 * cosThetaI);
         CHECK_GE(*pdf, 0.0);
 
@@ -629,6 +683,9 @@ namespace pbrt {
     }
 
     Float DualScatteringBSDF::PdfMarschnerTT(const Vector3f &wo, const Vector3f & wi) const {
+
+
+
         return 0.0;
     }
 
@@ -638,6 +695,66 @@ namespace pbrt {
 
     std::string DualScatteringBSDF::ToString() const {
         return "DualScatteringBSDF";
+    }
+
+    static Float uFunc(Float v, Float u) {
+        return v * log(exp(1.0 / v) - 2.0 * u * sinh(1.0 / v));
+    }
+
+    static Float BoxMuller(Float u1) {
+        return sqrt(-2.0 * log(u1)) * cos(2.0 * Pi * u1);
+    }
+
+    void DualScatteringBSDF::Sample_f_dEon(const Vector3f &wi, Vector3f *wo, Float *pdf, const Float u[3]) const {
+        Float thetaI, phiI;
+        ToSphericalCoords(wi, thetaI, phiI);
+        Float cosThetaI = cos(thetaI);
+
+        // 2. uniformly choose a random offset [-1, 1]
+        Float h = 2.0 * u[0] - 1.0;
+        Float gammaI = SafeASin(h);
+        Float cosGammaI = cos(gammaI);
+
+        // 3. Compute attenuations A(h, p) for each lobe assuming no deflection away from specular cone
+        //TODO: no deflection away from specular cone (means probably beta = 0)
+        Float specAr = 0.0; //AttenuationSpec(0, cosGammaI);
+        Float specAtt = 0.0; //AttenuationSpec(1, cosGammaI);
+        Float specAtrt = 0.0; //AttenuationSpec(2, cosGammaI);
+        Float specSum = specAr + specAtt + specAtrt;
+        Float w[3] = {specAr / specSum, specAtt / specSum, specAtrt / specSum};
+
+        // 4. We select a lobe in proportion to the specular attenuations
+        Float alpha[3] = {mAlphaR, mAlphaTT, mAlphaTRT};
+        Float beta[3] = {mBetaR, mBetaTT, mBetaTRT};
+
+        Float lobeSelect = u[1] * specSum;
+        int p = lobeSelect < w[0] ? 0 : lobeSelect < (w[0] + w[1]) ? 1 : 2;
+        Float thetaCone = -thetaI + alpha[p];
+        Float v = beta[p] * beta[p];
+
+
+        // 5. Compute thetaR and thetaD
+        Float thetaAccent = .5 * Pi - thetaCone;
+
+        Float e1 = uFunc(v, u[2]);
+        Float thetaR = SafeASin(e1 * cos(thetaAccent) + sqrt(1.0 - e1 * e1) * cos(2.0 * Pi * u[3]) * sin(thetaAccent));
+        Float thetaD = .5 * (thetaI + thetaR);
+        Float etaPerp = sqrt(mEta * mEta - sin(thetaD)) / cos(thetaD);
+        Float gammaT = SafeASin(h / etaPerp);
+
+        // 6. We sample a random Gaussian variable g and compute the relative outgoing azimuth
+        Float g = BoxMuller(u[4]);
+        Float phi = Phi(p, gammaI, gammaT) + g;
+
+        // 7. We return a sample weight
+        Float phiR = UnwrapPhi(phiI + phi);
+        *wo = FromSphericalCoords(thetaR, phiR);
+
+
+        Float Ap = this->mMarschnerBSDF->f_p(p, *wo, wi).y();
+
+        //Float w = Ap / w[p];
+        *pdf = Ap / w[p];
     }
 
 } // namespace pbrt

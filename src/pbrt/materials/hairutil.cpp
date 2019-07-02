@@ -8,6 +8,7 @@
 #include "hair.h"
 #include "sampling.h"
 #include "hairutil.h"
+#include "materials/hairutil.h"
 
 namespace pbrt {
 
@@ -76,6 +77,12 @@ namespace pbrt {
     Float Sign(Float x) {
         return x > 0 ? 1
                 : x < 0 ? -1 : 0;
+    }
+
+    Float UnwrapPhi(Float phi) {
+        while (phi > Pi) phi -= 2.0 * Pi;
+        while (phi < -Pi) phi += 2.0 * Pi;
+        return phi;
     }
 
     /**
@@ -297,6 +304,80 @@ namespace pbrt {
         CHECK(fresnelP > -0.00001 && fresnelP < 1.00001);
 
         return 0.5 * (fresnelP + fresnelS);
+    }
+
+    /**
+     * Receives the incoming gammaI direction with the corresponding
+     * refracted direction gammaT. It computes the resulting phi when scattered
+     * through the cylinder.
+     *
+     * @param p
+     * @param gammaI
+     * @param gammaT
+     * @return
+     */
+    Float Phi(int p, Float gammaI, Float gammaT) {
+        return 2.0 * p * gammaT - 2.0 * gammaI + p % 2 * Pi;
+    }
+
+    Float PhiApprox(int p, Float gammaI, Float etaPerp) {
+        Float c = asin(1.0 / etaPerp);
+        Float a = 8.0 * p * c / (Pi * Pi * Pi);
+        Float b = 6.0 * p * c / Pi - 2.0;
+
+
+        return b * gammaI - a * gammaI * gammaI * gammaI + p % 2 * Pi;
+    }
+
+    Float PhiR(Float gammaI) {
+        return -2.0 * gammaI;
+    }
+
+    Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT) {
+        // my way
+        //        Float cosGamma2T = AssurePositiveNonZero(cos(2.0 * gammaT));
+        //        return Exp(-2.0 * (sigmaA / cosThetaT) * (1.0 + cosGamma2T));
+
+        // pbrt way
+        Float cosGammaT = AssurePositiveNonZero(cos(gammaT));
+        return Exp(-2.0 * sigmaA * (cosGammaT / cosThetaT));
+    }
+
+    Float AttenuationSpec(int p, Float gammaI, Float gammaT, Spectrum sigmaA, Float etaT) {
+        Float cosGammaI = cos(gammaI);
+        Float cosGammaT = cos(gammaT);
+
+
+        switch (p) {
+            case 0: return AttenuationSpecR(cosGammaI, Phi(0, gammaI, gammaT), etaT, 1.0);
+                break;
+            case 1: return AttenuationSpecTT(cosGammaI, Phi(1, gammaI, gammaT), sigmaA, etaT, 1.0);
+                break;
+            case 2: return AttenuationSpecTRT(cosGammaI, Phi(2, gammaI, gammaT), sigmaA, etaT, 1.0);
+                break;
+        }
+    }
+
+    Float AttenuationSpecR(Float cosGammaI, Float phi, Float etaT, Float etaI) {
+
+        return FrDielectric(cosGammaI, etaI, etaT);
+    }
+
+    Float AttenuationSpecTT(Float cosGammaI, Float phi, Spectrum sigmaA, Float etaT, Float etaI) {
+        // todo
+        Float gammaT = 0;
+        Float cosThetaT;
+
+        Float F = FrDielectric(cosGammaI, etaI, etaT);
+        Float cos2GammaT = cos(2.0 * gammaT);
+        Spectrum T = Exp(-2.0 * sigmaA * (1.0 + cos2GammaT));
+        return Sqr(1.0 - F) * Transmittance(sigmaA, gammaT, cosThetaT).y();
+
+    }
+
+    Float AttenuationSpecTRT(Float cosGammaI, Float phi, Spectrum sigmaA, Float etaT, Float etaI) {
+        //todo
+        return Spectrum(.0).y();
     }
 
     inline Float DiscriminantCardano(Float p, Float q) {

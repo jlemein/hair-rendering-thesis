@@ -12,10 +12,12 @@ class HairSimplify {
     void analyzeHairFile();
     void sampleFromBeginning(const std::string& outputFileName);
     void sampleRandomly();
+    void sampleByAxis(const std::string& outputFileName);
 
 public:
     HairSimplify(const std::string& inputFileName);
     void reduceToPercentage(const std::string& outputFileName, double percentage, bool sampleRandom = false);
+    void reduceByAxis(const std::string& outputFileName);
     
     void setCurveWidth(float curveWidth);
     void setCurveType(std::string type);

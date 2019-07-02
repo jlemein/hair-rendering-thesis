@@ -101,7 +101,43 @@ namespace pbrt {
     Float Gaussian(Float width, Float x);
     Spectrum Gaussian(const Spectrum& width, const Spectrum& x);
     
-    Float SmoothStep(Float a, Float b, Float x);   
+    Float SmoothStep(Float a, Float b, Float x);
+    
+    /**
+     * Receives the incoming gammaI direction with the corresponding
+     * refracted direction gammaT. It computes the resulting phi when scattered
+     * through the cylinder.
+     *
+     * @param p
+     * @param gammaI
+     * @param gammaT
+     * @return
+     */
+    Float Phi(int p, Float gammaI, Float gammaT);
+    Float PhiApprox(int p, Float gammaI, Float etaPerp);
+    Float PhiR(Float gammaI);
+    
+    Float UnwrapPhi(Float phi);
+    
+    /**
+     * Returns the specular amount
+     * @param sigmaA
+     * @param gammaT
+     * @param cosThetaT
+     * @return 
+     */
+    Float AttenuationSpec(int p, Float gammaI, Float gammaT, Spectrum sigmaA, Float etaT);
+    Float AttenuationSpecR(Float cosGammaI, Float phi, Float etaT, Float etaI);
+    Float AttenuationSpecTT(Float cosGammaI, Float phi, Spectrum sigmaA, Float etaT, Float etaI);
+    Float AttenuationSpecTRT(Float cosGammaI, Float phi, Spectrum sigmaA, Float etaT, Float etaI);
+    Float Attenuation(int p, Float cosGammaI);
+    
+    Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT);
+    Spectrum TransmittanceR(Float cosTheta, Float etaT = 1.55, Float etaI = 1.0);
+    Spectrum TransmittanceTT(Float cosTheta, Float etaT = 1.55, Float etaI = 1.0);
+    Spectrum TransmittanceTRT(Float cosTheta, Float etaT = 1.55, Float etaI = 1.0);
+    
+    
 
     /**
      * Slightly faster variant when you need to get both Bravais indices

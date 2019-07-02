@@ -20,33 +20,6 @@
 
 namespace pbrt {
 
-    /**
-     * Receives the incoming gammaI direction with the corresponding
-     * refracted direction gammaT. It computes the resulting phi when scattered
-     * through the cylinder.
-     *
-     * @param p
-     * @param gammaI
-     * @param gammaT
-     * @return
-     */
-    static Float Phi(int p, Float gammaI, Float gammaT) {
-        return 2.0 * p * gammaT - 2.0 * gammaI + p % 2 * Pi;
-    }
-
-    static Float PhiApprox(int p, Float gammaI, Float etaPerp) {
-        Float c = asin(1.0 / etaPerp);
-        Float a = 8.0 * p * c / (Pi * Pi * Pi);
-        Float b = 6.0 * p * c / Pi - 2.0;
-
-
-        return b * gammaI - a * gammaI * gammaI * gammaI + p % 2 * Pi;
-    }
-
-    static Float PhiR(Float gammaI) {
-        return -2.0 * gammaI;
-    }
-
     static int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]) {
         CHECK_GT(etaPerp, 0.0);
         CHECK(1.0 / etaPerp >= 0.0 && 1.0 / etaPerp <= 1.0);
@@ -87,16 +60,6 @@ namespace pbrt {
      */
     static inline Float SolveGammaRoot_R(Float phi) {
         return -phi / 2.0;
-    }
-
-    static Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT) {
-        // my way
-        //        Float cosGamma2T = AssurePositiveNonZero(cos(2.0 * gammaT));
-        //        return Exp(-2.0 * (sigmaA / cosThetaT) * (1.0 + cosGamma2T));
-
-        // pbrt way
-        Float cosGammaT = AssurePositiveNonZero(cos(gammaT));
-        return Exp(-2.0 * sigmaA * (cosGammaT / cosThetaT));
     }
 
     static Float DPhiDh_R(Float gamma_i) {
@@ -408,6 +371,16 @@ namespace pbrt {
                 ) / CosineSquared(theta_d);
 
         return result;
+    }
+
+    Spectrum MarschnerBSDF::f_p(int p, const Vector3f &wo, const Vector3f &wi) const {
+        if (p == 0) {
+            return f_r(wo, wi);
+        } else if (p == 1) {
+            return f_tt(wo, wi);
+        } else {
+            return f_trt(wo, wi);
+        }
     }
 
     Spectrum MarschnerBSDF::f_r(const Vector3f &wo, const Vector3f &wi) const {

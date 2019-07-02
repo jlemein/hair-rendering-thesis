@@ -10,12 +10,12 @@
 
 using namespace std;
 
-enum SamplingMode {
-    RANDOM, FROM_BEGINNING
+enum class SamplingMode {
+    RANDOM, FROM_BEGINNING, BY_AXIS
 };
 
 string inputFileName, outputFileName;
-SamplingMode samplingMode = RANDOM;
+SamplingMode samplingMode = SamplingMode::RANDOM;
 int maxHairCount;
 bool isHairCountAbsolute;
 float curveWidth = -1.0f;
@@ -34,7 +34,7 @@ void parseCommandLineArguments(int argc, char** argv) {
     // parsing parameters
     if (argc <= 1) {
         cout << "Use as follows: \n"
-                << "simplify --input <infile> --output <outfile> [--sampling 'random'|'frombegin'] [--haircount '%'|<number_requested_hairs>] --curvetype [flat|cylinder|ribbon] --curvewidth <float or empty (to sample random)>" << endl;
+                << "simplify --input <infile> --output <outfile> [--sampling 'random'|'frombegin'|'axis'] [--haircount '%'|<number_requested_hairs>] --curvetype [flat|cylinder|ribbon] --curvewidth <float or empty (to sample random)>" << endl;
         exit(0);
     }
     for (int i = 1; i + 1 < argc; i += 2) {
@@ -59,9 +59,11 @@ void parseCommandLineArguments(int argc, char** argv) {
         if (isSame(argv[i], "--sampling")) {
             string strategyName = argv[i + 1];
             if (strategyName == "random") {
-                samplingMode = RANDOM;
+                samplingMode = SamplingMode::RANDOM;
             } else if (isSame(strategyName, "frombegin")) {
-                samplingMode = FROM_BEGINNING;
+                samplingMode = SamplingMode::FROM_BEGINNING;
+            } else if (isSame(strategyName, "axis")) {
+                samplingMode = SamplingMode::BY_AXIS;
             } else {
                 cout << "Strategy unknown, please provide either 'random' or 'frombegin'";
                 return;
@@ -89,7 +91,7 @@ void parseCommandLineArguments(int argc, char** argv) {
     cout << "Provided parameters: " << endl;
     cout << "input file: " << inputFileName << endl
             << "output file: " << outputFileName << endl
-            << "sampling strategy: " << (samplingMode == RANDOM ? "random" : "from beginning") << endl
+            << "sampling strategy: " << (samplingMode == SamplingMode::RANDOM ? "random" : samplingMode == SamplingMode::FROM_BEGINNING ? "from beginning" : "by axis") << endl
             << "max hair count: " << maxHairCount << " " << (isHairCountAbsolute ? "strands" : "procent of input file") << endl
             << "curve width: " << curveWidth << endl
             << "curve type: " << curveType << endl;
@@ -107,7 +109,11 @@ int main(int argc, char** argv) {
             hair.setCurveWidth(curveWidth);
 
         hair.setCurveType(curveType);
-        hair.reduceToPercentage(outputFileName, percentage, samplingMode == RANDOM);
+        if (samplingMode == SamplingMode::BY_AXIS) {
+            hair.reduceByAxis(outputFileName);
+        } else {
+            hair.reduceToPercentage(outputFileName, percentage, samplingMode == SamplingMode::RANDOM);
+        }
     }
 
     return 0;

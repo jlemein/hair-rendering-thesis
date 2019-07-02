@@ -48,6 +48,31 @@ void HairSimplify::reduceToPercentage(const std::string& outputFileName, double 
     // }
 }
 
+void HairSimplify::reduceByAxis(const std::string& outputFileName) {
+    // if (sampleRandom) {
+    //     sampleHairsRandomly(inputFileName, outputFileName, numberHairs);
+    // } else {
+    sampleByAxis(outputFileName);
+    // }
+}
+
+bool isPositiveAxis(std::string line) {
+    int index = line.find("\"point P\"");
+    //std::cout << "line: " << line << " -- index: " << index << std::endl;
+    if (index < 0) {
+        return false;
+    }
+    std::stringstream ss;
+    ss << line.substr(index + 12);
+
+    float x, y, z;
+    ss >> x >> y >> z;
+
+    //std::cout << "x: " << x << std::endl;
+
+    return z > 0.0;
+}
+
 std::string replaceCurveWidths(std::string line, float width0, float width1, std::string curveType) {
     std::string newString = "";
     int stringTypeIndex = line.find("\"string type\"");
@@ -86,6 +111,41 @@ void HairSimplify::sampleFromBeginning(const std::string& outputFileName) {
     int lineCount = 0;
     std::string line;
     while (getline(inFile, line) && lineCount < mHairCount) {
+        float curve0 = (rand() / static_cast<float> (RAND_MAX)) * 0.1f + 0.05f;
+        float curve1 = (rand() / static_cast<float> (RAND_MAX)) * 0.1f + 0.05f;
+
+        if (this->mCurveWidth >= 0.0f) {
+            curve0 = mCurveWidth;
+            curve1 = mCurveWidth;
+        }
+        outFile << replaceCurveWidths(line, curve0, curve1, mCurveType) << std::endl;
+        lineCount++;
+    }
+}
+
+void HairSimplify::sampleByAxis(const std::string& outputFileName) {
+    std::cout << "Sample by axis up to " << mHairCount << " hair strands" << std::endl;
+
+    std::ifstream inFile(mInputFileName.c_str());
+    if (inFile.fail()) {
+        std::cout << "Cannot read input file " << mInputFileName << std::endl;
+        return;
+    }
+
+    std::ofstream outFile(outputFileName.c_str());
+    if (outFile.fail()) {
+        inFile.close();
+        std::cout << "Cannot open output file for writing ('" << outputFileName << "')" << std::endl;
+        return;
+    }
+
+    int lineCount = 0;
+    std::string line;
+    while (getline(inFile, line)) {
+        if (!isPositiveAxis(line)) {
+            continue;
+        }
+
         float curve0 = (rand() / static_cast<float> (RAND_MAX)) * 0.1f + 0.05f;
         float curve1 = (rand() / static_cast<float> (RAND_MAX)) * 0.1f + 0.05f;
 

@@ -106,6 +106,7 @@ namespace pbrt {
         Spectrum Sample_MarschnerR_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
         Spectrum Sample_MarschnerTT_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
         Spectrum Sample_MarschnerTRT_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
+        void Sample_f_dEon(const Vector3f &wo, Vector3f *wi, Float *pdf, const Float u[3]) const;
            
         /**
          * Returns the probability density function between the incoming and outgoing direction.

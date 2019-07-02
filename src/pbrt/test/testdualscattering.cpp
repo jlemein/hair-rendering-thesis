@@ -20,7 +20,70 @@ const Float causticIntensityLimit = 1.0;
 const Float hairRadius = 1.0;
 const Float sigmaARgb[3] = {0.4, 0.5, 0.1};
 const Spectrum sigmaA = Spectrum::FromRGB(sigmaARgb);
-const SurfaceInteraction si = SurfaceInteraction();
+SurfaceInteraction si = SurfaceInteraction();
+
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_real_distribution<> dis(0.0, 1.0);
+
+//TEST(DualScattering, Pdf_MarschnerR_Must_integrate_to_1) {
+//    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
+//
+//    MarschnerBSDF* marschner = new MarschnerBSDF(si,
+//            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+//            hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+//
+//    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
+//            eta, marschner,
+//            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+//            0.7, 0.7, 0.0, "unnamed.vdb");
+//
+//    const int SAMPLES = 1000;
+//    const Vector3f wo = FromSphericalCoords(0.0, 0.0);
+//    Float summedPdf = .0;
+//
+//    for (int i = 0; i < SAMPLES; ++i) {
+//        Float theta = -.5 * Pi + Pi * (i / (SAMPLES - 1.0));
+//        Float circumference = 2.0 * Pi * cos(theta) / SAMPLES;
+//        Float s = .0;
+//
+//        for (int j = 0; j < SAMPLES; ++j) {
+//
+//            Float phi = -Pi + 2.0 * Pi * (j / (SAMPLES - 1.0));
+//
+//            Vector3f wi = FromSphericalCoords(theta, phi);
+//            s += dualScattering->PdfMarschnerR(wo, wi);
+//        }
+//
+//        summedPdf += s * circumference;
+//    }
+//
+//    CHECK_NEAR(summedPdf / SAMPLES, 1.0, 1e-5);
+//}
+
+TEST(DualScattering, Pdf_MarschnerR_Must_integrate_to_10) {
+    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
+
+    MarschnerBSDF* marschner = new MarschnerBSDF(si,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+
+    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
+            eta, marschner,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            0.7, 0.7, 0.0, "unnamed.vdb");
+
+    const int SAMPLES = 100000;
+    const Vector3f wo = FromSphericalCoords(1.0, 0.0);
+    Float summedPdf = .0;
+
+    for (int i = 0; i < SAMPLES; ++i) {
+        Vector3f wi = UniformSampleSphere(Point2f(dis(gen), dis(gen)));
+        summedPdf += dualScattering->PdfMarschnerR(wo, wi);
+    }
+
+    CHECK_NEAR(4.0 * Pi * summedPdf / SAMPLES, 1.0, 1e-5);
+}
 
 TEST(DualScattering, AverageBackwardScatteringAttenuation) {
 
@@ -55,9 +118,7 @@ TEST(DualScattering, AverageBackwardScatteringAttenuation) {
 //}
 
 TEST(DualScattering, NumberGeneration) {
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::uniform_real_distribution<> dis(0.0, 1.0);
+
 
     Float avg = 0.0,
             max = std::numeric_limits<Float>::min(),

@@ -87,6 +87,7 @@ namespace pbrt {
          */
         virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const;
         
+        Spectrum f_p(int p, const Vector3f &wo, const Vector3f &wi) const;
         Spectrum f_r(const Vector3f &wo, const Vector3f &wi) const;
         Spectrum f_tt(const Vector3f &wo, const Vector3f &wi) const;
         Spectrum f_trt(const Vector3f &wo, const Vector3f &wi) const;
