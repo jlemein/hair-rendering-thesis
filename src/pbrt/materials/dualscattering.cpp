@@ -706,20 +706,31 @@ namespace pbrt {
     }
 
     void DualScatteringBSDF::Sample_f_dEon(const Vector3f &wi, Vector3f *wo, Float *pdf, const Float u[3]) const {
+
+        //1. An incoming direction is given
         Float thetaI, phiI;
         ToSphericalCoords(wi, thetaI, phiI);
         Float cosThetaI = cos(thetaI);
 
         // 2. uniformly choose a random offset [-1, 1]
         Float h = 2.0 * u[0] - 1.0;
+        // TODO: check if etaT = 1.55, or should we adjust for theta angles that we dont know yet?
+        Float etaT = 1.55; //this->mEta;
         Float gammaI = SafeASin(h);
+        Float gammaT = SafeASin(h / etaT);
         Float cosGammaI = cos(gammaI);
 
-        // 3. Compute attenuations A(h, p) for each lobe assuming no deflection away from specular cone
+        // TODO: is this correct? To use thetaI instead of thetaR
+        Float sinThetaR = sin(thetaI);
+        Float sinThetaT = sinThetaR / etaT;
+        Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
+
+        // 3. Compute attenuations Aspec(h, p) for each lobe assuming
+        // no deflection away from specular cone
         //TODO: no deflection away from specular cone (means probably beta = 0)
-        Float specAr = 0.0; //AttenuationSpec(0, cosGammaI);
-        Float specAtt = 0.0; //AttenuationSpec(1, cosGammaI);
-        Float specAtrt = 0.0; //AttenuationSpec(2, cosGammaI);
+        Float specAr = AttenuationSpecR(cosGammaI, etaT);
+        Float specAtt = AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
+        Float specAtrt = AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
         Float specSum = specAr + specAtt + specAtrt;
         Float w[3] = {specAr / specSum, specAtt / specSum, specAtrt / specSum};
 
@@ -740,7 +751,7 @@ namespace pbrt {
         Float thetaR = SafeASin(e1 * cos(thetaAccent) + sqrt(1.0 - e1 * e1) * cos(2.0 * Pi * u[3]) * sin(thetaAccent));
         Float thetaD = .5 * (thetaI + thetaR);
         Float etaPerp = sqrt(mEta * mEta - sin(thetaD)) / cos(thetaD);
-        Float gammaT = SafeASin(h / etaPerp);
+
 
         // 6. We sample a random Gaussian variable g and compute the relative outgoing azimuth
         Float g = BoxMuller(u[4]);

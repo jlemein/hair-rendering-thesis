@@ -140,6 +140,7 @@ namespace pbrt {
         
         Float getEccentricity() const;
 
+        const Spectrum& getSigmaA() const;
     private:
         const Normal3f mNs, mNg;
         const Vector3f mDpdu, mDpdv;

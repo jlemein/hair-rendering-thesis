@@ -98,18 +98,6 @@ namespace pbrt {
     }
 
     /**
-     * @param gammaI The incident (reflected) gamma angle (in radians)
-     * @param etaPerp The index of refraction
-     * @return the corresponding refracted angle gammaT, given a reflected angle gammaI
-     */
-    static Float GammaT(Float gammaI, Float etaPerp) {
-        const Float Pi3 = Pi * Pi * Pi;
-        const Float C = SafeASin(1.0 / etaPerp);
-
-        return gammaI * 3.0 * C / Pi - gammaI * gammaI * gammaI * 4.0 * C / Pi3;
-    }
-
-    /**
      * @param etaPerp The index of refraction
      * @return the angle (in radians) where a caustic will appear
      */
@@ -414,6 +402,10 @@ namespace pbrt {
         *pdf = this->Pdf(wo, *wi);
 
         return f(wo, *wi);
+    }
+
+    const Spectrum& MarschnerBSDF::getSigmaA() const {
+        return mSigmaA;
     }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {

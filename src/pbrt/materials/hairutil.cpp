@@ -343,41 +343,46 @@ namespace pbrt {
         return Exp(-2.0 * sigmaA * (cosGammaT / cosThetaT));
     }
 
-    Float AttenuationSpec(int p, Float gammaI, Float gammaT, Spectrum sigmaA, Float etaT) {
-        Float cosGammaI = cos(gammaI);
-        Float cosGammaT = cos(gammaT);
-
-
-        switch (p) {
-            case 0: return AttenuationSpecR(cosGammaI, Phi(0, gammaI, gammaT), etaT, 1.0);
-                break;
-            case 1: return AttenuationSpecTT(cosGammaI, Phi(1, gammaI, gammaT), sigmaA, etaT, 1.0);
-                break;
-            case 2: return AttenuationSpecTRT(cosGammaI, Phi(2, gammaI, gammaT), sigmaA, etaT, 1.0);
-                break;
+    Float AttenuationSpec(int p, Float cosGammaI, Float gammaT, Float cosThetaT, const Spectrum& sigmaA, Float etaT) {
+        if (p == 0) {
+            return AttenuationSpecR(cosGammaI, etaT);
+        } else {
+            return p == 1 ? AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT)
+                    : AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT);
         }
     }
 
-    Float AttenuationSpecR(Float cosGammaI, Float phi, Float etaT, Float etaI) {
-
-        return FrDielectric(cosGammaI, etaI, etaT);
+    Float AttenuationSpecR(Float cosGammaI, Float etaT) {
+        return FrDielectric(cosGammaI, 1.0, etaT);
     }
 
-    Float AttenuationSpecTT(Float cosGammaI, Float phi, Spectrum sigmaA, Float etaT, Float etaI) {
-        // todo
-        Float gammaT = 0;
-        Float cosThetaT;
+    Float AttenuationSpecTT(Float cosGammaI, Float gammaT, Float cosThetaT, const Spectrum& sigmaA, Float etaT) {
 
-        Float F = FrDielectric(cosGammaI, etaI, etaT);
-        Float cos2GammaT = cos(2.0 * gammaT);
-        Spectrum T = Exp(-2.0 * sigmaA * (1.0 + cos2GammaT));
-        return Sqr(1.0 - F) * Transmittance(sigmaA, gammaT, cosThetaT).y();
+        Float fresnel = FrDielectric(cosGammaI, 1.0, etaT);
+        Spectrum absorption = Sqr(1.0 - fresnel) * Transmittance(sigmaA, gammaT, cosThetaT).y();
 
+        return absorption.y();
     }
 
-    Float AttenuationSpecTRT(Float cosGammaI, Float phi, Spectrum sigmaA, Float etaT, Float etaI) {
-        //todo
-        return Spectrum(.0).y();
+    Float AttenuationSpecTRT(Float cosGammaI, Float gammaT, Float cosThetaT, const Spectrum& sigmaA, Float etaT) {
+
+        Float fresnel = FrDielectric(cosGammaI, 1.0, etaT);
+        Spectrum T = Transmittance(sigmaA, gammaT, cosThetaT);
+        Spectrum absorption = Sqr(1.0 - fresnel) * fresnel * T * T;
+
+        return absorption.y();
+    }
+
+    /**
+     * @param gammaI The incident (reflected) gamma angle (in radians)
+     * @param etaPerp The index of refraction
+     * @return the corresponding refracted angle gammaT, given a reflected angle gammaI
+     */
+    Float GammaT(Float gammaI, Float etaPerp) {
+        const Float Pi3 = Pi * Pi * Pi;
+        const Float C = SafeASin(1.0 / etaPerp);
+
+        return gammaI * 3.0 * C / Pi - gammaI * gammaI * gammaI * 4.0 * C / Pi3;
     }
 
     inline Float DiscriminantCardano(Float p, Float q) {

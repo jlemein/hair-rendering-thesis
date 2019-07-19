@@ -126,10 +126,10 @@ namespace pbrt {
      * @param cosThetaT
      * @return 
      */
-    Float AttenuationSpec(int p, Float gammaI, Float gammaT, Spectrum sigmaA, Float etaT);
-    Float AttenuationSpecR(Float cosGammaI, Float phi, Float etaT, Float etaI);
-    Float AttenuationSpecTT(Float cosGammaI, Float phi, Spectrum sigmaA, Float etaT, Float etaI);
-    Float AttenuationSpecTRT(Float cosGammaI, Float phi, Spectrum sigmaA, Float etaT, Float etaI);
+    Float AttenuationSpec(int p, Float cosGammaI, Float gammaT, Float cosThetaT, const Spectrum& sigmaA, Float etaT);
+    Float AttenuationSpecR(Float cosGammaI, Float etaT);
+    Float AttenuationSpecTT(Float cosGammaI, Float gammaT, Float cosThetaT, const Spectrum& sigmaA, Float etaT);
+    Float AttenuationSpecTRT(Float cosGammaI, Float gammaT, Float cosThetaT, const Spectrum& sigmaA, Float etaT);
     Float Attenuation(int p, Float cosGammaI);
     
     Spectrum Transmittance(const Spectrum& sigmaA, Float gammaT, Float cosThetaT);
@@ -137,7 +137,7 @@ namespace pbrt {
     Spectrum TransmittanceTT(Float cosTheta, Float etaT = 1.55, Float etaI = 1.0);
     Spectrum TransmittanceTRT(Float cosTheta, Float etaT = 1.55, Float etaI = 1.0);
     
-    
+    Float GammaT(Float gammaI, Float etaPerp);
 
     /**
      * Slightly faster variant when you need to get both Bravais indices

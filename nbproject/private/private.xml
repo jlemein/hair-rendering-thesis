@@ -12,15 +12,9 @@
         <group>
             <file>file:/home/jeffrey/lib/pbrt-v3/src/integrators/directlighting.cpp</file>
             <file>file:/home/jeffrey/lib/pbrt-v3/src/materials/hair.cpp</file>
-            <file>file:/home/jeffrey/hair-rendering-thesis/src/pbrt/materials/dualscattering.h</file>
-            <file>file:/home/jeffrey/hair-rendering-thesis/ext/pbrt/src/core/geometry.h</file>
-            <file>file:/home/jeffrey/hair-rendering-thesis/src/pbrt/materials/hairutil.h</file>
-            <file>file:/home/jeffrey/hair-rendering-thesis/src/pbrt/materials/hairutil.cpp</file>
             <file>file:/home/jeffrey/lib/pbrt-v3/src/integrators/path.cpp</file>
-            <file>file:/home/jeffrey/hair-rendering-thesis/src/pbrt/test/testdualscattering.cpp</file>
             <file>file:/home/jeffrey/lib/pbrt-v3/src/shapes/curve.h</file>
             <file>file:/home/jeffrey/lib/pbrt-v3/src/core/integrator.cpp</file>
-            <file>file:/home/jeffrey/hair-rendering-thesis/src/pbrt/materials/dualscattering.cpp</file>
         </group>
     </open-files>
 </project-private>
