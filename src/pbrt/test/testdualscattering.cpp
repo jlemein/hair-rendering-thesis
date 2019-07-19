@@ -61,28 +61,31 @@ std::uniform_real_distribution<> dis(0.0, 1.0);
 //    CHECK_NEAR(summedPdf / SAMPLES, 1.0, 1e-5);
 //}
 
+
+// is this test relevant?
+
 TEST(DualScattering, Pdf_MarschnerR_Must_integrate_to_10) {
-    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
-
-    MarschnerBSDF* marschner = new MarschnerBSDF(si,
-            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
-            hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
-
-    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
-            eta, marschner,
-            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
-            0.7, 0.7, 0.0, "unnamed.vdb");
-
-    const int SAMPLES = 100000;
-    const Vector3f wo = FromSphericalCoords(1.0, 0.0);
-    Float summedPdf = .0;
-
-    for (int i = 0; i < SAMPLES; ++i) {
-        Vector3f wi = UniformSampleSphere(Point2f(dis(gen), dis(gen)));
-        summedPdf += dualScattering->PdfMarschnerR(wo, wi);
-    }
-
-    CHECK_NEAR(4.0 * Pi * summedPdf / SAMPLES, 1.0, 1e-5);
+    //    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
+    //
+    //    MarschnerBSDF* marschner = new MarschnerBSDF(si,
+    //            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+    //            hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+    //
+    //    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
+    //            eta, marschner,
+    //            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+    //            0.7, 0.7, 0.0, "unnamed.vdb");
+    //
+    //    const int SAMPLES = 100000;
+    //    const Vector3f wo = FromSphericalCoords(1.0, 0.0);
+    //    Float summedPdf = .0;
+    //
+    //    for (int i = 0; i < SAMPLES; ++i) {
+    //        Vector3f wi = UniformSampleSphere(Point2f(dis(gen), dis(gen)));
+    //        summedPdf += dualScattering->PdfMarschnerR(wo, wi);
+    //    }
+    //
+    //    CHECK_NEAR(4.0 * Pi * summedPdf / SAMPLES, 1.0, 1e-5);
 }
 
 TEST(DualScattering, AverageBackwardScatteringAttenuation) {

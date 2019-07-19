@@ -93,7 +93,8 @@ namespace pbrt {
     mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT),
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
     mScatterCount(scatterCount),
-    mVoxelGridFileName(voxelGridFileName) {
+    mVoxelGridFileName(voxelGridFileName),
+    mSampleUniform(true) {
 
         // lookup table initialized here, so that all members
         // of this reference are initialized
@@ -516,181 +517,22 @@ namespace pbrt {
     }
 
     Spectrum DualScatteringBSDF::Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType * sampledType) const {
-        Spectrum L = .0;
-        if (sample.x < 0.5) {
-            L = Sample_MarschnerR_f(wo, wi, pdf);
+        if (this->mSampleUniform) {
+            return UniformSample_f(wo, wi, pdf, sample);
         } else {
-            L = UniformSample_f(wo, wi, pdf);
+            Float u[6] = {sample.x, sample.y,
+                (Float) distribution(generator), (Float) distribution(generator),
+                (Float) distribution(generator), (Float) distribution(generator)};
+            return DEonSample_f(wo, wi, pdf, u);
         }
-
-        *pdf = Pdf(wo, *wi);
-
-        return L;
-    }
-
-    Spectrum DualScatteringBSDF::UniformSample_f(const Vector3f &wo, Vector3f *wi, Float* pdf) const {
-        Float u[2] = {(Float) distribution(generator), (Float) distribution(generator)};
-        Float theta = acos(2.0 * u[0] - 1.0);
-        Float phi = 2.0 * Pi * u[1];
-
-        Float x = sin(theta) * cos(phi);
-        Float y = sin(theta) * sin(phi);
-        Float z = cos(theta);
-
-        *wi = Vector3f(x, y, z);
-        *pdf = PiOver4;
-
-        return f(wo, *wi);
-    }
-
-    Spectrum DualScatteringBSDF::Sample_MarschnerR_f(const Vector3f &wo, Vector3f *wi, Float* pdf) const {
-        Float thetaR, phiR;
-        ToSphericalCoords(wo, thetaR, phiR);
-        Float u[3] = {(Float) distribution(generator), (Float) distribution(generator), (Float) distribution(generator)};
-
-        Float thetaMax = .5 * Pi - fabs(.5 * thetaR - mAlphaR);
-
-        // Box Muller transform for sampling M
-        Float thetaS;
-        Float _thetaS = mBetaR * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
-        if (fabs(_thetaS) > thetaMax) {
-            thetaS = Sign(_thetaS) * thetaMax;
-        } else {
-            thetaS = _thetaS;
-        }
-
-        Float thetaH = thetaS + mAlphaR;
-        Float thetaI = 2.0 * thetaH - thetaR;
-        if (fabs(thetaI) > .5 * Pi) {
-            thetaI = Sign(thetaI) * (Pi - fabs(thetaI)); // sets thetaI to [-pi/2; pi/2]
-
-        }
-        CHECK_GE(thetaI, -.5 * Pi);
-        CHECK_LE(thetaI, .5 * Pi);
-
-        Float cosThetaI = cos(thetaI);
-
-        // Inverse CDF for N
-        Float deltaPhi = 2.0 * asin(2.0 * u[2] - 1.0);
-        Float phiI = phiR + deltaPhi;
-
-        while (phiI > Pi) phiI -= 2 * Pi;
-        while (phiI < -Pi) phiI += 2 * Pi;
-
-        CHECK_GE(phiI, -Pi);
-        CHECK_LE(phiI, Pi);
-        //*wi = Vector3f(sin(thetaI), cosThetaI * cos(phiI), cosThetaI * sin(phiI));
-
-        // flipped y and z
-        *wi = Vector3f(sin(thetaI), cosThetaI * sin(phiI), cosThetaI * cos(phiI));
-        //TODO: do we need to transform wi to world?
-
-        //sample weights and pdf
-        Float c = 1.0 / (mBetaR * sqrt(2.0 * Pi));
-        Float M = c * exp(-.5 * Sqr(thetaS / mBetaR));
-        CHECK_GE(M, 0.0);
-
-        Float N = 2.0 * sqrt(u[2] * (1.0 - u[2]));
-        *pdf = M * N / (8.0 * cosThetaI);
-        //CHECK_GE(*pdf, 0.0);
-
-        return f(wo, *wi);
-    }
-
-    void SampleGaussian(Float beta, Float* sample, Float* pdf) {
-        Float u[2] = {(Float) distribution(generator), (Float) distribution(generator)};
-        *sample = beta * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
-
-        Float c = 1.0 / (beta * sqrt(2.0 * Pi));
-        *pdf = c * exp(-.5 * Sqr(*sample / beta));
-    }
-
-    Spectrum DualScatteringBSDF::Sample_MarschnerTT_f(const Vector3f &wo, Vector3f *wi, Float* pdf) const {
-        Float thetaR, phiR;
-        ToSphericalCoords(wo, thetaR, phiR);
-        Float u[4] = {(Float) distribution(generator), (Float) distribution(generator), (Float) distribution(generator), (Float) distribution(generator)};
-
-        // Box Muller transform for sampling N_TT
-        Float phi = mBetaTT * sqrt(-2.0 * log(u[0])) * cos(2.0 * Pi * u[1]);
-        Float phiI = UnwrapPhi(phiR - (Pi - phi));
-
-        // Box Muller transform for sampling M_TT
-        Float thetaMax = .5 * Pi - fabs(.5 * thetaR - mAlphaTT);
-        Float thetaS = mBetaTT * sqrt(-2.0 * log(u[2])) * cos(2.0 * Pi * u[3]);
-        if (fabs(thetaS) > thetaMax) {
-            thetaS = Sign(thetaS) * thetaMax;
-        }
-
-        Float thetaH = thetaS + mAlphaTT;
-        Float thetaI = 2.0 * thetaH - thetaR;
-        if (fabs(thetaI) > .5 * Pi) {
-            thetaI = Sign(thetaI) * (Pi - fabs(thetaI)); // sets thetaI to [-pi/2; pi/2]
-        }
-        CHECK_GE(thetaI, -.5 * Pi);
-        CHECK_LE(thetaI, .5 * Pi);
-
-        Float cosThetaI = cos(thetaI);
-
-        // flipped y and z
-        *wi = Vector3f(sin(thetaI), cosThetaI * sin(phiI), cosThetaI * cos(phiI));
-        //TODO: do we need to transform wi to world?
-
-        //sample weights and pdf
-        Float c = 1.0 / (mBetaTT * sqrt(2.0 * Pi));
-        Float M = c * exp(-.5 * Sqr(thetaS / mBetaTT));
-        Float N = c * exp(-.5 * Sqr(phi / mBetaTT));
-        CHECK_GE(M, 0.0);
-        CHECK_GE(N, 0.0);
-
-        *pdf = M * N / (8.0 * cosThetaI);
-        CHECK_GE(*pdf, 0.0);
-
-        return f(wo, *wi);
     }
 
     Float DualScatteringBSDF::Pdf(const Vector3f &wo, const Vector3f & wi) const {
-        Float pdf = .0;
-        pdf += 0.5 * UniformPdf(wo, wi);
-        pdf += 0.5 * PdfMarschnerR(wo, wi);
-        pdf += PdfMarschnerTT(wo, wi);
-        pdf += PdfMarschnerTRT(wo, wi);
-
-        CHECK_GE(pdf, 0.0);
-        return pdf;
-    }
-
-    Float DualScatteringBSDF::UniformPdf(const Vector3f &wo, const Vector3f& wi) const {
-        return PiOver4;
-    }
-
-    Float DualScatteringBSDF::PdfMarschnerR(const Vector3f &wo, const Vector3f & wi) const {
-        MarschnerAngles angles = MarschnerAngles(wo, wi, mEta, mMarschnerBSDF->getEccentricity());
-        Float cosThetaI = std::max(1e-5, cos(angles.thetaI));
-        Float thetaS = angles.thetaH - mAlphaR;
-
-        Vector3f Rperp = Vector3f(.0, wo.y, wo.z);
-        Rperp /= Rperp.Length();
-        Vector3f Lperp = Vector3f(0.0, wi.y, wi.z);
-        Lperp /= Lperp.Length();
-
-        Float denom = -.5 / Sqr(mBetaR);
-        Float M = exp(thetaS * thetaS * denom) / (mBetaR * sqrt(2.0 * Pi));
-        Float N = sqrt(std::max(0.0, .5 * (1.0 + Dot(Rperp, Lperp))));
-
-        Float pdf = M * N / (8.0 * cosThetaI);
-        CHECK_GE(pdf, 0.0);
-        return pdf;
-    }
-
-    Float DualScatteringBSDF::PdfMarschnerTT(const Vector3f &wo, const Vector3f & wi) const {
-
-
-
-        return 0.0;
-    }
-
-    Float DualScatteringBSDF::PdfMarschnerTRT(const Vector3f &wo, const Vector3f & wi) const {
-        return 0.0;
+        if (this->mSampleUniform) {
+            return UniformPdf(wo, wi);
+        } else {
+            return DEonPdf(wo, wi);
+        }
     }
 
     std::string DualScatteringBSDF::ToString() const {
@@ -701,11 +543,11 @@ namespace pbrt {
         return v * log(exp(1.0 / v) - 2.0 * u * sinh(1.0 / v));
     }
 
-    static Float BoxMuller(Float u1) {
-        return sqrt(-2.0 * log(u1)) * cos(2.0 * Pi * u1);
+    static Float BoxMuller(Float u1, Float u2) {
+        return sqrt(-2.0 * log(u1)) * cos(2.0 * Pi * u2);
     }
 
-    void DualScatteringBSDF::Sample_f_dEon(const Vector3f &wi, Vector3f *wo, Float *pdf, const Float u[3]) const {
+    Spectrum DualScatteringBSDF::DEonSample_f(const Vector3f &wi, Vector3f *wo, Float *pdf, const Float u[6]) const {
 
         //1. An incoming direction is given
         Float thetaI, phiI;
@@ -721,8 +563,8 @@ namespace pbrt {
         Float cosGammaI = cos(gammaI);
 
         // TODO: is this correct? To use thetaI instead of thetaR
-        Float sinThetaR = sin(thetaI);
-        Float sinThetaT = sinThetaR / etaT;
+        Float sinThetaI = sin(thetaI);
+        Float sinThetaT = sinThetaI / etaT;
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
 
         // 3. Compute attenuations Aspec(h, p) for each lobe assuming
@@ -739,33 +581,78 @@ namespace pbrt {
         Float beta[3] = {mBetaR, mBetaTT, mBetaTRT};
 
         Float lobeSelect = u[1] * specSum;
-        int p = lobeSelect < w[0] ? 0 : lobeSelect < (w[0] + w[1]) ? 1 : 2;
+        int p = lobeSelect < w[0] ? 0
+                : lobeSelect < (w[0] + w[1]) ? 1 : 2;
+
+        // 5. We now know which Mp function (of variance vp) to sample, giving theta thetaO and thetaD
         Float thetaCone = -thetaI + alpha[p];
-        Float v = beta[p] * beta[p];
-
-
-        // 5. Compute thetaR and thetaD
+        Float vp = beta[p] * beta[p];
         Float thetaAccent = .5 * Pi - thetaCone;
 
-        Float e1 = uFunc(v, u[2]);
-        Float thetaR = SafeASin(e1 * cos(thetaAccent) + sqrt(1.0 - e1 * e1) * cos(2.0 * Pi * u[3]) * sin(thetaAccent));
-        Float thetaD = .5 * (thetaI + thetaR);
+        Float e1 = uFunc(vp, u[2]);
+        Float thetaO = SafeASin(e1 * cos(thetaAccent) + sqrt(1.0 - e1 * e1) * cos(2.0 * Pi * u[3]) * sin(thetaAccent));
+        Float thetaD = .5 * (thetaI + thetaO);
         Float etaPerp = sqrt(mEta * mEta - sin(thetaD)) / cos(thetaD);
 
-
         // 6. We sample a random Gaussian variable g and compute the relative outgoing azimuth
-        Float g = BoxMuller(u[4]);
-        Float phi = Phi(p, gammaI, gammaT) + g;
+        Float g = BoxMuller(u[4], u[5]);
+        Float phi = Phi(p, gammaI, gammaT) + g * vp;
+        Float phiR = UnwrapPhi(phiI + phi);
+        *wo = FromSphericalCoords(thetaO, phiR);
 
         // 7. We return a sample weight
-        Float phiR = UnwrapPhi(phiI + phi);
-        *wo = FromSphericalCoords(thetaR, phiR);
-
-
         Float Ap = this->mMarschnerBSDF->f_p(p, *wo, wi).y();
+        Float weight = Ap / w[p];
 
-        //Float w = Ap / w[p];
-        *pdf = Ap / w[p];
+        // TODO: what is a weight? Has it to do with pdf?
+        *pdf = 1.0 / weight; ///Ap / w[p];
+        return f(wi, *wo);
+    }
+
+    Float DualScatteringBSDF::DEonPdf(const Vector3f &wo, const Vector3f &wi) const {
+        return PiOver4;
+    }
+
+    //
+    // Uniform sampling
+    //
+
+    Spectrum DualScatteringBSDF::UniformSample_f(const Vector3f &wo, Vector3f *wi, Float* pdf, const Point2f& u) const {
+        Float theta = acos(2.0 * u[0] - 1.0);
+        Float phi = 2.0 * Pi * u[1];
+
+        Float x = sin(theta) * cos(phi);
+        Float y = sin(theta) * sin(phi);
+        Float z = cos(theta);
+
+        *wi = Vector3f(x, y, z);
+        *pdf = PiOver4;
+
+        return f(wo, *wi);
+    }
+
+    Float DualScatteringBSDF::UniformPdf(const Vector3f& wo, const Vector3f& wi) const {
+        return PiOver4;
     }
 
 } // namespace pbrt
+
+//
+//Float DualScatteringBSDF::PdfMarschnerR(const Vector3f &wo, const Vector3f & wi) const {
+//        MarschnerAngles angles = MarschnerAngles(wo, wi, mEta, mMarschnerBSDF->getEccentricity());
+//        Float cosThetaI = std::max(1e-5, cos(angles.thetaI));
+//        Float thetaS = angles.thetaH - mAlphaR;
+//
+//        Vector3f Rperp = Vector3f(.0, wo.y, wo.z);
+//        Rperp /= Rperp.Length();
+//        Vector3f Lperp = Vector3f(0.0, wi.y, wi.z);
+//        Lperp /= Lperp.Length();
+//
+//        Float denom = -.5 / Sqr(mBetaR);
+//        Float M = exp(thetaS * thetaS * denom) / (mBetaR * sqrt(2.0 * Pi));
+//        Float N = sqrt(std::max(0.0, .5 * (1.0 + Dot(Rperp, Lperp))));
+//
+//        Float pdf = M * N / (8.0 * cosThetaI);
+//        CHECK_GE(pdf, 0.0);
+//        return pdf;
+//    }

@@ -102,12 +102,7 @@ namespace pbrt {
          * @return
          */
         virtual Spectrum Sample_f(const Vector3f &wo, Vector3f *wi, const Point2f &sample, Float *pdf, BxDFType *sampledType = nullptr) const;
-        Spectrum UniformSample_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
-        Spectrum Sample_MarschnerR_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
-        Spectrum Sample_MarschnerTT_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
-        Spectrum Sample_MarschnerTRT_f(const Vector3f &wo, Vector3f *wi, Float *pdf) const;
-        void Sample_f_dEon(const Vector3f &wo, Vector3f *wi, Float *pdf, const Float u[3]) const;
-           
+        
         /**
          * Returns the probability density function between the incoming and outgoing direction.
          * In other words, how likely is it that incoming radiance is reflected
@@ -117,20 +112,16 @@ namespace pbrt {
          * @return 
          */       
         virtual Float Pdf(const Vector3f &wo, const Vector3f &wi) const;
+        
+        // uniform sampling
+        Spectrum UniformSample_f(const Vector3f &wo, Vector3f *wi, Float *pdf, const Point2f& u) const;
         Float UniformPdf(const Vector3f &wo, const Vector3f &wi) const;
-        Float PdfMarschnerR(const Vector3f &wo, const Vector3f &wi) const;
-        Float PdfMarschnerTT(const Vector3f &wo, const Vector3f &wi) const;
-        Float PdfMarschnerTRT(const Vector3f &wo, const Vector3f &wi) const;
+        
+        // sampling according to DEon et al.
+        Spectrum DEonSample_f(const Vector3f &wi, Vector3f *wo, Float *pdf, const Float u[6]) const;
+        Float DEonPdf(const Vector3f &wo, const Vector3f &wi) const;
 
-        /**
-         * 
-         * @return 
-         */
         virtual std::string ToString() const;
-
-        // Not implemented for now
-        //virtual Spectrum rho(const Vector3f &wo, int nSamples, const Point2f *samples) const;
-        //virtual Spectrum rho(int nSamples, const Point2f *samples1, const Point2f *samples2) const;
 
             // expensive functions
         Spectrum AverageForwardScatteringAttenuation(Float thetaD) const;
@@ -157,6 +148,7 @@ namespace pbrt {
         std::string mVoxelGridFileName;
         const Normal3f ns, ng;
         const Vector3f ss, ts;
+        const bool mSampleUniform;
 
         GlobalScatteringInformation GatherGlobalScatteringInformation(const Scene* scene, const VisibilityTester* visiblityTester, const Vector3f& wd, Float thetaD) const;
 
