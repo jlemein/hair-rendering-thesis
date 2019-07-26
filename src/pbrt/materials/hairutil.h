@@ -138,6 +138,8 @@ namespace pbrt {
     Spectrum TransmittanceTRT(Float cosTheta, Float etaT = 1.55, Float etaI = 1.0);
     
     Float GammaT(Float gammaI, Float etaPerp);
+    
+    int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]);
 
     /**
      * Slightly faster variant when you need to get both Bravais indices

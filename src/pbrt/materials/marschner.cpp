@@ -20,35 +20,6 @@
 
 namespace pbrt {
 
-    static int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]) {
-        CHECK_GT(etaPerp, 0.0);
-        CHECK(1.0 / etaPerp >= 0.0 && 1.0 / etaPerp <= 1.0);
-
-        Float C = asin(1.0 / etaPerp);
-
-        Float a = -8.0 * p * C / (Pi * Pi * Pi);
-        Float c = 6.0 * p * C / Pi - 2.0;
-        Float d = (p % 2) * Pi - phi;
-
-        // by wrapping like this, we have exactly one possible d value to solve for
-        while (d > Pi) d -= 2 * Pi;
-        while (d < -Pi) d += 2 * Pi;
-
-        int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
-        CHECK(numberRoots == 1 || numberRoots == 3);
-
-        // filter roots that are invalid
-        int numberValidRoots = 0;
-        for (int i = 0; i < numberRoots; ++i) {
-            Float gamma = RangeBoundGamma(gammaRoots[i]);
-            if (fabs(gamma) <= .5 * Pi) {
-                gammaRoots[numberValidRoots++] = gamma;
-            }
-        }
-
-        return numberValidRoots;
-    }
-
     /**
      * Solves the root for reflection (R) mode of Marschner.
      * Gamma is returned instead of the root h (for efficiency reasons)
@@ -240,6 +211,14 @@ namespace pbrt {
         return fresnel / (2.0 * fabs(DPhiDh_R(gammaI)));
     }
 
+    Float MarschnerBSDF::N_r_absorption(Float dphi, Float absorption) const {
+
+        Float gammaI = SolveGammaRoot_R(dphi);
+
+        // reflection is only determined by Fresnel (no absorption)
+        return absorption / (2.0 * fabs(DPhiDh_R(gammaI)));
+    }
+
     Spectrum MarschnerBSDF::N_tt(Float dphi, Float etaPerp, Float cosThetaT) const {
 
         Float gammaI;
@@ -256,6 +235,14 @@ namespace pbrt {
         return Sqr(1.0 - fresnel)
                 * Transmittance(mSigmaA, GammaT(gammaI, etaPerp), cosThetaT)
                 / (fabs(2.0 * DPhiDh(1, gammaI, etaPerp)));
+    }
+
+    Float MarschnerBSDF::N_tt_absorption(Float dphi, Float etaPerp, Float absorption) const {
+
+        Float gammaI;
+        int nRoots = SolveGammaRoots(1, dphi, etaPerp, &gammaI);
+
+        return absorption / (fabs(2.0 * DPhiDh(1, gammaI, etaPerp)));
     }
 
     Spectrum MarschnerBSDF::N_trt(Float phi, Float etaPerp, Float cosThetaT) const {
@@ -281,6 +268,26 @@ namespace pbrt {
             applySurfaceRoughness(L, absorption, phi, etaPerp);
 
             sum += L;
+        }
+
+        return sum;
+    }
+
+    Float MarschnerBSDF::N_trt_absorption(Float phi, Float etaPerp, Float absorption) const {
+
+        Float roots[3];
+        int nRoots = SolveGammaRoots(2, phi, etaPerp, roots);
+
+        Float sum = .0f;
+
+        for (int i = 0; i < nRoots; ++i) {
+            Float gammaI = roots[i];
+            sum += absorption / (fabs(2.0 * DPhiDh(2, gammaI, etaPerp)));
+
+            // remove glints from response
+            //applySurfaceRoughness(L, absorption, phi, etaPerp);
+
+            //            sum += L.y();
         }
 
         return sum;
@@ -356,6 +363,54 @@ namespace pbrt {
                 M_r(2.0 * theta_h) * N_r(phi, etaPerp)
                 + M_tt(2.0 * theta_h) * N_tt(phi, etaPerp, cosThetaT)
                 + M_trt(2.0 * theta_h) * N_trt(phi, etaPerp, cosThetaT)
+                ) / CosineSquared(theta_d);
+
+        return result;
+    }
+
+    /**
+     * Special function with A replaced by wp
+     */
+
+    Float MarschnerBSDF::f_Weighted(const Vector3f &wo, const Vector3f &wi,
+            Float w0, Float w1, Float w2) const {
+        // x axis goes with the fiber, from root to tip
+        // y represents normal to hair fiber (major axis)
+        // z axis represents normal to hair fiber (minor axis)
+
+        Float theta_i, phi_i, theta_r, phi_r;
+        ToSphericalCoords(wi, theta_i, phi_i);
+        ToSphericalCoords(wo, theta_r, phi_r);
+
+        Float theta_d = DifferenceAngle(theta_i, theta_r);
+        Float phi = RelativeAzimuth(phi_i, phi_r);
+        Float theta_h = HalfAngle(theta_i, theta_r);
+        Float phi_h = HalfAngle(phi_i, phi_r);
+
+        // If there is a longitudinal inclination, then the cross section is
+        // elliptic, complicating our scattering model.
+        // By adjusting the index of refraction (eta) using Bravais' law,
+        // we have qualitatively the same effects as an elliptic cross section,
+        // but we can now continue to use a circular cross section in the
+        // Marschner scattering model.
+
+        // TODO: check if bravais index is based on theta_r or theta_i or maybe theta_d ??
+        Float etaPerp, etaPar;
+        ToBravais(mEta, theta_r, etaPerp, etaPar);
+
+        // take into account eccentricity (by again adjusting the eta)
+        if (mEccentricity != 1.0) {
+            etaPerp = EtaEccentricity(mEccentricity, etaPerp, theta_h);
+        }
+
+        Float sinThetaR = sin(theta_r);
+        Float sinThetaT = sinThetaR / etaPerp;
+        Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
+
+        Float result = (
+                M_r(2.0 * theta_h) * N_r_absorption(phi, w0)
+                + M_tt(2.0 * theta_h) * N_tt_absorption(phi, etaPerp, w1)
+                + M_trt(2.0 * theta_h) * N_trt_absorption(phi, etaPerp, w2)
                 ) / CosineSquared(theta_d);
 
         return result;

@@ -347,7 +347,8 @@ namespace pbrt {
         if (p == 0) {
             return AttenuationSpecR(cosGammaI, etaT);
         } else {
-            return p == 1 ? AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT)
+            return p == 1 ?
+                    AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT)
                     : AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT);
         }
     }
@@ -427,6 +428,35 @@ namespace pbrt {
             roots[2] = R * cos((phi + 4.0 * Pi) / 3.0);
             return 3;
         }
+    }
+
+    int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]) {
+        CHECK_GT(etaPerp, 0.0);
+        CHECK(1.0 / etaPerp >= 0.0 && 1.0 / etaPerp <= 1.0);
+
+        Float C = asin(1.0 / etaPerp);
+
+        Float a = -8.0 * p * C / (Pi * Pi * Pi);
+        Float c = 6.0 * p * C / Pi - 2.0;
+        Float d = (p % 2) * Pi - phi;
+
+        // by wrapping like this, we have exactly one possible d value to solve for
+        while (d > Pi) d -= 2 * Pi;
+        while (d < -Pi) d += 2 * Pi;
+
+        int numberRoots = SolveDepressedCubic(a, c, d, gammaRoots);
+        CHECK(numberRoots == 1 || numberRoots == 3);
+
+        // filter roots that are invalid
+        int numberValidRoots = 0;
+        for (int i = 0; i < numberRoots; ++i) {
+            Float gamma = RangeBoundGamma(gammaRoots[i]);
+            if (fabs(gamma) <= .5 * Pi) {
+                gammaRoots[numberValidRoots++] = gamma;
+            }
+        }
+
+        return numberValidRoots;
     }
 
     /**

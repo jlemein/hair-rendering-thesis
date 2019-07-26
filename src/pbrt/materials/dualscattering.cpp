@@ -575,6 +575,7 @@ namespace pbrt {
         Float specAtrt = AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
         Float specSum = specAr + specAtt + specAtrt;
         Float w[3] = {specAr / specSum, specAtt / specSum, specAtrt / specSum};
+        //printf("weights: R: %f -- TT: %f -- TRT: %f\n", w[0])
 
         // 4. We select a lobe in proportion to the specular attenuations
         Float alpha[3] = {mAlphaR, mAlphaTT, mAlphaTRT};
@@ -601,16 +602,77 @@ namespace pbrt {
         *wo = FromSphericalCoords(thetaO, phiR);
 
         // 7. We return a sample weight
-        Float Ap = this->mMarschnerBSDF->f_p(p, *wo, wi).y();
-        Float weight = Ap / w[p];
+
+        // Evaluation of the model with Ap replaced by wp
+        *pdf = this->mMarschnerBSDF->f_Weighted(wi, *wo, w[0], w[1], w[2]);
+
+        //Float Ap = this->mMarschnerBSDF->f_p(p, wi, *wo).y();
+        //Float weight = Ap / w[p];
 
         // TODO: what is a weight? Has it to do with pdf?
-        *pdf = 1.0 / weight; ///Ap / w[p];
+        //*pdf = 1.0 / weight; ///Ap / w[p];
         return f(wi, *wo);
     }
 
     Float DualScatteringBSDF::DEonPdf(const Vector3f &wo, const Vector3f &wi) const {
-        return PiOver4;
+        Float thetaI, phiI, thetaR, phiR;
+        ToSphericalCoords(wi, thetaI, phiI);
+        ToSphericalCoords(wo, thetaR, phiR);
+
+        Float theta_d = DifferenceAngle(thetaI, thetaR);
+        Float dphi = RelativeAzimuth(phiI, phiR);
+        Float theta_h = HalfAngle(thetaI, thetaR);
+        Float phi_h = HalfAngle(phiI, phiR);
+
+        Float etaPerp, etaPar;
+        ToBravais(mEta, thetaR, etaPerp, etaPar);
+        Float etaT = etaPerp;
+
+        Float sinThetaR = sin(thetaR);
+        Float sinThetaT = sinThetaR / etaPerp;
+        Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
+
+        Float specAr = .0f, specAtt = .0f, specAtrt = .0f;
+
+        // R
+        {
+            Float gammaI;
+            int nRoots = SolveGammaRoots(1, dphi, etaPerp, &gammaI);
+            // there is always a root
+            Float cosGammaI = cos(gammaI);
+            specAr = AttenuationSpecR(cosGammaI, etaT);
+        }
+
+        // TT
+        {
+            Float gammaI;
+            int nRoots = SolveGammaRoots(1, dphi, etaPerp, &gammaI);
+            Float gammaT = GammaT(gammaI, etaPerp);
+            Float cosGammaI = cos(gammaI);
+            specAtt = AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
+        }
+
+        // TRT
+        {
+            Float gammaI;
+            Float roots[3];
+            int nRoots = SolveGammaRoots(2, dphi, etaPerp, roots);
+            specAtrt = 0.0f;
+
+            for (int i = 0; i < nRoots; ++i) {
+                Float gammaI = roots[i];
+                Float gammaT = GammaT(gammaI, etaPerp);
+                Float cosGammaI = cos(gammaI);
+
+                specAtrt += AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
+            }
+
+        }
+
+        Float specSum = specAr + specAtt + specAtrt;
+        Float w[3] = {specAr / specSum, specAtt / specSum, specAtrt / specSum};
+
+        return this->mMarschnerBSDF->f_Weighted(wo, wi, w[0], w[1], w[2]);
     }
 
     //

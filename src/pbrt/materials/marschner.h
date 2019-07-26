@@ -86,6 +86,8 @@ namespace pbrt {
          * @return
          */
         virtual Spectrum f(const Vector3f &wo, const Vector3f &wi) const;
+        Float f_Weighted(const Vector3f &wo, const Vector3f &wi, Float w0, Float w1, Float w2) const;
+        
         
         Spectrum f_p(int p, const Vector3f &wo, const Vector3f &wi) const;
         Spectrum f_r(const Vector3f &wo, const Vector3f &wi) const;
@@ -131,6 +133,10 @@ namespace pbrt {
         Spectrum N_r(Float relativePhi, Float etaPerp) const;
         Spectrum N_tt(Float relativePhi, Float etaPerp, Float cosThetaT) const;
         Spectrum N_trt(Float relativePhi, Float etaPerp, Float cosThetaT) const;
+        
+        Float N_r_absorption(Float dphi, Float absorption) const;
+        Float N_tt_absorption(Float dphi, Float etaPerp, Float absorption) const;
+        Float N_trt_absorption(Float dphi, Float etaPerp, Float absorption) const;
         
         //TODO: is this needed to expose?
         

@@ -2526,8 +2526,6 @@
               </df>
             </df>
           </df>
-          <df name="Progress">
-          </df>
           <in>feature_tests.c</in>
           <in>feature_tests.cxx</in>
         </df>
@@ -43491,6 +43489,8 @@
               <in>sampling.cpp</in>
               <in>shapes.cpp</in>
               <in>spectrum.cpp</in>
+              <in>test-util.cpp</in>
+              <in>test-util.h</in>
               <in>testdualscattering.cpp</in>
               <in>testmarschner.cpp</in>
             </df>
@@ -45403,6 +45403,8 @@
         </df>
         <df name="2019_06_11">
         </df>
+        <df name="2019_07_26">
+        </df>
         <df name="marschner">
         </df>
         <df name="marschner working">
@@ -45476,6 +45478,8 @@
             <in>dsplot.cpp</in>
           </df>
           <df name="test">
+            <in>test-util.cpp</in>
+            <in>test-util.h</in>
             <in>testdualscattering.cpp</in>
             <in>testmarschner.cpp</in>
           </df>

@@ -348,7 +348,7 @@ TEST(Marschner, SolveThreeOutOfBoundsRootsForTRT) {
 //    //    EXPECT_FLOAT_EQ(Pi, fabs(RelativeAzimuth(4.0 * Pi, -Pi)));
 //}
 
-double _integrateMonteCarloFront(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+static double _integrateMonteCarloFront(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
 
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -365,7 +365,7 @@ double _integrateMonteCarloFront(const Vector3f& wi, std::function<double(const 
     return V / static_cast<double> (nSamples) * sum;
 }
 
-double _integrateMonteCarloBack(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+static double _integrateMonteCarloBack(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
 
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -382,14 +382,14 @@ double _integrateMonteCarloBack(const Vector3f& wi, std::function<double(const V
     return V / static_cast<double> (nSamples) * sum;
 }
 
-Vector3f UniformSampleSphere(const Point2f &u) {
+static Vector3f UniformSampleSphere(const Point2f &u) {
     Float z = 1 - 2 * u[0];
     Float r = std::sqrt(std::max((Float) 0, (Float) 1 - z * z));
     Float phi = 2 * Pi * u[1];
     return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
 }
 
-double _integrateMonteCarlo(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+static double _integrateMonteCarlo(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
 
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution(0.0, 1.0);
@@ -406,7 +406,7 @@ double _integrateMonteCarlo(const Vector3f& wi, std::function<double(const Vecto
     return V / static_cast<double> (nSamples) * sum;
 }
 
-double _integrateMonteCarlo(std::function<double(const Float) > f, int nSamples) {
+static double _integrateMonteCarlo(std::function<double(const Float) > f, int nSamples) {
 
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distribution(.0, 1.0);
@@ -453,22 +453,22 @@ MarschnerBSDF* marschnerSqrt = new MarschnerBSDF(si, alphaSqrt[0], alphaSqrt[1],
 TEST(Marschner, BsdfShouldBeEnergyConservant) {
     MyRandomSampler sampler(0.0, 1.0);
 
-    auto fn = [&](const Vector3f wr, const Vector3f wi) {
+    auto fn = [&](const Vector3f wr, const Vector3f wi){
         Float cosAngle = Dot(wr, wi);
         return marschner->f(wr, wi).y(); // * fabs(cosAngle);
     };
 
-    auto fnSquared = [&](const Vector3f wr, const Vector3f wi) {
+    auto fnSquared = [&](const Vector3f wr, const Vector3f wi){
         Float cosAngle = Dot(wr, wi);
         return marschnerSquared->f(wr, wi).y() * fabs(cosAngle);
     };
 
-    auto fnSqrt = [&](const Vector3f wr, const Vector3f wi) {
+    auto fnSqrt = [&](const Vector3f wr, const Vector3f wi){
         Float cosAngle = Dot(wr, wi);
         return marschnerSqrt->f(wr, wi).y() * fabs(cosAngle);
     };
 
-    auto fnSphereSurface = [&](const Vector3f wr, const Vector3f wi) {
+    auto fnSphereSurface = [&](const Vector3f wr, const Vector3f wi){
         return 1.0;
     };
 
@@ -484,7 +484,7 @@ TEST(Marschner, BsdfShouldBeEnergyConservant) {
 
 TEST(Marschner, NormalizedGaussianSumsToOne) {
     MyRandomSampler sampler(0.0, 1.0);
-    auto fn = [&](const Float thetaH) {
+    auto fn = [&](const Float thetaH){
         return Gaussian(beta.x, thetaH);
     };
 

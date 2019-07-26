@@ -9,22 +9,285 @@
 
 using namespace pbrt;
 
+static double _integrateMonteCarloFront(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+    double V = 2.0 * Pi;
+    double sum = .0;
+
+    for (int i = 0; i < nSamples; ++i) {
+        //Vector3f wi = Vector3f(-1.0, 0.0, 0.0);
+        Vector3f wr = SampleFrontHemisphere(Point2f(distribution(generator), distribution(generator)));
+        sum += f(wr, wi);
+    }
+
+    return V / static_cast<double> (nSamples) * sum;
+}
+
+static double _integrateMonteCarloBack(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+    double V = 2.0 * Pi;
+    double sum = .0;
+
+    for (int i = 0; i < nSamples; ++i) {
+        //Vector3f wi = Vector3f(-1.0, 0.0, 0.0);
+        Vector3f wr = SampleBackHemisphere(Point2f(distribution(generator), distribution(generator)));
+        sum += f(wr, wi);
+    }
+
+    return V / static_cast<double> (nSamples) * sum;
+}
+
+static Vector3f MyUniformSampleSphere(const Point2f &u) {
+    Float z = 1 - 2 * u[0];
+    Float r = std::sqrt(std::max((Float) 0, (Float) 1 - z * z));
+    Float phi = 2 * Pi * u[1];
+    return Vector3f(r * std::cos(phi), r * std::sin(phi), z);
+}
+
+static double _integrateMonteCarlo(const Vector3f& wi, std::function<double(const Vector3f&, const Vector3f&) > f, int nSamples) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+
+    // total area for unit sphere
+    double V = 4.0 * Pi;
+
+    double sum = .0;
+
+    for (int i = 0; i < nSamples; ++i) {
+        //Vector3f wi = Vector3f(-1.0, 0.0, 0.0);
+        Vector3f wr = MyUniformSampleSphere(Point2f(distribution(generator), distribution(generator)));
+        sum += f(wr, wi);
+    }
+
+    return V / static_cast<double> (nSamples) * sum;
+}
+
+static double _integrateMonteCarlo(std::function<double(const Float) > f, int nSamples) {
+
+    std::default_random_engine generator;
+    std::uniform_real_distribution<double> distribution(.0, 1.0);
+
+    double V = Pi;
+    double sum = .0;
+
+    for (int i = 0; i < nSamples; ++i) {
+        //Vector3f wi = Vector3f(-1.0, 0.0, 0.0);
+        Float x = -.5 * Pi + distribution(generator) * Pi;
+        sum += f(x);
+    }
+
+    return V / static_cast<double> (nSamples) * sum;
+}
+
 const Float eta = 1.55;
-const Float eccentricity = 1.0;
-const Vector3f alpha = Vector3f(1.0, 1.0, 1.0);
-const Vector3f beta = Vector3f(1.0, 1.0, 1.0);
-const Float glintScale = 0.5;
-const Float causticWidth = 1.5;
-const Float causticFade = 1.0;
-const Float causticIntensityLimit = 1.0;
+const Float eccentricity = 0.9;
+const Vector3f alpha = Vector3f(0.0523599, -0.0261799, -0.0785398);
+const Vector3f beta = Vector3f(0.244346, 0.139626, 0.383972);
+
+const Float glintScale = 0.4;
+const Float causticWidth = 0.174533;
+const Float causticFade = 0.3;
+const Float causticIntensityLimit = 0.5;
 const Float hairRadius = 1.0;
-const Float sigmaARgb[3] = {0.4, 0.5, 0.1};
+const Float sigmaARgb[3] = {.0, .0, .0};
 const Spectrum sigmaA = Spectrum::FromRGB(sigmaARgb);
 SurfaceInteraction si = SurfaceInteraction();
+
+//MarschnerBSDF* marschner = new MarschnerBSDF(si, alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2], hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+
+
+//const Float eta = 1.55;
+//const Float eccentricity = 1.0;
+//const Vector3f alpha = Vector3f(1.0, 1.0, 1.0);
+//const Vector3f beta = Vector3f(5.0, 2.5, 10.0);
+//const Float glintScale = 0.5;
+//const Float causticWidth = 1.5;
+//const Float causticFade = 1.0;
+//const Float causticIntensityLimit = 1.0;
+//const Float hairRadius = 1.0;
+//const Float sigmaARgb[3] = {0.4, 0.5, 0.1};
+//const Spectrum sigmaA = Spectrum::FromRGB(sigmaARgb);
+//SurfaceInteraction si = SurfaceInteraction();
 
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_real_distribution<> dis(0.0, 1.0);
+
+void compareValues(MyRandomSampler& sampler, MarschnerBSDF* marschner, DualScatteringBSDF* dualScattering) {
+
+    Vector3f wi = SampleBackHemisphere(0.0, sampler.next());
+    Vector3f wo = SampleFrontHemisphere(0.0, sampler.next());
+
+    Float rgbM[3];
+    Float rgbD[3];
+    marschner->f(wo, wi).ToRGB(rgbM);
+    dualScattering->f(wo, wi).ToRGB(rgbD);
+
+    printf("comparing marschner to dualscattering: [ %f %f %f ] vs [ %f %f %f ]\n",
+            rgbM[0], rgbM[1], rgbM[2], rgbD[0], rgbD[1], rgbD[2]);
+}
+
+TEST(Dualscattering, CompareValues) {
+    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
+    MarschnerBSDF* marschner = new MarschnerBSDF(si,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+
+    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
+            eta, marschner,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            1.0 /*0.7*/, 1.0 /*0.7*/, 0.0, "unnamed.vdb");
+
+    MyRandomSampler sampler(0.0, 1.0);
+
+    compareValues(sampler, marschner, dualScattering);
+    compareValues(sampler, marschner, dualScattering);
+
+}
+
+TEST(ImportanceSampling, Prefer_TT_selection_when_h_close_to_zero) {
+    MyRandomSampler sampler(0.0, 1.0);
+    Point2f u = Point2f(sampler.next(), sampler.next());
+    Vector3f wi = UniformSampleSphere(u);
+    Float thetaI, phiI;
+    ToSphericalCoords(wi, thetaI, phiI);
+
+    Float h = 0.01;
+    Float etaT = 1.55; //this->mEta;
+    Float gammaI = SafeASin(h);
+    Float gammaT = SafeASin(h / etaT);
+    Float cosGammaI = cos(gammaI);
+
+    // TODO: is this correct? To use thetaI instead of thetaR
+    Float sinThetaI = sin(thetaI);
+    Float sinThetaT = sinThetaI / etaT;
+    Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
+
+    Float rgb[3] = {0.05, 0.15, 0.66};
+    Spectrum sigA = Spectrum::FromRGB(rgb);
+
+
+    Float wR = AttenuationSpec(0, cosGammaI, gammaT, cosThetaT, sigA, etaT);
+    Float wTT = AttenuationSpec(1, cosGammaI, gammaT, cosThetaT, sigA, etaT);
+    Float wTRT = AttenuationSpec(2, cosGammaI, gammaT, cosThetaT, sigA, etaT);
+    Float wSum = wR + wTT + wTRT;
+    wR /= wSum;
+    wTT /= wSum;
+    wTRT /= wSum;
+
+    //printf("Probability R: %f proc, TT: %f proc, TRT: %f proc\n", wR, wTT, wTRT);
+
+    CHECK_GT(wTT, wR);
+    CHECK_GT(wTT, wTRT);
+
+}
+
+TEST(ImportanceSampling, Prefer_R_selection_when_h_close_to_one) {
+    MyRandomSampler sampler(0.0, 1.0);
+    Point2f u = Point2f(sampler.next(), sampler.next());
+    Vector3f wi = UniformSampleSphere(u);
+    Float thetaI, phiI;
+    ToSphericalCoords(wi, thetaI, phiI);
+
+    // Given a glancing angle, then the R lobe should have highest change of being selected
+    Float h = 0.99;
+    Float etaT = 1.55; //this->mEta;
+    Float gammaI = SafeASin(h);
+    Float gammaT = SafeASin(h / etaT);
+    Float cosGammaI = cos(gammaI);
+
+    // TODO: is this correct? To use thetaI instead of thetaR
+    Float sinThetaI = sin(thetaI);
+    Float sinThetaT = sinThetaI / etaT;
+    Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
+
+    Float rgb[3] = {0.05, 0.15, 0.66};
+    Spectrum sigA = Spectrum::FromRGB(rgb);
+
+
+    Float wR = AttenuationSpec(0, cosGammaI, gammaT, cosThetaT, sigA, etaT);
+    Float wTT = AttenuationSpec(1, cosGammaI, gammaT, cosThetaT, sigA, etaT);
+    Float wTRT = AttenuationSpec(2, cosGammaI, gammaT, cosThetaT, sigA, etaT);
+    Float wSum = wR + wTT + wTRT;
+    wR /= wSum;
+    wTT /= wSum;
+    wTRT /= wSum;
+
+    //printf("Probability R: %f proc, TT: %f proc, TRT: %f proc\n", wR, wTT, wTRT);
+
+    CHECK_GT(wR, wTT);
+    CHECK_GT(wR, wTRT);
+
+}
+/*
+TEST(Dualscattering, BsdfShouldBeEnergyConservant) {
+    MyRandomSampler sampler(0.0, 1.0);
+
+    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
+    MarschnerBSDF* marschner = new MarschnerBSDF(si,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+
+    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
+            eta, marschner,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            0.7, 0.7, 0.0, "unnamed.vdb");
+
+
+    Spectrum sigmaNoAbsorption = Spectrum(.0);
+
+    auto fnSphere = [&](const Vector3f wr, const Vector3f wi){
+        return 1.0;
+    };
+
+    auto fnDualscattering = [&](const Vector3f wr, const Vector3f wi){
+        Float cosAngle = Dot(wr, wi);
+        return dualScattering->f(wr, wi).y(); // * fabs(cosAngle);
+    };
+
+    auto fnMarschner = [&](const Vector3f wr, const Vector3f wi){
+        Float cosAngle = Dot(wr, wi);
+        return marschner->f(wr, wi).y(); // * fabs(cosAngle);
+    };
+
+    //    auto fnSquared = [&](const Vector3f wr, const Vector3f wi){
+    //        Float cosAngle = Dot(wr, wi);
+    //        return marschnerSquared->f(wr, wi).y() * fabs(cosAngle);
+    //    };
+    //
+    //    auto fnSqrt = [&](const Vector3f wr, const Vector3f wi){
+    //        Float cosAngle = Dot(wr, wi);
+    //        return marschnerSqrt->f(wr, wi).y() * fabs(cosAngle);
+    //    };
+
+    //    auto fnSphereSurface = [&](const Vector3f wr, const Vector3f wi){
+    //        return 1.0;
+    //    };
+
+    Vector3f wii = SampleBackHemisphere(0.0, sampler.next());
+
+    Float integratedSphere = _integrateMonteCarlo(wii, fnSphere, 10000);
+    Float integratedMarschner = _integrateMonteCarlo(wii, fnMarschner, 10000);
+    Float integratedDualscattering = _integrateMonteCarlo(wii, fnDualscattering, 10000);
+
+    printf("Reference sphere integrated: %f (should be: %f)\n", integratedSphere, 4.0 * Pi);
+    printf("Marschner integrated: %f (should be: %f)\n", integratedMarschner, 1.0);
+    printf("DualScattering integrated: %f\n (should be: %f)", integratedDualscattering, 1.0);
+
+    // expect that the integration are near the value (with an allowed offset of 0.05)
+    EXPECT_NEAR(integratedSphere, 4.0 * Pi, 0.05);
+    //    EXPECT_NEAR(integratedMarschner, 1.0, 0.05);
+    //    EXPECT_LE(integratedDualscattering, 1.2);
+    //    EXPECT_GE(integratedDualscattering, .8);
+}
+ */
 
 //TEST(DualScattering, Pdf_MarschnerR_Must_integrate_to_1) {
 //    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
@@ -63,7 +326,7 @@ std::uniform_real_distribution<> dis(0.0, 1.0);
 
 
 // is this test relevant?
-
+/*
 TEST(DualScattering, Pdf_MarschnerR_Must_integrate_to_10) {
     //    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
     //
@@ -270,3 +533,4 @@ TEST(DualScattering, SampleBackHemisphere) {
         EXPECT_GE(w.z, 0.0);
     }
 }
+ */
