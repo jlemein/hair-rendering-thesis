@@ -1,0 +1,87 @@
+Integrator "path" "integer maxdepth" [ 2 ] 
+
+Translate 0 0 18
+Rotate 0 0 1 0
+Rotate 315 0 1 0
+Sampler "sobol" "integer pixelsamples" [ 32 ]
+
+PixelFilter "triangle" "float xwidth" [ 1.000000 ] "float ywidth" [ 1.000000 ] 
+Film "image"
+    "integer xresolution" [ 1024 ] "integer yresolution" [ 1024 ]
+    "string filename" "output/ds_inflight_32_samples_uniform_norway.png"
+
+Camera "perspective" "float fov" [ 70 ] #32 ] 
+
+WorldBegin
+        
+    TransformBegin
+        Rotate 240 0 1 0 # pans the view around
+        Rotate 180 0 0 1
+        Rotate 90 1 0 0
+        LightSource "infinite" 
+            "integer samples" [ 1 ] 
+#           "string mapname" [ "textures/day.exr" ]
+            "string mapname" [ "textures/norwayforest.exr" ]
+#            "string mapname" [ "textures/fields.exr" ]
+#            "string mapname" [ "textures/somethingfancy.exr" ]
+    TransformEnd
+
+
+	MakeNamedMaterial "brown_hair" "string type" [ "dualscattering" ] 
+        "color sigmaA" [0.432 0.612 0.98] 
+        "float alphaR" [3]
+        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float glintScaleFactor" [ 0.4 ]
+        "float causticWidth" [ 1.5 ]
+        "float eccentricity" [ 0.9 ]
+        "float hairRadius" [ 1.0 ]
+        "float df" [ 0.7 ]
+        "float db" [ 0.7 ]
+        "float scatterCount" [ -1.0 ]
+        "string vdbFileName" [ "./output/models/wCurly.10.vdb" ]
+        "bool uniformSampling" ["true"]
+
+	MakeNamedMaterial "blonde_hair" 
+        "string type" [ "dualscattering" ]
+        "color sigmaA" [0.15 0.20 0.30] 
+        "float alphaR" [3]
+        "float betaR" [8] "float betaTT" [10] "float betaTRT" [15]
+        "float glintScaleFactor" [ 0.4 ]
+        "float causticWidth" [ 1.5 ]
+        "float eccentricity" [ 0.9 ]
+        "float hairRadius" [ 1.0 ]
+        "float df" [ 0.7 ]
+        "float db" [ 0.7 ]
+        "float scatterCount" [ -1.0 ]
+        "string vdbFileName" [ "./output/models/wCurly.10.vdb" ]
+        "bool uniformSampling" ["true"]
+
+# LightSource "distant" "point from" [ 0.333333313 0.0 -0.666666627 ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ 8.0 8.0 8.0 ]     
+
+    TransformBegin
+        Rotate 0 0 1 0
+        Rotate 180 0 1 0
+        Rotate -90 0 1 0
+
+        TransformBegin
+            Translate 0 -10 20
+            NamedMaterial "brown_hair"
+          	#Include "models/wCurly.10.pbrt" 
+        TransformEnd
+
+        TransformBegin
+            Scale 0.10747 0.10747 0.10747
+            Rotate 225 0 1 0
+
+            TransformBegin
+            	NamedMaterial "blonde_hair" 
+	            Include "models/wCurly.10.pbrt"
+            TransformEnd
+
+            TransformBegin
+                Rotate -90 1 0 0
+                Include "models/woman/woman.pbrt"
+            TransformEnd
+        TransformEnd
+    TransformEnd
+WorldEnd

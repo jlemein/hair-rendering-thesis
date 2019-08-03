@@ -60,7 +60,7 @@ DualScatteringBSDF* createDualScattering(Spectrum sigmaA, Float scatterCount,
     return new DualScatteringBSDF(si, (Scene*) 0,
             eta, marschner,
             alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
-            df, db, scatterCount, "unnamed.vdb");
+            df, db, scatterCount, "unnamed.vdb", true);
 }
 
 const Float rgbBrunette[3] = {0.432, 0.612, 0.98};

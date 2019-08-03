@@ -30,12 +30,15 @@ namespace pbrt {
                 Float alphaR, Float alphaTT, Float alphaTRT, 
                 Float betaR, Float betaTT, Float betaTRT,
                 Float df, Float db, Float scatterCount,
-                std::string voxelGridFileName) 
+                std::string voxelGridFileName,
+                bool uniformSampling) 
         : mEta(eta), mMarschnerMaterial(marschnerMaterial), 
                 mAlphaR(alphaR), mAlphaTT(alphaTT), mAlphaTRT(alphaTRT), 
                 mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT), 
                 mDf(df), mDb(db), mScatterCount(scatterCount), 
-                mVoxelGridFileName(voxelGridFileName) {
+                mVoxelGridFileName(voxelGridFileName),
+                mUniformSampling(uniformSampling)
+        {
         }
 
         void ComputeScatteringFunctions(SurfaceInteraction *si, MemoryArena &arena,
@@ -49,6 +52,7 @@ namespace pbrt {
           Float mDf, mDb;
           Float mScatterCount;
           std::string mVoxelGridFileName;
+          bool mUniformSampling;
     };
 
     struct GlobalScatteringInformation {
@@ -65,7 +69,7 @@ namespace pbrt {
                 Float alphaR, Float alphaTT, Float alphaTRT,
                 Float betaR, Float betaTT, Float betaTRT,
                 Float df, Float db, Float scatterCount,
-                std::string voxelGridFileName);
+                std::string voxelGridFileName, bool uniformSampling);
 
         Vector3f WorldToLocal(const Vector3f& v) const;
         Vector3f LocalToWorld(const Vector3f& v) const;

@@ -40,7 +40,7 @@ namespace pbrt {
         DualScatteringBSDF* dualScatteringBSDF =
                 ARENA_ALLOC(arena, DualScatteringBSDF)(*si, this->scene, mEta, marschnerBSDF,
                 mAlphaR, mAlphaTT, mAlphaTRT, mBetaR, mBetaTT, mBetaTRT,
-                mDf, mDb, mScatterCount, mVoxelGridFileName);
+                mDf, mDb, mScatterCount, mVoxelGridFileName, mUniformSampling);
 
         si->bsdf->Add(dualScatteringBSDF);
     }
@@ -58,11 +58,12 @@ namespace pbrt {
         Float db = mp.FindFloat("db", 0.7);
         Float scatterCount = mp.FindFloat("scatterCount", -1.0);
         std::string vdbFileName = mp.FindString("vdbFileName", "voxelgrid.vdb");
+        bool uniformSampling = mp.FindBool("uniformSampling", false);
 
         return new DualscatteringMaterial(marschnerMaterial->mEta, marschnerMaterial,
                 marschnerMaterial->mAr, marschnerMaterial->mAtt, marschnerMaterial->mAtrt,
                 marschnerMaterial->mBr, marschnerMaterial->mBtt, marschnerMaterial->mBtrt,
-                df, db, scatterCount, vdbFileName);
+                df, db, scatterCount, vdbFileName, uniformSampling);
     }
 
     /*******************************
@@ -76,7 +77,8 @@ namespace pbrt {
             Float alphaR, Float alphaTT, Float alphaTRT,
             Float betaR, Float betaTT, Float betaTRT,
             Float df, Float db, Float scatterCount,
-            std::string voxelGridFileName)
+            std::string voxelGridFileName,
+            bool uniformSampling)
     : BxDF(BxDFType(BSDF_GLOSSY | BSDF_REFLECTION | BSDF_TRANSMISSION)),
     mEta(eta), mDb(db), mDf(df),
     mScene(scene),
@@ -94,7 +96,7 @@ namespace pbrt {
     mBetaR(betaR), mBetaTT(betaTT), mBetaTRT(betaTRT),
     mScatterCount(scatterCount),
     mVoxelGridFileName(voxelGridFileName),
-    mSampleUniform(true) {
+    mSampleUniform(uniformSampling) {
 
         // lookup table initialized here, so that all members
         // of this reference are initialized
@@ -597,7 +599,7 @@ namespace pbrt {
 
         // 6. We sample a random Gaussian variable g and compute the relative outgoing azimuth
         Float g = BoxMuller(u[4], u[5]);
-        Float phi = Phi(p, gammaI, gammaT) + g * vp;
+        Float phi = Phi(p, gammaI, gammaT) + g * sqrt(vp); //sqrt(vp) == abs(beta)
         Float phiR = UnwrapPhi(phiI + phi);
         *wo = FromSphericalCoords(thetaO, phiR);
 
@@ -688,13 +690,13 @@ namespace pbrt {
         Float z = cos(theta);
 
         *wi = Vector3f(x, y, z);
-        *pdf = PiOver4;
+        *pdf = Inv4Pi;
 
         return f(wo, *wi);
     }
 
     Float DualScatteringBSDF::UniformPdf(const Vector3f& wo, const Vector3f& wi) const {
-        return PiOver4;
+        return Inv4Pi;
     }
 
 } // namespace pbrt

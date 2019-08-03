@@ -464,7 +464,7 @@ namespace pbrt {
     }
 
     Float MarschnerBSDF::Pdf(const Vector3f &wo, const Vector3f &wi) const {
-        return PiOver4;
+        return Inv4Pi;
     }
 
     std::string MarschnerBSDF::ToString() const {

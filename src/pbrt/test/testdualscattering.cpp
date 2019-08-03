@@ -143,7 +143,7 @@ TEST(Dualscattering, CompareValues) {
     DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
             eta, marschner,
             alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
-            1.0 /*0.7*/, 1.0 /*0.7*/, 0.0, "unnamed.vdb");
+            1.0 /*0.7*/, 1.0 /*0.7*/, 0.0, "unnamed.vdb", true);
 
     MyRandomSampler sampler(0.0, 1.0);
 
@@ -224,6 +224,51 @@ TEST(ImportanceSampling, Prefer_R_selection_when_h_close_to_one) {
 
     CHECK_GT(wR, wTT);
     CHECK_GT(wR, wTRT);
+
+}
+
+TEST(DualScattering, ImportanceSamplingPdfIntegratesOne) {
+    si.shading.dpdu = Vector3f(1.0, 0.0, 0.0);
+    MarschnerBSDF* marschner = new MarschnerBSDF(si,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            hairRadius, eta, sigmaA, eccentricity, glintScale, causticWidth, causticFade, causticIntensityLimit);
+
+    DualScatteringBSDF* dualScattering = new DualScatteringBSDF(si, (Scene*) 0,
+            eta, marschner,
+            alpha[0], alpha[1], alpha[2], beta[0], beta[1], beta[2],
+            1.0 /*0.7*/, 1.0 /*0.7*/, 0.0, "unnamed.vdb", true);
+
+    const int SAMPLES_PHI = 100;
+    const int SAMPLES_THETA = 100;
+
+    // give a fixed incoming direction
+    const Vector3f wi(.0f, 1.f, .0f);
+
+    Float sum = .0f, reference = .0f;
+
+    for (int i = 0; i < SAMPLES_THETA; ++i) {
+        Float theta = (i / 100.0) * Pi - .5 * Pi;
+
+        for (int j = 0; j < SAMPLES_PHI; ++j) {
+            Float phi = (j / 100.0) * 2.0 * Pi;
+            const Vector3f wo = FromSphericalCoords(theta, phi);
+
+            //sum += bsdf->Pdf(wo, wi) * cos(theta);
+            Float dPhi = 2.0 * Pi / SAMPLES_PHI;
+            Float dTheta = Pi / SAMPLES_THETA;
+            Float dA = dTheta * dPhi * cos(theta);
+
+            //Float uniformPdf = dualScattering->Pdf(wo, wi);
+            Float pdf = dualScattering->DEonPdf(wo, wi);
+            ASSERT_GE(pdf, 0.0f);
+
+            sum += dA * pdf;
+            reference += dA * Inv4Pi;
+        }
+    }
+
+    CHECK_NEAR(reference, 1.0, 0.001);
+    CHECK_NEAR(sum, 1.0, 1e-2);
 
 }
 /*
