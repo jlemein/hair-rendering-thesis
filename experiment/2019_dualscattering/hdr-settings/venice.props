@@ -1,0 +1,16 @@
+# hdrmap: texture file (.exr) to use
+hdrmap venice8k.exr
+
+# name of scene
+scene_name venice
+
+# hdrcalibration: <degrees> <axis_x> <axis_y> <axis_z>
+hdrcalibration -90 1 0 0
+
+# orient view: <degrees> <axis_x> <axis_y> <axis_z>
+viewcalibration 135 0 1 0
+
+# hdrscale: scales the intensity of the hdr results
+hdrscale 0.4 0.4 0.4
+
+

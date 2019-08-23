@@ -1,5 +1,22 @@
 rm output/*.pbrt
 
+# Environment map
+prepare --input woman-head.scene --output output/deon_04samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/deon_16samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=16,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/deon_32samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
+prepare --input woman-head.scene --output output/uniform_04samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/uniform_16samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=16,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/uniform_32samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/uniform_256samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=256,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/uniform_1024samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=1024,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
+
+
+
+
+#--- BEFORE ----
+
 #prepare --input woman-head.scene --output output/brunette_distantlight_around_x.pbrt --propertyfiles base.properties lighting_around_x.properties --properties image_output_basename=brunette_distantlight_around_x,material_name=brown_hair,model_hair_filename=wStraight,useDistantLight=,useAreaLight=#,useInfiniteLight=#
 
 #showing caustic width
@@ -27,7 +44,10 @@ rm output/*.pbrt
 #
 # moving viewer around
 #
-prepare --input woman-head.scene --output output/ds_brunette_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ms_brunette_move_around_y,material_name=brown_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#
+######prepare --input woman-head.scene --output output/ds_brunette_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ms_brunette_move_around_y,material_name=brown_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#
+
+
+
 #prepare --input woman-head.scene --output output/ds_brunette_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ds_brunette_move_around_y,material_name=brown_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#,hairRadius=0.1
 
 #prepare --input woman-head.scene --output output/ds_hardlyabsorbing_move_around_y.pbrt --propertyfiles base.properties moving_around_y.properties --properties image_output_basename=ds_hardlyabsorbing_move_around_y,material_name=hardly_absorbing_hair,model_hair_filename=wStraight,shader=dualscattering,useDistantLight=,useAreaLight=#,useInfiniteLight=#

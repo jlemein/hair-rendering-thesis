@@ -118,6 +118,9 @@ namespace pbrt {
     Float PhiR(Float gammaI);
     
     Float UnwrapPhi(Float phi);
+
+    Float DPhiDh_R(Float gamma_i);
+    Float DPhiDh(int p, Float gammaI, Float etaPerp);
     
     /**
      * Returns the specular amount
@@ -139,6 +142,7 @@ namespace pbrt {
     
     Float GammaT(Float gammaI, Float etaPerp);
     
+    Float SolveGammaRoot_R(Float phi);
     int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]);
 
     /**

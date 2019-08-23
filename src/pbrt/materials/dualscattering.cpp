@@ -1,4 +1,3 @@
-
 #include "dualscattering.h"
 #include "spectrum.h"
 #include "reflection.h"
@@ -17,6 +16,7 @@
 #include "materials/dualscatteringlookup.h"
 #include "scene.h"
 #include "materials/hairutil.h"
+
 #include <mutex>
 
 #include <fstream>
@@ -58,7 +58,8 @@ namespace pbrt {
         Float db = mp.FindFloat("db", 0.7);
         Float scatterCount = mp.FindFloat("scatterCount", -1.0);
         std::string vdbFileName = mp.FindString("vdbFileName", "voxelgrid.vdb");
-        bool uniformSampling = mp.FindBool("uniformSampling", false);
+        std::string samplingMethod = mp.FindString("samplingMethod", "uniform");
+        bool uniformSampling = samplingMethod == "uniform";
 
         return new DualscatteringMaterial(marschnerMaterial->mEta, marschnerMaterial,
                 marschnerMaterial->mAr, marschnerMaterial->mAtt, marschnerMaterial->mAtrt,
@@ -541,20 +542,99 @@ namespace pbrt {
         return "DualScatteringBSDF";
     }
 
-    static Float uFunc(Float v, Float u) {
-        return v * log(exp(1.0 / v) - 2.0 * u * sinh(1.0 / v));
+    static Float sampleSphericalGaussian(Float variance, Float u) {
+        return variance * log(exp(1.0 / variance) - 2.0 * u * sinh(1.0 / variance));
+    }
+
+    static Float sampleThetaI(Float u1, Float u2, Float variance, Float thetaCone) {
+        Float thetaAccent = .5 * Pi - thetaCone;
+
+        Float cosTheta = sampleSphericalGaussian(variance, u1);
+        Float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
+
+        Float a = cosTheta * cos(thetaAccent);
+        Float b = sinTheta * cos(2.0 * Pi * u2) * sin(thetaAccent);
+
+        return SafeASin(a + b);
     }
 
     static Float BoxMuller(Float u1, Float u2) {
         return sqrt(-2.0 * log(u1)) * cos(2.0 * Pi * u2);
     }
 
-    Spectrum DualScatteringBSDF::DEonSample_f(const Vector3f &wi, Vector3f *wo, Float *pdf, const Float u[6]) const {
+    static void RetrieveSpecularWeights(Float cosGammaI, Float gammaT, Float cosThetaT, const Spectrum& sigmaA, Float etaT, Float *weights) {
+        //printf("\n\n1. Called with: cosGammaI: %f, cosThetaT: %f\n", cosGammaI, cosThetaT);
+        Float gammaI = acos(cosGammaI);
+
+        Float specAr = AttenuationSpecR(cosGammaI, etaT) / (2.0 * fabs(DPhiDh_R(gammaI)));
+        Float specAtt = AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT) / fabs(2.0 * DPhiDh(1, gammaI, etaT));
+        Float specAtrt = AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT) / fabs(2.0 * DPhiDh(2, gammaI, etaT));
+        Float specSum = specAr + specAtt + specAtrt;
+
+        weights[0] = specAr / specSum;
+        weights[1] = specAtt / specSum;
+        weights[2] = specAtrt / specSum;
+
+        CHECK_NEAR(weights[0] + weights[1] + weights[2], 1.0, 0.02);
+    }
+
+    static void RetrieveSpecularWeightsFromRelativePhi(Float dphi, Float cosThetaT, const Spectrum &sigmaA, Float etaT, Float* weights) {
+        // in this case we have been given a delta phi between two directions.
+        // To compute the weights
+
+        //printf("2. Called with: cosThetaT: %f, dphi: %f\n", cosThetaT, dphi);
+        Float specAr = 0.0f, specAtt = 0.0f, specAtrt = 0.0f;
+        // R
+        {
+            Float gammaI = SolveGammaRoot_R(dphi);
+            Float cosGammaI = cos(gammaI);
+            specAr = AttenuationSpecR(cosGammaI, etaT)
+                    / (2.0 * fabs(DPhiDh_R(gammaI)));
+        }
+
+        // TT
+        {
+            Float gammaI[3];
+            int nRoots = SolveGammaRoots(1, dphi, etaT, gammaI);
+            Float gammaT = GammaT(gammaI[0], etaT);
+            Float cosGammaI = cos(gammaI[0]);
+            //printf("2. TT gammaI: %f, cosGammaI: %f\n", gammaI[0], cosGammaI);
+            specAtt = AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT)
+                    / (fabs(2.0 * DPhiDh(1, gammaI[0], etaT)));
+        }
+
+        // TRT
+        {
+            Float roots[3];
+            int nRoots = SolveGammaRoots(2, dphi, etaT, roots);
+            specAtrt = 0.0f;
+            //printf("nRoots TRT: %d\n", nRoots);
+
+            for (int i = 0; i < nRoots; ++i) {
+                Float gammaI = roots[i];
+                Float gammaT = GammaT(gammaI, etaT);
+                Float cosGammaI = cos(gammaI);
+
+                //printf("2. TRT cosGammaI: %f\n\n\n", cosGammaI);
+                specAtrt += AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, sigmaA, etaT)
+                        / (fabs(2.0 * DPhiDh(2, gammaI, etaT)));
+            }
+        }
+
+        Float specSum = specAr + specAtt + specAtrt;
+        weights[0] = specAr / specSum;
+        weights[1] = specAtt / specSum;
+        weights[2] = specAtrt / specSum;
+
+        CHECK_NEAR(weights[0] + weights[1] + weights[2], 1.0, 1e-5);
+    }
+
+    Spectrum DualScatteringBSDF::DEonSample_f(const Vector3f &wo, Vector3f *wi, Float *pdf, const Float u[6]) const {
 
         //1. An incoming direction is given
-        Float thetaI, phiI;
-        ToSphericalCoords(wi, thetaI, phiI);
-        Float cosThetaI = cos(thetaI);
+        Float thetaO, phiO;
+        ToSphericalCoords(wo, thetaO, phiO);
+        //Float cosThetaO = cos(thetaO);
 
         // 2. uniformly choose a random offset [-1, 1]
         Float h = 2.0 * u[0] - 1.0;
@@ -565,56 +645,60 @@ namespace pbrt {
         Float cosGammaI = cos(gammaI);
 
         // TODO: is this correct? To use thetaI instead of thetaR
-        Float sinThetaI = sin(thetaI);
-        Float sinThetaT = sinThetaI / etaT;
+        Float sinThetaO = sin(thetaO);
+        Float sinThetaT = sinThetaO / etaT;
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
 
         // 3. Compute attenuations Aspec(h, p) for each lobe assuming
         // no deflection away from specular cone
         //TODO: no deflection away from specular cone (means probably beta = 0)
-        Float specAr = AttenuationSpecR(cosGammaI, etaT);
-        Float specAtt = AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
-        Float specAtrt = AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
-        Float specSum = specAr + specAtt + specAtrt;
-        Float w[3] = {specAr / specSum, specAtt / specSum, specAtrt / specSum};
-        //printf("weights: R: %f -- TT: %f -- TRT: %f\n", w[0])
+        //        Float specAr = AttenuationSpecR(cosGammaI, etaT);
+        //        Float specAtt = AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
+        //        Float specAtrt = AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
+        //        Float specSum = specAr + specAtt + specAtrt;
+        //        Float w[3] = {specAr / specSum, specAtt / specSum, specAtrt / specSum};
+
+        Float w[3];
+        RetrieveSpecularWeights(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT, w);
 
         // 4. We select a lobe in proportion to the specular attenuations
         Float alpha[3] = {mAlphaR, mAlphaTT, mAlphaTRT};
         Float beta[3] = {mBetaR, mBetaTT, mBetaTRT};
 
-        Float lobeSelect = u[1] * specSum;
+        Float lobeSelect = u[1];
         int p = lobeSelect < w[0] ? 0
                 : lobeSelect < (w[0] + w[1]) ? 1 : 2;
 
         // 5. We now know which Mp function (of variance vp) to sample, giving theta thetaO and thetaD
-        Float thetaCone = -thetaI + alpha[p];
-        Float vp = beta[p] * beta[p];
-        Float thetaAccent = .5 * Pi - thetaCone;
+        Float variance = beta[p] * beta[p];
+        Float thetaI = sampleThetaI(u[2], u[3], variance, -thetaO + alpha[p]);
 
-        Float e1 = uFunc(vp, u[2]);
-        Float thetaO = SafeASin(e1 * cos(thetaAccent) + sqrt(1.0 - e1 * e1) * cos(2.0 * Pi * u[3]) * sin(thetaAccent));
-        Float thetaD = .5 * (thetaI + thetaO);
+        // TODO: which is correct?
+        Float thetaD = DifferenceAngle(thetaI, thetaO);
+        //Float thetaD = .5 * (thetaI + thetaO);
+
         Float etaPerp = sqrt(mEta * mEta - sin(thetaD)) / cos(thetaD);
 
         // 6. We sample a random Gaussian variable g and compute the relative outgoing azimuth
         Float g = BoxMuller(u[4], u[5]);
-        Float phi = Phi(p, gammaI, gammaT) + g * sqrt(vp); //sqrt(vp) == abs(beta)
-        Float phiR = UnwrapPhi(phiI + phi);
-        *wo = FromSphericalCoords(thetaO, phiR);
-
-        // 7. We return a sample weight
+        Float phi = Phi(p, gammaI, gammaT) + g * sqrt(variance); //sqrt(vp) == abs(beta)
+        Float phiI = UnwrapPhi(phiO + phi);
 
         // Evaluation of the model with Ap replaced by wp
-        *pdf = this->mMarschnerBSDF->f_Weighted(wi, *wo, w[0], w[1], w[2]) / 1.735f;
+        *wi = FromSphericalCoords(thetaI, phiI);
+        //*pdf = this->mMarschnerBSDF->f_Weighted(wo, *wi, w[0], w[1], w[2]);
+        *pdf = this->DEonPdf(wo, *wi);
 
+        // 7. We return a sample weight
         //Float Ap = this->mMarschnerBSDF->f_p(p, wi, *wo).y();
         //Float weight = Ap / w[p];
 
         // TODO: what is a weight? Has it to do with pdf?
         //*pdf = 1.0 / weight; ///Ap / w[p];
-        return f(wi, *wo);
+        return f(wo, *wi);
     }
+
+
 
     Float DualScatteringBSDF::DEonPdf(const Vector3f &wo, const Vector3f &wi) const {
         Float thetaI, phiI, thetaR, phiR;
@@ -626,56 +710,27 @@ namespace pbrt {
         Float theta_h = HalfAngle(thetaI, thetaR);
         Float phi_h = HalfAngle(phiI, phiR);
 
-        Float etaPerp, etaPar;
-        ToBravais(mEta, thetaR, etaPerp, etaPar);
-        Float etaT = etaPerp;
+        //Float etaPerp, etaPar;
+        //ToBravais(mEta, thetaR, etaPerp, etaPar);
+        Float etaT = 1.55; //etaPerp;
 
         Float sinThetaR = sin(thetaR);
-        Float sinThetaT = sinThetaR / etaPerp;
+        Float sinThetaT = sinThetaR / etaT;
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
 
-        Float specAr = .0f, specAtt = .0f, specAtrt = .0f;
+        Float weights[3];
+        RetrieveSpecularWeightsFromRelativePhi(dphi, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT, weights);
 
-        // R
-        {
-            Float gammaI;
-            int nRoots = SolveGammaRoots(1, dphi, etaPerp, &gammaI);
-            // there is always a root
-            Float cosGammaI = cos(gammaI);
-            specAr = AttenuationSpecR(cosGammaI, etaT);
-        }
+//        Float MR = this->mMarschnerBSDF->M_r(thetaI, thetaR);
+//        Float MTT = this->mMarschnerBSDF->M_tt(thetaI, thetaR);
+//        Float MTRT = this->mMarschnerBSDF->M_trt(thetaI, thetaR);
+//        float R = (weights[0] * MR + weights[1] * MTT + weights[2] * MTRT)/CosineSquared(theta_d);
 
-        // TT
-        {
-            Float gammaI;
-            int nRoots = SolveGammaRoots(1, dphi, etaPerp, &gammaI);
-            Float gammaT = GammaT(gammaI, etaPerp);
-            Float cosGammaI = cos(gammaI);
-            specAtt = AttenuationSpecTT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
-        }
+        Float r = this->mMarschnerBSDF->f_Weighted(wo, wi, weights[0], weights[1], weights[2]);
 
-        // TRT
-        {
-            Float gammaI;
-            Float roots[3];
-            int nRoots = SolveGammaRoots(2, dphi, etaPerp, roots);
-            specAtrt = 0.0f;
-
-            for (int i = 0; i < nRoots; ++i) {
-                Float gammaI = roots[i];
-                Float gammaT = GammaT(gammaI, etaPerp);
-                Float cosGammaI = cos(gammaI);
-
-                specAtrt += AttenuationSpecTRT(cosGammaI, gammaT, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT);
-            }
-
-        }
-
-        Float specSum = specAr + specAtt + specAtrt;
-        Float w[3] = {specAr / specSum, specAtt / specSum, specAtrt / specSum};
-
-        return this->mMarschnerBSDF->f_Weighted(wo, wi, w[0], w[1], w[2]) / 1.735f;
+        return r;
     }
+
 
     //
     // Uniform sampling

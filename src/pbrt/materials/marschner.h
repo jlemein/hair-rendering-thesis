@@ -126,9 +126,14 @@ namespace pbrt {
          */
         virtual std::string ToString() const;
         
-         Float M_r(Float theta_h) const;
+        Float M_r(Float theta_h) const;
         Float M_tt(Float theta_h) const;
         Float M_trt(Float theta_h) const;
+
+        Float M_r(Float thetaI, Float thetaR) const;
+        Float M_tt(Float thetaI, Float thetaR) const;
+        Float M_trt(Float thetaI, Float thetaR) const;
+
         
         Spectrum N_r(Float relativePhi, Float etaPerp) const;
         Spectrum N_tt(Float relativePhi, Float etaPerp, Float cosThetaT) const;

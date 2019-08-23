@@ -85,6 +85,18 @@ namespace pbrt {
         return phi;
     }
 
+    Float DPhiDh_R(Float gamma_i) {
+        return -2.0 / AssurePositiveNonZero(sqrt(1.0 - SineSquared(gamma_i)));
+    }
+
+    Float DPhiDh(int p, Float gammaI, Float etaPerp) {
+        Float c = asin(1.0 / etaPerp);
+        Float a = 8.0 * p * c / (Pi * Pi * Pi);
+        Float b = 6.0 * p * c / Pi - 2.0;
+
+        return (-3.0 * a * gammaI * gammaI + b) / SafeSqrt(1.0 - SineSquared(gammaI));
+    }
+
     /**
      * Utility function to adjust a value to be positive and nonzero.
      * Reason for this function is that rounding errors can lead to values
@@ -430,6 +442,19 @@ namespace pbrt {
         }
     }
 
+    /**
+     * Solves the root for reflection (R) mode of Marschner.
+     * Gamma is returned instead of the root h (for efficiency reasons)
+     *
+     *  h = sin gamma, so if you want h, then do arcsin(gamma)
+     *
+     * @param phi
+     * @return Gamma_i
+     */
+    Float SolveGammaRoot_R(Float phi) {
+        return -phi / 2.0;
+    }
+
     int SolveGammaRoots(int p, Float phi, Float etaPerp, Float gammaRoots[3]) {
         CHECK_GT(etaPerp, 0.0);
         CHECK(1.0 / etaPerp >= 0.0 && 1.0 / etaPerp <= 1.0);
@@ -448,15 +473,22 @@ namespace pbrt {
         CHECK(numberRoots == 1 || numberRoots == 3);
 
         // filter roots that are invalid
-        int numberValidRoots = 0;
-        for (int i = 0; i < numberRoots; ++i) {
-            Float gamma = RangeBoundGamma(gammaRoots[i]);
-            if (fabs(gamma) <= .5 * Pi) {
-                gammaRoots[numberValidRoots++] = gamma;
-            }
-        }
 
-        return numberValidRoots;
+
+        return numberRoots;
+
+        //        int numberValidRoots = 0;
+        //        for (int i = 0; i < numberRoots; ++i) {
+        //
+        //            Float gamma = RangeBoundGamma(gammaRoots[i]);
+        //
+        //            printf("roots[%d] = %f (corrected: %f)\n", i, gammaRoots[i], gamma);
+        //            if (fabs(gamma) <= .5 * Pi) {
+        //                gammaRoots[numberValidRoots++] = gamma;
+        //            }
+        //        }
+        //
+        //        return numberValidRoots;
     }
 
     /**

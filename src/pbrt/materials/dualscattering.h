@@ -122,7 +122,7 @@ namespace pbrt {
         Float UniformPdf(const Vector3f &wo, const Vector3f &wi) const;
         
         // sampling according to DEon et al.
-        Spectrum DEonSample_f(const Vector3f &wi, Vector3f *wo, Float *pdf, const Float u[6]) const;
+        Spectrum DEonSample_f(const Vector3f &wo, Vector3f *wi, Float *pdf, const Float u6[6]) const;
         Float DEonPdf(const Vector3f &wo, const Vector3f &wi) const;
 
         virtual std::string ToString() const;

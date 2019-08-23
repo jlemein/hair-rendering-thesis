@@ -1,15 +1,15 @@
 Integrator "$integrator_type" "integer maxdepth" [ $integrator_maxdepth ] 
 #Transform [ $transform_matrix ]
 # $light_power
-Translate 0 0 38
+Translate 0 0 15
 Rotate 0 0 1 0
 Rotate $view_rotation 0 1 0
-Sampler "$sampler_type" "integer pixelsamples" [ $sampler_pixelsamples ]
+Sampler "$sampler_type" "integer pixelsamples" [ $pixelsamples ]
 
 PixelFilter "triangle" "float xwidth" [ $pixelfilter_xwidth ] "float ywidth" [ $pixelfilter_ywidth ] 
 Film "image"
     "integer xresolution" [ $image_xresolution ] "integer yresolution" [ $image_yresolution ]
-    "string filename" "output/$image_output_basename$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
+    "string filename" "output/$samplingMethod_$image_output_basename_$scene_name_$pixelsamplessamples$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
     "float scale" $image_scale
 
 Camera "perspective" "float fov" [ $camera_fov ] 
@@ -32,6 +32,7 @@ WorldBegin
         "float eccentricity" [ $eccentricity ]
         "float hairRadius" [ $hairRadius ]
         "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
+        "string samplingMethod" [ "$samplingMethod" ]
 
 	MakeNamedMaterial "hardly_absorbing_hair" "string type" [ "$shader" ] 
         "color sigmaA" [0.01 0.01 0.01] 
@@ -42,6 +43,7 @@ WorldBegin
         "float eccentricity" [ $eccentricity ]
         "float hairRadius" [ $hairRadius ]
         "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
+        "string samplingMethod" [ "$samplingMethod" ]
 
 MakeNamedMaterial "little_absorbing_hair" "string type" [ "$shader" ] 
         "color sigmaA" [0.05 0.05 0.05] 
@@ -52,6 +54,7 @@ MakeNamedMaterial "little_absorbing_hair" "string type" [ "$shader" ]
         "float eccentricity" [ $eccentricity ]
         "float hairRadius" [ $hairRadius ]
         "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
+        "string samplingMethod" [ "$samplingMethod" ]
 
 MakeNamedMaterial "absorbing_hair" "string type" [ "$shader" ] 
         "color sigmaA" [0.1 0.1 0.1] 
@@ -62,6 +65,7 @@ MakeNamedMaterial "absorbing_hair" "string type" [ "$shader" ]
         "float eccentricity" [ $eccentricity ]
         "float hairRadius" [ $hairRadius ]
         "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
+        "string samplingMethod" [ "$samplingMethod" ]
 
 
 
@@ -78,13 +82,20 @@ MakeNamedMaterial "absorbing_hair" "string type" [ "$shader" ]
         "float eccentricity" [ $eccentricity ]
         "float hairRadius" [ $hairRadius ]
         "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
+        "string samplingMethod" [ "$samplingMethod" ]
 
-$useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ] 
-$useInfiniteLight    LightSource "infinite" 
-$useInfiniteLight            "rgb L" [ $infinite_light_power $infinite_light_power $infinite_light_power ] 
-$useInfiniteLight            "rgb scale" [ 1 1 1 ] 
-$useInfiniteLight            "integer samples" [ $infinite_light_samples ] 
-$useInfiniteLight            "string mapname" [ "textures/$infinite_light_environment_map" ]
+$useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ]
+    TransformBegin
+        AttributeBegin
+            Rotate $viewcalibration
+            Rotate $hdrcalibration
+            $useInfiniteLight    LightSource "infinite" 
+            $useInfiniteLight            "rgb L" [ $infinite_light_power $infinite_light_power $infinite_light_power ] 
+            $useInfiniteLight            "rgb scale" [ $hdrscale ] 
+            $useInfiniteLight            "integer samples" [ $infinite_light_samples ] 
+            $useInfiniteLight            "string mapname" [ "textures/$hdrmap" ]
+        AttributeEnd
+    TransformEnd
 
 $useAreaLight TransformBegin
 $useAreaLight    AttributeBegin
