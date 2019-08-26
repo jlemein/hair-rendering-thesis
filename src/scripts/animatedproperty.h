@@ -16,12 +16,13 @@ struct KeyFrame {
 class AnimatedProperty : public Property
 {
 private:
-    std::vector<std::pair<int, float> > mKeyFrames;
+    std::vector<std::pair<int, std::string> > mKeyFrames;
+
 
 public:
     AnimatedProperty(const std::string& key);
 
-    void addKeyFrame(int keyFrame, bool isAbsoluteKeyFrame, AnimationType animationType, float value);
+    void addKeyFrame(int keyFrame, bool isAbsoluteKeyFrame, AnimationType animationType, std::string value);
 
     /**
      * @brief findPosition Finds index in key frame list, where the specified key frame index fits between.

@@ -65,7 +65,7 @@ void parseCommandLineArguments(int argc, char** argv) {
             } else if (isSame(strategyName, "axis")) {
                 samplingMode = SamplingMode::BY_AXIS;
             } else {
-                cout << "Strategy unknown, please provide either 'random' or 'frombegin'";
+                cout << "Strategy unknown, please provide either 'random', 'frombegin' or 'axis'";
                 return;
             }
             continue;

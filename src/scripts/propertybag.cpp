@@ -73,7 +73,7 @@ void PropertyBag::parseAnimatedProperty(std::stringstream& ss) {
         boost::trim(line);
 
         // read value
-        float value = boost::lexical_cast<float>(line);
+        std::string value = line;////boost::lexical_cast<std::string>(line);
 
         // read animationType
         ss >> element;
@@ -94,7 +94,7 @@ void PropertyBag::parseAnimatedProperty(std::stringstream& ss) {
             }
         }
 
-        property->addKeyFrame(keyframe, isAbsoluteKeyFrame, animationType, boost::lexical_cast<float>(value));
+        property->addKeyFrame(keyframe, isAbsoluteKeyFrame, animationType, value);
     } while (!ss.str().empty() && !stopCondition);
 
     mProperties[key] = property;

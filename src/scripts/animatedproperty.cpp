@@ -5,11 +5,11 @@
 AnimatedProperty::AnimatedProperty(const std::string& key)
     : Property(key)
 {
-
+    std::cout << "HELLO WORLD" << std::endl;
 }
 
-void AnimatedProperty::addKeyFrame(int keyFrame, bool isAbsoluteKeyFrame, AnimationType animationType, float value) {
-    this->mKeyFrames.push_back(std::pair<int, float>(keyFrame, value));
+void AnimatedProperty::addKeyFrame(int keyFrame, bool isAbsoluteKeyFrame, AnimationType animationType, std::string value) {
+    this->mKeyFrames.push_back(std::pair<int, std::string>(keyFrame, value));
 }
 
 float linearInterpolate(float valueA, float valueB, float ratio) {
@@ -34,21 +34,30 @@ int AnimatedProperty::findPosition(int keyFrame) const {
 std::string AnimatedProperty::operator [](int key) const {
     float returnValue;
 
-    int position = findPosition(key);
-    if (position == 0) {
-        returnValue = mKeyFrames[position].second;
-    } else if (position == mKeyFrames.size()) {
-        returnValue = mKeyFrames[position-1].second;
-    } else {
-        // interpolate
-        float valuePrev = mKeyFrames[position-1].second;
-        float valueNext = mKeyFrames[position].second;
-        float duration = (mKeyFrames[position].first - mKeyFrames[position-1].first);
-        float offset = key - mKeyFrames[position-1].first;
-        returnValue = linearInterpolate(valuePrev, valueNext, offset / duration);
-    }
+    try{
+        int position = findPosition(key);
+        if (position == 0) {
+            return mKeyFrames[position].second;
+        } else if (position == mKeyFrames.size()) {
+            return mKeyFrames[position-1].second;
+        } else {
+            std::string valuePrev = mKeyFrames[position-1].second;
+            std::string valueNext = mKeyFrames[position].second;
 
-    return boost::lexical_cast<std::string>(returnValue);
+            try{
+                // interpolate
+                float duration = (mKeyFrames[position].first - mKeyFrames[position-1].first);
+                float offset = key - mKeyFrames[position-1].first;
+                returnValue = linearInterpolate(boost::lexical_cast<float>(valuePrev), boost::lexical_cast<float>(valueNext), offset / duration);
+            } catch (std::exception& e) {
+                return valueNext;
+            }
+        }
+
+        return boost::lexical_cast<std::string>(returnValue);
+    } catch (const std::exception& e) {
+        std::cout << "Animated property could not be read for key = '" << this->name << "', mKeyFrames.size = " << mKeyFrames.size() << std::endl;
+    }
 }
 
 std::string AnimatedProperty::operator ()(float t = 0.0f) const {

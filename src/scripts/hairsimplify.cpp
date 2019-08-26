@@ -160,4 +160,6 @@ void HairSimplify::sampleByAxis(const std::string& outputFileName) {
 
 void HairSimplify::sampleRandomly() {
     std::cout << "Not supported at the moment" << std::endl;
+
+
 }
