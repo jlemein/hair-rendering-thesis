@@ -1,0 +1,12 @@
+@db_factor #0: 0.0 ~ #4: 1.0 ;
+@df_factor #0: 0.0 ~ #4: 1.0 ;
+image_output_basename dbdf
+useInfiniteLight 
+infinite_light_power 1.0
+infinite_light_samples 4
+
+# -----------------------------
+#  VIEW PROPERTIES
+# -----------------------------
+model_rotation 90
+

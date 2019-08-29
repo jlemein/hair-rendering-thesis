@@ -686,8 +686,8 @@ namespace pbrt {
 
         // Evaluation of the model with Ap replaced by wp
         *wi = FromSphericalCoords(thetaI, phiI);
-        *pdf = this->mMarschnerBSDF->f_Weighted(wo, *wi, w[0], w[1], w[2]);
-        //*pdf = this->DEonPdf(wo, *wi);
+        //*pdf = this->mMarschnerBSDF->f_Weighted(wo, *wi, w[0], w[1], w[2]);
+        *pdf = this->DEonPdf(wo, *wi);
 
         // 7. We return a sample weight
         //Float Ap = this->mMarschnerBSDF->f_p(p, wi, *wo).y();

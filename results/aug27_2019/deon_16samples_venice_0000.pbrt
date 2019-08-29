@@ -1,0 +1,135 @@
+Integrator "directlighting" "integer maxdepth" [ 8 ] 
+#Transform [ -0.999887 0.00390257 0.0145262 -0 -0 0.965755 -0.259457 -0 0.0150413 0.259428 0.965645 -0 0.146624 -9.36998 28.765 1 ]
+# 8.0
+Translate 0 0 15
+Rotate 0 0 1 0
+Rotate 0 0 1 0
+Sampler "sobol" "integer pixelsamples" [ 16 ]
+
+PixelFilter "triangle" "float xwidth" [ 1.000000 ] "float ywidth" [ 1.000000 ] 
+Film "image"
+    "integer xresolution" [ 1024 ] "integer yresolution" [ 1024 ]
+    "string filename" "output/deon__venice_16samples.25_0000.png"
+    "float scale" 1
+
+Camera "perspective" "float fov" [ 70 ] 
+
+WorldBegin
+	MakeNamedMaterial "black_hair" 
+        "string type" [ "dualscattering" ]
+        "string vdbFileName" [ "./output/models/wCurly.25.vdb" ]
+
+	MakeNamedMaterial "red_hair" 
+        "string type" [ "dualscattering" ]
+        "string vdbFileName" [ "./output/models/wCurly.25.vdb" ]
+
+	MakeNamedMaterial "brown_hair" "string type" [ "dualscattering" ] 
+        "color sigmaA" [0.432 0.612 0.98] 
+        "float alphaR" [3]
+        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float glintScaleFactor" [ 0.4 ]
+        "float causticWidth" [ 1.5 ]
+        "float eccentricity" [ 0.9 ]
+        "float hairRadius" [ 1.0 ]
+        "string vdbFileName" [ "./output/models/wCurly.25.vdb" ]
+        "string samplingMethod" [ "deon" ]
+
+	MakeNamedMaterial "hardly_absorbing_hair" "string type" [ "dualscattering" ] 
+        "color sigmaA" [0.01 0.01 0.01] 
+        "float alphaR" [3]
+        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float glintScaleFactor" [ 0.4 ]
+        "float causticWidth" [ 1.5 ]
+        "float eccentricity" [ 0.9 ]
+        "float hairRadius" [ 1.0 ]
+        "string vdbFileName" [ "./output/models/wCurly.25.vdb" ]
+        "string samplingMethod" [ "deon" ]
+
+MakeNamedMaterial "little_absorbing_hair" "string type" [ "dualscattering" ] 
+        "color sigmaA" [0.05 0.05 0.05] 
+        "float alphaR" [3]
+        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float glintScaleFactor" [ 0.4 ]
+        "float causticWidth" [ 1.5 ]
+        "float eccentricity" [ 0.9 ]
+        "float hairRadius" [ 1.0 ]
+        "string vdbFileName" [ "./output/models/wCurly.25.vdb" ]
+        "string samplingMethod" [ "deon" ]
+
+MakeNamedMaterial "absorbing_hair" "string type" [ "dualscattering" ] 
+        "color sigmaA" [0.1 0.1 0.1] 
+        "float alphaR" [3]
+        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float glintScaleFactor" [ 0.4 ]
+        "float causticWidth" [ 1.5 ]
+        "float eccentricity" [ 0.9 ]
+        "float hairRadius" [ 1.0 ]
+        "string vdbFileName" [ "./output/models/wCurly.25.vdb" ]
+        "string samplingMethod" [ "deon" ]
+
+
+
+    MakeNamedMaterial "brown_hair_ref"
+        "string type" [ "hair" ]
+
+	MakeNamedMaterial "blonde_hair" 
+        "string type" [ "dualscattering" ]
+        "color sigmaA" [0.03 0.07 0.15] 
+        "float alphaR" [3]
+        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float glintScaleFactor" [ 0.4 ]
+        "float causticWidth" [ 1.5 ]
+        "float eccentricity" [ 0.9 ]
+        "float hairRadius" [ 1.0 ]
+        "string vdbFileName" [ "./output/models/wCurly.25.vdb" ]
+        "string samplingMethod" [ "deon" ]
+
+# LightSource "distant" "point from" [ 0.333333313 0.0 -0.666666627 ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ 8.0 8.0 8.0 ]
+    TransformBegin
+        AttributeBegin
+            Rotate 135 0 1 0
+            Rotate -90 1 0 0
+                LightSource "infinite" 
+                        "rgb L" [ 1.0 1.0 1.0 ] 
+                        "rgb scale" [ 0.4 0.4 0.4 ] 
+                        "integer samples" [ 4 ] 
+                        "string mapname" [ "textures/venice8k.exr" ]
+        AttributeEnd
+    TransformEnd
+
+# TransformBegin
+#    AttributeBegin
+#        Translate 8.33333302 10 16.6666641
+#        AreaLightSource "diffuse" "blackbody L" [6500 2048]
+#        Shape "sphere" "float radius" [ 2.0 ] 
+#    AttributeEnd
+# TransformEnd
+    
+
+    TransformBegin
+        Rotate 0 0 1 0
+        Rotate 180 0 1 0
+        Rotate -90 0 1 0
+
+        TransformBegin
+            Translate 0 -10 20
+            NamedMaterial "brown_hair"
+          	#Include "models/straight-hair.50.pbrt" 
+        TransformEnd
+
+        TransformBegin
+            Scale 0.10747 0.10747 0.10747
+            Rotate 90 0 1 0
+
+            TransformBegin
+            	NamedMaterial "brown_hair" 
+	            Include "models/wCurly.25.pbrt"
+            TransformEnd
+
+            TransformBegin
+                Rotate -90 1 0 0
+                Include "models/woman/woman.pbrt"
+            TransformEnd
+        TransformEnd
+    TransformEnd
+WorldEnd

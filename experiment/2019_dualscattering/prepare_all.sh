@@ -1,17 +1,69 @@
 rm output/*.pbrt
 
+###
+### Environment map Venice (looking at it from backside)
+###
 
-# Environment map
-prepare --input woman-head.scene --output output/deon_04samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
-prepare --input woman-head.scene --output output/deon_08samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=8,useDistantLight=#,useAreaLight=#,useInfiniteLight=
-prepare --input woman-head.scene --output output/deon_16samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=16,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#
+# Brown hair
+#
+#prepare --input woman-head.scene --output output/deon_01samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=1,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/deon_04samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/deon_08samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=8,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/deon_16samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=16,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/deon_32samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
+#prepare --input woman-head.scene --output output/uniform_04samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+# prepare --input woman-head.scene --output output/uniform_08samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=8,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+# prepare --input woman-head.scene --output output/uniform_16samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=16,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/uniform_32samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/uniform_1024samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=1024,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
+#
+# Blonde hair
+#
+#prepare --input woman-head.scene --output output/deon_04samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=blonde_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/deon_32samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=blonde_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/uniform_04samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=blonde_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/uniform_32samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=blonde_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/uniform_1024samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=blonde_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=1024,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
+#
+# Black hair
+#
+#prepare --input woman-head.scene --output output/black_deon_04samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=black_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/black_deon_32samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=black_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/black_uniform_04samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=black_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/black_uniform_32samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=black_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/black_uniform_1024samples_venice.pbrt --propertyfiles base.properties env-rotation.props hdr-settings/venice.props --properties image_output_basename=,material_name=black_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=1024,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
+###
+### (End environmennt map Venice scene)
+###
+
+###
+### Variation of df, db from 0.0 to 1.0 (in 10 increments) lit from side
+###
+#prepare --input woman-head.scene --output output/dbdf_deon_venice.pbrt --propertyfiles base.properties dbdf-variation.props hdr-settings/venice.props --properties image_output_basename=dbdf,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=1,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+#prepare --input woman-head.scene --output output/dbdf_uniform_venice.pbrt --propertyfiles base.properties dbdf-variation.props hdr-settings/venice.props --properties image_output_basename=dbdf,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=1,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
+
+###
+###
+###
+
+prepare --input woman-head.scene --output output/deon_01samples_venice_static.pbrt --propertyfiles base.properties hdr-settings/venice.props --properties image_output_basename=static,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=1,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/deon_04samples_venice_static.pbrt --propertyfiles base.properties hdr-settings/venice.props --properties image_output_basename=static,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/deon_08samples_venice_static.pbrt --propertyfiles base.properties hdr-settings/venice.props --properties image_output_basename=static,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=8,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/deon_16samples_venice_static.pbrt --propertyfiles base.properties hdr-settings/venice.props --properties image_output_basename=static,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=16,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+prepare --input woman-head.scene --output output/deon_32samples_venice_static.pbrt --propertyfiles base.properties hdr-settings/venice.props --properties image_output_basename=static,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
 #prepare --input woman-head.scene --output output/deon_32samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=deon,pixelsamples=32,useDistantLight=#,useAreaLight=#,useInfiniteLight=
 
-prepare --input woman-head.scene --output output/uniform_04samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=4,useDistantLight=#,useAreaLight=#,useInfiniteLight=
-prepare --input woman-head.scene --output output/uniform_08samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=8,useDistantLight=#,useAreaLight=#,useInfiniteLight=
-prepare --input woman-head.scene --output output/uniform_16samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=16,useDistantLight=#,useAreaLight=#,useInfiniteLight=
-#prepare --input woman-head.scene --output output/uniform_256samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=256,useDistantLight=#,useAreaLight=#,useInfiniteLight=
-#prepare --input woman-head.scene --output output/uniform_1024samples_venice.pbrt --propertyfiles base.properties moving_around_y.properties hdr-settings/venice.props --properties image_output_basename=,material_name=brown_hair,model_hair_filename=wCurly,shader=dualscattering,samplingMethod=uniform,pixelsamples=1024,useDistantLight=#,useAreaLight=#,useInfiniteLight=
+
+###
+### Rotating directional light
+###
 
 
 

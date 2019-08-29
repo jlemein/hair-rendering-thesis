@@ -1,7 +1,7 @@
-Integrator "$integrator_type" "integer maxdepth" [ $integrator_maxdepth ] 
+Integrator "$integrator_type" "integer maxdepth" [ $integrator_maxdepth ] "float lightRadianceFactor" [ $lightRadianceFactor ]
 #Transform [ $transform_matrix ]
 # $light_power
-Translate 0 0 15
+Translate 0 0 $global_translate_z
 Rotate 0 0 1 0
 Rotate $view_rotation 0 1 0
 Sampler "$sampler_type" "integer pixelsamples" [ $pixelsamples ]
@@ -9,7 +9,7 @@ Sampler "$sampler_type" "integer pixelsamples" [ $pixelsamples ]
 PixelFilter "triangle" "float xwidth" [ $pixelfilter_xwidth ] "float ywidth" [ $pixelfilter_ywidth ] 
 Film "image"
     "integer xresolution" [ $image_xresolution ] "integer yresolution" [ $image_yresolution ]
-    "string filename" "output/$samplingMethod_$image_output_basename_$scene_name_$pixelsamplessamples$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
+    "string filename" "output/$samplingMethod_$image_output_basename_$scene_name_$pixelsamplessamples_db$db_factor_df$df_factor_$model_hair_thickness$model_hair_percentage_$KEY_FRAME$image_output_extension"
     "float scale" $image_scale
 
 Camera "perspective" "float fov" [ $camera_fov ] 
@@ -24,6 +24,8 @@ WorldBegin
         "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
 
 	MakeNamedMaterial "brown_hair" "string type" [ "$shader" ] 
+        "float db" [ $db_factor ]
+        "float df" [ $df_factor ]
         "color sigmaA" [0.432 0.612 0.98] 
         "float alphaR" [3]
         "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
@@ -87,6 +89,7 @@ MakeNamedMaterial "absorbing_hair" "string type" [ "$shader" ]
 $useDistantLight LightSource "distant" "point from" [ $light_from_x $light_from_y $light_from_z ] "point to" [ 0.000000 0.000000 0.000000 ] "rgb L" [ $light_power $light_power $light_power ]
     TransformBegin
         AttributeBegin
+            Rotate $env_rotation 0 1 0
             Rotate $viewcalibration
             Rotate $hdrcalibration
             $useInfiniteLight    LightSource "infinite" 

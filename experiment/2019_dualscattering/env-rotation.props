@@ -36,9 +36,10 @@ area_light_z 16.6666641
 # -----------------------------
 #  VIEW PROPERTIES
 # -----------------------------
-model_rotation 0
+model_rotation 90
 view_rotation 0
 camera_fov 70
+@env_rotation #0: 0 ~ #12: 360 ;
 
 # ----------------------------
 #  IMAGE PROPERTIES
