@@ -1,0 +1,108 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{gensymb}
+\usepackage{graphicx}
+\begin{document}
+
+
+For a hair shading algorithm, importance sampling is used to sample an incident light direction $\omega_i = (\theta_i, \phi_i)$, given a direction to the viewer $\omega_i = (\theta_r, \phi_r)$. Since we are rendering, this viewer direction $(\theta_r, \phi_r)$ is known. 
+
+The hair rendering algorithm is split up into two components: one for light that directly scatters of a hair fiber into the direction of the viewer (or camera). The other component is for light that scatters multiple times through the hair volume, before it scatters to the viewer.
+
+From experiments, the probability density functions (PDF) are found. For the direct scattering scenario the PDF is as follows:
+
+
+\begin{equation}
+PDF_{direct}(\omega_r, \omega_i) = g_L(\omega_r, \omega_i) \cdot g_A(\omega_r, \omega_i)
+\end{equation}
+
+Where $g_{L,A}$ are Gaussian functions for the longitudinal (L) and azimuthal (A) components respectively.
+
+\begin{equation}
+g_L(\theta_r, \phi_r; \theta_i, \phi_i) = \frac{1}{\sigma \sqrt{2\pi}} \cdot \exp \Bigg(-\frac{(\theta - \mu)^2}{2\sigma^2} \Bigg) 
+\begin{cases}
+\theta = \theta_i + \theta_r \\
+\sigma = 0.29 \\
+\mu(\theta_r) = 3\theta_r - 2\degree \\
+\end{cases}
+\end{equation}
+
+\begin{equation}
+g_A(\theta_r, \phi_r; \theta_i, \phi_i) = \frac{1}{\sigma \sqrt{2\pi}} \cdot \exp \Bigg(-\frac{(\phi - \mu)^2}{2\sigma^2} \Bigg) 
+\begin{cases}
+\phi = \phi_i + \phi_r \\
+\sigma(\theta_r) = \frac{1}{4} \theta_r^4 + 0.59 \\
+\mu = \pi \\
+\end{cases}
+\end{equation}
+
+
+The multiple scattering PDF is also a Gaussian function and has the following form:
+
+\begin{equation}
+PDF_{multiple}(\theta_r, \theta_i) = \frac{1}{\sigma \sqrt{2\pi}} \cdot \exp \Bigg(-\frac{(\theta - \mu)^2}{2\sigma^2} \Bigg) 
+\begin{cases}
+\theta = \theta_i + \theta_r \\
+\sigma(\theta_r) = \frac{1}{20} \theta_r^4 + 0.49 \\
+\mu(\theta_r) = 33.5 \sin(1.25\theta_r) - 1\degree \\
+\end{cases}
+\end{equation}
+
+
+The challenge is to generate two normalized cumulative distribution functions (CDF) from these probability density functions by integration and then to invert each CDF so that samples can be drawn for direct scattering and one for multiple scattering.\\
+
+Ps. The probability density functions are expressed using both the viewer and incident light directions $\omega_r$ and $\omega_i$, resp. At the time of rendering, the viewer direction $\omega_r$ is known and therefore, considering the integration, variables $\theta_r$ and $\phi_r$ can be considered constant.
+
+\section{Solving the multiple scattering PDF}
+
+Since $\omega_r$ is known and we need to sample an incident light direction, integrating the equation is much easier. Lets abbreviate $PDF_{multiple}$ as $p$ and $\theta_i = x$, then:
+
+\begin{equation}
+p(x) = \frac{1}{\sigma \sqrt{2\pi}} \cdot \exp \Bigg(-\frac{(\theta - \mu)^2}{2\sigma^2} \Bigg) 
+\begin{cases}
+\theta = x + \theta_r \\
+\sigma(\theta_r) = \frac{1}{20} \theta_r^4 + 0.49 \\
+\mu(\theta_r) = 33.5 \sin(1.25\theta_r) - 1\degree \\
+\end{cases}
+\end{equation}
+
+Further abbreviating the constants:
+
+\begin{eqnarray}
+a & = & \frac{1}{\sigma \sqrt{2\pi}} \\
+b & = & \theta_r - \mu(\theta_r) \\
+c & = & -2\sigma^2
+\end{eqnarray}
+
+This leads us to the following equation:
+
+\begin{equation}
+p(x) = a \cdot \exp \Bigg(\frac{(x + b)^2}{c} \Bigg) 
+\end{equation}
+
+\begin{eqnarray}
+\int p(x) dx = a \cdot \int \exp \Bigg(\frac{(x + b)^2}{c} \Bigg) dx
+\end{eqnarray}
+Using the substitution rule $u = \frac{(x + b)^2}{c}$, we obtain:
+
+\begin{eqnarray}
+a \cdot \int e^u dx \\
+du dx = \frac{(x + b)^2}{c} dx \\
+= \frac{1}{c} \cdot (x^2 + 2bx + b^2) dx \\
+= \frac{1}{c} \cdot (2x + 2b) \\
+dx = \frac{1}{c \cdot du} \cdot (2x + 2b)
+\end{eqnarray}
+
+This means the integral becomes:
+
+\begin{eqnarray}
+a \cdot \int e^u dx \\
+\end{eqnarray}
+
+\end{document}

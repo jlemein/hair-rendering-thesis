@@ -1,0 +1,105 @@
+\documentclass[11pt,a4paper]{report}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\begin{document}
+
+
+\section{Radiometry}
+
+It is important to understand the terminology in radiometry to get a good understanding of on the theory that is explained in this report. A brief explanation on all necessary terms is therefore provided.
+
+Power is the rate at which energy is transferred and is expressed in watts (W). A single watt describes the transfer of a single Joule (J) of energy per unit time (s). 
+
+Radiant flux $\Phi$ is the power of electromagnetic waves and describes the transfer of radiant energy per unit time. Radiant flux is therefore also expressed in watts.
+
+A solid angle $\Omega$ is the two-dimensional angle in three dimensional space that an object subtends at a point. An object that is closer may have the same solid angle as an object that is farther away. A solid angle is a dimensionless unit of measurement called a steradian ($sr$).
+
+The radiant intensity $I$ ia a measure of the intensity of electromagnetic radiation. It is defined as radiant power per unit solid angle ($W \cdot sr^{-1}$).
+
+Irradiance $E$ is the amount of power of electromagnetic radiation per unit area incident on a surface. The unit for irradiance is watts per square meter ($W \cdot m^{-2}$).
+
+Consider figure 4 in which a bundle of light is arriving at a surface. This bundle of light is assumed to be coming from a directional light source, such as the sun. Irradiance is the amount of flux that is received per unit area.
+
+Radiance $L$ measures the light intensity per unit area on a surface. It measures the quantity of radiation that passes through or is emitted from a surface and falls within a given solid angle in a specified direction. Radiance is used to characterize diffuse emission. The unit of radiance is watts per steradian per square meter ($W \cdot {sr}^{-1} \cdot m^{-2}$). Radiance is defined as follows:
+
+\begin{equation}
+L = \frac{d^2 \Phi}{dA\, d\Omega\, \cos \theta} \approx \frac{\Phi}{\Omega A \cos \theta}
+\end{equation}
+
+The irradiance measures the amount of power that arrives at a surface. This does not say anything about the direction it came from. Consider a light bundle that is targeted at the ground, as shown in image~\ref{cosine_term_visualization}. The surface normal $n$ of the ground points straight up ($n$ = (0 1)). In the left image, the light is coming from direction $w_i = (0 1)$, pointing straight on the surface. The width of the surface that receives light is therefore equal to the width of the light bundle. Mathematically, the lightbundle is pointed at the surface from direction $w_i$ = (0 1). By taking the dot product between the surface normal and the light bundle direction, we obtain a value of $1$. The right case shows the same light bundle shining on the ground with a slight angle.
+
+ which is in this case the ground. The lght bundle has a width $w$ and a direction vector $d$. 
+
+By taking a very small solid angle 
+
+
+\section{Physical structure of hair strands}
+
+[ch1.1 signotes] Modeling hair is a complex task due to the complex nonlinear mechanical behavior, strongly related to the thinnes of its cross section as well as its natural shape: smooth, wavy, curly or fuzzy. Two models exist that capture the main dynamic features of thin geometry. These are the Oriented Strands model and the Super-Helices. The Super Helices model is strongly validated against experiments made on real hair.
+
+A hair fiber can either be a circular or oval structure. The follicle is the active part of hair under the skin and produces keratin proteins that compose the hair material [signotes 1.2]. The part of the hair that is above the skin is called the hair shaft. This is the dead part of the hair and is what we try to model.[signotes 1.2] 
+
+
+The internal structure of a hair shaft consists of the following layers. The cortex is the core of the fiber and provides its physical strength. The cells are filled with keratin, contributing 90\% of the total weight. The cuticle is thin coating covered by tilted scales.
+The hair shaft is extremely difficult to shear and stretch, but it can be easily bend and twisted. [signotes 1.2]
+
+
+There models are used to model hair. These are individual strands, clusters and strips.
+
+
+A har fiber is composed of three structures. The cortex is the core of the fiber and provides its physical strength.
+
+ A hair fiber 
+- Physical structure of a hair fiber
+
+- What is BSDF and where is it used for?
+- Explain transition to BFSDF -> BCDF and their meaning
+- A definition for hair
+
+
+Surface reflections are modeled by defining a bidirectional reflection distribution function (BRDF). This function is denoted by $f_r( \omega_i, \omega_r)$ and returns the ratio of surface radiance exiting teh surface in diretion $\omega_r$ to surface irradiance falling on the surface from a differential solid angle in the direction $\omega_i$.
+
+
+\section{Rendering hair}
+
+Marshner et al. [] explains that hair rendering is a complex task, because local and global properties of hair must be incorporated. Local properties describe how light interacts with hair fibers and global properties describe the propagation of light through a volume of hair. In general hair can be modeled explicitly and implicitly.
+
+For explicitly represented hair, each hair fiber needs to be drawn separately.
+Rendering explicitly modeled hair means that every hair strand is drawn separately. By casting a ray through a pixel, the probability that it will intersect a single hair is close to zero. This is because hair fibers are extremely thin. At a distance they are even thinner, especially compared to the pixel size. Let alone the inaccuracy of the computer to do a ray intersection test between a hair fiber and a ray. Some tricks have to be performed to be able to do ray tracign with explicit hair models.
+Backprojecting a curve on the camera film is easy and accurate to do. 
+
+Implicit hair is modeled as a volume. This makes it convenient to do ray racing, because intersection tests between a ray and a volume can be performed quickly. Kajiya and Von Herzen [] suggested that volume densities were potentially capable of rendering hair and furry surfaces. Kay et al [] tried to implement this via three dimensional array of parameters. This means that a voxel cell can be maintained that holds data for each cell describing the average properties of the objects existing in this voxel cell.
+A hair density function can then be used to determine where the hair strands are and what the 
+
+
+
+
+Hair fibers cast shadows onto each other and they also receive or cast shadows from/to other objects in the scene. Self-shadowing is very important to render realistic looking hair, because without it results in flat images. In general, there are two rendering strategies to incorporate self-shadowing in hair: ray casting through volumetric densities and shadow maps.
+
+\subsection{H}
+
+Implicit hair representations tend to generalize the hair volume and this works great for a certain distance. In this project hair is modeled explicitly and therefore we need to render every hair explicitly. Since ray intersections with hair fibers are hard to detect, we need to inverse this process.
+
+First the hair fiber is projected onto the view plane. This makes it possible to accurately determine what pixels are affected by the hair fibers. By doing this for all hair fibers, we know exactly which hair fiber contributes to a certain pixel. By sorting the hair fibers for each pixel from front to back, we know what hair strand is before the other. The thing that needs 
+
+This results in point locations on the view plane. These points describe the exact location where the hair fiber is  Now we know what pixels are affected and their accurate positions inside the pixel.
+
+
+
+
+
+
+
+Power describes the amount of energy flow and is defined as the amount of Joules per second.  by the amount of Joules per second. 
+- intensity of light
+- irradiance
+- solid angle
+- radiance
+- Bidirectional Reflectance Distribution Function
+- For curves
+
+Radiance are measures of the quantity of radiation that passes through or is emitted from a surface and falls within a given solid angle in a specified direction. The unit is watts per steradian per square meter ($W \cdot sr^{-1} \cdot m^{-2}$) 
+
+\end{document}

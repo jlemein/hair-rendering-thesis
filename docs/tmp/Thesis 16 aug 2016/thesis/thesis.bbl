@@ -1,0 +1,59 @@
+\begin{thebibliography}{1}
+
+\bibitem{goldman}
+Dan~B. Goldman.
+\newblock Fake fur rendering.
+\newblock In {\em Proceedings of the 24th Annual Conference on Computer
+  Graphics and Interactive Techniques}, SIGGRAPH '97, pages 127--134, New York,
+  NY, USA, 1997. ACM Press/Addison-Wesley Publishing Co.
+
+\bibitem{gray}
+J.~Gray, R.P.R. Dawber, C.~Gummer, Hairdressing~Training Board, and Procter \&
+  Gamble Haircare~Research Centre.
+\newblock {\em The World of Hair: A Scientific Companion}.
+\newblock Hairdressing Training Board. Macmillan Publishers Limited, 1997.
+
+\bibitem{hadap}
+Sunil Hadap, Marie-Paule Cani, Florence Bertails, Ming Lin, Kelly Ward,
+  Stephen~R. Marschner, Tae-Yong Kim, and Zoran Kacic-Alesic.
+\newblock {\em Strands and Hair: Modeling, Animation, and Rendering},
+  volume~33.
+\newblock ACM SIGGRAPH Course Notes, August 2007.
+\newblock Award: Best Course Notes for a New Course.
+
+\bibitem{jensen}
+Henrik~Wann Jensen.
+\newblock Global illumination using photon maps.
+\newblock In {\em Proceedings of the Eurographics Workshop on Rendering
+  Techniques '96}, pages 21--30, London, UK, UK, 1996. Springer-Verlag.
+
+\bibitem{kajiya}
+J.~T. Kajiya and T.~L. Kay.
+\newblock Rendering fur with three dimensional textures.
+\newblock {\em SIGGRAPH Comput. Graph.}, 23(3):271--280, July 1989.
+
+\bibitem{marschner}
+Stephen~R. Marschner, Henrik~Wann Jensen, Mike Cammarano, Steve Worley, and Pat
+  Hanrahan.
+\newblock Light scattering from human hair fibers.
+\newblock {\em ACM Trans. Graph.}, 22(3):780--791, July 2003.
+
+\bibitem{moon}
+Jonathan~T. Moon and Stephen~R. Marschner.
+\newblock Simulating multiple scattering in hair using a photon mapping
+  approach.
+\newblock {\em ACM Trans. Graph.}, 25(3):1067--1074, July 2006.
+
+\bibitem{ward}
+Kelly Ward, Florence Bertails, Tae yong Kim, Stephen~R. Marschner, Marie paule
+  Cani, and Ming~C. Lin.
+\newblock A survey on hair modeling: styling, simulation, and rendering.
+\newblock In {\em IEEE TRANSACTION ON VISUALIZATION AND COMPUTER GRAPHICS},
+  pages 213--234, 2006.
+
+\bibitem{zinke}
+Arno Zinke, Cem Yuksel, Andreas Weber, and John Keyser.
+\newblock Dual scattering approximation for fast multiple scattering in hair.
+\newblock {\em ACM Trans. Graph.}, 27(3):32:1--32:10, August 2008.
+
+\end{thebibliography}

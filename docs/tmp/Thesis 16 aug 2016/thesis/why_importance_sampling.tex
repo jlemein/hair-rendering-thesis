@@ -1,0 +1,26 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\begin{document}
+
+\section{Why we need importance sampling?}
+The dual scattering approximation is an extension to the single-fiber scattering of the Marschner model. Dual scattering approximates multi-fiber scattering. This can be done using a complicated integral, integrating all contributions from all directions on the sphere or hemisphere.
+
+A speedup can be achieved by performing classic rasterized shading. It uses the REYES approach in RenderMan and what happens is that for all pixels, a ray is traced from the camera through this pixel. Whenever the ray intersects the hair model, it shoots a ray to all important lights in the scene and combines the contribution for each of the lights.
+
+In a physically accurate scene, you actually want to incorporate global lighting. So not only direct lighting from the lights, but also indirect lighting needs to be taken into account to compute the most realistic image. This is the slow approach again as described earlier. Sampling randomly around the sphere, will not only be slow, but many samples are needed to reduce the noise to acceptable levels.
+
+Importance sampling is a strategy to sample from these directions that will likely contribute the most to the final rendering. Instead of randomly sampling around a sphere, we now focus on specific lobes, reducing the number of samples needed to render a proper image (without much noise).
+
+\section{When we need importance sampling?}
+
+Importance sampling is a technique that essentially always needs to be performed. Not using importance sampling simply boils down to ordinary Monte-Carlo sampling. This works, but is inefficient since it leads to noisy images. Importance sampling focuses on the most important samples and therefore needs less samples to achieve the same quality image.
+
+\section{How we do importance sampling?}
+
+Assuming that the dual scattering algorithm is implemented correctly, an importance sampling strategy needs to be developed. This is the contribution to the project. To find a strategy, graphs need to be plotted for different shading points around and inside the hair model. These graphs contain the response for different incoming angles (longitudinal or azimuthal angle). This distribution will likely have peaks for specific directions. These incoming angles have more impact on the rendering and therefore need a higher probability of being sampled. 
+
+
+\end{document}

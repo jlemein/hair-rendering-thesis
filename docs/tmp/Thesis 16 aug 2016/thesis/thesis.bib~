@@ -1,0 +1,24 @@
+%%%%%%%%%%% thesis.bib %%%%%%%%%%%%%%%%%%%
+
+@article{marschner,
+ author = {Marschner, Stephen R. and Jensen, Henrik Wann and Cammarano, Mike and Worley, Steve and Hanrahan, Pat},
+ title = {Light scattering from human hair fibers},
+ journal = {ACM Trans. Graph.},
+ issue_date = {July 2003},
+ volume = {22},
+ number = {3},
+ month = jul,
+ year = {2003},
+ issn = {0730-0301},
+ pages = {780--791},
+ numpages = {12},
+ url = {http://doi.acm.org/10.1145/882262.882345},
+ doi = {10.1145/882262.882345},
+ acmid = {882345},
+ publisher = {ACM},
+ address = {New York, NY, USA},
+ keywords = {fibers, hair, optical scattering, rendering},
+}
+
+%%%%%%%%%%%%% end %%%%%%%%%%%%%%%%%%%%
+%%

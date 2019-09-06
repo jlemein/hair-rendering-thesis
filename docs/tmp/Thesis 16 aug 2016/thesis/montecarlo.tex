@@ -1,0 +1,87 @@
+
+
+\section{Background Statistics}
+A \textbf{random variable} can be denoted by $X$ and is sampled from a domain $D$. A function $f$ can be applied to the random variable $X$, leading to a new random variable $Y = f(X)$.
+
+A special kind of random variable is the \textbf{canonical uniform random variable} $\xi$ that takes a value between $0$ and $1$ with equal probability.\\
+
+A \textbf{cumulative distribution function} (CDF) $P(x)$ of a random variable $X$ is the probability that a value from the variable's distribution is less than or equal to some value $x$. This function starts with zero probability for the minimum value $x_{min}$ and increments to a probability of one when the maximum value $x_{max}$ in the domain has been reached. A CDF intuitively describes the area so far.\\
+
+The \textbf{probability distribution function} (PDF) desribes the relative probability of a random variable taking on a particular value. The PDF $p(x)$ is the derivative of the random variable's CDF. A PDF should always integrate to one over the domain.
+
+The \textbf{expected value} $E_p[ f(x) ]$ of a function $f$ is defined as the average value of the function over some distribution of values $p(x)$ over its domain.
+The \textbf{variance} $V$ of a function is the expected deviation of the function from its expected value and is a fundamental concept for quantifying the error in a value.
+
+\begin{equation}
+E_p[ f(x) ] = \int_D\, f(x)\, p(x)\, dx
+\end{equation}
+
+\begin{equation}
+V[ f(x) ] = E[ f(x)^2 ] - E[ f(x) ]^2
+\end{equation}
+
+\section{Monte Carlo Integration}
+
+Monte-Carlo algorithms give different results depending on the particular random numbers used along the way, but gives the right answer on average. More samples lead to a more correct image.
+
+A Monte-Carlo estimator approximates the value of an arbitrary integral. To estimate the integral $\int_a^b f(x) dx$, given a supply of uniform random values $X \in [a, b]$, the Monte-Carlo estimator says that the expected value of the estimator is
+
+\begin{equation}
+F_N = \frac{b-a}{N} \sum_{i=1}^{N} f(X_i)
+\end{equation}
+
+The expected value of $F_N$ leads to the correct answer of the integral. The PDF $p(x)$ corresponding to the random variable $X_i$ must be equal to $1/(b-a)$, since $p$ must integrate to one over the domain.
+
+The restriction of uniform random variables can be relaxed with a small generalization. This is important, since carefully choosing the PDF from which samples are drawn is an important technique for reducing variance in Monte-Carlo.
+
+\begin{equation}
+F_N = \frac{1}{N} \sum_{i=1}^{N} \frac{f(X_i)}{p(X_i)}
+\end{equation}
+
+In order to do Monte-Carlo integration you also need to find a sampling routine that selects samples according to the probability density function. This can be done using the following steps.
+
+\subsection{The Inversion Method}
+The inversion method uses uniform random variables and maps them to random variables from the desired distribution. This is done by inverting the CDF and selecting a particular sample $X_i$ based on a random value $\xi$. This will select random variables based on their probability of being sampled.
+
+A sample $X_i$ can be drawn from an arbitrary PDF $p(x)$ with the following steps:
+
+\begin{enumerate}
+\item Compute the CDF $P(x) = \int_0^x p(x') dx'$.
+\item Compute the inverse of the CDF $P^{-1}(x)$.
+\item Obtain a uniformly distributed random number $\xi$.
+\item Compute $X_i = P^{-1}(\xi)$.
+\end{enumerate}
+
+\subsection{The Rejection Method}
+The rejection method is a technique for generating samples according to a function's distribution without needing to do either of these steps. If it is not possible to integrate a function $f(x$, but we do know how to sample from a PDF $p(x)$, for which holds: $f(x) < c p(x)$ for some scalar constant $c$. The rejection method is then:
+
+\begin{enumerate}
+\item Sample $X$ from $p$'s distribution.
+\item if $\xi < f(X) / (c p(X))$ then return $X$.
+\item In other cases, repeat from (1).
+\end{enumerate}
+
+\section{Techniques to improve rendering process}
+
+The Monte-Carlo convergence rate requires quadrupling the number of samples in order to reduce the variance by half. The efficiency of an estimator is defined as:
+
+\begin{equation}
+\epsilon[F] = \frac{1}{V[F]\, T[F]}
+\end{equation}
+
+The efficiency incorporates both the amount of variance $V[F]$ and the computation time $T[F]$.
+
+\subsection{Russian roulette and splitting}
+\textbf{Russian roulette} speeds up the rendering process by not evaluating $(1-q)$ of the samples. These samples are approximated by a constant value $c$ (that can be $0$). The other $q$ samples are evaluated as usual and weighted by $1/(1 – q)$ that effectively accounts for all of the samples that were skipped.\\
+
+I consider \textbf{splitting} as a more advanced Monte-Carlo integration formula. Instead of using $N$ samples and applying the Monte-Carlo integration, we use $N$ samples for a specific integration dimension and $M$ samples for another integration dimension inside the other dimension.
+
+[formula] 
+Biased versus Unbiased Estimators
+
+\subsection{Importance Sampling}
+
+\textbf{Importance sampling} is effective for improving efficiency for rendering problems. It turns out that choosing a sampling distribution that is similar in shape to the integrand leads to reduced variance. It is called importance sampling because samples tend to be taken in important parts of the function's domain, where the function's value is relatively large.
+
+
+
