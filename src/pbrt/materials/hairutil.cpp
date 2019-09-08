@@ -425,6 +425,10 @@ namespace pbrt {
 
             return 1;
         } else {
+            if (!(0.25 * q * q - D >= 0.0)) {
+                printf("a=%f, c=%f, d=%f || p = %f, q = %f, D = %f\n", a, c, d, p, q, D);
+            }
+
             CHECK_GE(0.25 * q * q - D, 0.0);
             Float R = 2.0 * cbrt(sqrt(0.25 * q * q - D));
             Float tanPhi = -2.0 * sqrt(-D) / q;

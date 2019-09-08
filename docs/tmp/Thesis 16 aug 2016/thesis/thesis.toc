@@ -41,9 +41,11 @@
 \contentsline {subsubsection}{Average Backscattering Attenuation}{29}
 \contentsline {subsubsection}{Average Backscattering Spread}{30}
 \contentsline {chapter}{\numberline {4}Approach}{32}
-\contentsline {chapter}{\numberline {5}Results}{33}
-\contentsline {section}{\numberline {5.1}Hair blocks with different density}{33}
-\contentsline {section}{\numberline {5.2}Cornwell Scene}{33}
-\contentsline {section}{\numberline {5.3}Evaluation Strategy}{33}
-\contentsline {chapter}{\numberline {6}Conclusion}{36}
-\contentsline {chapter}{\numberline {7}Appendix}{37}
+\contentsline {section}{\numberline {4.1}Evaluation against ground truth}{32}
+\contentsline {section}{\numberline {4.2}Evaluating the conversion rate in terms of variance}{33}
+\contentsline {chapter}{\numberline {5}Results}{34}
+\contentsline {section}{\numberline {5.1}Hair blocks with different density}{34}
+\contentsline {section}{\numberline {5.2}Cornwell Scene}{34}
+\contentsline {section}{\numberline {5.3}Evaluation Strategy}{34}
+\contentsline {chapter}{\numberline {6}Conclusion}{37}
+\contentsline {chapter}{\numberline {7}Appendix}{38}

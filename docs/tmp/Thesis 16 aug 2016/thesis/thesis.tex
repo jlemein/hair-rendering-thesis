@@ -126,7 +126,7 @@ In this thesis project the goal is to extend the dual scattering approximation m
 % e. State how you want to approach the problem
 To find a sampling strategy, plots will be generated to show the response of the dual scattering approximation for different eccentricity values and number of occluded strands. These occluded strands are the number of strands between a point to render and the light source. More occluded strands mean that less light will reach the point in question. The response graphs are to be matched with a mathematical formula that can be inverted to a cumulative distribution form (CDF). This is necessary for efficient importance sampling. Speed gains or variance decrease tests are performed afterwards to show the performance of the importance sampling function.\\
 
-The rest of this paper is divided into a background section, where the basics are explained regarding radiometry and hair rendering. Related work explains the different methods that exist to render hair. Here the Marschner model and the Dual Scattering approximation model are explained in depth, because these models are the basis for the work in this paper. After the related work, the approach will be explained on how to find the importance sampling function, followed by the results section showing the efficiency and the analysis of the multiple importance sampling function versus the standard dual scattering approximation model.
+The rest of this paper is divided into a background section, where the basics are explained regarding radiometry and hair rendering. Related work explains the different methods that exist to render hair. Here the Marschner model and the Dual Scattering approximation model are explained in depth, because these models are the basis for the work in this thesis. Additionally, an importance sampling strategy for physically based hair fiber models is explained from d'Eon at al.~\ref{deon}. After the related work, the approach will be explained on how to compare renderings from uniform sampling and importance sampling by looking at the variance. After that, the results are presented showing the efficiency and the analysis of the multiple importance sampling function versus the uniform sampling version of the dual scattering approximation model.
 
 %
 % ===============================================================================
@@ -659,7 +659,25 @@ The Marschner hair model focuses on single fiber scattering and to render realis
 
 \chapter{Approach}
 
-Here comes the approach
+In this thesis the contribution comes from comparing the results for dual scattering method between uniform sampling and the multiple importance sampling strategy by d'Eon et al.~\ref{deon-IS}. This importance sampling strategy has been developed for a hair rendering model by d'Eon and Marschner~\ref{deon}. This model is a continuation of the Marschner model in this paper, where they managed to make the model more efficient by removing the root-solving process (explain better).
+
+First of all a comparison is made by comparing the visual appearance of the image. Is the result obtained with importance sampling looking appropriate for different scenarios, such as when the model is backlit or frontlit, or when the amount of reflection is high. This comparison is rather subjective and to feeling, so we need another way to measure the performance between uniform and importance sampling.
+
+Two ways to evaluate the performance between uniform and importance sampling is by using the variance compared to ground truth and the variance compared to an increasing amount of pixels per samples.
+
+It is important to only compute the variance for the hair volume and not for the background image. This could otherwise give us a false sense of conversion if the hair model covers only a small region of the image. To prevent this from happening, only a specific rectangular region of the image is taken into account that is fully covered by the hair model. The variance is then only computed for this specific region. Figure~\ref{variance-for-region} explains the concept in a graphical way.
+
+(add picture)
+
+
+\section{Evaluation against ground truth}
+
+Uniform sampling is the least error prone sampling method that does not need any knowledge about the mathematical model being used. Therefore it is useful to be used for generating the ground truth. The ground truth can be defined as the result obtained by rendering the dual scattering method with uniform sampling by taking a very high amount of samples per pixel for which we can assume that conversion has been reached (for example 1024 samples per pixel).  Any sampling strategy should eventually converge to the same result. We do expect that the importance sampling strategy is converging faster to the ground truth compared to uniform sampling.
+
+
+\section{Evaluating the conversion rate in terms of variance}
+
+Another way to evaluate the results is to express the variance of the sampling strategy with results of the same sampling strategy, but by using different pixels per sample. By comparing the variance between consecutive results for 1, 2, 4, 8, etc. pixels per samples, we can compute the relative variance as we increase the pixels per samples. You would expect that at some point conversion has been reached. Conversion can be defined as the first image (by increasing the samples per pixel) for which comparing the variance with the previous result is below a threshold variance. We would expect that importance sampling converges faster than uniform sampling.
 
 
 \chapter{Results}

@@ -24,7 +24,7 @@
 namespace pbrt {
 
     static std::default_random_engine generator;
-    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    static std::uniform_real_distribution<double> distribution(0.0, 0.9999999999999);
 
     // DualscatteringMaterial Method Definitions
 
@@ -638,6 +638,9 @@ namespace pbrt {
 
         // 2. uniformly choose a random offset [-1, 1]
         Float h = 2.0 * u[0] - 1.0;
+        if (!(h >= -1.0001 && h <= 1.0001)) {
+            printf("ERROR: h (%f) is not valid, u[0] = %f\n", h, u[0]);
+        }
         // TODO: check if etaT = 1.55, or should we adjust for theta angles that we dont know yet?
         Float etaT = 1.55; //this->mEta;
         Float gammaI = SafeASin(h);
@@ -685,6 +688,9 @@ namespace pbrt {
         Float phiI = UnwrapPhi(phiO + phi);
 
         // Evaluation of the model with Ap replaced by wp
+        if (std::isnan(thetaI)) {
+            printf("thetaI: %f, phiI: %f, u2: %f, u3: %f, variance: %f, -thetaO: %f, alphaP: %f, p: %d, phiO: %f, phi: %f\n", thetaI, phiI, u[2], u[3], variance, thetaO, alpha[p], p, phiO, phi);
+        }
         *wi = FromSphericalCoords(thetaI, phiI);
         //*pdf = this->mMarschnerBSDF->f_Weighted(wo, *wi, w[0], w[1], w[2]);
         *pdf = this->DEonPdf(wo, *wi);
@@ -719,6 +725,9 @@ namespace pbrt {
         Float cosThetaT = SafeSqrt(1 - Sqr(sinThetaT));
 
         Float weights[3];
+        if (!(dphi < 3*Pi && dphi > -3*Pi)) {
+            printf("dPhi: %f -- phiI: %f -- phiR: %f, wi: %f %f %f -- wr: %f %f %f\n", dphi, phiI, phiR, wi.x, wi.y, wi.z, wo.x, wo.y, wo.z);
+        }
         RetrieveSpecularWeightsFromRelativePhi(dphi, cosThetaT, mMarschnerBSDF->getSigmaA(), etaT, weights);
 
 //        Float MR = this->mMarschnerBSDF->M_r(thetaI, thetaR);
