@@ -24,7 +24,7 @@
 namespace pbrt {
 
     static std::default_random_engine generator;
-    static std::uniform_real_distribution<double> distribution(0.0, 0.9999999999999);
+    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
 
     // DualscatteringMaterial Method Definitions
 
@@ -547,13 +547,16 @@ namespace pbrt {
     }
 
     static Float sampleThetaI(Float u1, Float u2, Float variance, Float thetaCone) {
+        Float _u1 = Clamp(u1, 0.0, 0.99999);
+        Float _u2 = Clamp(u2, 0.0, 0.99999);
+
         Float thetaAccent = .5 * Pi - thetaCone;
 
-        Float cosTheta = sampleSphericalGaussian(variance, u1);
+        Float cosTheta = sampleSphericalGaussian(variance, _u1);
         Float sinTheta = sqrt(1.0 - cosTheta * cosTheta);
 
         Float a = cosTheta * cos(thetaAccent);
-        Float b = sinTheta * cos(2.0 * Pi * u2) * sin(thetaAccent);
+        Float b = sinTheta * cos(2.0 * Pi * _u2) * sin(thetaAccent);
 
         return SafeASin(a + b);
     }
