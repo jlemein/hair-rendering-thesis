@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  12 SEP 2019 18:28
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  12 SEP 2019 18:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -602,9 +602,6 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 )
 (./thesis.aux
 
-LaTeX Warning: Label `forwardscattering' multiply defined.
-
-
 LaTeX Warning: Label `dualblock_results' multiply defined.
 
 
@@ -893,10 +890,6 @@ Package pdftex.def Info: relatedwork/dualscattering_df.png used on input line 7
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-
-LaTeX Warning: Reference `dualscattering_Tf' on page 29 undefined on input line
- 81.
-
 [29] [30 <./relatedwork/dualscattering_df.png>] [31]
 
 LaTeX Warning: Reference `avg_backscatter_attenuation' on page 32 undefined on 
@@ -926,12 +919,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 761--762
 
  []
 
-[37]
-
-LaTeX Warning: Reference `dualscattering_Tf' on page 38 undefined on input line
- 799.
-
-[38] [39] [40]
+[37] [38] [39] [40]
 Chapter 5.
 <images/dualblock/dualblock_1500_3000_.png, id=169, 803.0pt x 501.875pt>
 File: images/dualblock/dualblock_1500_3000_.png Graphic file (type png)
@@ -1010,7 +998,7 @@ LaTeX Warning: There were multiply-defined labels.
 Here is how much of TeX's memory you used:
  3657 strings out of 493029
  47656 string characters out of 6136234
- 102667 words of memory out of 5000000
+ 102679 words of memory out of 5000000
  7078 multiletter control sequences out of 15000+600000
  27280 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
@@ -1038,7 +1026,7 @@ e/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/
 public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss
 1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb></usr/share
 /texmf/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on thesis.pdf (49 pages, 3955037 bytes).
+Output written on thesis.pdf (49 pages, 3954995 bytes).
 PDF statistics:
  289 PDF objects out of 1000 (max. 8388607)
  194 compressed objects within 2 object streams
