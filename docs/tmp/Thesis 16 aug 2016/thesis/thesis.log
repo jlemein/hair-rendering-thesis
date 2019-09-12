@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  6 SEP 2019 21:53
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  12 SEP 2019 18:28
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -731,298 +731,275 @@ Underfull \hbox (badness 10000) in paragraph at lines 106--107
 [3
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 127--128
-
+Overfull \hbox (0.27197pt too wide) in paragraph at lines 128--129
+[]\T1/cmr/m/n/10.95 A sec-ond prob-lem is the fact that we are work-ing with th
+e Dual-Scattering
  []
 
 
-LaTeX Warning: Reference `deon' on page 4 undefined on input line 129.
+Underfull \hbox (badness 10000) in paragraph at lines 137--138
+
+ []
 
 [4]
+
+LaTeX Warning: Reference `deon' on page 5 undefined on input line 139.
+
+[5]
 Chapter 2.
-<images/hair_structure.jpeg, id=32, 597.73312pt x 369.63094pt>
+<images/hair_structure.jpeg, id=37, 597.73312pt x 369.63094pt>
 File: images/hair_structure.jpeg Graphic file (type jpg)
 
 <use images/hair_structure.jpeg>
-Package pdftex.def Info: images/hair_structure.jpeg used on input line 149.
+Package pdftex.def Info: images/hair_structure.jpeg used on input line 159.
 (pdftex.def)             Requested size: 239.089pt x 147.84975pt.
- [5
+ [6
 
-] [6 <./images/hair_structure.jpeg>]
-[7] <images/axes.jpeg, id=46, 870.25125pt x 517.935pt>
+] [7 <./images/hair_structure.jpeg>]
+[8] <images/axes.jpeg, id=49, 870.25125pt x 517.935pt>
 File: images/axes.jpeg Graphic file (type jpg)
  <use images/axes.jpeg>
-Package pdftex.def Info: images/axes.jpeg used on input line 230.
+Package pdftex.def Info: images/axes.jpeg used on input line 240.
 (pdftex.def)             Requested size: 348.09433pt x 207.17032pt.
 
-[8]
-Underfull \hbox (badness 10000) in paragraph at lines 251--252
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 261--262
 
  []
 
-[9 <./images/axes.jpeg>] [10]
-<images/svg/irradiance_radiance.jpg, id=60, 265.21101pt x 156.14297pt>
+[10 <./images/axes.jpeg>] [11]
+<images/svg/irradiance_radiance.jpg, id=64, 265.21101pt x 156.14297pt>
 File: images/svg/irradiance_radiance.jpg Graphic file (type jpg)
 
 <use images/svg/irradiance_radiance.jpg>
 Package pdftex.def Info: images/svg/irradiance_radiance.jpg used on input line 
-277.
+287.
 (pdftex.def)             Requested size: 371.29288pt x 218.59865pt.
 
-Overfull \hbox (11.29288pt too wide) in paragraph at lines 277--278
+Overfull \hbox (11.29288pt too wide) in paragraph at lines 287--288
  [] 
  []
 
 
-Overfull \hbox (0.93117pt too wide) in paragraph at lines 284--284
+Overfull \hbox (0.93117pt too wide) in paragraph at lines 294--294
 []\T1/cmr/bx/n/12 Bidirectional Re-flec-tion Dis-tri-bu-tion Func-tion (BRDF) 
  []
 
 
-LaTeX Warning: Citation `pbrt' on page 11 undefined on input line 288.
+LaTeX Warning: Citation `pbrt' on page 12 undefined on input line 298.
 
-[11 <./images/svg/irradiance_radiance.jpg>]
-Overfull \hbox (5.6444pt too wide) in paragraph at lines 295--296
+[12 <./images/svg/irradiance_radiance.jpg>]
+Overfull \hbox (5.6444pt too wide) in paragraph at lines 305--306
 \T1/cmr/m/n/10.95 ti-ated ir-ra-di-ance $\OML/cmm/m/it/10.95 dE\OT1/cmr/m/n/10.
 95 (\OML/cmm/m/it/10.95 p; ![]\OT1/cmr/m/n/10.95 )$ \T1/cmr/m/n/10.95 and the d
 if-fer-en-ti-ated out-go-ing ra-di-ance $\OML/cmm/m/it/10.95 dL[]\OT1/cmr/m/n/1
 0.95 (\OML/cmm/m/it/10.95 p; ![]\OT1/cmr/m/n/10.95 )$\T1/cmr/m/n/10.95 . 
  []
 
-[12]
-
-LaTeX Warning: Reference `pbrtbook' on page 13 undefined on input line 356.
-
 [13]
 
-LaTeX Warning: Reference `pbrtbook' on page 14 undefined on input line 369.
+LaTeX Warning: Reference `pbrtbook' on page 14 undefined on input line 366.
+
+[14]
+
+LaTeX Warning: Reference `pbrtbook' on page 15 undefined on input line 380.
 
 
-LaTeX Warning: Reference `pbrtbook' on page 14 undefined on input line 373.
+LaTeX Warning: Reference `pbrtbook' on page 15 undefined on input line 384.
 
 
-LaTeX Warning: Reference `pbrtbook' on page 14 undefined on input line 380.
+LaTeX Warning: Reference `pbrtbook' on page 15 undefined on input line 391.
 
-[14] [15]
+[15] [16]
 Chapter 3.
-
-Underfull \hbox (badness 10000) in paragraph at lines 417--418
-
- []
-
-[16
-
-]
-Underfull \hbox (badness 10000) in paragraph at lines 419--420
-
- []
-
 
 Underfull \hbox (badness 10000) in paragraph at lines 428--429
 
  []
 
-[17]
+[17
 
-LaTeX Warning: Reference `sec_dualscattering' on page 18 undefined on input lin
-e 435.
+]
+Underfull \hbox (badness 10000) in paragraph at lines 430--431
+
+ []
 
 
-Overfull \hbox (12.73262pt too wide) in paragraph at lines 435--436
+Underfull \hbox (badness 10000) in paragraph at lines 439--440
+
+ []
+
+[18]
+
+LaTeX Warning: Reference `sec_dualscattering' on page 19 undefined on input lin
+e 446.
+
+
+Overfull \hbox (12.73262pt too wide) in paragraph at lines 446--447
 []\T1/cmr/m/n/10.95 The Dual Scat-ter-ing ap-prox-i-ma-tion is a di-rect ex-ten
 -sion on top of Marschner
  []
 
-[18] <images/longitudinal_response.jpeg, id=90, 1151.05031pt x 445.665pt>
+[19] <images/longitudinal_response.jpeg, id=93, 1151.05031pt x 445.665pt>
 File: images/longitudinal_response.jpeg Graphic file (type jpg)
 
 <use images/longitudinal_response.jpeg>
 Package pdftex.def Info: images/longitudinal_response.jpeg used on input line 4
-70.
+81.
 (pdftex.def)             Requested size: 402.87364pt x 155.98508pt.
 
-Overfull \hbox (42.87364pt too wide) in paragraph at lines 470--471
+Overfull \hbox (42.87364pt too wide) in paragraph at lines 481--482
  [] 
  []
 
-<images/azimuthal_measurement.jpeg, id=91, 669.2503pt x 630.10406pt>
+<images/azimuthal_measurement.jpeg, id=94, 669.2503pt x 630.10406pt>
 File: images/azimuthal_measurement.jpeg Graphic file (type jpg)
 
 <use images/azimuthal_measurement.jpeg>
 Package pdftex.def Info: images/azimuthal_measurement.jpeg used on input line 4
-86.
+97.
 (pdftex.def)             Requested size: 267.69537pt x 252.03716pt.
- [19 <./images/longitudinal_response.jpeg>] [20 <./images/azimuthal_measurement
+ [20 <./images/longitudinal_response.jpeg>] [21 <./images/azimuthal_measurement
 .jpeg>]
-<images/female_marschner.jpeg, id=98, 1246.6575pt x 1461.46pt>
+<images/female_marschner.jpeg, id=101, 1246.6575pt x 1461.46pt>
 File: images/female_marschner.jpeg Graphic file (type jpg)
 
 <use images/female_marschner.jpeg>
-Package pdftex.def Info: images/female_marschner.jpeg used on input line 511.
+Package pdftex.def Info: images/female_marschner.jpeg used on input line 522.
 (pdftex.def)             Requested size: 249.32709pt x 292.28682pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[21] [22 <./images/female_marschner.jpeg>] [23]
-Underfull \hbox (badness 10000) in paragraph at lines 591--592
+[22] [23 <./images/female_marschner.jpeg>] [24]
+Underfull \hbox (badness 10000) in paragraph at lines 598--599
 
  []
 
-LaTeX Font Info:    Try loading font information for T1+cmss on input line 597.
+LaTeX Font Info:    Try loading font information for T1+cmss on input line 604.
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-) [24] [25]
-(./relatedwork/dualscattering.tex
+) [25] [26]
+(./relatedwork/dualscattering.tex [27] [28]
+<relatedwork/dualscattering_df.png, id=126, 728.7225pt x 530.98375pt>
+File: relatedwork/dualscattering_df.png Graphic file (type png)
 
-LaTeX Warning: Reference `dualscattering' on page 26 undefined on input line 5.
-
-
-
-LaTeX Warning: Reference `dualscattering' on page 26 undefined on input line 7.
-
-
-
-LaTeX Warning: Reference `dualscattering' on page 26 undefined on input line 7.
+<use relatedwork/dualscattering_df.png>
+Package pdftex.def Info: relatedwork/dualscattering_df.png used on input line 7
+2.
+(pdftex.def)             Requested size: 145.74191pt x 106.19485pt.
 
 
-[26]
-
-LaTeX Warning: Reference `dualscattering' on page 27 undefined on input line 27
-.
+LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: Reference `dualscattering' on page 27 undefined on input line 34
-.
+LaTeX Warning: Reference `dualscattering_Tf' on page 29 undefined on input line
+ 81.
 
+[29] [30 <./relatedwork/dualscattering_df.png>] [31]
 
-LaTeX Warning: Reference `dualscattering' on page 27 undefined on input line 47
-.
+LaTeX Warning: Reference `avg_backscatter_attenuation' on page 32 undefined on 
+input line 136.
 
-[27]
-
-LaTeX Warning: Reference `dualscattering' on page 28 undefined on input line 61
-.
-
-
-LaTeX Warning: Reference `dualscattering' on page 28 undefined on input line 69
-.
-
-
-LaTeX Warning: Reference `efficientDualscattering' on page 28 undefined on inpu
-t line 69.
-
-
-LaTeX Warning: Reference `dualscattering' on page 28 undefined on input line 80
-.
-
-[28]
-
-LaTeX Warning: Reference `dualscattering' on page 29 undefined on input line 97
-.
-
-[29]
-
-LaTeX Warning: Reference `avg_backscatter_attenuation' on page 30 undefined on 
-input line 125.
-
-
-LaTeX Warning: Reference `dualscattering' on page 30 undefined on input line 13
-1.
-
-[30]
-
-LaTeX Warning: Reference `dualscattering' on page 31 undefined on input line 14
-1.
-
-
-LaTeX Warning: Reference `efficientdualscattering' on page 31 undefined on inpu
-t line 141.
-
-) [31]
+) [32]
 Chapter 4.
 
-LaTeX Warning: Reference `deon-IS' on page 32 undefined on input line 662.
+LaTeX Warning: Reference `deon-IS' on page 33 undefined on input line 669.
 
 
-LaTeX Warning: Reference `deon' on page 32 undefined on input line 662.
+LaTeX Warning: Reference `deon' on page 33 undefined on input line 669.
 
 
-LaTeX Warning: Reference `variance-for-region' on page 32 undefined on input li
-ne 668.
+LaTeX Warning: Reference `variance-for-region' on page 33 undefined on input li
+ne 675.
 
-[32
 
-] [33]
+Overfull \hbox (4.93456pt too wide) in paragraph at lines 679--679
+[]\T1/cmr/bx/n/14.4 Importance sam-pling for dual scat-ter-ing method 
+ []
+
+[33
+
+] [34] [35] [36]
+Underfull \hbox (badness 10000) in paragraph at lines 761--762
+
+ []
+
+[37]
+
+LaTeX Warning: Reference `dualscattering_Tf' on page 38 undefined on input line
+ 799.
+
+[38] [39] [40]
 Chapter 5.
-<images/dualblock/dualblock_1500_3000_.png, id=142, 803.0pt x 501.875pt>
+<images/dualblock/dualblock_1500_3000_.png, id=169, 803.0pt x 501.875pt>
 File: images/dualblock/dualblock_1500_3000_.png Graphic file (type png)
 
 <use images/dualblock/dualblock_1500_3000_.png>
 Package pdftex.def Info: images/dualblock/dualblock_1500_3000_.png used on inpu
-t line 692.
+t line 835.
 (pdftex.def)             Requested size: 281.05421pt x 175.65887pt.
 
-<images/dualblock/dualblock_3000_6000_.png, id=144, 803.0pt x 501.875pt>
+<images/dualblock/dualblock_3000_6000_.png, id=170, 803.0pt x 501.875pt>
 File: images/dualblock/dualblock_3000_6000_.png Graphic file (type png)
 
 <use images/dualblock/dualblock_3000_6000_.png>
 Package pdftex.def Info: images/dualblock/dualblock_3000_6000_.png used on inpu
-t line 696.
+t line 839.
 (pdftex.def)             Requested size: 281.05421pt x 175.65887pt.
 
-<images/dualblock/dualblock_6000_12000_.png, id=145, 803.0pt x 501.875pt>
+<images/dualblock/dualblock_6000_12000_.png, id=171, 803.0pt x 501.875pt>
 File: images/dualblock/dualblock_6000_12000_.png Graphic file (type png)
 
 <use images/dualblock/dualblock_6000_12000_.png>
 Package pdftex.def Info: images/dualblock/dualblock_6000_12000_.png used on inp
-ut line 700.
+ut line 843.
 (pdftex.def)             Requested size: 281.05421pt x 175.65887pt.
 
 
-LaTeX Warning: Float too large for page by 56.7764pt on input line 703.
+LaTeX Warning: Float too large for page by 56.7764pt on input line 846.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/scenes/cornwell_empty.jpg, id=146, 803.0pt x 642.4pt>
+<images/scenes/cornwell_empty.jpg, id=172, 803.0pt x 642.4pt>
 File: images/scenes/cornwell_empty.jpg Graphic file (type jpg)
 
 <use images/scenes/cornwell_empty.jpg>
-Package pdftex.def Info: images/scenes/cornwell_empty.jpg used on input line 71
-5.
+Package pdftex.def Info: images/scenes/cornwell_empty.jpg used on input line 85
+8.
 (pdftex.def)             Requested size: 281.05421pt x 224.84337pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-<images/scenes/cornwell_uniform.jpg, id=147, 803.0pt x 642.4pt>
+<images/scenes/cornwell_uniform.jpg, id=173, 803.0pt x 642.4pt>
 File: images/scenes/cornwell_uniform.jpg Graphic file (type jpg)
 
 <use images/scenes/cornwell_uniform.jpg>
 Package pdftex.def Info: images/scenes/cornwell_uniform.jpg used on input line 
-723.
+866.
 (pdftex.def)             Requested size: 281.05421pt x 224.84337pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[34
+[41
 
-] [35 <./images/dualblock/dualblock_1500_3000_.png> <./images/dualblock/dualblo
-ck_3000_6000_.png> <./images/dualblock/dualblock_6000_12000_.png>] [36 <./image
+] [42 <./images/dualblock/dualblock_1500_3000_.png> <./images/dualblock/dualblo
+ck_3000_6000_.png> <./images/dualblock/dualblock_6000_12000_.png>] [43 <./image
 s/scenes/cornwell_empty.jpg> <./images/scenes/cornwell_uniform.jpg>]
 Chapter 6.
-[37
+[44
 
 ]
 Chapter 7.
-(./thesis.bbl [38
+(./thesis.bbl [45
 
-] [39
+] [46
 
-]) [40] (./thesis.aux)
+]) [47] (./thesis.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1031,38 +1008,40 @@ LaTeX Warning: There were multiply-defined labels.
 
  ) 
 Here is how much of TeX's memory you used:
- 3643 strings out of 493029
- 47310 string characters out of 6136234
- 102556 words of memory out of 5000000
- 7065 multiletter control sequences out of 15000+600000
+ 3657 strings out of 493029
+ 47656 string characters out of 6136234
+ 102667 words of memory out of 5000000
+ 7078 multiletter control sequences out of 15000+600000
  27280 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,10n,24p,880b,278s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,12n,24p,1004b,278s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf/
 fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/
 type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
 public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public
 /amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfon
 ts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/c
-mr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
-></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr
-/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/
-texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/pu
-blic/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx14
-40.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/t
-exmf/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/pub
-lic/cm-super/sfcc0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc109
-5.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1200.pfb></usr/share/te
-xmf/fonts/type1/public/cm-super/sfcc1440.pfb></usr/share/texmf/fonts/type1/publ
-ic/cm-super/sfcc1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800
-.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/tex
-mf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/publi
-c/cm-super/sfss1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.
-pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on thesis.pdf (42 pages, 3503577 bytes).
+mr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/s
+hare/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/
+texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf/fonts/typ
+e1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/s
+fbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/sh
+are/texmf/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf/fonts/type
+1/public/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sf
+cc0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1095.pfb></usr/sha
+re/texmf/fonts/type1/public/cm-super/sfcc1200.pfb></usr/share/texmf/fonts/type1
+/public/cm-super/sfcc1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfc
+c1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/shar
+e/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/
+public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss
+1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb></usr/share
+/texmf/fonts/type1/public/cm-super/sfti1200.pfb>
+Output written on thesis.pdf (49 pages, 3955037 bytes).
 PDF statistics:
- 256 PDF objects out of 1000 (max. 8388607)
- 172 compressed objects within 2 object streams
+ 289 PDF objects out of 1000 (max. 8388607)
+ 194 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
- 56 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 61 words of extra memory for PDF output out of 10000 (max. 10000000)
 

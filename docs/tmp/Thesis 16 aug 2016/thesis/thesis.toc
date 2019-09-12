@@ -1,51 +1,59 @@
 \contentsline {chapter}{\numberline {1}Introduction}{3}
 \contentsline {section}{\numberline {1.1}Goal and approach}{4}
-\contentsline {chapter}{\numberline {2}Background}{5}
-\contentsline {section}{\numberline {2.1}Rendering hair}{6}
-\contentsline {subsection}{\numberline {2.1.1}Explicit Representation}{6}
-\contentsline {subsection}{\numberline {2.1.2}Implicit Representation}{6}
-\contentsline {subsection}{\numberline {2.1.3}Geometric complexity}{7}
-\contentsline {subsection}{\numberline {2.1.4}Aliasing problem}{7}
-\contentsline {subsection}{\numberline {2.1.5}Mathematical Notation}{8}
-\contentsline {section}{\numberline {2.2}Radiometry}{8}
-\contentsline {subsection}{\numberline {2.2.1}Power and radiant flux}{9}
-\contentsline {subsection}{\numberline {2.2.2}Solid Angle and Radiant Intensity}{9}
-\contentsline {subsection}{\numberline {2.2.3}Radiance versus Irradiance}{10}
-\contentsline {subsection}{\numberline {2.2.4}Bidirectional Reflection Distribution Function (BRDF)}{11}
-\contentsline {subsection}{\numberline {2.2.5}Bidirectional Curve Scattering Distribution Function (BCDSF)}{12}
-\contentsline {subsection}{\numberline {2.2.6}Rendering Equation}{13}
-\contentsline {section}{\numberline {2.3}Importance Sampling}{13}
-\contentsline {subsection}{\numberline {2.3.1}Monte-Carlo integration}{13}
-\contentsline {subsection}{\numberline {2.3.2}Importance sampling}{14}
-\contentsline {subsection}{\numberline {2.3.3}Multiple importance sampling}{14}
-\contentsline {chapter}{\numberline {3}Related Work}{16}
-\contentsline {section}{\numberline {3.1}Hair Rendering Overview}{16}
-\contentsline {subsection}{\numberline {3.1.1}Single fiber scattering}{16}
-\contentsline {subsection}{\numberline {3.1.2}Multiple fiber scattering}{17}
-\contentsline {section}{\numberline {3.2}Marschner model}{18}
-\contentsline {subsection}{\numberline {3.2.1}Observations}{18}
-\contentsline {subsubsection}{Longitudinal variation}{18}
-\contentsline {subsubsection}{Azimuthal variation}{20}
-\contentsline {subsection}{\numberline {3.2.2}Model}{21}
-\contentsline {subsubsection}{Longitudinal Scattering Function}{22}
-\contentsline {subsubsection}{Azimuthal scattering Function}{23}
-\contentsline {subsubsection}{Glints}{25}
-\contentsline {subsubsection}{Taking into account eccentricity}{25}
-\contentsline {subsubsection}{Marschner model}{25}
-\contentsline {subsection}{\numberline {3.2.3}Evaluation}{26}
-\contentsline {section}{\numberline {3.3}Dualscattering Approximation}{26}
-\contentsline {subsection}{\numberline {3.3.1}Global Multiple Scattering}{27}
-\contentsline {subsubsection}{Forward Scattering Transmittance}{28}
-\contentsline {subsubsection}{Forward Scattering Spread}{28}
-\contentsline {subsection}{\numberline {3.3.2}Local Multiple Scattering}{29}
-\contentsline {subsubsection}{Average Backscattering Attenuation}{29}
-\contentsline {subsubsection}{Average Backscattering Spread}{30}
-\contentsline {chapter}{\numberline {4}Approach}{32}
-\contentsline {section}{\numberline {4.1}Evaluation against ground truth}{32}
-\contentsline {section}{\numberline {4.2}Evaluating the conversion rate in terms of variance}{33}
-\contentsline {chapter}{\numberline {5}Results}{34}
-\contentsline {section}{\numberline {5.1}Hair blocks with different density}{34}
-\contentsline {section}{\numberline {5.2}Cornwell Scene}{34}
-\contentsline {section}{\numberline {5.3}Evaluation Strategy}{34}
-\contentsline {chapter}{\numberline {6}Conclusion}{37}
-\contentsline {chapter}{\numberline {7}Appendix}{38}
+\contentsline {subsection}{\numberline {1.1.1}How to approach}{4}
+\contentsline {chapter}{\numberline {2}Background}{6}
+\contentsline {section}{\numberline {2.1}Rendering hair}{7}
+\contentsline {subsection}{\numberline {2.1.1}Explicit Representation}{7}
+\contentsline {subsection}{\numberline {2.1.2}Implicit Representation}{7}
+\contentsline {subsection}{\numberline {2.1.3}Geometric complexity}{8}
+\contentsline {subsection}{\numberline {2.1.4}Aliasing problem}{8}
+\contentsline {subsection}{\numberline {2.1.5}Mathematical Notation}{9}
+\contentsline {section}{\numberline {2.2}Radiometry}{9}
+\contentsline {subsection}{\numberline {2.2.1}Power and radiant flux}{10}
+\contentsline {subsection}{\numberline {2.2.2}Solid Angle and Radiant Intensity}{10}
+\contentsline {subsection}{\numberline {2.2.3}Radiance versus Irradiance}{11}
+\contentsline {subsection}{\numberline {2.2.4}Bidirectional Reflection Distribution Function (BRDF)}{12}
+\contentsline {subsection}{\numberline {2.2.5}Bidirectional Curve Scattering Distribution Function (BCDSF)}{13}
+\contentsline {subsection}{\numberline {2.2.6}Rendering Equation}{14}
+\contentsline {section}{\numberline {2.3}Importance Sampling}{14}
+\contentsline {subsection}{\numberline {2.3.1}Monte-Carlo integration}{14}
+\contentsline {subsection}{\numberline {2.3.2}Importance sampling}{15}
+\contentsline {subsection}{\numberline {2.3.3}Multiple importance sampling}{15}
+\contentsline {chapter}{\numberline {3}Related Work}{17}
+\contentsline {section}{\numberline {3.1}Hair Rendering Overview}{17}
+\contentsline {subsection}{\numberline {3.1.1}Single fiber scattering}{17}
+\contentsline {subsection}{\numberline {3.1.2}Multiple fiber scattering}{18}
+\contentsline {section}{\numberline {3.2}Marschner model}{19}
+\contentsline {subsection}{\numberline {3.2.1}Observations}{19}
+\contentsline {subsubsection}{Longitudinal variation}{19}
+\contentsline {subsubsection}{Azimuthal variation}{21}
+\contentsline {subsection}{\numberline {3.2.2}Model}{22}
+\contentsline {subsubsection}{Longitudinal Scattering Function}{23}
+\contentsline {subsubsection}{Azimuthal scattering Function}{24}
+\contentsline {subsubsection}{Glints}{26}
+\contentsline {subsubsection}{Taking into account eccentricity}{26}
+\contentsline {subsubsection}{Marschner model}{26}
+\contentsline {subsection}{\numberline {3.2.3}Evaluation}{27}
+\contentsline {section}{\numberline {3.3}Dualscattering Approximation}{27}
+\contentsline {subsection}{\numberline {3.3.1}Global Multiple Scattering}{28}
+\contentsline {subsubsection}{Forward Scattering Transmittance}{29}
+\contentsline {subsubsection}{Forward Scattering Spread}{30}
+\contentsline {subsection}{\numberline {3.3.2}Local Multiple Scattering}{31}
+\contentsline {subsubsection}{Average Backscattering Attenuation}{31}
+\contentsline {subsubsection}{Average Backscattering Spread}{32}
+\contentsline {chapter}{\numberline {4}Approach}{33}
+\contentsline {section}{\numberline {4.1}Importance sampling for dual scattering method}{33}
+\contentsline {subsection}{\numberline {4.1.1}Strategy outline}{34}
+\contentsline {subsection}{\numberline {4.1.2}Lobe selection}{35}
+\contentsline {subsubsection}{Finding the PDF when directions $\omega _o$ and $\omega _i$ are known}{36}
+\contentsline {subsection}{\numberline {4.1.3}Importance sampling the longitudinal M function}{36}
+\contentsline {subsection}{\numberline {4.1.4}Importance sampling the azimuthal N function}{38}
+\contentsline {section}{\numberline {4.2}The voxel grid}{38}
+\contentsline {section}{\numberline {4.3}Evaluation against ground truth}{40}
+\contentsline {section}{\numberline {4.4}Evaluating the conversion rate in terms of variance}{40}
+\contentsline {chapter}{\numberline {5}Results}{41}
+\contentsline {section}{\numberline {5.1}Hair blocks with different density}{41}
+\contentsline {section}{\numberline {5.2}Cornwell Scene}{41}
+\contentsline {section}{\numberline {5.3}Evaluation Strategy}{41}
+\contentsline {chapter}{\numberline {6}Conclusion}{44}
+\contentsline {chapter}{\numberline {7}Appendix}{45}
