@@ -10,4 +10,6 @@ image_output_extension .png
 #  VIEW PROPERTIES
 # -----------------------------
 model_rotation 0
+env_rotation 45
 
+lightRadianceFactor 0.0

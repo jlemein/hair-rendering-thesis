@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  13 SEP 2019 20:05
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  14 SEP 2019 00:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -914,231 +914,372 @@ Underfull \hbox (badness 10000) in paragraph at lines 761--762
 
 [37] [38] [39] [40]
 Chapter 5.
-[41
+<dbdf-results/brown_dbdf_0_00.png, id=169, 1027.84pt x 1027.84pt>
+File: dbdf-results/brown_dbdf_0_00.png Graphic file (type png)
 
-] <variance-results/outline_hint.png, id=173, 1027.84pt x 1027.84pt>
-File: variance-results/outline_hint.png Graphic file (type png)
+<use dbdf-results/brown_dbdf_0_00.png>
+Package pdftex.def Info: dbdf-results/brown_dbdf_0_00.png used on input line 86
+8.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<use variance-results/outline_hint.png>
-Package pdftex.def Info: variance-results/outline_hint.png used on input line 8
-80.
-(pdftex.def)             Requested size: 205.56436pt x 205.56436pt.
- [42] [43 <./variance-results/outline_hint.png>] <variance-results/un1.png, id=
-181, 301.125pt x 81.30376pt>
-File: variance-results/un1.png Graphic file (type png)
+<dbdf-results/blonde_dbdf_0_00.png, id=170, 1027.84pt x 1027.84pt>
+File: dbdf-results/blonde_dbdf_0_00.png Graphic file (type png)
 
-<use variance-results/un1.png>
-Package pdftex.def Info: variance-results/un1.png used on input line 924.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/blonde_dbdf_0_00.png>
+Package pdftex.def Info: dbdf-results/blonde_dbdf_0_00.png used on input line 8
+68.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/is1.png, id=182, 301.125pt x 81.30376pt>
-File: variance-results/is1.png Graphic file (type png)
+<dbdf-results/black_dbdf_0_00.png, id=171, 1027.84pt x 1027.84pt>
+File: dbdf-results/black_dbdf_0_00.png Graphic file (type png)
 
-<use variance-results/is1.png>
-Package pdftex.def Info: variance-results/is1.png used on input line 924.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/black_dbdf_0_00.png>
+Package pdftex.def Info: dbdf-results/black_dbdf_0_00.png used on input line 86
+8.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/un2.png, id=183, 301.125pt x 81.30376pt>
-File: variance-results/un2.png Graphic file (type png)
+<dbdf-results/brown_dbdf_0_25.png, id=172, 1027.84pt x 1027.84pt>
+File: dbdf-results/brown_dbdf_0_25.png Graphic file (type png)
 
-<use variance-results/un2.png>
-Package pdftex.def Info: variance-results/un2.png used on input line 924.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/brown_dbdf_0_25.png>
+Package pdftex.def Info: dbdf-results/brown_dbdf_0_25.png used on input line 86
+9.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/is2.png, id=184, 301.125pt x 81.30376pt>
-File: variance-results/is2.png Graphic file (type png)
+<dbdf-results/blonde_dbdf_0_25.png, id=173, 1027.84pt x 1027.84pt>
+File: dbdf-results/blonde_dbdf_0_25.png Graphic file (type png)
 
-<use variance-results/is2.png>
-Package pdftex.def Info: variance-results/is2.png used on input line 924.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/blonde_dbdf_0_25.png>
+Package pdftex.def Info: dbdf-results/blonde_dbdf_0_25.png used on input line 8
+69.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/un4.png, id=185, 301.125pt x 81.30376pt>
-File: variance-results/un4.png Graphic file (type png)
+<dbdf-results/black_dbdf_0_25.png, id=174, 1027.84pt x 1027.84pt>
+File: dbdf-results/black_dbdf_0_25.png Graphic file (type png)
 
-<use variance-results/un4.png>
-Package pdftex.def Info: variance-results/un4.png used on input line 925.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/black_dbdf_0_25.png>
+Package pdftex.def Info: dbdf-results/black_dbdf_0_25.png used on input line 86
+9.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/is4.png, id=186, 301.125pt x 81.30376pt>
-File: variance-results/is4.png Graphic file (type png)
+<dbdf-results/brown_dbdf_0_50.png, id=175, 1027.84pt x 1027.84pt>
+File: dbdf-results/brown_dbdf_0_50.png Graphic file (type png)
 
-<use variance-results/is4.png>
-Package pdftex.def Info: variance-results/is4.png used on input line 925.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/brown_dbdf_0_50.png>
+Package pdftex.def Info: dbdf-results/brown_dbdf_0_50.png used on input line 87
+0.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/un8.png, id=187, 301.125pt x 81.30376pt>
-File: variance-results/un8.png Graphic file (type png)
+<dbdf-results/blonde_dbdf_0_50.png, id=176, 1027.84pt x 1027.84pt>
+File: dbdf-results/blonde_dbdf_0_50.png Graphic file (type png)
 
-<use variance-results/un8.png>
-Package pdftex.def Info: variance-results/un8.png used on input line 926.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/blonde_dbdf_0_50.png>
+Package pdftex.def Info: dbdf-results/blonde_dbdf_0_50.png used on input line 8
+70.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/is8.png, id=188, 301.125pt x 81.30376pt>
-File: variance-results/is8.png Graphic file (type png)
+<dbdf-results/black_dbdf_0_50.png, id=177, 1027.84pt x 1027.84pt>
+File: dbdf-results/black_dbdf_0_50.png Graphic file (type png)
 
-<use variance-results/is8.png>
-Package pdftex.def Info: variance-results/is8.png used on input line 926.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/black_dbdf_0_50.png>
+Package pdftex.def Info: dbdf-results/black_dbdf_0_50.png used on input line 87
+0.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/un16.png, id=189, 301.125pt x 81.30376pt>
-File: variance-results/un16.png Graphic file (type png)
+<dbdf-results/brown_dbdf_0_75.png, id=178, 1027.84pt x 1027.84pt>
+File: dbdf-results/brown_dbdf_0_75.png Graphic file (type png)
 
-<use variance-results/un16.png>
-Package pdftex.def Info: variance-results/un16.png used on input line 927.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/brown_dbdf_0_75.png>
+Package pdftex.def Info: dbdf-results/brown_dbdf_0_75.png used on input line 87
+1.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/is16.png, id=190, 301.125pt x 81.30376pt>
-File: variance-results/is16.png Graphic file (type png)
+<dbdf-results/blonde_dbdf_0_75.png, id=179, 1027.84pt x 1027.84pt>
+File: dbdf-results/blonde_dbdf_0_75.png Graphic file (type png)
 
-<use variance-results/is16.png>
-Package pdftex.def Info: variance-results/is16.png used on input line 927.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/blonde_dbdf_0_75.png>
+Package pdftex.def Info: dbdf-results/blonde_dbdf_0_75.png used on input line 8
+71.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/un32.png, id=191, 301.125pt x 81.30376pt>
-File: variance-results/un32.png Graphic file (type png)
+<dbdf-results/black_dbdf_0_75.png, id=180, 1027.84pt x 1027.84pt>
+File: dbdf-results/black_dbdf_0_75.png Graphic file (type png)
 
-<use variance-results/un32.png>
-Package pdftex.def Info: variance-results/un32.png used on input line 928.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/black_dbdf_0_75.png>
+Package pdftex.def Info: dbdf-results/black_dbdf_0_75.png used on input line 87
+1.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/is32.png, id=192, 301.125pt x 81.30376pt>
-File: variance-results/is32.png Graphic file (type png)
+<dbdf-results/brown_dbdf_1_00.png, id=181, 1027.84pt x 1027.84pt>
+File: dbdf-results/brown_dbdf_1_00.png Graphic file (type png)
 
-<use variance-results/is32.png>
-Package pdftex.def Info: variance-results/is32.png used on input line 928.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/brown_dbdf_1_00.png>
+Package pdftex.def Info: dbdf-results/brown_dbdf_1_00.png used on input line 87
+2.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/un64.png, id=193, 301.125pt x 81.30376pt>
-File: variance-results/un64.png Graphic file (type png)
+<dbdf-results/blonde_dbdf_1_00.png, id=182, 1027.84pt x 1027.84pt>
+File: dbdf-results/blonde_dbdf_1_00.png Graphic file (type png)
 
-<use variance-results/un64.png>
-Package pdftex.def Info: variance-results/un64.png used on input line 929.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/blonde_dbdf_1_00.png>
+Package pdftex.def Info: dbdf-results/blonde_dbdf_1_00.png used on input line 8
+72.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/is64.png, id=194, 301.125pt x 81.30376pt>
-File: variance-results/is64.png Graphic file (type png)
+<dbdf-results/black_dbdf_1_00.png, id=183, 1027.84pt x 1027.84pt>
+File: dbdf-results/black_dbdf_1_00.png Graphic file (type png)
 
-<use variance-results/is64.png>
-Package pdftex.def Info: variance-results/is64.png used on input line 929.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+<use dbdf-results/black_dbdf_1_00.png>
+Package pdftex.def Info: dbdf-results/black_dbdf_1_00.png used on input line 87
+2.
+(pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<variance-results/un128.png, id=195, 301.125pt x 81.30376pt>
-File: variance-results/un128.png Graphic file (type png)
-
-<use variance-results/un128.png>
-Package pdftex.def Info: variance-results/un128.png used on input line 930.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
-
-<variance-results/is128.png, id=196, 301.125pt x 81.30376pt>
-File: variance-results/is128.png Graphic file (type png)
-
-<use variance-results/is128.png>
-Package pdftex.def Info: variance-results/is128.png used on input line 930.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
-
-<variance-results/un256.png, id=197, 301.125pt x 81.30376pt>
-File: variance-results/un256.png Graphic file (type png)
-
-<use variance-results/un256.png>
-Package pdftex.def Info: variance-results/un256.png used on input line 931.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
-
-<variance-results/is256.png, id=198, 301.125pt x 81.30376pt>
-File: variance-results/is256.png Graphic file (type png)
-
-<use variance-results/is256.png>
-Package pdftex.def Info: variance-results/is256.png used on input line 931.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
-
-<variance-results/un512.png, id=199, 301.125pt x 81.30376pt>
-File: variance-results/un512.png Graphic file (type png)
-
-<use variance-results/un512.png>
-Package pdftex.def Info: variance-results/un512.png used on input line 932.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
-
-<variance-results/is512.png, id=200, 301.125pt x 81.30376pt>
-File: variance-results/is512.png Graphic file (type png)
-
-<use variance-results/is512.png>
-Package pdftex.def Info: variance-results/is512.png used on input line 932.
-(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
-
-Overfull \hbox (1.35275pt too wide) in paragraph at lines 923--936
- [] 
- []
-
-<variance-results/uniform512.png, id=201, 1027.84pt x 1027.84pt>
-File: variance-results/uniform512.png Graphic file (type png)
-
-<use variance-results/uniform512.png>
-Package pdftex.def Info: variance-results/uniform512.png used on input line 955
-.
-(pdftex.def)             Requested size: 174.73048pt x 174.73048pt.
-
-<variance-results/deon512.png, id=202, 1027.84pt x 1027.84pt>
-File: variance-results/deon512.png Graphic file (type png)
-
-<use variance-results/deon512.png>
-Package pdftex.def Info: variance-results/deon512.png used on input line 955.
-(pdftex.def)             Requested size: 174.73048pt x 174.73048pt.
-
-Overfull \hbox (13.46097pt too wide) in paragraph at lines 954--958
- [] 
- []
-
-
-Overfull \hbox (43.03838pt too wide) in paragraph at lines 964--979
+Overfull \hbox (29.36435pt too wide) in paragraph at lines 867--875
 [][] 
  []
 
 
-LaTeX Warning: Reference `' on page 44 undefined on input line 979.
+LaTeX Warning: Float too large for page by 82.40994pt on input line 877.
+
+[41
+
+]
+
+LaTeX Warning: `h' float specifier changed to `ht'.
+
+<variance-results/outline_hint.png, id=188, 1027.84pt x 1027.84pt>
+File: variance-results/outline_hint.png Graphic file (type png)
+
+<use variance-results/outline_hint.png>
+Package pdftex.def Info: variance-results/outline_hint.png used on input line 8
+87.
+(pdftex.def)             Requested size: 205.56436pt x 205.56436pt.
+
+<variance-results/un1.png, id=189, 301.125pt x 81.30376pt>
+File: variance-results/un1.png Graphic file (type png)
+
+<use variance-results/un1.png>
+Package pdftex.def Info: variance-results/un1.png used on input line 931.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is1.png, id=190, 301.125pt x 81.30376pt>
+File: variance-results/is1.png Graphic file (type png)
+
+<use variance-results/is1.png>
+Package pdftex.def Info: variance-results/is1.png used on input line 931.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un2.png, id=191, 301.125pt x 81.30376pt>
+File: variance-results/un2.png Graphic file (type png)
+
+<use variance-results/un2.png>
+Package pdftex.def Info: variance-results/un2.png used on input line 931.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is2.png, id=192, 301.125pt x 81.30376pt>
+File: variance-results/is2.png Graphic file (type png)
+
+<use variance-results/is2.png>
+Package pdftex.def Info: variance-results/is2.png used on input line 931.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un4.png, id=193, 301.125pt x 81.30376pt>
+File: variance-results/un4.png Graphic file (type png)
+
+<use variance-results/un4.png>
+Package pdftex.def Info: variance-results/un4.png used on input line 932.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is4.png, id=194, 301.125pt x 81.30376pt>
+File: variance-results/is4.png Graphic file (type png)
+
+<use variance-results/is4.png>
+Package pdftex.def Info: variance-results/is4.png used on input line 932.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un8.png, id=195, 301.125pt x 81.30376pt>
+File: variance-results/un8.png Graphic file (type png)
+
+<use variance-results/un8.png>
+Package pdftex.def Info: variance-results/un8.png used on input line 933.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is8.png, id=196, 301.125pt x 81.30376pt>
+File: variance-results/is8.png Graphic file (type png)
+
+<use variance-results/is8.png>
+Package pdftex.def Info: variance-results/is8.png used on input line 933.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un16.png, id=197, 301.125pt x 81.30376pt>
+File: variance-results/un16.png Graphic file (type png)
+
+<use variance-results/un16.png>
+Package pdftex.def Info: variance-results/un16.png used on input line 934.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is16.png, id=198, 301.125pt x 81.30376pt>
+File: variance-results/is16.png Graphic file (type png)
+
+<use variance-results/is16.png>
+Package pdftex.def Info: variance-results/is16.png used on input line 934.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un32.png, id=199, 301.125pt x 81.30376pt>
+File: variance-results/un32.png Graphic file (type png)
+
+<use variance-results/un32.png>
+Package pdftex.def Info: variance-results/un32.png used on input line 935.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is32.png, id=200, 301.125pt x 81.30376pt>
+File: variance-results/is32.png Graphic file (type png)
+
+<use variance-results/is32.png>
+Package pdftex.def Info: variance-results/is32.png used on input line 935.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un64.png, id=201, 301.125pt x 81.30376pt>
+File: variance-results/un64.png Graphic file (type png)
+
+<use variance-results/un64.png>
+Package pdftex.def Info: variance-results/un64.png used on input line 936.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is64.png, id=202, 301.125pt x 81.30376pt>
+File: variance-results/is64.png Graphic file (type png)
+
+<use variance-results/is64.png>
+Package pdftex.def Info: variance-results/is64.png used on input line 936.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un128.png, id=203, 301.125pt x 81.30376pt>
+File: variance-results/un128.png Graphic file (type png)
+
+<use variance-results/un128.png>
+Package pdftex.def Info: variance-results/un128.png used on input line 937.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is128.png, id=204, 301.125pt x 81.30376pt>
+File: variance-results/is128.png Graphic file (type png)
+
+<use variance-results/is128.png>
+Package pdftex.def Info: variance-results/is128.png used on input line 937.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un256.png, id=205, 301.125pt x 81.30376pt>
+File: variance-results/un256.png Graphic file (type png)
+
+<use variance-results/un256.png>
+Package pdftex.def Info: variance-results/un256.png used on input line 938.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is256.png, id=206, 301.125pt x 81.30376pt>
+File: variance-results/is256.png Graphic file (type png)
+
+<use variance-results/is256.png>
+Package pdftex.def Info: variance-results/is256.png used on input line 938.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/un512.png, id=207, 301.125pt x 81.30376pt>
+File: variance-results/un512.png Graphic file (type png)
+
+<use variance-results/un512.png>
+Package pdftex.def Info: variance-results/un512.png used on input line 939.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+<variance-results/is512.png, id=208, 301.125pt x 81.30376pt>
+File: variance-results/is512.png Graphic file (type png)
+
+<use variance-results/is512.png>
+Package pdftex.def Info: variance-results/is512.png used on input line 939.
+(pdftex.def)             Requested size: 180.67638pt x 48.78261pt.
+
+Overfull \hbox (1.35275pt too wide) in paragraph at lines 930--943
+ [] 
+ []
+
+[42] <variance-results/uniform512.png, id=212, 1027.84pt x 1027.84pt>
+File: variance-results/uniform512.png Graphic file (type png)
+
+<use variance-results/uniform512.png>
+Package pdftex.def Info: variance-results/uniform512.png used on input line 962
+.
+(pdftex.def)             Requested size: 174.73048pt x 174.73048pt.
+
+<variance-results/deon512.png, id=213, 1027.84pt x 1027.84pt>
+File: variance-results/deon512.png Graphic file (type png)
+
+<use variance-results/deon512.png>
+Package pdftex.def Info: variance-results/deon512.png used on input line 962.
+(pdftex.def)             Requested size: 174.73048pt x 174.73048pt.
+
+Overfull \hbox (13.46097pt too wide) in paragraph at lines 961--965
+ [] 
+ []
 
 
-LaTeX Warning: Reference `' on page 44 undefined on input line 979.
+Overfull \hbox (43.03838pt too wide) in paragraph at lines 971--986
+[][] 
+ []
 
-<variance-results/variance-plot.png, id=203, 980.7039pt x 627.3036pt>
+
+LaTeX Warning: Reference `' on page 43 undefined on input line 986.
+
+
+LaTeX Warning: Reference `' on page 43 undefined on input line 986.
+
+<variance-results/variance-plot.png, id=214, 980.7039pt x 627.3036pt>
 File: variance-results/variance-plot.png Graphic file (type png)
 
 <use variance-results/variance-plot.png>
 Package pdftex.def Info: variance-results/variance-plot.png used on input line 
-985.
+992.
 (pdftex.def)             Requested size: 392.27461pt x 250.91699pt.
 
-Overfull \hbox (32.27461pt too wide) in paragraph at lines 985--986
+Overfull \hbox (32.27461pt too wide) in paragraph at lines 992--993
  [] 
  []
 
-[44] [45 <./variance-results/un1.png> <./variance-results/is1.png> <./variance-
-results/un2.png> <./variance-results/is2.png> <./variance-results/un4.png> <./v
-ariance-results/is4.png> <./variance-results/un8.png> <./variance-results/is8.p
-ng> <./variance-results/un16.png> <./variance-results/is16.png> <./variance-res
-ults/un32.png> <./variance-results/is32.png> <./variance-results/un64.png> <./v
-ariance-results/is64.png> <./variance-results/un128.png> <./variance-results/is
-128.png> <./variance-results/un256.png> <./variance-results/is256.png> <./varia
-nce-results/un512.png> <./variance-results/is512.png>] [46 <./variance-results/
-uniform512.png (PNG copy)> <./variance-results/deon512.png (PNG copy)>]
-[47 <./variance-results/variance-plot.png>]
+[43] [44] [45 <./dbdf-results/brown_dbdf_0_00.png (PNG copy)> <./dbdf-results/b
+londe_dbdf_0_00.png (PNG copy)> <./dbdf-results/black_dbdf_0_00.png (PNG copy)>
+ <./dbdf-results/brown_dbdf_0_25.png (PNG copy)> <./dbdf-results/blonde_dbdf_0_
+25.png (PNG copy)> <./dbdf-results/black_dbdf_0_25.png (PNG copy)> <./dbdf-resu
+lts/brown_dbdf_0_50.png (PNG copy)> <./dbdf-results/blonde_dbdf_0_50.png (PNG c
+opy)> <./dbdf-results/black_dbdf_0_50.png (PNG copy)> <./dbdf-results/brown_dbd
+f_0_75.png (PNG copy)> <./dbdf-results/blonde_dbdf_0_75.png (PNG copy)> <./dbdf
+-results/black_dbdf_0_75.png (PNG copy)> <./dbdf-results/brown_dbdf_1_00.png (P
+NG copy)> <./dbdf-results/blonde_dbdf_1_00.png (PNG copy)> <./dbdf-results/blac
+k_dbdf_1_00.png (PNG copy)>] [46 <./variance-results/outline_hint.png>]
+[47 <./variance-results/un1.png> <./variance-results/is1.png> <./variance-resul
+ts/un2.png> <./variance-results/is2.png> <./variance-results/un4.png> <./varian
+ce-results/is4.png> <./variance-results/un8.png> <./variance-results/is8.png> <
+./variance-results/un16.png> <./variance-results/is16.png> <./variance-results/
+un32.png> <./variance-results/is32.png> <./variance-results/un64.png> <./varian
+ce-results/is64.png> <./variance-results/un128.png> <./variance-results/is128.p
+ng> <./variance-results/un256.png> <./variance-results/is256.png> <./variance-r
+esults/un512.png> <./variance-results/is512.png>] [48 <./variance-results/unifo
+rm512.png (PNG copy)> <./variance-results/deon512.png (PNG copy)> <./variance-r
+esults/variance-plot.png>]
 Chapter 6.
-[48
+[49
 
 ]
 Chapter 7.
-(./thesis.bbl [49
+(./thesis.bbl [50
 
-] [50
+] [51
 
-]) [51] (./thesis.aux)
+]) [52] (./thesis.aux)
 
 LaTeX Warning: There were undefined references.
 
  ) 
 Here is how much of TeX's memory you used:
- 3757 strings out of 493029
- 49968 string characters out of 6136234
- 107695 words of memory out of 5000000
- 7160 multiletter control sequences out of 15000+600000
+ 3833 strings out of 493029
+ 52496 string characters out of 6136234
+ 111695 words of memory out of 5000000
+ 7220 multiletter control sequences out of 15000+600000
  27280 words of font info for 62 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  37i,12n,24p,1004b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1164,10 +1305,10 @@ m0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/shar
 e/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/
 public/cm-super/sfss1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti
 1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on thesis.pdf (53 pages, 8208720 bytes).
+Output written on thesis.pdf (54 pages, 17816161 bytes).
 PDF statistics:
- 335 PDF objects out of 1000 (max. 8388607)
- 199 compressed objects within 2 object streams
+ 354 PDF objects out of 1000 (max. 8388607)
+ 201 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
- 156 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 231 words of extra memory for PDF output out of 10000 (max. 10000000)
 

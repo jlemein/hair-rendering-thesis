@@ -858,13 +858,20 @@ Figure~\ref{fig_results_df} shows the effect of changing average forward and bac
 % +----
 % Results varying df-db
 % +-----
+
+
 \begin{figure}[h]
-\begin{tabular}{|l|c|c|c|c|c|c|}
-Density factor & 0.0 & 0.2 & 0.4 & 0.6 & 0.8 & 1.0 \\
-Blonde hair & \\
-Brown hair & \\
-Black hair & \\
+\bgroup
+\setlength{\tabcolsep}{0.0em} % for the horizontal padding
+\def\arraystretch{0.0}%  1 is the default, change whatever you need
+\begin{tabular}{cccc}
+0.00 & \includegraphics[scale=0.12]{dbdf-results/brown_dbdf_0_00.png} & \includegraphics[scale=0.12]{dbdf-results/blonde_dbdf_0_00.png} & \includegraphics[scale=0.12]{dbdf-results/black_dbdf_0_00.png} \\
+0.25 & \includegraphics[scale=0.12]{dbdf-results/brown_dbdf_0_25.png} & \includegraphics[scale=0.12]{dbdf-results/blonde_dbdf_0_25.png} & \includegraphics[scale=0.12]{dbdf-results/black_dbdf_0_25.png} \\
+0.50 & \includegraphics[scale=0.12]{dbdf-results/brown_dbdf_0_50.png} & \includegraphics[scale=0.12]{dbdf-results/blonde_dbdf_0_50.png} & \includegraphics[scale=0.12]{dbdf-results/black_dbdf_0_50.png} \\
+0.75 & \includegraphics[scale=0.12]{dbdf-results/brown_dbdf_0_75.png} & \includegraphics[scale=0.12]{dbdf-results/blonde_dbdf_0_75.png} & \includegraphics[scale=0.12]{dbdf-results/black_dbdf_0_75.png} \\
+1.00 & \includegraphics[scale=0.12]{dbdf-results/brown_dbdf_1_00.png} & \includegraphics[scale=0.12]{dbdf-results/blonde_dbdf_1_00.png} & \includegraphics[scale=0.12]{dbdf-results/black_dbdf_1_00.png} \\
 \end{tabular}
+\egroup
 \caption{A variation of the density factors $d_f$ and $d_b$, corresponding to the amount of global multiple scattering in the hair model. A value of 0 indicates the absence of global multiple scattering and 1 the full presence of global multiple scattering. Usually the value is set to a constant value 0.7.}
 \label{fig_results_df}
 \end{figure}
