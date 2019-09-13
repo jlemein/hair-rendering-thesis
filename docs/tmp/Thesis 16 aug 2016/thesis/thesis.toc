@@ -52,8 +52,13 @@
 \contentsline {section}{\numberline {4.3}Evaluation against ground truth}{40}
 \contentsline {section}{\numberline {4.4}Evaluating the conversion rate in terms of variance}{40}
 \contentsline {chapter}{\numberline {5}Results}{41}
-\contentsline {section}{\numberline {5.1}Hair blocks with different density}{41}
-\contentsline {section}{\numberline {5.2}Cornwell Scene}{41}
-\contentsline {section}{\numberline {5.3}Evaluation Strategy}{41}
-\contentsline {chapter}{\numberline {6}Conclusion}{44}
-\contentsline {chapter}{\numberline {7}Appendix}{45}
+\contentsline {subsection}{\numberline {5.0.1}Marschner results}{41}
+\contentsline {subsection}{\numberline {5.0.2}Dual scattering in real-world situations}{41}
+\contentsline {subsubsection}{Mid daylight setting (Venice square)}{41}
+\contentsline {subsubsection}{Interior dark setting (Metro station))}{41}
+\contentsline {subsection}{\numberline {5.0.3}Variation of the forward and backward density factors}{41}
+\contentsline {section}{\numberline {5.1}Theoretical Results}{42}
+\contentsline {subsection}{\numberline {5.1.1}Relative variance for increasing samples per pixel}{42}
+\contentsline {subsection}{\numberline {5.1.2}Variance compared to ground truth}{44}
+\contentsline {chapter}{\numberline {6}Conclusion}{48}
+\contentsline {chapter}{\numberline {7}Appendix}{49}

@@ -825,56 +825,181 @@ Another way to evaluate the results is to express the variance of the sampling s
 
 \chapter{Results}
 
-\section{Hair blocks with different density}
+In this chapter results are presented. A couple of variations are proposed.
 
-As an indication to see the effects of using the voxel grid. The following images show.
-Renderings of cubes with different densities. The left cube is less dense than the right cube. If the cube has a higher density (e.g. more hairs), then more light is scattered around through the model, leading to a darker appearance as you view deeper in the cube.
+\subsection{Marschner results}
 
+In this section the marschner model is presented with renderings from different orientations to show the three scattering modes so characteristic for the Marschner model.
+
+%
+% Marschner model (brunette, blonde, black hair) with highlighted R, TT and TRT modes
+%
+
+\subsection{Dual scattering in real-world situations}
+
+The results presented in this section depict the dual scattering model in multiple real-world situations versus the Marschner model. The effect of importance sampling becomes more apparent when we have global illumimation (such as environment lighting). The explanation for this is that with environment lighting, light can come from virtually any direction. In such case an informed decision on which direction to sample will benefit the rendering process and decrease variance. In contrary, if the scene consists of only a single directional light source (or any other small area light source), then there is not much choice to sample from: the directions that have most impact are exactly the directions toward the light source. In that case sampling from the light source might give good results and masqade the effect of importance sampling.
+
+\subsubsection{Mid daylight setting (Venice square)}
+
+%
+% Venice square
+%
+
+\subsubsection{Interior dark setting (Metro station))}
+
+%
+% Interior dark setting
+%
+
+\subsection{Variation of the forward and backward density factors}
+
+Figure~\ref{fig_results_df} shows the effect of changing average forward and backward density values $d_f$ and $d_b$. When the density factors are zero, the appearance boils down to single scattering. This is because a density factor of zero indicates that no global multiple scattered light reaches the shading points (refer to figure~\ref{fig_df} for a visual representation).
+
+% +----
+% Results varying df-db
+% +-----
 \begin{figure}[h]
+\begin{tabular}{|l|c|c|c|c|c|c|}
+Density factor & 0.0 & 0.2 & 0.4 & 0.6 & 0.8 & 1.0 \\
+Blonde hair & \\
+Brown hair & \\
+Black hair & \\
+\end{tabular}
+\caption{A variation of the density factors $d_f$ and $d_b$, corresponding to the amount of global multiple scattering in the hair model. A value of 0 indicates the absence of global multiple scattering and 1 the full presence of global multiple scattering. Usually the value is set to a constant value 0.7.}
+\label{fig_results_df}
+\end{figure}
+
+The results show that the global multiple scattering component is very important to the appearance of blond hair models. To a lesser extend, but still important, to brown hair models and for black hair the effect is hardly visible. This is in accordance to what is expected, because light colored hair types have by definition less attenuation when light propagates through hair fibers. Therefore there is more global multiple scattering through the hair volume.
+
+\section{Theoretical Results}
+
+In this section theoretical results are obtained based on measured data. As discussed in the approach the variance is used to quantify the errror compared with the ground truth. By varying the samples per pixel an insight is gathered in the convergence rate and the efficiency of the importance sampling strategy compared with uniform sampling. Figure~\ref{fig_variance_outline} displays a rendering of a curly brunette with an outline indicating the region of interest for variance computation. In subsequent sections, this region is used for variance computation. This is done so that the background image has no effect on the variance computation.
+
+\begin{figure}
 \begin{center}
-\includegraphics[scale=0.35]{images/dualblock/dualblock_1500_3000_.png} 
-\label{dualblock_results}
-\caption{Left hair block contains 1500 hairs, versus the right hair block, that contains 3000 hairs.}
-
-\includegraphics[scale=0.35]{images/dualblock/dualblock_3000_6000_.png}
-\label{dualblock_results}
-\caption{Left hair block contains 3000 hairs, versus the right hair block, that contains 6000 hairs.}
-
-\includegraphics[scale=0.35]{images/dualblock/dualblock_6000_12000_.png}
-\caption{Left hair block contains 6000 hairs, versus the right hair block, that contains 12000 hairs.}
+\includegraphics[scale=0.2]{variance-results/outline_hint.png}
 \end{center}
+\caption{This figure displays an outline representing the region of interest for subsequent comparison of rendered results. The variance is computed for the area contained by the outline. This is done so that the background, and nonrelated items have no influence on the variance computation.}
+\label{fig_variance_outline}
+\end{figure}
+
+\subsection{Relative variance for increasing samples per pixel}
+
+Table~\ref{table_relative_variance} contains measurement data for relative variance as the samples per pixel increases. The samples per pixel are doubled at every step starting from 1 sample per pixel up to 512 samples per pixel. At every step the distance is computed (as a variance metric) between the current image and the result from the previous step (where half the samples per pixel are used).
+
+
+
+\begin{table}
+\begin{center}
+\begin{tabular}{c|c|c}
+Pixels per sample & Uniform Sampling & Importance Sampling \\
+\hline \hline
+1 & - & - \\
+2 & 0.002931 & 0.001524 \\
+4 & 0.001058 & 0.000516 \\
+8 & 0.000443 & 0.000209 \\
+16 & 0.000192 & 0.000084 \\
+32 & 0.000113 & 0.000045 \\
+64 & 0.000044 & 0.000019 \\
+128 & 0.000025 & 0.000009 \\
+256 & 0.000102 & 0.000083 \\
+512 & 0.000003 & 0.000001 \\
+\end{tabular}
+\end{center}
+\caption{The relative variance for increasing samples per pixel. For example, when comparing uniform sampling for 16 samples per pixel, the distance compared with 8 samples per pixel is 0.000192 (expressed in variance). If the relative variance is 0, then this indicates the doubling of samples per pixel did not cause a change with the previous image (and thus the result is converged). For 1 sample per pixel there are no results, since there is no previous image to compare with.}
+\label{table_relative_variance}
+\end{table}
+
+The relative variance suggests that for both uniform and importance sampling, at 512 samples per pixel there is hardly any change compared to 256 samples per pixel. This indicates that convergence has been reached. The rate of convergence shows that for the first few increments of samples per pixel, the result is changing considerably. This is what we expect: as the samples per pixel increases, we get closer to convergence and thus expect a lower and lower relative variance. Figure~\ref{fig_side_by_side} shows partial regions of the renderings. As the samples per pixel increases, the result becomes much more pleasant to watch at. 
+
+With this data it is difficult to do a hard comparison. In the next section the images are compared with the ground truth, giving us more insight in the efficiency of both sampling strategies related to each other.  
+
+
+\begin{figure}
+\begin{center}
+\bgroup
+\setlength{\tabcolsep}{0.0em} % for the horizontal padding
+\def\arraystretch{0.0}%  1 is the default, change whatever you need
+\begin{tabular}{ccc}
+\includegraphics[scale=0.6]{variance-results/un1.png} & \includegraphics[scale=0.6]{variance-results/is1.png} \\ \includegraphics[scale=0.6]{variance-results/un2.png} & \includegraphics[scale=0.6]{variance-results/is2.png} \\
+\includegraphics[scale=0.6]{variance-results/un4.png} & \includegraphics[scale=0.6]{variance-results/is4.png} \\
+\includegraphics[scale=0.6]{variance-results/un8.png} & \includegraphics[scale=0.6]{variance-results/is8.png} \\
+\includegraphics[scale=0.6]{variance-results/un16.png} & \includegraphics[scale=0.6]{variance-results/is16.png} \\
+\includegraphics[scale=0.6]{variance-results/un32.png} & \includegraphics[scale=0.6]{variance-results/is32.png} \\
+\includegraphics[scale=0.6]{variance-results/un64.png} & \includegraphics[scale=0.6]{variance-results/is64.png} \\
+\includegraphics[scale=0.6]{variance-results/un128.png} & \includegraphics[scale=0.6]{variance-results/is128.png} \\
+\includegraphics[scale=0.6]{variance-results/un256.png} & \includegraphics[scale=0.6]{variance-results/is256.png} \\
+\includegraphics[scale=0.6]{variance-results/un512.png} & \includegraphics[scale=0.6]{variance-results/is512.png} \\
+
+\end{tabular}
+\egroup
+\end{center}
+\caption{Comparison of the image quality between uniform sampling and importance sampling for various pixels per sample, indicated in the top left corner. As the pixels per sample increase the noise of the image becomes smaller.}
+\label{fig_side_by_side}
 \end{figure}
 
 
-The cubes are rendered with Pixar's Renderman. The size of cubes are \textsc{5x5x5} and are placed on the horizontal plane at \textsc{y = 0}.
+
+\subsection{Variance compared to ground truth}
+
+One of the most important requirements for an importance sampling strategy is that it converges to the same result as uniform sampling. As discussed in the previous section it appears that the uniform sampling renderings are converged at 512 samples per pixel, so we will use the result of 512 samples per pixel as the ground truth. Importance sampling results can then be compared with the ground truth by computing the distance with the ground truth (expressed as the average variance per pixel).
+
+Figure~\ref{fig_sidebyside_converged} shows a side by side comparison of 512 samples per pixel, assuming that both images have been converged. The importance sampled version is a bit darker compared to the uniform sampling version. This is not expected and may have to do with the probability density function not integrating to 1 for all configurations.
+
+Figure~\ref{fig_side_by_side} shows an even more detailed side by side comparison. Here a region is displayed to better see the noise for various samples per pixel for both uniform and importance sampling. Table~\ref{table_variance_to_groundtruth} shows the variance of different renderings compared to the ground truth and figure~\ref{fig_variance_plot} displays the measurement data in a plot.
 
 
-\section{Cornwell Scene}
-
-The following images show the effects of the dual scattering algorithm for the well-known cornwell scene. The scene consists of 4 walls: a red wall to the left, a green wall to the right, a gray wall in front and a gray wall behind the camera. The wall behind the camera influences the scene, due to scattered light that reflects back into the visible part of the scene. The red diffuse sphere is present as a reference sphere.
-
-\begin{figure}[h]
+\begin{figure}
 \begin{center}
-\includegraphics[scale=0.35]{images/scenes/cornwell_empty.jpg}
-\label{cornwell_empty}
-\caption{Cornwell reference scene without the hair block.}
+\begin{tabular}{cc}
+\includegraphics[scale=0.17]{variance-results/uniform512.png} & \includegraphics[scale=0.17]{variance-results/deon512.png} \\ 
+Uniform sampling & Importance sampling \\
+\end{tabular}
 \end{center}
+\caption{A side by side comparison of converged images for uniform and importance sampling, both rendered at 512 samples per pixel. Both renderings should converge to the same result. Although the result looks similar, the uniform sampling seems slightly brighter.}
+\label{fig_sidebyside_converged}
 \end{figure}
 
-\begin{figure}[h]
+\begin{table}
+\begin{tabular}{r|c|c|c}
+Pixels per & Uniform sampling & Importance Sampling & Importance Sampling \\
+sample &  & (compared with uniform) & (compared with self) \\
+\hline \hline
+1 & 0.004720 & 0.002616 & 0.002374 \\
+2 & 0.001962 & 0.001177 & 0.000930 \\
+4 & 0.000909 & 0.000689 & 0.000432\\
+8 & 0.000459 & 0.000481 & 0.000223 \\
+16 & 0.000275 & 0.000406 & 0.000146 \\
+32 & 0.000173 & 0.000371 & 0.000109 \\
+64 & 0.000130 & 0.000355 & 0.000092 \\
+128 & 0.000105 & 0.000346 & 0.000084 \\
+256 & 0.000003 & 0.000257 & 0.000001 \\
+512 & 0.000000 & 0.000257 & 0.000000 \\
+\end{tabular}
+\caption{These measurements quantify the error compared with the ground truth. The ground truth is taken as the uniform sampling variant at 512 samples per pixel. Therefore the error between for uniform sampling is 0 (at 512 samples per pixel). It gives an insight in the convergence rate, together with the graph shown in figure~\ref{}. The third column compares importance sampling with itself. This is not a comparison with the ground truth, but gives insight in the convergence rate to it's own converged result.}
+\label{table_variance_to_groundtruth}
+\end{table}
+
+\begin{figure}
 \begin{center}
-\includegraphics[scale=0.35]{images/scenes/cornwell_uniform.jpg}
-\label{cornwell_empty}
-\caption{Cornwell reference scene with a uniformly sampled hair block block.}
+\includegraphics[scale=0.4]{variance-results/variance-plot.png}
 \end{center}
+\caption{Graphical representation of the data from from table~\ref{table_variance_to_groundtruth}.}
+\label{fig_variance_plot}
 \end{figure}
 
 
+There are a couple of obervations to be made:
+\begin{itemize}
 
-\section{Evaluation Strategy}
+\item Importance sampling is crossing the uniform sampling line at 8 samples per pixel. From that point on the uniform sampling results are closer to the ground truth than the importance sampling results. This has to do with the fact that importance sampling does not converge to the ground truth (and uniform sampling does, by our definition). However for 8 samples per pixel and below, the importance sampling strategy actually performs better, because it has a lower error compared to uniform sampling.
 
-To evaluate the multiple importance sampling strategy of the dual scattering approximation, we need to render different types of scenes to be able to see that the importance sampling strategy is more efficient that the standard dual scattering approximation. By taking a fixed number of samples for the integration, we expect that the importance sampling strategy will be equally fast in terms of computation speed compared to the non-importance sampling variant. However, the importance sampling strategy should generate an image that is less noisy than the standard dual scattering approximation algorithm using the same number of samples. 
+\item After 16 samples per pixel the variance of the importance sampling strategy is not that much improving anymore. The error is not 0 (because of the previous point), but the result seems to be 'locally' converged. This can be seen by taking a look at the third column where importance sampling is related to it's own converged result. After 16 samples per pixel the error is stagnating.
 
+\item The uniform sampling strategy seems to converge at a slower rate than importance sampling. After 16 samples per pixel, the variance for uniform sampling is still slowly decreasing, while the importance strategy is more or less stagnated.
+
+
+\end{itemize}
 
 
 \chapter{Conclusion}

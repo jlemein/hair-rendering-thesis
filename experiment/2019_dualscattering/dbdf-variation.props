@@ -4,9 +4,10 @@ image_output_basename dbdf
 useInfiniteLight 
 infinite_light_power 1.0
 infinite_light_samples 4
+image_output_extension .png
 
 # -----------------------------
 #  VIEW PROPERTIES
 # -----------------------------
-model_rotation 90
+model_rotation 0
 
