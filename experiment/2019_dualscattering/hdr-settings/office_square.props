@@ -1,0 +1,16 @@
+# hdrmap: texture file (.exr) to use
+hdrmap office_square8k.exr
+
+# name of scene
+scene_name officesquare
+
+# hdrcalibration: <degrees> <axis_x> <axis_y> <axis_z>
+hdrcalibration -90 1 0 0
+
+# orient view: <degrees> <axis_x> <axis_y> <axis_z>
+viewcalibration -90 0 1 0
+
+# hdrscale: scales the intensity of the hdr results
+hdrscale 1.5 1.5 1.5
+
+

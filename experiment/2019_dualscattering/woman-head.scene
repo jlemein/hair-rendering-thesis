@@ -1,8 +1,10 @@
 Integrator "$integrator_type" "integer maxdepth" [ $integrator_maxdepth ] "float lightRadianceFactor" [ $lightRadianceFactor ]
 #Transform [ $transform_matrix ]
 # $light_power
+Translate 0 $view_translation_y 0
 Translate 0 0 $global_translate_z
 Rotate 0 0 1 0
+Rotate $view_pitch 1 0 0
 Rotate $view_rotation 0 1 0
 Sampler "$sampler_type" "integer pixelsamples" [ $pixelsamples ]
 
@@ -29,39 +31,18 @@ WorldBegin
         "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
         "string samplingMethod" [ "$samplingMethod" ]
 
-	MakeNamedMaterial "hardly_absorbing_hair" "string type" [ "$shader" ] 
-        "color sigmaA" [0.01 0.01 0.01] 
+    MakeNamedMaterial "brown_hair2" "string type" [ "$shader" ] 
+        "float db" [ $db_factor ]
+        "float df" [ $df_factor ]
+        "color sigmaA" [0.432 0.612 0.98] 
         "float alphaR" [3]
-        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float betaR" [8] "float betaTT" [10] "float betaTRT" [15]
         "float glintScaleFactor" [ $glintScaleFactor ]
         "float causticWidth" [ $causticWidth ]
         "float eccentricity" [ $eccentricity ]
         "float hairRadius" [ $hairRadius ]
         "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
         "string samplingMethod" [ "$samplingMethod" ]
-
-MakeNamedMaterial "little_absorbing_hair" "string type" [ "$shader" ] 
-        "color sigmaA" [0.05 0.05 0.05] 
-        "float alphaR" [3]
-        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
-        "float glintScaleFactor" [ $glintScaleFactor ]
-        "float causticWidth" [ $causticWidth ]
-        "float eccentricity" [ $eccentricity ]
-        "float hairRadius" [ $hairRadius ]
-        "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
-        "string samplingMethod" [ "$samplingMethod" ]
-
-MakeNamedMaterial "absorbing_hair" "string type" [ "$shader" ] 
-        "color sigmaA" [0.1 0.1 0.1] 
-        "float alphaR" [3]
-        "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
-        "float glintScaleFactor" [ $glintScaleFactor ]
-        "float causticWidth" [ $causticWidth ]
-        "float eccentricity" [ $eccentricity ]
-        "float hairRadius" [ $hairRadius ]
-        "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
-        "string samplingMethod" [ "$samplingMethod" ]
-
 
 
     MakeNamedMaterial "brown_hair_ref"
@@ -74,6 +55,20 @@ MakeNamedMaterial "absorbing_hair" "string type" [ "$shader" ]
         "color sigmaA" [0.03 0.07 0.15] 
         "float alphaR" [3]
         "float betaR" [14] "float betaTT" [8] "float betaTRT" [22]
+        "float glintScaleFactor" [ $glintScaleFactor ]
+        "float causticWidth" [ $causticWidth ]
+        "float eccentricity" [ $eccentricity ]
+        "float hairRadius" [ $hairRadius ]
+        "string vdbFileName" [ "./output/models/$model_hair_filename$model_hair_thickness$model_hair_percentage.vdb" ]
+        "string samplingMethod" [ "$samplingMethod" ]
+
+    MakeNamedMaterial "light_blonde_hair" 
+        "string type" [ "$shader" ]
+        "float db" [ $db_factor ]
+        "float df" [ $df_factor ]
+        "color sigmaA" [0.03 0.07 0.15] 
+        "float alphaR" [3]
+        "float betaR" [8] "float betaTT" [10] "float betaTRT" [15]
         "float glintScaleFactor" [ $glintScaleFactor ]
         "float causticWidth" [ $causticWidth ]
         "float eccentricity" [ $eccentricity ]
@@ -119,6 +114,7 @@ $useAreaLight TransformEnd
     
 
     TransformBegin
+        Rotate $model_pitch 1 0 0
         Rotate $model_rotation 0 1 0
         Rotate 180 0 1 0
         Rotate -90 0 1 0

@@ -1,0 +1,20 @@
+# -----------------------------
+#  LIGHT PROPERTIES
+# -----------------------------
+# light direction is specified as the from direction to origin (0,0,0).
+#              y=1 z=1
+#               | /
+#               |/ 
+#  x=-1 <---------------> x=1
+#              /|
+#             / |
+#         z=-1 y=-1
+
+
+# -----------------------------
+#  VIEW PROPERTIES
+# -----------------------------
+@model_rotation #0: 0 ~ #12: -330 ;
+
+
+

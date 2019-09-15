@@ -1,0 +1,16 @@
+# hdrmap: texture file (.exr) to use
+hdrmap subway8k.exr
+
+# name of scene
+scene_name subway
+
+# hdrcalibration: <degrees> <axis_x> <axis_y> <axis_z>
+hdrcalibration -90 1 0 0
+
+# orient view: <degrees> <axis_x> <axis_y> <axis_z>
+viewcalibration 150 0 1 0
+
+# hdrscale: scales the intensity of the hdr results
+hdrscale 32.0 32.0 32.0
+
+
