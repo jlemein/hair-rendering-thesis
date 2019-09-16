@@ -3,12 +3,38 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import ScalarFormatter, MultipleLocator, FuncFormatter
 
 # Make some fake data.
-uniform_vs_groundtruth = np.array([0.004720, 0.001962, 0.000909, 0.000459,
-                                   0.000275, 0.000173, 0.000130, 0.000105, 0.000003, 0.000000])
-deon_vs_groundtruth = np.array([0.002616, 0.001177, 0.000689, 0.000481,
-                                0.000406, 0.000371, 0.000355, 0.000346, 0.000257, 0.000257])
-deon_vs_deon = np.array([0.002374, 0.000930, 0.000432, 0.000223,
-                         0.000146, 0.000109, 0.000092, 0.000084, 0.000001, 0.000000])
+uniform_vs_groundtruth = np.array([0.019034,
+                                   0.009072,
+                                   0.004352,
+                                   0.001842,
+                                   0.001004,
+                                   0.000357,
+                                   0.000156,
+                                   0.000054,
+                                   0.000017,
+                                   0.000000])
+
+deon_vs_groundtruth = np.array([0.010120,
+                                0.004829,
+                                0.002440,
+                                0.001119,
+                                0.000760,
+                                0.000415,
+                                0.000321,
+                                0.000282,
+                                0.000264,
+                                0.000259])
+
+deon_vs_deon = np.array([0.009840,
+                         0.004560,
+                         0.002169,
+                         0.000860,
+                         0.000493,
+                         0.000153,
+                         0.000058,
+                         0.000022,
+                         0.000007,
+                         0.000000])
 
 #samples_per_pixel = [1, 2, 4, 8, 16, 32, 64, 128, 256, 512]
 samples_per_pixel = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
@@ -20,12 +46,12 @@ ax.plot(samples_per_pixel, uniform_vs_groundtruth,
         label='Uniform Sampling', marker='x')
 ax.plot(samples_per_pixel, deon_vs_groundtruth,
         label='Importance Sampling', marker='x')
-ax.plot(samples_per_pixel, deon_vs_deon,
-        label='Importance Sampling (relative)', marker='x')
+# ax.plot(samples_per_pixel, deon_vs_deon,
+#       label='Importance Sampling (relative)', marker='x')
 
 plt.xscale('log')
 plt.xlabel("Samples per pixel")
-plt.ylabel("Variance compared to reference (ground truth)")
+plt.ylabel("Variance (compared with uniform sampling 512 spp)")
 plt.grid(True)
 # ax.semilogx(range(512))
 # ax.xaxis.set_major_formatter(ScalarFormatter())

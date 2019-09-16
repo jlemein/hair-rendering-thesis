@@ -58,6 +58,11 @@ Jonathan~T. Moon and Stephen~R. Marschner.
   approach.
 \newblock {\em ACM Trans. Graph.}, 25(3):1067--1074, July 2006.
 
+\bibitem{sadeghi2010}
+Iman Sadeghi, Heather Pritchett, Henrik~Wann Jensen, and Rasmus Tamstorf.
+\newblock An artist friendly hair shading system.
+\newblock {\em ACM Trans. Graph.}, 29(4):56:1--56:10, July 2010.
+
 \bibitem{sadeghi}
 Iman Sadeghi and Rasmus Tamstorf.
 \newblock Efficient implementation of the dual scattering model in renderman.

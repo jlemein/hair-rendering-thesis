@@ -4,46 +4,48 @@ The top-level auxiliary file: thesis.aux
 The style file: plain.bst
 Database file #1: thesis.bib
 Warning--I didn't find a database entry for "pbrt"
+Warning--I didn't find a database entry for "2011"
+Warning--I didn't find a database entry for "deon2011"
 Warning--empty year in sadeghi
-You've used 12 entries,
+You've used 13 entries,
             2118 wiz_defined-function locations,
-            578 strings with 6301 characters,
-and the built_in function-call counts, 5149 in all, are:
-= -- 524
-> -- 254
+            585 strings with 6456 characters,
+and the built_in function-call counts, 5575 in all, are:
+= -- 566
+> -- 277
 < -- 6
-+ -- 103
-- -- 88
-* -- 382
-:= -- 822
-add.period$ -- 42
-call.type$ -- 12
-change.case$ -- 79
++ -- 113
+- -- 96
+* -- 422
+:= -- 892
+add.period$ -- 45
+call.type$ -- 13
+change.case$ -- 86
 chr.to.int$ -- 0
-cite$ -- 13
-duplicate$ -- 193
-empty$ -- 373
-format.name$ -- 88
-if$ -- 1097
+cite$ -- 14
+duplicate$ -- 204
+empty$ -- 403
+format.name$ -- 96
+if$ -- 1181
 int.to.chr$ -- 0
-int.to.str$ -- 12
-missing$ -- 13
-newline$ -- 64
-num.names$ -- 24
-pop$ -- 82
+int.to.str$ -- 13
+missing$ -- 14
+newline$ -- 69
+num.names$ -- 26
+pop$ -- 87
 preamble$ -- 1
-purify$ -- 68
+purify$ -- 74
 quote$ -- 0
-skip$ -- 145
+skip$ -- 152
 stack$ -- 0
-substring$ -- 346
-swap$ -- 60
+substring$ -- 386
+swap$ -- 61
 text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 44
+type$ -- 48
 warning$ -- 1
-while$ -- 47
-width$ -- 14
-write$ -- 146
-(There were 2 warnings)
+while$ -- 51
+width$ -- 15
+write$ -- 157
+(There were 4 warnings)

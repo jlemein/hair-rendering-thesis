@@ -47,9 +47,9 @@ Jeffrey \textsc{Lemein}% Your name
 \begin{flushright} \large
 \emph{Supervisor:} \\
 Prof. Remco \textsc{Veltkamp} \\ % Supervisor's Name
-Dr. Robby T. \textsc{Tan} \\ % Supervisor's Name
-Desmond \textsc{Chik} \\ % Supervisor's Name \\
-Daniel \textsc{Heckenberg}  % Supervisor's Name \\
+%Dr. Robby T. \textsc{Tan} \\ % Supervisor's Name
+%Desmond \textsc{Chik} \\ % Supervisor's Name \\
+%Daniel \textsc{Heckenberg}  % Supervisor's Name \\
 \end{flushright}
 \end{minipage}\\[4cm]
 
@@ -90,9 +90,33 @@ Daniel \textsc{Heckenberg}  % Supervisor's Name \\
 % 10. References
 %
 \begin{abstract}
-Your abstract goes here...
-...
+
+Rendering hair fibers is a challenging task because of the extensive amount of hair fibers required to render a realistic human hair model. Also hair fibers are very thin, requiring a lot of rays to be traced to produce noise-free images. Marschner et al.~\cite{marschner} proposed a physically based single fiber scattering model to render realistic human hair fibers. 
+
+When rendering light colored hair, multiple fiber scattering is essential for the hair color. Zinke et al.~\cite{zinke} extended the work of Marschner by splitting multiple scattering up into two components: global multiple scattering and local multiple scattering. Global multiple scattering approximated the multiple scattering contribution, reducing the rendering time considerably, while local multiple scattering resembles the Marschner model to keep the single fiber scattering characteristics.
+
+In this thesis the importance sampling strategy proposed by d'Eon et al.~\cite{eon2013} is used. This strategy works particularly well for the Marschner model. In this thesis the same importance sampling strategy will be applied to the dual scattering method to see if this method can be made even more efficient. Results are evaluated by comparing the variance measurements between uniform sampling and importance sampling. It can be shown that the importance sampling does not significantly show better results compared to uniform sampling.
+
 \end{abstract}
+
+%\renewcommand{\abstractname}{Acknowledgements}
+%\begin{abstract}
+%This thesis was a long and time consuming process. A lot of mixed feelings, a lot of what if feelings. What if I had done it a little bit differently. What if I asked more questions, what if I had the life experience . As a student I worked on so many small assignments. From scratch on, no problems. 
+
+% asked more questions, what if I had written unit tests from the beginning, what if I had choosen a different topic. At the same time it brought me where I am now. I am a computer graphics enthusiast. Hair rendering is the type of thesis project that I would choose again. 
+
+
+%By starting to work for several companies I realized: hey this thesis is so much more interesting.
+
+%, with ups and downs, followed by more ups and downs. It took a very long time to accomplish the end result.
+
+%Special thanks to Daniel Heckenberg and Desmond Chik to find the time to supervise me, both via skype as in person. To gain insights for which I am still generously thankful and to be able to have worked inside an animation company. Animal Logic Sydney, thanks for that as well. Still to this day I get energy from the creative setting that was present in Animal Logic. From the coffee machine where you had to be a real barista. From the HR staff rushing in the cantine to teach me how to steam milk, because the sound was so disturbing in their office opposite the cantina: how long they must have been annoyed by the sound and finally found the courage to say something about it.
+
+% Animal Logic, Sydney where Daniel Heckenberg and Desmond Chik helped me along the way with my thesis. Unfortu
+%Special thanks to prof. Robby Tan for finding a project with me, bringing i.
+
+%And ofcourse, special thanks to my supervisor Remco Veltkamp, which had the patience to still find time for a student so long busy with a thesis.
+%\end{abstract}
 
 %
 % ===============================================================================
@@ -120,6 +144,8 @@ Nowadays, improved hardware makes it possible to render models of individual fib
 
 
 \section{Goal and approach}
+
+\subsection*{Goals}
 % b. State your goal (what problems you really want to solve)
 In this thesis project the goal is to extend the dual scattering approximation model with importance sampling. Importance sampling is a variance reduction technique that works very good together with Monte-Carlo integration. I will focus on the importance sampling method provided by d'Eon et al.~\cite{eon2013}. There are in general two problems to be solved.
 
@@ -129,7 +155,7 @@ A second problem is the fact that we are working with the Dual-Scattering method
 
 The ultimate goal is to see whether the importance sampling method proposed by d'Eon et al.~\cite{eon2013} can be used efficiently for the Dual-Scattering approximation model by Zinke et al.~\cite{zinke}.
 
-\subsection{How to approach}
+\subsection*{Approach}
 % e. State how you want to approach the problem
 
 To evaluate the importance sampling strategy, I will generate rendering results to be able to visually compare results obtained by using uniform sampling with the results obtained by using importance sampling. This gives a gut feeling about the efficiency of the sampling strategy. Additionally I will vary the number of samples per pixel to compare the same output renderings, with the only difference in increasing numbers of samples per pixel. This evaluation is done by computing the variance between these images.
@@ -825,33 +851,93 @@ Another way to evaluate the results is to express the variance of the sampling s
 
 \chapter{Results}
 
-In this chapter results are presented. A couple of variations are proposed.
+In this chapter results are presented. First the dual scattering model is presented in a variety of settings. Then the effect of the average forward and backward density factors are shown, followed by a numerical analysis by using variance to compare the noise between uniform sampling and importance sampling.
 
-\subsection{Marschner results}
+%\subsection{Marschner results}
 
-In this section the marschner model is presented with renderings from different orientations to show the three scattering modes so characteristic for the Marschner model.
+%In this section the marschner model is presented with renderings from different orientations to show the three scattering %modes so characteristic for the Marschner model.
 
 %
 % Marschner model (brunette, blonde, black hair) with highlighted R, TT and TRT modes
 %
 
-\subsection{Dual scattering in real-world situations}
+\section{Dual scattering in real-world situations}
 
-The results presented in this section depict the dual scattering model in multiple real-world situations versus the Marschner model. The effect of importance sampling becomes more apparent when we have global illumimation (such as environment lighting). The explanation for this is that with environment lighting, light can come from virtually any direction. In such case an informed decision on which direction to sample will benefit the rendering process and decrease variance. In contrary, if the scene consists of only a single directional light source (or any other small area light source), then there is not much choice to sample from: the directions that have most impact are exactly the directions toward the light source. In that case sampling from the light source might give good results and masqade the effect of importance sampling.
+Usually when rendering, multiple importance sampling is performed to take samples from the light source and samples determined by the material. If the light source would be small, then taking samples determined by the light source will usually always give better results then using importance sampling from the material. To be able to see the effect of importance sampling for the hair material, we thus must make sure that we have a globally illuminated scene, to see the difference between importance sampling and uniform sampling.
 
-\subsubsection{Mid daylight setting (Venice square)}
+The results presented in this section compares results from uniform sampling with results from importance sampling. The models are placed in a global illuminated scene, where global illumination is accomplished by using HDR spherical environment maps.
+
+In figure~\ref{fig_officesquare} results are presented for a daytime setting between office buildings. Here the daylight is abundant but in general no direct sunlight shining on the hair models. 
+
+
+\begin{figure}[h]
+\begin{tabular}{cc}
+Importance Sampling (32 samples) & Uniform Sampling (32 samples) \\
+\includegraphics[scale=0.16]{realworld/officesquare/deon_blonde1_32.png} &
+\includegraphics[scale=0.16]{realworld/officesquare/uniform_blonde1_32.png} \\
+\includegraphics[scale=0.16]{realworld/officesquare/deon_black1_32.png} &
+\includegraphics[scale=0.16]{realworld/officesquare/uniform_black1_32.png} \\
+\includegraphics[scale=0.16]{realworld/officesquare/deon_brown2_32.png} &
+\includegraphics[scale=0.16]{realworld/officesquare/uniform_brown2_32.png} \\
+
+\end{tabular}
+\caption{Comparison between importance sampling and uniform sampling in an office square setting. The images are rendered using 32 samples per pixel.}
+\label{fig_officesquare}
+\end{figure}
 
 %
 % Venice square
 %
 
-\subsubsection{Interior dark setting (Metro station))}
+In figure~\ref{fig_venice} results are presented for an outside square in Venice.
+
+\begin{figure}[h]
+\begin{center}
+\begin{tabular}{cc}
+Importance Sampling (32 samples) & Uniform Sampling (32 samples) \\
+\includegraphics[scale=0.16]{realworld/venice/deon_blonde1_32.png} &
+\includegraphics[scale=0.16]{realworld/venice/uniform_blonde1_32.png} \\
+\includegraphics[scale=0.16]{realworld/venice/deon_black1_32.png} &
+\includegraphics[scale=0.16]{realworld/venice/uniform_black1_32.png} \\
+\includegraphics[scale=0.16]{realworld/venice/deon_brown2_32.png} &
+\includegraphics[scale=0.16]{realworld/venice/uniform_brown2_32.png} \\
+
+\end{tabular}
+\caption{Comparison between importance sampling and uniform sampling in an office square setting. The samples are rendered using 32 samples per pixel.}
+\label{fig_venice}
+\end{center}
+\end{figure}
 
 %
 % Interior dark setting
 %
 
-\subsection{Variation of the forward and backward density factors}
+In figure~\ref{fig_subway} results are presented for a dark setting. The scene is a subway station platform, where the lights in the station provide the direct lighting (and reflections from the walls and floor the indirect lighting). The models likewise appear very dark. Since the absorption inside blonde hair is relatively low, this model still clearly shows resemblence to a blond hair color, while the brown and black hair models are actually very dark.
+
+\begin{figure}[h]
+\begin{center}
+\begin{tabular}{cc}
+Importance Sampling (32 samples) & Uniform Sampling (32 samples) \\
+\includegraphics[scale=0.16]{realworld/subway/deon_blonde1_32.png} &
+\includegraphics[scale=0.16]{realworld/subway/uniform_blonde1_32.png} \\
+\includegraphics[scale=0.16]{realworld/subway/deon_black1_32.png} &
+\includegraphics[scale=0.16]{realworld/subway/uniform_black1_32.png} \\
+\includegraphics[scale=0.16]{realworld/subway/deon_brown2_32.png} &
+\includegraphics[scale=0.16]{realworld/subway/uniform_brown2_32.png} \\
+
+\end{tabular}
+\caption{Comparison between importance sampling and uniform sampling in an office square setting. The samples are rendered using 32 samples per pixel.}
+\label{fig_subway}
+\end{center}
+\end{figure}
+
+\subsubsection{Observations}
+
+By observing the results uniform sampling seems to appear a bit more noisy, but not in such amount that you could call it a significant difference. Also it shows that the blonde hair model is the brightest of all. Especially in the subway setting (figure~\ref{fig_subway}) the blond hair still resembles blond hair, while the other two hair models are very dark, almost not being able to see a distinction between black and brown hair.
+Black hair in general has a minimal amount of global multiple scattering, because the absorption coefficient is so high. Light passes through this hair in minimal amount, therefore appearing black. The only effect visible in black hair is a direct reflection according to the reflection (R) component.
+
+
+\section{Variation of the forward and backward density factors}
 
 Figure~\ref{fig_results_df} shows the effect of changing average forward and backward density values $d_f$ and $d_b$. When the density factors are zero, the appearance boils down to single scattering. This is because a density factor of zero indicates that no global multiple scattered light reaches the shading points (refer to figure~\ref{fig_df} for a visual representation).
 
@@ -876,7 +962,7 @@ Figure~\ref{fig_results_df} shows the effect of changing average forward and bac
 \label{fig_results_df}
 \end{figure}
 
-The results show that the global multiple scattering component is very important to the appearance of blond hair models. To a lesser extend, but still important, to brown hair models and for black hair the effect is hardly visible. This is in accordance to what is expected, because light colored hair types have by definition less attenuation when light propagates through hair fibers. Therefore there is more global multiple scattering through the hair volume.
+The results show that the global multiple scattering component is very important to the appearance of blond hair models. To a lesser extend, but still important, to brown hair models. For black hair models the global multiple scattering is hardly visible. This is in accordance to what is expected, because light colored hair types have by definition less attenuation when light propagates through hair fibers. Therefore there is more global multiple scattering through the hair volume.
 
 \section{Theoretical Results}
 
@@ -925,18 +1011,18 @@ With this data it is difficult to do a hard comparison. In the next section the 
 \begin{figure}
 \begin{center}
 \bgroup
-\setlength{\tabcolsep}{0.0em} % for the horizontal padding
-\def\arraystretch{0.0}%  1 is the default, change whatever you need
+\setlength{\tabcolsep}{0.04em} % for the horizontal padding
+\def\arraystretch{0.2}%  1 is the default, change whatever you need
 \begin{tabular}{ccc}
-\includegraphics[scale=0.6]{variance-results/un1.png} & \includegraphics[scale=0.6]{variance-results/is1.png} \\ \includegraphics[scale=0.6]{variance-results/un2.png} & \includegraphics[scale=0.6]{variance-results/is2.png} \\
-\includegraphics[scale=0.6]{variance-results/un4.png} & \includegraphics[scale=0.6]{variance-results/is4.png} \\
-\includegraphics[scale=0.6]{variance-results/un8.png} & \includegraphics[scale=0.6]{variance-results/is8.png} \\
-\includegraphics[scale=0.6]{variance-results/un16.png} & \includegraphics[scale=0.6]{variance-results/is16.png} \\
-\includegraphics[scale=0.6]{variance-results/un32.png} & \includegraphics[scale=0.6]{variance-results/is32.png} \\
-\includegraphics[scale=0.6]{variance-results/un64.png} & \includegraphics[scale=0.6]{variance-results/is64.png} \\
-\includegraphics[scale=0.6]{variance-results/un128.png} & \includegraphics[scale=0.6]{variance-results/is128.png} \\
-\includegraphics[scale=0.6]{variance-results/un256.png} & \includegraphics[scale=0.6]{variance-results/is256.png} \\
-\includegraphics[scale=0.6]{variance-results/un512.png} & \includegraphics[scale=0.6]{variance-results/is512.png} \\
+\includegraphics[scale=0.57]{variance-results/un1.png} & \includegraphics[scale=0.57]{variance-results/is1.png} \\ \includegraphics[scale=0.57]{variance-results/un2.png} & \includegraphics[scale=0.57]{variance-results/is2.png} \\
+\includegraphics[scale=0.57]{variance-results/un4.png} & \includegraphics[scale=0.57]{variance-results/is4.png} \\
+\includegraphics[scale=0.57]{variance-results/un8.png} & \includegraphics[scale=0.57]{variance-results/is8.png} \\
+\includegraphics[scale=0.57]{variance-results/un16.png} & \includegraphics[scale=0.57]{variance-results/is16.png} \\
+\includegraphics[scale=0.57]{variance-results/un32.png} & \includegraphics[scale=0.57]{variance-results/is32.png} \\
+\includegraphics[scale=0.57]{variance-results/un64.png} & \includegraphics[scale=0.57]{variance-results/is64.png} \\
+\includegraphics[scale=0.57]{variance-results/un128.png} & \includegraphics[scale=0.57]{variance-results/is128.png} \\
+\includegraphics[scale=0.57]{variance-results/un256.png} & \includegraphics[scale=0.57]{variance-results/is256.png} \\
+\includegraphics[scale=0.57]{variance-results/un512.png} & \includegraphics[scale=0.57]{variance-results/is512.png} \\
 
 \end{tabular}
 \egroup
@@ -948,10 +1034,11 @@ With this data it is difficult to do a hard comparison. In the next section the 
 
 
 \subsection{Variance compared to ground truth}
+\label{variance_comparison_gr_truth}
 
 One of the most important requirements for an importance sampling strategy is that it converges to the same result as uniform sampling. As discussed in the previous section it appears that the uniform sampling renderings are converged at 512 samples per pixel, so we will use the result of 512 samples per pixel as the ground truth. Importance sampling results can then be compared with the ground truth by computing the distance with the ground truth (expressed as the average variance per pixel).
 
-Figure~\ref{fig_sidebyside_converged} shows a side by side comparison of 512 samples per pixel, assuming that both images have been converged. The importance sampled version is a bit darker compared to the uniform sampling version. This is not expected and may have to do with the probability density function not integrating to 1 for all configurations.
+Figure~\ref{fig_sidebyside_converged} shows a side by side comparison of 512 samples per pixel, assuming that both images have been converged. The importance sampled version is a bit darker compared to the uniform sampling version. This is not expected. It could indicate that the probability density function is not integrating to 1 for all configurations. A possible explanation could comes from the work by d'Eon et al.~\cite{eon2011} in which he explains that the Marschner model is not energy conserving. Doubling the half angles as we have done in this thesis solves part of the problem. Still deflection near grazing angles moves considerably into angles outside the range of possible angles, thereby losing energy.
 
 Figure~\ref{fig_side_by_side} shows an even more detailed side by side comparison. Here a region is displayed to better see the noise for various samples per pixel for both uniform and importance sampling. Table~\ref{table_variance_to_groundtruth} shows the variance of different renderings compared to the ground truth and figure~\ref{fig_variance_plot} displays the measurement data in a plot.
 
@@ -968,30 +1055,66 @@ Uniform sampling & Importance sampling \\
 \end{figure}
 
 \begin{table}
-\begin{tabular}{r|c|c|c}
-Pixels per & Uniform sampling & Importance Sampling & Importance Sampling \\
-sample &  & (compared with uniform) & (compared with self) \\
+\begin{tabular}{r|c|c}
+Pixels per & Uniform sampling & Importance Sampling \\%& Importance Sampling \\
+sample &  & (compared with uniform) \\%& (compared with self) \\
 \hline \hline
-1 & 0.004720 & 0.002616 & 0.002374 \\
-2 & 0.001962 & 0.001177 & 0.000930 \\
-4 & 0.000909 & 0.000689 & 0.000432\\
-8 & 0.000459 & 0.000481 & 0.000223 \\
-16 & 0.000275 & 0.000406 & 0.000146 \\
-32 & 0.000173 & 0.000371 & 0.000109 \\
-64 & 0.000130 & 0.000355 & 0.000092 \\
-128 & 0.000105 & 0.000346 & 0.000084 \\
-256 & 0.000003 & 0.000257 & 0.000001 \\
-512 & 0.000000 & 0.000257 & 0.000000 \\
+1 & 0.019034 & 0.010120 \\%& 0.009840 \\
+2 & 0.009072 & 0.004829 \\%& 0.004560 \\
+4 & 0.004352 & 0.002440 \\%& 0.002169 \\
+8 & 0.001842 & 0.001119 \\%& 0.000860 \\
+16 & 0.001004 & 0.000760 \\%& 0.000493 \\
+32 & 0.000357 & 0.000415 \\%& 0.000153 \\
+64 & 0.000156 & 0.000321 \\%& 0.000058 \\
+128 & 0.000054 & 0.000282 \\%& 0.000022 \\
+256 & 0.000017 & 0.000264 \\%& 0.000007 \\
+512 & 0.000000 & 0.000259 \\%& 0.000000 \\
 \end{tabular}
-\caption{These measurements quantify the error compared with the ground truth. The ground truth is taken as the uniform sampling variant at 512 samples per pixel. Therefore the error between for uniform sampling is 0 (at 512 samples per pixel). It gives an insight in the convergence rate, together with the graph shown in figure~\ref{}. The third column compares importance sampling with itself. This is not a comparison with the ground truth, but gives insight in the convergence rate to it's own converged result.}
+\caption{These measurements quantify the error compared with the ground truth. The ground truth is taken as the uniform sampling variant at 512 samples per pixel. Therefore the error for uniform sampling is 0 at 512 samples per pixel, because they are identical. It gives an insight in the convergence rate, together with the graph shown in figure~\ref{fig_variance_plot}.}
 \label{table_variance_to_groundtruth}
 \end{table}
 
-\begin{figure}
+% uniform vs uniform
+%0.019034
+%0.009072
+%0.004352
+%0.001842
+%0.001004
+%0.000357
+%0.000156
+%0.000054
+%0.000017
+%0.000000
+
+%importance vs uniform
+%0.010120
+%0.004829
+%0.002440
+%0.001119
+%0.000760
+%0.000415
+%0.000321
+%0.000282
+%0.000264
+%0.000259
+
+% importance vs importance
+%0.009840
+%0.004560
+%0.002169
+%0.000860
+%0.000493
+%0.000153
+%0.000058
+%0.000022
+%0.000007
+%0.000000
+
+\begin{figure}[h]
 \begin{center}
 \includegraphics[scale=0.4]{variance-results/variance-plot.png}
 \end{center}
-\caption{Graphical representation of the data from from table~\ref{table_variance_to_groundtruth}.}
+\caption{Performance analysis between uniform sampling and importance sampling in terms of variance. The ground truth is taken to be uniform samples at 512 samples per pixel. The data corresponds to data in table~\ref{table_variance_to_groundtruth}.}
 \label{fig_variance_plot}
 \end{figure}
 
@@ -999,11 +1122,11 @@ sample &  & (compared with uniform) & (compared with self) \\
 There are a couple of obervations to be made:
 \begin{itemize}
 
-\item Importance sampling is crossing the uniform sampling line at 8 samples per pixel. From that point on the uniform sampling results are closer to the ground truth than the importance sampling results. This has to do with the fact that importance sampling does not converge to the ground truth (and uniform sampling does, by our definition). However for 8 samples per pixel and below, the importance sampling strategy actually performs better, because it has a lower error compared to uniform sampling.
+\item Initially the variance is decreasing rapidly. When the samples per pixel become sufficiently large, then the improvement in variance becomes less and less, both for uniform sampling and for importance sampling. This can also be seen from the side by side comparison in figure~\ref{fig_side_by_side}. This is expected as you come closer to the converged result.
 
-\item After 16 samples per pixel the variance of the importance sampling strategy is not that much improving anymore. The error is not 0 (because of the previous point), but the result seems to be 'locally' converged. This can be seen by taking a look at the third column where importance sampling is related to it's own converged result. After 16 samples per pixel the error is stagnating.
+\item Importance sampling performs better for small samples per pixel. This is expected, because for smaller amount of samples importance sampling can do a better job at finding important samples. Eventually uniform sampling catches up as they both reach the converged image.
 
-\item The uniform sampling strategy seems to converge at a slower rate than importance sampling. After 16 samples per pixel, the variance for uniform sampling is still slowly decreasing, while the importance strategy is more or less stagnated.
+\item Importance sampling variance is crossing the uniform sampling variance at 32 samples per pixel. From that point on uniform sampling is closer to ground truth than importance sampling. This has to do with the fact that this importance sampling strategy does not converge to the ground truth (for reasons mentioned above).
 
 
 \end{itemize}
@@ -1011,7 +1134,16 @@ There are a couple of obervations to be made:
 
 \chapter{Conclusion}
 
-\chapter{Appendix}
+The importance sampling strategy proposed in this thesis is actually proposed for the method by d'Eon et al.~\cite{2011}, but is applicable to all Marschner related hair models. Dual scattering is an extension to the Marschner model (but could equally be applied to any other Marschner related hair model). It turns out that importance sampling leads more efficient renderings, but in such a small amount that it is hardly noticable. One of the reasons that I can think of is the fact that the dual scattering method smoothens out the global illumination, essentially meaning that light is coming from almost anywhere around the hemisphere (for outside fibers) or sphere (for inside fibers). Sampling specific directions that are likely to contribute a lot to the Marschner model are not so significant anymore to the dual scattering method. This suggests that more work can be done in finding a way to importance sample the dual scattering method.
+
+One of the problematic issues when using the Marschner model in combination with the dual scattering method is the fact that the parameters used to change the appearance of the model are not intuitive. Also the root finding process is quite complex and d'Eon et al.~\cite{deon2011} proposed a simpler and energy conserving model which produce similar results. Also Sadeghi et al.~\cite{sadeghi2010} proposed a less physically based artist friendly hair shading system, where physical properties are replaced by intuitive controls to color the hair, especially useful for artists for animation moview.
+
+The simplifications used, such as assuming that the orientations of hair strands are the same when determining the global multiple scattering contribution, leads to similar appearance for neighboring hair strands. These appearances seem unnatural because of the washed out look. More work could be done by taking into account the different orientations for hair fibers in the local neighborhood. Also the use of the voxel grid could lead to less optimal results, since all positions in a voxel cell are using the same data (smoothened by trilinear filtering). Experimentation with voxel cell sizes could be performed, but a better idea is to use deep opacity maps (as originally proposed by Zinke et al.~\cite{zinke}).
+
+Also it would be beneficial to try to apply dual scattering method to the solution proposed by d'Eon et al.~\cite{eon2011}. In that way there is a proven 100 percent energy conserving model that might lead to better results, so that importance and uniform sampling are converging to exactly the same result.
+
+
+%\chapter{Appendix}
 
 \bibliography{thesis}
 \bibliographystyle{plain}

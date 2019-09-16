@@ -1,4 +1,7 @@
 \relax 
+\citation{marschner}
+\citation{zinke}
+\citation{eon2013}
 \@writefile{toc}{\contentsline {chapter}{\numberline {1}Introduction}{3}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
@@ -9,7 +12,6 @@
 \citation{eon2013}
 \citation{zinke}
 \@writefile{toc}{\contentsline {section}{\numberline {1.1}Goal and approach}{4}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {1.1.1}How to approach}{4}}
 \citation{ward}
 \citation{hadap}
 \citation{hadap}
@@ -173,35 +175,43 @@
 \@writefile{toc}{\contentsline {chapter}{\numberline {5}Results}{41}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.1}Marschner results}{41}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.2}Dual scattering in real-world situations}{41}}
-\@writefile{toc}{\contentsline {subsubsection}{Mid daylight setting (Venice square)}{41}}
-\@writefile{toc}{\contentsline {subsubsection}{Interior dark setting (Metro station))}{41}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.0.3}Variation of the forward and backward density factors}{41}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.1}Theoretical Results}{42}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.1}Relative variance for increasing samples per pixel}{42}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Dual scattering in real-world situations}{41}}
+\@writefile{toc}{\contentsline {subsubsection}{Observations}{42}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Variation of the forward and backward density factors}{42}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Theoretical Results}{42}}
 \@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces The relative variance for increasing samples per pixel. For example, when comparing uniform sampling for 16 samples per pixel, the distance compared with 8 samples per pixel is 0.000192 (expressed in variance). If the relative variance is 0, then this indicates the doubling of samples per pixel did not cause a change with the previous image (and thus the result is converged). For 1 sample per pixel there are no results, since there is no previous image to compare with.}}{43}}
 \newlabel{table_relative_variance}{{5.1}{43}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.1.2}Variance compared to ground truth}{43}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces These measurements quantify the error compared with the ground truth. The ground truth is taken as the uniform sampling variant at 512 samples per pixel. Therefore the error between for uniform sampling is 0 (at 512 samples per pixel). It gives an insight in the convergence rate, together with the graph shown in figure\nobreakspace  {}\G@refundefinedtrue \text  {\normalfont  \bfseries  ??}\GenericWarning  {               }{LaTeX Warning: Reference `' on page 44 undefined}. The third column compares importance sampling with itself. This is not a comparison with the ground truth, but gives insight in the convergence rate to it's own converged result.}}{44}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Relative variance for increasing samples per pixel}{43}}
+\citation{eon2011}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces These measurements quantify the error compared with the ground truth. The ground truth is taken as the uniform sampling variant at 512 samples per pixel. Therefore the error for uniform sampling is 0 at 512 samples per pixel, because they are identical. It gives an insight in the convergence rate, together with the graph shown in figure\nobreakspace  {}5.8\hbox {}.}}{44}}
 \newlabel{table_variance_to_groundtruth}{{5.2}{44}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces A variation of the density factors $d_f$ and $d_b$, corresponding to the amount of global multiple scattering in the hair model. A value of 0 indicates the absence of global multiple scattering and 1 the full presence of global multiple scattering. Usually the value is set to a constant value 0.7.}}{45}}
-\newlabel{fig_results_df}{{5.1}{45}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces This figure displays an outline representing the region of interest for subsequent comparison of rendered results. The variance is computed for the area contained by the outline. This is done so that the background, and nonrelated items have no influence on the variance computation.}}{46}}
-\newlabel{fig_variance_outline}{{5.2}{46}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Comparison of the image quality between uniform sampling and importance sampling for various pixels per sample, indicated in the top left corner. As the pixels per sample increase the noise of the image becomes smaller.}}{47}}
-\newlabel{fig_side_by_side}{{5.3}{47}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces A side by side comparison of converged images for uniform and importance sampling, both rendered at 512 samples per pixel. Both renderings should converge to the same result. Although the result looks similar, the uniform sampling seems slightly brighter.}}{48}}
-\newlabel{fig_sidebyside_converged}{{5.4}{48}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces Graphical representation of the data from from table\nobreakspace  {}5.2\hbox {}.}}{48}}
-\newlabel{fig_variance_plot}{{5.5}{48}}
-\@writefile{toc}{\contentsline {chapter}{\numberline {6}Conclusion}{49}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Variance compared to ground truth}{44}}
+\newlabel{variance_comparison_gr_truth}{{5.3.2}{44}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces Comparison between importance sampling and uniform sampling in an office square setting. The images are rendered using 32 samples per pixel.}}{46}}
+\newlabel{fig_officesquare}{{5.1}{46}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Comparison between importance sampling and uniform sampling in an office square setting. The samples are rendered using 32 samples per pixel.}}{47}}
+\newlabel{fig_venice}{{5.2}{47}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Comparison between importance sampling and uniform sampling in an office square setting. The samples are rendered using 32 samples per pixel.}}{48}}
+\newlabel{fig_subway}{{5.3}{48}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.4}{\ignorespaces A variation of the density factors $d_f$ and $d_b$, corresponding to the amount of global multiple scattering in the hair model. A value of 0 indicates the absence of global multiple scattering and 1 the full presence of global multiple scattering. Usually the value is set to a constant value 0.7.}}{49}}
+\newlabel{fig_results_df}{{5.4}{49}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.5}{\ignorespaces This figure displays an outline representing the region of interest for subsequent comparison of rendered results. The variance is computed for the area contained by the outline. This is done so that the background, and nonrelated items have no influence on the variance computation.}}{50}}
+\newlabel{fig_variance_outline}{{5.5}{50}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.6}{\ignorespaces Comparison of the image quality between uniform sampling and importance sampling for various pixels per sample, indicated in the top left corner. As the pixels per sample increase the noise of the image becomes smaller.}}{51}}
+\newlabel{fig_side_by_side}{{5.6}{51}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.7}{\ignorespaces A side by side comparison of converged images for uniform and importance sampling, both rendered at 512 samples per pixel. Both renderings should converge to the same result. Although the result looks similar, the uniform sampling seems slightly brighter.}}{52}}
+\newlabel{fig_sidebyside_converged}{{5.7}{52}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.8}{\ignorespaces Performance analysis between uniform sampling and importance sampling in terms of variance. The ground truth is taken to be uniform samples at 512 samples per pixel. The data corresponds to data in table\nobreakspace  {}5.2\hbox {}.}}{52}}
+\newlabel{fig_variance_plot}{{5.8}{52}}
+\citation{2011}
+\citation{deon2011}
+\citation{sadeghi2010}
+\citation{zinke}
+\@writefile{toc}{\contentsline {chapter}{\numberline {6}Conclusion}{53}}
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
+\citation{eon2011}
 \bibdata{thesis}
-\@writefile{toc}{\contentsline {chapter}{\numberline {7}Appendix}{50}}
-\@writefile{lof}{\addvspace {10\p@ }}
-\@writefile{lot}{\addvspace {10\p@ }}
 \bibcite{eon2011}{1}
 \bibcite{eon2013}{2}
 \bibcite{goldman}{3}
@@ -211,7 +221,8 @@
 \bibcite{kajiya}{7}
 \bibcite{marschner}{8}
 \bibcite{moon}{9}
-\bibcite{sadeghi}{10}
-\bibcite{ward}{11}
-\bibcite{zinke}{12}
+\bibcite{sadeghi2010}{10}
+\bibcite{sadeghi}{11}
+\bibcite{ward}{12}
+\bibcite{zinke}{13}
 \bibstyle{plain}
