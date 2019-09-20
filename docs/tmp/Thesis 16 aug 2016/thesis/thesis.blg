@@ -3,49 +3,64 @@ Capacity: max_strings=35307, hash_size=35307, hash_prime=30011
 The top-level auxiliary file: thesis.aux
 The style file: plain.bst
 Database file #1: thesis.bib
-Warning--I didn't find a database entry for "pbrt"
+I was expecting a `,' or a `}'---line 25 of file thesis.bib
+ :  
+ :  title ={The optical properties of human hair I. fundamental considerations and goniophotometer curves.},
+(Error may have been on previous line)
+I'm skipping whatever remains of this entry
 Warning--I didn't find a database entry for "2011"
 Warning--I didn't find a database entry for "deon2011"
+Name 1 in "Stamm, R. F., Garcia, M. L., AND Fuchs, J. J." has a comma at the end for entry stamm1977
+while executing---line 1049 of file plain.bst
+Too many commas in name 1 of "Stamm, R. F., Garcia, M. L., AND Fuchs, J. J." for entry stamm1977
+while executing---line 1049 of file plain.bst
 Warning--empty year in sadeghi
-You've used 13 entries,
+Name 1 in "Stamm, R. F., Garcia, M. L., AND Fuchs, J. J." has a comma at the end for entry stamm1977
+while executing---line 1090 of file plain.bst
+Too many commas in name 1 of "Stamm, R. F., Garcia, M. L., AND Fuchs, J. J." for entry stamm1977
+while executing---line 1090 of file plain.bst
+Warning--empty title in stamm1977
+Warning--empty booktitle in stamm1977
+Warning--empty year in stamm1977
+You've used 20 entries,
             2118 wiz_defined-function locations,
-            585 strings with 6456 characters,
-and the built_in function-call counts, 5575 in all, are:
-= -- 566
-> -- 277
+            630 strings with 7463 characters,
+and the built_in function-call counts, 7855 in all, are:
+= -- 789
+> -- 377
 < -- 6
-+ -- 113
-- -- 96
-* -- 422
-:= -- 892
-add.period$ -- 45
-call.type$ -- 13
-change.case$ -- 86
++ -- 152
+- -- 128
+* -- 607
+:= -- 1269
+add.period$ -- 64
+call.type$ -- 20
+change.case$ -- 122
 chr.to.int$ -- 0
-cite$ -- 14
-duplicate$ -- 204
-empty$ -- 403
-format.name$ -- 96
-if$ -- 1181
+cite$ -- 24
+duplicate$ -- 284
+empty$ -- 590
+format.name$ -- 128
+if$ -- 1646
 int.to.chr$ -- 0
-int.to.str$ -- 13
-missing$ -- 14
-newline$ -- 69
-num.names$ -- 26
-pop$ -- 87
+int.to.str$ -- 20
+missing$ -- 22
+newline$ -- 102
+num.names$ -- 40
+pop$ -- 125
 preamble$ -- 1
-purify$ -- 74
+purify$ -- 104
 quote$ -- 0
-skip$ -- 152
+skip$ -- 201
 stack$ -- 0
-substring$ -- 386
-swap$ -- 61
+substring$ -- 557
+swap$ -- 68
 text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 48
-warning$ -- 1
-while$ -- 51
-width$ -- 15
-write$ -- 157
-(There were 4 warnings)
+type$ -- 74
+warning$ -- 4
+while$ -- 74
+width$ -- 22
+write$ -- 229
+(There were 5 error messages)

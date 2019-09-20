@@ -1,5 +1,16 @@
 \begin{thebibliography}{10}
 
+\bibitem{adler1998}
+Charles~L. Adler, James~A. Lock, and Bradley~R. Stone.
+\newblock Rainbow scattering by a cylinder with a nearly elliptical cross
+  section.
+\newblock {\em Appl. Opt.}, 37(9):1540--1550, Mar 1998.
+
+\bibitem{bustard1991}
+Helen~K. Bustard and Robin~W. Smith.
+\newblock Investigation into the scattering of light by human hair.
+\newblock {\em Appl. Opt.}, 30(24):3485--3491, Aug 1991.
+
 \bibitem{eon2011}
 Eugene d'Eon, Guillaume Francois, Martin Hill, Joe Letteri, and Jean-Marie
   Aubry.
@@ -46,6 +57,11 @@ J.~T. Kajiya and T.~L. Kay.
 \newblock Rendering fur with three dimensional textures.
 \newblock {\em SIGGRAPH Comput. Graph.}, 23(3):271--280, July 1989.
 
+\bibitem{marcuse1974}
+D.~Marcuse.
+\newblock Light scattering from elliptical fibers.
+\newblock {\em Applied Optics}, 13(8):1903--1905, Aug 1974.
+
 \bibitem{marschner}
 Stephen~R. Marschner, Henrik~Wann Jensen, Mike Cammarano, Steve Worley, and Pat
   Hanrahan.
@@ -58,6 +74,25 @@ Jonathan~T. Moon and Stephen~R. Marschner.
   approach.
 \newblock {\em ACM Trans. Graph.}, 25(3):1067--1074, July 2006.
 
+\bibitem{morganti2015}
+Pierfrancesco Morganti and Hong Li.
+\newblock Innovation in cosmetic and medical science. the role of chitin
+  nanofibrils composites.
+\newblock {\em Journal of Applied Cosmetology}, 33:9--24, 06 2015.
+
+\bibitem{mount1998}
+Catherine~M. Mount, David~B. Thiessen, and Philip~L. Marston.
+\newblock Scattering observations for tilted transparent fibers: evolution of
+  airy caustics with cylinder tilt and the caustic merging transition.
+\newblock {\em Appl. Opt.}, 37(9):1534--1539, Mar 1998.
+
+\bibitem{pharr2017}
+Matt Pharr, Jakob Wenzel, and Greg Humphreys.
+\newblock {\em Physically Based Rendering, Third Edition: From Theory To
+  Implementation}.
+\newblock Morgan Kaufmann Publishers Inc., Cambridge, MA, USA, 3rd edition,
+  2017.
+
 \bibitem{sadeghi2010}
 Iman Sadeghi, Heather Pritchett, Henrik~Wann Jensen, and Rasmus Tamstorf.
 \newblock An artist friendly hair shading system.
@@ -67,6 +102,9 @@ Iman Sadeghi, Heather Pritchett, Henrik~Wann Jensen, and Rasmus Tamstorf.
 Iman Sadeghi and Rasmus Tamstorf.
 \newblock Efficient implementation of the dual scattering model in renderman.
 \newblock Technical report, Walt Disney Animation Studions.
+
+\bibitem{stamm1977}
+Garcia M.~L. Stamm, R.~F. and J.~J. Fuchs.
 
 \bibitem{ward}
 Kelly Ward, Florence Bertails, Tae yong Kim, Stephen~R. Marschner, Marie paule
