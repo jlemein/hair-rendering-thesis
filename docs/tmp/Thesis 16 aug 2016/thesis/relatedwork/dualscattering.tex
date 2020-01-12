@@ -10,21 +10,19 @@ The dual scattering approximation, proposed by Zinke et al.~\cite{zinke} splits 
 %Start from general rendering equation
 %
 
-Starting from the general rendering equation
-%~\ref{\label{renderingEquation}}
-and ignoring the position component in the BSDF description as is common for material definitions, because materials usually behave the same irrespective of position, we obtain the following equation.
+Starting from the general rendering equation (see equation~\ref{rendering_eq}) and taking the diameter $D$ as being 1, we obtain the following equation.
 
 \begin{equation}
-L_o(x, \omega_o) = \int_{\Omega} L_i(x, \omega_i) f_s(\omega_i, \omega_o) \cos \theta_i d\omega_i
+L_o(x, \omega_o) = \int_{\Omega} L_i(x, \omega_i) S(\omega_i, \omega_o) \cos \theta_i d\omega_i
 \end{equation}
 
-This can be interpreted as the radiance in outgoing direction $\omega_o$ at a position $x$, equals the integral around the sphere ($\Omega$) of incident directions $\omega_i$ multiplied by the BSDF factor. It is not hard to see that the integration is a recursive process, and to find the incident radiance coming from direction $\omega_i$, another integration is needed from another point $x'$ in outgoing direction $\omega_o' = -\omega_i$. The dualscattering approximation simplifies this process by defining the incident radiance as
+This can be interpreted as the radiance in outgoing direction $\omega_o$ at a position $x$, equals the integral around the sphere ($\Omega$) of incident directions $\omega_i$ multiplied by the BSDF factor. The integration is a recursive process, and to find the incident radiance $L(x, \omega_i)$, another integration is needed from another point $x'$ to find $L_o(x', -\omega_i)$. The dualscattering approximation simplifies this process by defining the incident radiance as
 
 \begin{equation}
 L_i(x, \omega_i) = \int_{\Omega} L_d(\omega_d) \Psi(x, \omega_d, \omega_i) d\omega_d
 \end{equation}
 
-where $L_d$ is the incident radiance from outside the hair volume from direction $\omega_d$ (assuming distant illumination), and $\Psi(x, \omega_d, \omega_i)$ is the multiple scattering function denoting the fraction of light entering the hair volume from direction $\omega_d$ that is scattered inside the hair volume and finally arriving at point $x$ from direction $\omega_i$~\cite{zinke}.
+where $L_d$ is the incident radiance from outside the hair volume from direction $\omega_d$ (assuming distant illumination), and $\Psi(x, \omega_d, \omega_i)$ is the multiple scattering function denoting the fraction of light entering the hair volume from direction $\omega_d$ that is scattered inside the hair volume and finally arriving at point $x$ from direction $\omega_i$~\cite{zinke}. This works similar as to how subsurface scattering is defined.
 
 
 %
@@ -40,23 +38,23 @@ This results in the following equation, central to the dual scattering approxima
 
 The global multiple scattering is thus responsible for gathering the irradiance from outside the hair volume and taking into account the scattering effects in the hair volume, to deliver an approximate amount of irradiance arriving at point $x$. It is important to see that the global multiple scattering removes the need to do extensive path tracing through the hair volume.
 
-The local multiple scattering is more in line with the Marschner model. Given the irradiance at point x, calculate the scattering effect of the local neighbourhood. In extreme terms, a neighborhood consisting of a single fiber boils down to evaluation the Marschner model.
+The local multiple scattering is more in line with the Marschner model: given the irradiance at point $x$, calculate the scattering effect of the local neighbourhood. For a neighborhood consisting of a single fiber, it boils down to evaluation of the Marschner model.
 
-\subsection{Global Multiple Scattering}
+\subsection{Global Multiple Scattering Function $\Psi^G$}
 
-The global multiple scattering function $\Psi^G$ gathers the irradiance from outside the hair volume, thereby taking into account the scattering events within the hair volume. The global multiple scattering is defined as follows by Zinke et al.~\cite{zinke}:
+The global multiple scattering function $\Psi^G$ gathers the irradiance from outside the hair volume, approximating the amount of irradiance arriving at a point $x$ inside the hair volume. The global multiple scattering is defined as follows by Zinke et al.~\cite{zinke}:
 
 \begin{equation}
-\Psi^G(x, \omega_d, \omega_i) \approx T_f(x, \omega_d) S_f(x, \omega_d, \omega_i)
+\Psi^G(x, \omega_d, \omega_i) \approx T_f(x, \omega_d)\,S_f(x, \omega_d, \omega_i)
 \end{equation}
 
 The global multiple scattering $\Psi^G$ is the multiplication of forward transmittance $T_f$ and the average forward scattering spread $S_f$. The transmittance accounts for the amount of hairs in between the light source and the point to be shaded. The average forward scattering spread takes into account the loss of energy due to spreading of the light after each scattering event.
 
 \subsubsection{Forward Scattering Transmittance}
 
-In this work the global irradiance is computed by using a combination of ray shooting together with a voxel grid. Before rendering, a voxel grid is generated based on the hair model. Each voxel cell contains the density of the hairs in question. This is computed by traversing each hair fiber and storing the distance of the hair fiber segment in the voxel cell. In this way, cells that contain a lot of hair fibers, do have a higher density value.
+In this thesis the forward scattering transmittance is computed by using a combination of ray shooting together with a voxel grid. Before rendering, a voxel grid is generated based on the hair model. Each voxel cell contains the density of the hairs in question. This is computed by traversing each hair fiber and storing the distance of the hair fiber segment in the voxel cell. In this way, cells that contain a lot of hair fibers, do have a higher density value.
 
-When finding the irradiance at a position $x$ in direction $\omega_i$, a ray is shot in the direction of the light source. This ray is linearly ray-marched and for each position along the ray, the density value is looked up in the voxel cell. In this way, the global density value is computed for a specific direction $\omega_i$. The density factor can then be translated to the number of hair strands, by dividing the density by the volume of a voxel cell. In this way we gathered $n$, the number of hair strands in between the shading pointy $x$ and the light in direction $\omega_i$.
+When finding the irradiance at a position $x$ in direction $\omega_i$, a ray is shot in the direction of the light source. This ray is linearly ray-marched and for each position along the ray, the density value is looked up in the voxel cell. In this way, the global density value is computed for a specific direction $\omega_i$. The density factor can then be translated to the number of hair strands, by dividing the density by the volume of a voxel cell. This results in $n$, the number of hair strands in between the shading point $x$ and the light from direction $\omega_i$.
 
 The forward scattering transmittance for the dual scattering method~\cite{zinke} is defined as follows:
 
@@ -94,7 +92,7 @@ The spread function approximates the final angular distribution of front scatter
 S_f(x, \omega_d, \omega_i) = \frac{s_f(\phi_d, \phi_i)}{\cos \theta_d} g(\theta_d + \theta_i, \sigma_f^2(x, \omega_d))
 \end{equation}
 
-where $s_f$ is $1/\pi$ for forward scattering directions and zero for backward scattering. $\sigma_f^2(x, \omega_d$ is the total variance of forward scattering in the longitudinal direction. This is defined by the Marschner model as the squared standard deviation $\beta^2$ and is dependent on the longitudinal angle. Simplifying again by taking a constant $\theta_d$ gives us a single multiplication of number of hair strands multiplied by the longitudinal variance.
+where $s_f$ is $1/\pi$ for forward scattering directions and zero for backward scattering. $\sigma_f^2(x, \omega_d)$ is the total variance of forward scattering in the longitudinal direction. This is defined by the Marschner model as the squared standard deviation $\beta^2$ and is dependent on the longitudinal angle. Simplifying again by taking a constant $\theta_d$ gives us a single multiplication of number of hair strands multiplied by the longitudinal variance.
 
 \begin{equation}
 \sigma_f^2(x, \omega_d) = \sum_{k=1}^{n} \beta_f^2(\theta_d^k) \approx n \cdot \beta_f^2(\theta_d)
@@ -115,7 +113,7 @@ The dual scattering model the local multiple scattering and the BCSDF of the hai
 
 The density factor $d_b$ is a constant in the range $[0, 1]$, usually set to 0.7 approximating the density of the hair volume. The denser the hair, the stronger the backscattering event contributes to the result.
 
-The backscattering is approximated with a material function $f_back$
+The backscattering is approximated with a material function $f_{back}$
 
 \begin{equation}
 f_{\textnormal{back}}(\omega_i, \omega_o) = \frac{2}{\cos \theta_d}A_b(\theta_d) S_b(\omega_i, \omega_o)
@@ -123,7 +121,7 @@ f_{\textnormal{back}}(\omega_i, \omega_o) = \frac{2}{\cos \theta_d}A_b(\theta_d)
 
 \subsubsection{Average Backscattering Attenuation}
 
-The average backscattering attenuation takes into account the attenuation in the local neighborhood of a point $x$. Since the global multiple scattering component already takes into account the forward scattering (meaning no backscatter events), we only need to deal with at least 1 backscatter event. Light coming from a light source, passing through the fiber at point $x$, needs an odd number of backscattering events for light to travel back to point $x$. The even number of backscattering events are ignored, since they are not directed to point $x$. Also, the dual scattering method ignores the contribution for more than three backscattering events, because their contribution becomes negligible low to the rendering result. 
+The average backscattering attenuation takes into account the attenuation in the local neighborhood of a point $x$. Since the global multiple scattering component already takes into account the forward scattering (meaning no backscatter events), we only need to deal with at least one backscatter event. Light coming from a light source, passing through the fiber at point $x$, needs an odd number of backscattering events for light to travel back to point $x$. The even number of backscattering events are ignored, since they are not directed to point $x$. Also, the dual scattering method ignores the contribution for more than three backscattering events, because their contribution becomes negligible low to the rendering result. 
 
 If we denote $a_b(\theta_d)$ as the average backscattering attenuation and $a_f(\theta_d)$ as the average forward scattering attenuation (described in the previous section), then the average backscattering for a single backscattering event $A_1$ can be computed as the attenuation of a single backscatter event, multiplied by the sum of the infinite series of forward scattering attenuations. The same holds for the average backscattering attenuation for three backscattering events $A_3$, but now the possible paths are not a single sum anymore, but multiple sums to obtain the permutation of possible paths, dependent on where the backscattering event occurs in the sequence of forward scattering attenuations.
 

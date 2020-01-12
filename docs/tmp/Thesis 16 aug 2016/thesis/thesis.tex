@@ -91,11 +91,18 @@ Prof. Remco \textsc{Veltkamp} \\ % Supervisor's Name
 %
 \begin{abstract}
 
-Rendering hair fibers is a challenging task because of the extensive amount of hair fibers required to render a realistic human hair model. Also hair fibers are very thin, requiring a lot of rays to be traced to produce noise-free images. Marschner et al.~\cite{marschner} proposed a physically based single fiber scattering model to render realistic human hair fibers. 
+Rendering hair fibers is a challenging task because of the extensive amount of hair fibers required to render a realistic human hair model. Moreover hair fibers are very thin, requiring a lot of rays to be traced to produce noise-free images. Marschner et al.~\cite{marschner} proposed a physically based single fiber scattering model to render realistic human hair fibers. 
 
-When rendering light colored hair, multiple fiber scattering is essential for the hair color. Zinke et al.~\cite{zinke} extended the work of Marschner by splitting multiple scattering up into two components: global multiple scattering and local multiple scattering. Global multiple scattering approximated the multiple scattering contribution, reducing the rendering time considerably, while local multiple scattering resembles the Marschner model to keep the single fiber scattering characteristics.
+When rendering light colored hair, multiple fiber scattering is essential for the hair color. Zinke et al.~\cite{zinke} extended the work of Marschner by splitting multiple scattering up into two components: global multiple scattering and local multiple scattering. Global multiple scattering approximates the multiple scattering contribution, thereby reducing the rendering time considerably. Local multiple scattering resembles the Marschner model to keep the single fiber scattering characteristics.
 
-In this thesis the importance sampling strategy proposed by d'Eon et al.~\cite{eon2013} is used. This strategy works particularly well for the Marschner model. In this thesis the same importance sampling strategy will be applied to the dual scattering method to see if this method can be made even more efficient. Results are evaluated by comparing the variance measurements between uniform sampling and importance sampling. It can be shown that the importance sampling does not significantly show better results compared to uniform sampling.
+This thesis applies the importance sampling strategy of d'Eon et al.~\cite{eon2013} on the dual scattering approximation.
+
+
+When rendering with uniform sampling, samples are generated randomly around a sphere with no prior knowledge of the scattering behavior of the hair model. Importance sampling tries to place samples in an informed way and use the scattering characteristics of the hair model. By applying importance sampling you expect that the noise (or variance) of the image reduces compared to a rendered image with uniform samples. Or in a different perspective: you expect an importance sampled rendering to contain less noise compared to the same number of samples with uniform sampling. Both uniform and importance sampling should eventually converge to the same result, with importance sampling reaching it faster.
+
+The importance sampling strategy proposed by d'Eon et al.~\cite{eon2013} works particularly well for the Marschner model. In this thesis the same importance sampling strategy is applied to the dual scattering method to see if sampling can be optimized which leads to better quality renderings. Results are evaluated by comparing the variance measurements between uniform sampling and importance sampling. This report concludes that importance sampling does not significantly increase the quality of the renderings compared to uniform sampling. This means that the effort of sample placement does not reduce the variance in the images.
+
+This report concludes  by visual inspection it can be shown that importance sampling does not significantly show better results compared to uniform sampling. This 
 
 \end{abstract}
 
@@ -151,7 +158,10 @@ The work in this thesis is primarily concerned around the work of three publicat
 % b. State your goal (what problems you really want to solve)
 In this thesis project the goal is to extend the dual scattering model from Zinke et al.~\cite{zinke} with the importance sampling strategy proposed by d'Eon et al.~\cite{eon2013}. Importance sampling is a variance reduction technique that works very well together with Monte-Carlo integration. The focus will be on the importance sampling strategy. There are in general two problems to be solved.
 
-One of the problems is that this importance sampling strategy is created for the energy conserving hair model by d'Eon et al.~\cite{eon2011}, which is in fact an optimized Marschner model where minor glitches relating to energy conservance are corrected. Also this model simplifies the Marschner model by using Gaussian quadratures, which are more convenient to work with and removes the need for solving cubic equations. However, both the method devised by d'Eon et al.~\cite{eon2011} and the Marschner model~\cite{marschner} are similar in behavior and thus can use the same importance sampling method.
+One of the problems is that this importance sampling strategy is created for the energy conserving hair model by d'Eon et al.~\cite{eon2011}, which is in fact an optimized Marschner model where minor glitches relating to energy conservance are corrected. Also this model simplifies the Marschner model by using gaussian quadratures, which are more convenient to work with and removes the need for solving cubic equations. However, both the method devised by d'Eon et al.~\cite{eon2011} and the Marschner model~\cite{marschner} are similar in behavior and thus can use the same importance sampling method.
+
+One of the problems is that this importance sampling strategy is created for the energy conserving hair model by d'Eon et al.~\cite{eon2011}. The problem is that the energy conserving , which is in fact an optimized Marschner model where minor glitches relating to energy conservance are corrected. Also this model simplifies the Marschner model by using gaussian quadratures, which are more convenient to work with and removes the need for solving cubic equations. However, both the method devised by d'Eon et al.~\cite{eon2011} and the Marschner model~\cite{marschner} are similar in behavior and thus can use the same importance sampling method.
+
 
 A second problem is the fact that we are working with the Dual-Scattering method, which is an extension to the Marschner model by taking into account global illumination without the need to do extensive path tracing. There are different ways to gather the global illumination and in this work I will use a voxel grid to store the density of the hair model at specific locations in three-dimensional space.
 
@@ -164,7 +174,7 @@ To evaluate the importance sampling strategy, rendering results are generated to
 
 Moreover, the variance of the produced renderings are compared with the ground truth. Setting the ground truth to a real-world hair model is not practical, because a real world hair model is too complex to accurately model in modeling software. Think about the hair orientations, pigment changes along the hair strand and hair cut in general. Instead, the ground truth is set to the results obtained by using 512 samples with uniform sampling.\\
 
-The rest of this paper is divided into a background section, where the basics are explained regarding radiometry and hair rendering. Related work explains the different methods that exist to render hair. Here the Marschner model and the Dual Scattering approximation model are explained in depth, because these models are the basis for the work in this thesis. Additionally, an importance sampling strategy for physically based hair fiber models is explained from d'Eon at al.~\cite{eon2013}. After the related work, the approach will be explained on how to compare renderings from uniform sampling and importance sampling by looking at the variance. After that, the results are presented showing the efficiency and the analysis of the importance sampling function versus the uniform sampling version of the dual scattering approximation model.
+The rest of this report is divided into a background section, where the basics are explained regarding radiometry and hair rendering. Related work explains the different methods that exist to render hair. Here the Marschner model and the Dual Scattering approximation model are explained in depth, because these models are the basis for the work in this thesis. Additionally, an importance sampling strategy for physically based hair fiber models is explained from d'Eon at al.~\cite{eon2013}. After the related work, the approach will be explained on how to compare renderings from uniform sampling and importance sampling by looking at the variance. After that, the results are presented showing the efficiency and the analysis of the importance sampling function versus the uniform sampling version of the dual scattering approximation model.
 
 %
 % ===============================================================================
@@ -203,7 +213,7 @@ Marschner et al.~\cite{marschner} explain that hair rendering is a complex task,
 
 \subsection{Explicit Representation}
 
-Hair research began by analyzing hair models using an explicit representation. This means that a hair model is represented as individual strands, or one-dimensional curves in three-dimensional space. Building on these foundations, researchers tried to find an efficient model to render a full head of human hair. Though several paths have been followed, modelling a full head of hair remains a challenge due to the geometric complexity and the thin nature of an individual strand coupled with the complex scattering effects and shadows that occur among the hairs~\cite{ward}.
+Hair rendering research began by analyzing hair models using an explicit representation. This means that a hair model is represented as individual strands, or one-dimensional curves in three-dimensional space. Building on these foundations, researchers tried to find an efficient model to render a full head of human hair. Though several paths have been followed, modelling a full head of hair remains a challenge due to the geometric complexity and the thin nature of an individual strand coupled with the complex scattering effects and shadows that occur among the hairs~\cite{ward}.
 
 \subsection{Implicit Representation}
 
@@ -211,7 +221,7 @@ Implicit hair representations stay away from the complexities of individual stra
 
 Implicit hair is usually modelled as a volume or polygonal boundary representation. Implicit representations work great when looking at hair from a distance, because at a distance the detail is hardly visible. Moreover, it is much faster in rendering and still giving good-looking results.
 
-%Kajiya and Von Herzen [] suggested that volume densities were potentially capable of rendering hair and furry surfaces. Kay et al [] tried to implement this via three dimensional array of parameters. This means that a voxel cell can be maintained that holds data for each cell describing the average properties of the objects existing in this voxel cell.
+%Kajiya and Von Herzen [] suggested that volume densities were potentially capable of rendering hair and furry surfaces. Kay et al [] tried to implement this via three-dimensional array of parameters. This means that a voxel cell can be maintained that holds data for each cell describing the average properties of the objects existing in this voxel cell.
 %A hair density function can then be used to determine where the hair strands are and what the 
 
 %Hair fibers cast shadows onto each other and they also receive or cast shadows on other objects in the scene. Self-shadowing is very important to render realistic looking hair. Without it may result in flat images. In general, there are two rendering strategies to incorporate self-shadowing in hair: ray casting through volumetric densities and shadow maps.
@@ -239,11 +249,13 @@ A hair fiber is naturally represented as a curved cylinder. For rendering, these
 
 \item Trigonal prisms. This is an extension to camera facing triangle strips, making three ribbons and attaching the ends together to form a trigonal prism.
 
-\item Ribbons, in which a triangle strip is constructed following the curvature of the three dimensional curve. This triangle strip is not necessarily camera facing.
+\item Ribbons, in which a triangle strip is constructed following the curvature of the three-dimensional curve. This triangle strip is not necessarily camera facing.
 
 \end{itemize}
 
-In this thesis PBRT is used as the rendering framework~\cite{pharr2017}. Hair fibers are represented as a three-dimensional curve with a defined width. When rendering these curves are treated as cylinders, by creating a camera facing triangle strip where the normal is adjusted to reflect a cylindrical primitive (the second option from the list above).
+In this thesis the Physically Based Ray-Tracing (PBRT) framework is used. This is an open source physics based rendering framework created by Pharr et al.~\cite{pharr2017}. It is used by students to understand the theory of physically based rendering and academics to test their physics based rendering algorithms. The framework is extensively documented in their corresponding book~\cite{pharr2017}.
+
+In PBRT hair fibers are represented as a three-dimensional curve with a certain defined width. When rendering, these curves are treated as cylinders by creating a camera facing triangle strip where the normal is adjusted to reflect a cylindrical primitive (the second option from the list above).
 
 \subsection{Aliasing problem}
 
@@ -260,7 +272,7 @@ A hair fiber is extremely thin. So thin that it is much smaller than the size of
 
 \end{itemize}
 
-Physically based rendering is based on ray-tracing, so in this project the aliasing problem is overcome by oversampling and by giving each hair fiber a certain width when rendering. Increasing the width of a hair fiber increases the chance of being intersected. This makes it easier to ray-trace, thereby reducing the need for many samples. Different software packages have different optimizations to render curves. In this thesis PBRT is used, which is an open source physically based ray-tracing framework by Pharr et al.~\cite{pharr2017}.
+Physically based rendering is based on ray-tracing, so in this project the aliasing problem is overcome by oversampling and by giving each hair fiber a certain width when rendering. Increasing the width of a hair fiber increases the chance of being intersected. This makes it easier to ray-trace, thereby reducing the need for many samples. Different software packages have different optimizations to render curves.
 
 \subsection{Mathematical Notation}
 \label{sec_mathematical_notation}
@@ -299,13 +311,13 @@ The rate at which a light source sends out electromagnetic waves is called radia
 
 A two-dimensional angle can be represented in polar coordiante space by drawing two lines from the center of a circle outward. The angle is then represented as the difference in orientation between the lines (see figure~\ref{fig_solidangle}). If an object can be drawn so that the angle (if extending the lines) can fully encapsulate the object, then the object is considered to be subtended by the 2D angle. Angles are represented as degrees or radians, but radians are more convenient for mathematical purposes. 
 
-A solid angle $\Omega$ is the equivalent to a twodimensional angle, but solid angles work in three dimensional space. It therefore can be visualized as drawing a cone outward from the center of a sphere. Similarly to the twodimensional case, a three dimensional object can be subtended by a solid angle. Note that objects of different sizes can have the same solid angle. This is possible as the bigger object is placed farther away from the center point of the sphere (see figure~\ref{fig_solidangle}).
+A solid angle $\Omega$ is the equivalent to a two-dimensional angle, but solid angles work in three-dimensional space. It therefore can be visualized as drawing a cone outward from the center of a sphere. Similarly to the two-dimensional case, a three-dimensional object can be subtended by a solid angle. Note that objects of different sizes can have the same solid angle. This is possible as the bigger object is placed farther away from the center point of the sphere (see figure~\ref{fig_solidangle}).
 
 \begin{figure}
 \begin{center}
 \includegraphics[scale=0.16]{solidangle.png}
 \end{center}
-\caption{Graphical representation of angles and solid angles. $\theta$ represents a two dimensional angle. If the circle is considered a unit sphere, then the length of line $l$ equals $\theta$ radians and it subtends the red lines on the right. The solid angle $\Omega$ is a three-dimensional angle represented by a cone. At the unit sphere, the solid angle represents a surface area $A$. The red disks shown on the outside represents three-dimensional objects that are subtended by the solid angle $\Omega$. Larger objects can be subtended by the same solid angle as they are placed farther away from the center of the sphere. As the solid angle becomes infinitely small, we obtain a direction vector $\omega$.}
+\caption{Graphical representation of angles and solid angles. $\theta$ represents a two-dimensional angle. If the circle is considered a unit sphere, then the length of line $l$ equals $\theta$ radians and it subtends the red lines on the right. The solid angle $\Omega$ is a three-dimensional angle represented by a cone. At the unit sphere, the solid angle represents a surface area $A$. The red disks shown on the outside represents three-dimensional objects that are subtended by the solid angle $\Omega$. Larger objects can be subtended by the same solid angle as they are placed farther away from the center of the sphere. As the solid angle becomes infinitely small, we obtain a direction vector $\omega$.}
 \label{fig_solidangle}
 \end{figure}
 
@@ -316,7 +328,7 @@ The radiant intensity $I$ is a measure of the intensity of electromagnetic radia
 \subsection{Irradiance}
 \label{radiance_irradiance}
 
-Formally, irradiance $E$ is defined as the amount of power of electromagnetic radiation per unit area incident on a surface. The unit for irradiance is watts per square meter ($W \cdot m^{-2}$). If the light is shining directly down on the surface area, the irradiance can be described as:
+Formally, irradiance $E$ is defined as the amount of power of electromagnetic radiation per unit area incident to a surface. The unit for irradiance is watts per square meter ($W \cdot m^{-2}$). If the light is shining directly down on the surface area, the irradiance can be described as:
 
 \begin{equation}
 E = \frac{\Phi}{A}
@@ -355,13 +367,13 @@ A nice thing about radiance is that it remains constant along rays as long as th
 
 \subsection{Bidirectional Reflection Distribution Function (BRDF)}
 
-When a surface is lit by a light source, part of it will scatter back into the environment. The distribution at which light is scattered back can be described by a bidirectional scattering distribution function (BSDF). If the surface is opaque and we are only taking into accounts reflection inside the hemisphere, then the reflection behaviour can be described by a bidirectional reflectance distribution function (BRDF). At some point $p$ on the surface, the BRDF function $f_r$ describes the relation between the amount of incoming radiance from direction $w_i$, $L_i(\omega_i)$, and the amount of reflected outgoing radiance in direction $w_o$, $L_o(\omega_o)$.
+When a surface is lit by a light source, part of it will scatter back into the environment. The distribution at which light is scattered back can be described by a bidirectional scattering distribution function (BSDF). If the surface is opaque and we are only taking into account reflection inside the hemisphere, then the reflection behaviour can be described by a bidirectional reflectance distribution function (BRDF). At some point $p$ on the surface, the BRDF function $f_r$ describes the relation between the amount of incoming radiance from direction $w_i$, written as $L_i(\omega_i)$, and the amount of reflected outgoing radiance in direction $w_o$, written as $L_o(\omega_o)$.
 
 Physically based BRDFs have two important characteristics~\cite{pharr2017}:
 
 \begin{itemize}
 \item Reciprocity: the incoming and outgoing directions can be swapped and still have the same reflection behaviour: $f_r(p, \omega_i, \omega_o) = f_r(p, \omega_o, \omega_i)$.
-\item Energy conservation: the total amount of energy that is reflected will always be less or equal than the amount of energy that is incident on the surface.
+\item Energy conservation: the total amount of energy that is reflected will always be less or equal than the amount of energy that is incident to the surface.
 \end{itemize}
 
 Physically, a BRDF describes the relation between the amount of differentiated irradiance $dE(p, \omega_i)$ and the differentiated outgoing radiance $dL_o(p, \omega_o)$. 
@@ -401,6 +413,7 @@ The rendering equation is an integral and formally describes the amount of radia
 
 \begin{equation}
 L_o(p, \omega_o) = L_e(p, \omega_o) + \int_{\Omega} f(p, \omega_o, \omega_i)\, L_i(p, \omega_i)\, \cos \theta_i\, d\omega_i
+\label{rendering_eq}
 \end{equation}
 
 Solving this equation is the key task for a computer graphics program. Hair fibers do not emit radiance and therefore the emitted radiance can be ignored in the rendering equation. Taken into account that hair fibers are represented by curves (see section~\ref{sec_bcsdf}), the curve rendering equation that will be used in this thesis is as follows.
@@ -428,7 +441,7 @@ Importance sampling is a variance reduction technique. The idea is to prefer sam
 \subsection{Monte-Carlo integration}
 % Introduction to monte-carlo integration 
 
-Monte-Carlo integration is a numerical integration technique. In contrary to many other integration techniques, it can evaluate an integral using random samples, where performance is irrespective of the dimensionality of the samples.
+Monte-Carlo integration is a numerical integration technique. In contrast to many other integration techniques, it can evaluate an integral using random samples, where performance is irrespective of the dimensionality of the samples.
 
 Given an integral $\int_a^b f(x) dx$ for a function $f(x)$ over the range $[a, b]$. If it is possible to find a function $F(x) = \int f(x) dx$, then we could solve the integral analytically and there would be no need for numerical integration.
 
@@ -461,9 +474,9 @@ Other techniques are possible as well, such as rejection sampling, which is desc
 \subsection{Multiple importance sampling}
 % Multiple importance sampling
 
-Sometimes we end up with a function that can be written as the product of multiple functions $f(x)g(x)$, each of which has an easy to sample from PDF $p_f(x)$, belonging to $f(x)$ and $p_g(x)$ for $g(x)$.
+Sometimes we end up with a function that can be written as the product of multiple functions $f(x)g(x)$, each of which has an easy to sample PDF $p_f(x)$, belonging to $f(x)$ and $p_g(x)$ for $g(x)$.
 
-If two sampling distributions $p_f(x)$ and $p_g(x)$ are used to estimate the value of $\int f(x)g(x) dx$, you cannot just average the results by taking N samples from $p_f(x)$ and M samples from $p_g(x)$ and average the result, because variance is additive. The way how to do it is by using the new Monte-Carlo estimator for multiple importance sampling (MIS) stated in~\cite{pharr2017}: 
+If two sampling distributions $p_f(x)$ and $p_g(x)$ are used to estimate the value of $\int f(x)g(x) dx$, you cannot just average the results by taking N samples from $p_f(x)$ and M samples from $p_g(x)$ and average the result, because variance is additive. The way to do it is by using the new Monte-Carlo estimator for multiple importance sampling (MIS) stated in~\cite{pharr2017}: 
 
 \begin{equation}
 \frac{1}{n_f} \sum_{i=1}^{n_f} \frac{f(X_i)g(X_i) w_f(X_i)}{p_f(X_i)} + 
@@ -476,7 +489,7 @@ where $w_f$ and $w_g$ are weighting functions.
 w_s(x) = \frac{n_sp_s(x)}{\sum_i n_i p_i(x)}
 \end{equation}
 
-An example of multiple importance sampling is when rendering complex scenes with multiple objects and light sources. When light sources are very small, the chance of being sampled (as observed from a point on a surface) is likewise very small. It is easy to imagine that lots of samples are required when evaluating the BSDF for a material to remove the noise. A better approach would be to sample from the light source. If the light source is very large: for example a skydome around the scene acting as a light source, it is more efficient to sample the BSDF of the material. Multiple importance sampling takes this effect into account. By mixing samples from the BSDF of the material and from the distribution of the light source, a selection of important samples can be used to reduce noise. 
+An example of multiple importance sampling is when rendering complex scenes with multiple objects and light sources. When light sources are very small, the chance of being sampled (as observed from a point on a surface) is likewise very small. It is easy to imagine that lots of samples are required when evaluating the BSDF for a material to remove the noise. A better approach would be to sample from the light source. If the light source is very large, for example a skydome around the scene acting as a light source, it is more efficient to sample the BSDF of the material. Multiple importance sampling takes this effect into account. By mixing samples from the BSDF of the material and from the distribution of the light source, a selection of important samples can be used to reduce noise. 
 %Pharr et al.~\cite{pharr2017} presented a nice rendering showing the effect of multiple importance sampling (see figure~\ref{fig_multi_importance}).
 
 
@@ -634,9 +647,9 @@ $S$ depends on incoming and outgoing angles $\omega_i$ and $\omega_r$, but can b
 \subsubsection{Longitudinal Scattering Function}
 \label{marschner_longitudinal_scattering_function}
 
-Using the first property of scattering from fibers, it can be derived that the angle of incidence is the same as the angle of reflection ($\theta_i = -\theta_r$). There are two deviations that cause the reflection to not be exactly in the specular direction (see section~\ref{sec_longitudinal_observation}). First, the surface of hair fibers are rough, causing a spread of reflected light instead of a mirror like specular reflection. Secondly, the cuticle scales of the hair fiber are tilted, causing a 6 to 8 degrees deviation from the perfect specular direction.
+Using the first property of scattering from fibers, it can be derived that the angle of incidence is the same as the angle of reflection ($\theta_i = -\theta_r$). There are two deviations that cause the reflection to not be exactly in the specular direction (see section~\ref{sec_longitudinal_observation}). First, the surface of a hair fiber is rough, causing a spread of reflected light instead of a mirror like specular reflection. Secondly, the cuticle scales of the hair fiber are tilted, causing a 6 to 8 degrees deviation from the perfect specular direction.
 
-Marschner et al. approximated the longitudinal scattering function $M$ by a unit-integral zero-mean Gaussian function $g(\beta, x)$, where $\beta$ equals the standard deviation and $\alpha$ equals the longitudinal shift. In a published paper by d'Eon et al.~\cite{eon2011}, they discovered that the Marschner model is not entirely energy conserving for several reasons. One of the reasons with most impact is that the use of the half angle $\theta_h$ instead of $\theta$ doubles the reflected energy on average. Additionally the Gaussian is normalized with respect to $\theta \in \{-\infty, \infty \}$, but is evaluated with $\theta_h \in \{ -\pi/2, \pi/2 \}$, thereby losing a considerable amount of energy when deflection happens for near grazing angles. The doubling of energy is easily accounted for by doubling the half angle in the Marschner longitudinal scattering function. The resulting longitudinal functions $M$ that are used for the Marschner model are thus as follows:
+Marschner et al.~\cite{marschner} approximates the longitudinal scattering function $M$ by a unit-integral zero-mean gaussian function $g(\beta, x)$, where $\beta$ equals the standard deviation and $\alpha$ equals the longitudinal shift. D'Eon et al.~\cite{eon2011} observed that the Marschner model is not entirely energy conserving for several reasons. One of the reasons is that the use of the half angle $\theta_h$ doubles the reflected energy on average. Additionally the gaussian is normalized with respect to $\theta_h \in (-\infty, \infty)$, but is evaluated for $\theta_h \in [-\frac{\pi}{2}, \frac{\pi}{2}]$, thereby losing a considerable amount of energy that is present outside of the used range. The doubling of energy is easily accounted for by doubling the half angle in the Marschner longitudinal scattering function. The resulting longitudinal functions $M$ that are used for the Marschner model are thus as follows:
 
 \begin{align}
 M_{\textnormal{R}}(\theta_h) &= g(\beta_{\textnormal{R}}, 2\theta_h - \alpha_{\textnormal{R}}) \\
@@ -644,74 +657,101 @@ M_{\textnormal{TT}}(\theta_h) &= g(\beta_{\textnormal{TT}}, 2\theta_h - \alpha_{
 M_{\textnormal{TRT}}(\theta_h) &= g(\beta_{\textnormal{TRT}}, 2\theta_h - \alpha_{\textnormal{TRT}})
 \end{align}
 
-By varying the standard deviation $\beta$, the spread of the longitudinal scattering component can be adjusted to simulate the rough surface of hair fibers. $\alpha$ deviates the peak from the specular direction by shifting the gaussian distribution. Marschner et al~\cite{marschner} provided some typical values for $\alpha$ and $\beta$ (see table~\ref{table_marschner_alpha_beta}).
+By varying the standard deviation $\beta$, the spread of the longitudinal scattering lobe can be adjusted to simulate the rough surface of hair fibers. The longitudinal shift $\alpha$ deviates the peak from the specular direction by shifting the gaussian distribution. Some typical values for $\alpha$ and $\beta$ are presentred in table~\ref{table_marschner_alpha_beta}.
 
 \begin{table}[h]
+\begin{center}
 \begin{tabular}{c|l|c}
 Parameter & Description & Typical value \\ \hline 
-$\alpha_{R}$ & Longitudinal shift for R lobe & -10\textdegree\,to -5\textdegree \\
-$\alpha_{TT}$ & Longitudinal shift for TT lobe & $-\alpha_R / 2$ \\
-$\alpha_{TRT}$ & Longitudinal shift for TRTlobe & $-3\alpha_R / 2$ \\
-$\beta_R$ & Longitudinal spread for R lobe & 5\textdegree\, to 10\textdegree\, \\
-$\beta_{TT}$ & Longitudinal spread for TT lobe & $\beta_R / 2$ \\
-$\beta_{TRT}$ & Longitudinal spread for TRT lobe & $2 \beta_R$ 
+$\alpha_{\textnormal{R}}$ & Longitudinal shift for R lobe & -10\textdegree\,to -5\textdegree \\
+$\alpha_{\textnormal{TT}}$ & Longitudinal shift for TT lobe & $-\alpha_{\textnormal{R}} / 2$ \\
+$\alpha_{\textnormal{TRT}}$ & Longitudinal shift for TRTlobe & $-3\alpha_{\textnormal{R}} / 2$ \\
+$\beta_{\textnormal{R}}$ & Longitudinal spread for R lobe & 5\textdegree\, to 10\textdegree\, \\
+$\beta_{\textnormal{TT}}$ & Longitudinal spread for TT lobe & $\beta_{\textnormal{R}} / 2$ \\
+$\beta_{\textnormal{TRT}}$ & Longitudinal spread for TRT lobe & $2 \beta_{\textnormal{R}}$ 
 \end{tabular}
+\end{center}
 
-\caption{Typical values for parameters for the longitudinal scattering function. Taken from Marschner et al.~\cite{marschner}}
+\caption{Typical values for parameters for the longitudinal scattering function. $alpha$ is the longitudinal shift to represent the shift of the lobe due to tilted cuticle scales. $\beta$ is the longitudinal width, representing the spread of the energy due to rough surface of hair fibers. Taken from Marschner et al.~\cite{marschner}}
+
 \label{table_marschner_alpha_beta}
 \end{table}
 
 
-\subsubsection{Azimuthal scattering Function}
+\subsubsection{Azimuthal Scattering Function}
 
-The azimuthal scattering component requires more thought, since different scattering paths inside the circular cross section need to be considered. 
+\begin{figure}[h]
+\begin{center}
+\includegraphics[scale=0.2]{circularcross.png}
+\end{center}
+\caption{Cross section of a hair fiber showing the different scattering modes. Taken from Marschner et al.~\cite{marschner}}
+\label{fig_circular_cross_section}
+\end{figure}
 
-Scattering from a dielectric circle is well studied. Consider a parallel beam incident on a circular cross section at an offset $h$ from the center. A parallel beam incident on the center of a circle means that $h = 0$. A value of $h=+/-1$ indicates that the parallel beam is glancing the edges of the circle. Using the offset $h$, the angle of incidence $\gamma_i$ can be computed using the following equation:
+For the azimuthal scattering component different scattering paths inside the circular cross section of the hair need to be considered. The Marschner model takes into account 3 scattering modes, the R, TT and TRT mode. Figure~\ref{fig_circular_cross_section} shows a graphical representation of a circular cross section of a hair fiber.
+
+Scattering from a dielectric circle is well studied. Consider a parallel beam (or ray) incident to a circular cross section at an offset $h$ from the center. A parallel beam incident to the center of a circle corresponds to the root value $h = 0$. A value of $h=1$ or $h=-1$ corresponds to beams glancing the edges of the circle. Using the offset $h$ the angle of incidence $\gamma_i$ can be computed using the following equation:
 
 \begin{eqnarray*}
 \sin \gamma_i = h & \Leftrightarrow & \gamma_i = \arcsin h \\
 \eta \sin \gamma_t = h & \Leftrightarrow & \gamma_t = (\arcsin h) / \eta
 \end{eqnarray*}
 
-A ray that is incident on the unit circle can be traced as it refracts and reflects through the circle. The exit angle is not only dependent on the incidence angle (or offset from the center), but also on the number of scattering events. The number of scattering events $p$ equals 1 for the reflection case, 2 for transmission (TT) and 3 for internal reflection (TRT). The exit angle can then be calculated as follows:
+A ray that is incident to the unit circle can be traced as it refracts and reflects through the circle. The exit angle is not only dependent on the incidence angle (or offset from the center), but also on the number of scattering events. The number of scattering events $p$ equals 1 for the reflection case, 2 for transmission (TT) and 3 for internal reflection (TRT). The exit angle can then be calculated as follows:
 
 \begin{equation}
 \label{eq_relative_azimuth_change}
 \phi(p,h) = 2p \gamma_t - 2 \gamma_i + p \pi
 \end{equation}
 
-The figure from Marschner et al. provides a good overview on the possible scattering events and the relation between the scattering angles.
+\subsubsection{Finding roots}
 
-Consider rendering a scene using ray tracing and that a particular camera ray is incident on a hair fiber. To find the contribution for the rendered image, we need to find all the paths that contribute to scattering in the direction of the camera ray. These paths are found by solving for roots. The R and TT cases have exactly one root and TRT has either one or three roots. The $h$ values for these paths are found by solving for the roots of the function $\phi(p, h) - \phi = 0$. Finding the roots requires solving a cubic equation, which is explained deeper in Marschner et al.~\cite{marschner}. The roots are denoted by $h(p, r, \phi)$ where different values of $r$ denote different roots. \\
+Consider rendering a scene using ray tracing and that a particular camera ray is incident to a hair fiber. Figure~\ref{fig_rootfinding} represents this situation. To find the contribution of radiance towards the camera (i.e. the outgoing direction $\omega_o$), all the paths that contribute to scattering in that direction should be taken into account. These incident light directions $\omega_i$ can be integrated around the sphere by uniform sampling (or importance sampling). Given two directions the contributed radiance can be found by using the difference angle $\phi = \phi_o - \phi_i$.
 
+Looking again at equation~\ref{eq_relative_azimuth_change}, the exit angle $\phi(p, h) = \phi$ is known. To be able to evaluate the Marschner model, the roots $h$ must be found. This is done by solving the roots by solving for the roots of the function $\phi(p, h) - \phi = 0$, which gives $\gamma_i$ which trivially gives $h$.
 
-Attenuation has to be taken into account as well. Attenuation occurs because of reflections, refractions and absorption. The attenuation for reflections and refractions are computed using the Fresnel equation. The Fresnel equation takes a parallel and perpendicular index of refraction ($\eta'$ and $\eta''$ respectively). Absorption takes place when a ray propagates through the hair fiber. The length of each internal path segment is computed by applying the law of cosines. According to~\cite{}, the formula given in Marschner et al. is wrong. This equation should be as followed:
+To find the contribution of radiance from the incident direction $\omega_i$ and $\omega_o$ the roots have to be found for all scattering modes in order to evaluate the rendering equation in equation~\ref{eq_marschner}. Finding the roots requires solving a cubic equation, which is explained deeper in Marschner et al.~\cite{marschner}. The R and TT cases have exactly one root and TRT has either one or three roots.
+
+\begin{figure}
+\begin{center}
+\includegraphics[scale=0.25]{rootfinding.png}
+\end{center}
+
+\caption{Visualization of the root finding stratgegy. The relative difference angle $\phi_p$ between rays $\omega_o$ and $\omega_{i,p}$ is known by computing the difference of the azimuthal spherical coordinates. The Marschner model can be evaluated when the roots are known. The roots $h$ can be found by solving the roots of equation $2p\gamma_t - 2\gamma_i + p\pi - \phi_p = 0$. Knowing $\gamma_i$ will trivially give $h$.}
+
+\label{fig_rootfinding}
+\end{figure}
+
+\subsubsection{Attenuation}
+
+The light that propagates through a hair fiber is attenuated. Attenuation occurs because of reflections, refractions and absorption. The attenuation for reflections and refractions are computed using the Fresnel equation. The Fresnel equation takes a parallel and perpendicular index of refraction ($\eta'$ and $\eta''$ respectively). Absorption takes place due to the pigments in the core, giving hair it's color. The amount of absorption depends on the length of each internal path segment $l$ that is computed by applying the law of cosines. According to d'Eon et al.~\cite{eon2011}, the formula given in Marschner et al.~\cite{marschner} is wrong. The equation to find the path length of a path segment $l$ should be as followed:
 
 \begin{equation}
 l = \frac{2r \cos \gamma_t}{\cos \theta_t}\,\,\, \textsf{with $\theta_t = -sgn(\theta_i) \arccos ((\eta'' / \eta') \cos \theta_i)$}
 \end{equation}
 
-Here $l$ denotes the length of a single internal path segment for the TT case. For TRT, the length doubles. $r$ is the radius of the hair fiber and is a setting provided by the user. Absorption is denoted by $T(\sigma_a, h)$ where $\sigma_a$ is the absorption coefficient. It describes the amount of absorption per unit length through the hair fiber. It follows straightforwardly that the absorption is computed as $T(\sigma_a, h) = \exp( \sigma_a l )$. The normal plane scattering function $N_p$ can now be described and is shown in equation~\ref{azimuthal_marschner} be described.
-
-\begin{eqnarray*}
-A(0, h) & = & \textrm{Fresnel}( \eta', \eta'', \gamma_i ) \\
-A(p, h) & = & (1 - \textrm{Fresnel}( \eta', \eta'', \gamma_i ))^2 \cdot \textrm{Fresnel}( \frac{1}{\eta'}, \frac{1}{\eta''}, \gamma_t )^ {p-1} \cdot T(\sigma_a, h) \\
-\label{azimuthal_marschner}
-\end{eqnarray*}
-
-The normal plane scattering function for a given number of path segments $p$ (1, 2 or 3) is given in equation~\ref{azimuthal_marschner}.
+Here $l$ denotes the length of a single internal path segment for the TT case. For TRT, the length doubles. $r$ is the radius of the hair fiber and is a setting provided by the user. Absorption is denoted by $T(\sigma_a, h)$ where $\sigma_a$ is the absorption coefficient. It describes the amount of absorption per unit length through the hair fiber. It follows trivially that the absorption is computed as $T(\sigma_a, h) = \exp( l \cdot \sigma_a )$. The normal plane scattering function $N_p$ can now be described and is shown in equation~\ref{azimuthal_marschner}, where $p$ corresponds to the scattering modes ${\textnormal{R}, \textnormal{TT}, \textnormal{TRT}}$ with $p=0, p=1, p=2$ respectively.
 
 \begin{equation}
-N_p(p, \phi) = \sum\limits_r A(p, h(p, r, \phi)) \cdot \Big \vert 2 \frac{d\phi}{dh}( p, h(p, r, \phi) ) \Big \vert^{-1}
+N_p(\phi) = \sum\limits_r A(p, h(p, r, \phi)) \cdot \Big \vert 2 \frac{d\phi}{dh}( p, h(p, r, \phi) ) \Big \vert^{-1}
+\label{azimuthal_marschner}
 \end{equation}
+
+with $h(p, r, \phi)$ corresponding to the roots $r$ for scattering mode $p$ and difference angle $\phi$. The attenuation $A(p, h)$ is described as:
+
+\begin{align}
+A(0, h) = &\, \textrm{Fresnel}( \eta, \gamma_i ) \\
+A(p, h) = &\, (1 - \textrm{Fresnel}( \eta, \gamma_i ))^2 \nonumber \\
+ & \cdot \textrm{Fresnel}( \frac{1}{\eta}, \gamma_t )^ {p-1} \cdot T(\sigma_a, h)
+\end{align}
 
 \subsubsection{Glints}
 
-Because the theory is based on smooth surfaces, the normal plane scattering function $N_p$ for the TRT scenario produces singularities with infinite intensity~\cite{marschner}. These singularities are called caustics and is light that bundles together after a sequence of reflections and refractions. In reality, these caustics are bright spots of light that originate after a sequence of reflections and refractions. Think about light propagating through a wine glass for example. These infinite singularities are removed by replacing it with a smooth Gaussian lobe centered at the location of the caustic. This changes the normal plane scattering function for the TRT case. Marschner et al.\cite{marschner} provides more detail into how the scattering function changes.
+Because the theory is based on smooth surfaces, the normal plane scattering function $N_p$ for the TRT scenario produces singularities with infinite intensity~\cite{marschner}. These singularities are called caustics. Caustics are bright spots that originate when light bundles together after a sequence of reflections and refractions. Caustics can be observed found under water or when looking  through a wine glass for example. These infinite singularities are removed by replacing it with a smooth gaussian lobe centered at the location of the caustic. This changes the normal plane scattering function for the TRT case. Marschner et al.\cite{marschner} provides more detail into how the scattering function changes.
 
 \subsubsection{Taking into account eccentricity}
 
-Changing refractive index has effects that are qualitatively similar to changing eccentricity~\cite{marschner}. In order to simulate eccentricity, the refractive index is computed based on the value of eccentricity $a$. The equation can be found below. More detail is in Marschner et al's paper~\cite{marschner}.
+Changing refractive index has effects that are qualitatively similar to changing eccentricity~\cite{marschner}. In order to simulate eccentricity, the refractive index $\eta^*$ is computed based on the value of eccentricity $a$. The equation can be found below. More detail is in Marschner et al's paper~\cite{marschner}.
 
 \begin{eqnarray}
 \eta_1^* & = & 2(\eta - 1) a^2 - \eta + 2 \\
@@ -719,28 +759,22 @@ Changing refractive index has effects that are qualitatively similar to changing
 \eta^*(\phi_h) & = & \frac{1}{2}\big((\eta_1^* + \eta_2^*)+\cos(2\phi_h)(\eta_1^* + \eta_2^*) \big)
 \end{eqnarray}
 
-\subsubsection{Marschner model}
+\subsubsection{The Marschner scattering model}
 
 From the description above we can now describe the complete Marschner scattering model $S(\omega_i, \omega_r)$.
 
 \begin{eqnarray*}
-S(\phi_i,\theta_i; \phi_r, \theta_r) & = & M_R(\theta_h) N_R(\phi) / \cos^2 \theta_d \\
-& + & M_{TT}(\theta_h) N_{TT}(\phi) / \cos^2 \theta_d \\
-& + & M_{TRT}(\theta_h) N_{TRT}(\phi) / \cos^2 \theta_d \\
+S(\phi_i,\theta_i; \phi_r, \theta_r) & = & M_\textnormal{R}(\theta_h) N_\textnormal{R}(\phi) / \cos^2 \theta_d \\
+& + & M_{\textnormal{TT}}(\theta_h) N_{\textnormal{TT}}(\phi) / \cos^2 \theta_d \\
+& + & M_{\textnormal{TRT}}(\theta_h) N_{\textnormal{TRT}}(\phi) / \cos^2 \theta_d \\
+\label{eq_marschner}
 \end{eqnarray*}
 
-Here the longitudinal functions $N_x$ are placeholders for the normal plane scattering function $N_p$:
-
-\begin{eqnarray*}
-N_R(\phi) & = & N_p(0, \phi) \\
-N_{TT}(\phi) & = & N_p(1, \phi) \\
-N_{TRT}(\phi) & = & N_p(2, \phi) \\
-\end{eqnarray*}
 \subsection{Evaluation}
 
-The advantage of the Marschner hair model is that it is based on physical observations. Compared to previous approaches this is a huge win. Finding the roots for a given direction is slow, but can be dealt with by using precomputed tables.
+The advantage of the Marschner hair model is that it is based on physical measurements. Compared to previous work it comes much closer to physical reality. Finding the roots for a given direction is tedious. d'Eon et al.~\cite{eon2011} proposed a faster alternative where root-solving is not needed anymore. Also some flaws in the Marschner model, concerning energy conservings are removed.
 
-The Marschner hair model focuses on single fiber scattering and to render realistic hair volumes, multiple fiber scattering needs to be taken into account. Path tracing or photon mapping are possible approaches, but take a lot of time or require an extensive amount of memory. Another drawback is that from own calculations, the Marschner model is not energy conserving. Especially for very wide angles, the reflections will be relatively high.
+The Marschner hair model focuses on single fiber scattering and to render realistic hair volumes, multiple fiber scattering needs to be taken into account. Path tracing or photon mapping are possible approaches, but take a lot of time or require an extensive amount of memory. The dual scattering method by Zinke et al.~\cite{zinke} proposes a faster way where extensive path tracing is not needed anymore, drastically speeding up render process. This model is the topic of the next section. 
 
 %
 % ===============================================================================
@@ -753,7 +787,7 @@ The Marschner hair model focuses on single fiber scattering and to render realis
 
 \chapter{Approach}
 
-In this thesis the contribution comes from comparing the results for dual scattering method between uniform sampling and the multiple importance sampling strategy by d'Eon et al.~\ref{deon-IS}. This importance sampling strategy has been developed for a hair rendering model by d'Eon and Marschner~\ref{deon}. This model is a continuation of the Marschner model in this paper, where they managed to make the model more efficient by removing the root-solving process (explain better).
+In this thesis the contribution comes from comparing the results for dual scattering method between uniform sampling and the multiple importance sampling strategy by d'Eon et al.~\ref{deon-IS}. This importance sampling strategy has been developed for a hair rendering model by d'Eon and Marschner~\ref{deon}. This model is a continuation of the Marschner model in this report, where they managed to make the model more efficient by removing the root-solving process (explain better).
 
 First of all a comparison is made by comparing the visual appearance of the image. Is the result obtained with importance sampling looking appropriate for different scenarios, such as when the model is backlit or frontlit, or when the amount of reflection is high. This comparison is rather subjective and to feeling, so we need another way to measure the performance between uniform and importance sampling.
 
@@ -793,7 +827,7 @@ The idea behind the importance sampling strategy of d'Eon et al.~\cite{eon2013} 
 \item Choose a random offset $h \in [-1, 1]$ along the fiber cross section.
 \end{itemize}
 
-The first things that has to be done is lobe selection.
+The first thing that has to be done is lobe selection.
 
 \subsection{Lobe selection}
 \label{sec_lobe_selection}
@@ -816,7 +850,7 @@ w_{\textnormal{TT}} &= \frac{A_{\textnormal{spec}}(1, \gamma_i)}{\sum_p A_{\text
 w_{\textnormal{TRT}} &= \frac{A_{\textnormal{spec}}(2, \gamma_i)}{\sum_p A_{\textnormal{spec}}(p, \gamma_i)}
 \end{align}
 
-with the relative weights a lobe can be sampled by taking a random uniform variable $h \in [0, 1)$ and selecting a lobe proportional to the relative attenuation of each component. Once the lobe is known, importance sampling the longitudinal and azimuthal scattering functions become relatively straight forward.
+with the relative weights a lobe can be sampled by taking a random uniform variable $h \in [0, 1)$ and selecting a lobe proportional to the relative attenuation of each component. Once the lobe is known, importance sampling the longitudinal and azimuthal scattering functions become relatively straightforward.
 
 The PDF of the sampling scheme are exactly analogous to evaluation of the model $S$, but with the attenuations $A$ replaced by the selection weights $w_p$~\cite{eon2013}. This makes sense. If the original attenuation factors were to be used, instead of the sample weights, then for all hair models that are not 100 percent transmissive energy will be lost and the PDF will not integrate to 1 anymore. By replacing the attenuations with the sample weights, the PDF is always integrating to 1 irrespective of the hair color.
 
@@ -829,17 +863,17 @@ The selection weights were determined before by sampling a cross section, giving
 
 This is done by solving for roots as has been explained in Marschner related work section~\ref{sec_marschner}. The R and TT components have exactly one root and the TRT component results in one or three roots. This means that any scattering mode could have been selected that would result in the incident direction being sampled. In other words, we need to know the relative probability of a root $h$ to be selected, giving $\omega_i$ as a sampled direction.
 
-This is done in a similar way to sampling a lobe by using the relative attenuation for each of the roots $h$. Since the TRT component could have three roots, it means that this scattering mode actually has three paths to generate the sampled direction. They are summed together to represent the attenuation for the TRT mode. The relative attenuations are then used as the sample weights when evaluating the model $S$ to find the corresponding PDF.
+This is done in a similar way to sampling a lobe by using the relative attenuation for each of the roots $h$. Since the TRT component can have three roots, it means that this scattering mode actually has three paths to generate the sampled direction. They are summed together to represent the attenuation for the TRT mode. The relative attenuations are then used as the sample weights when evaluating the model $S$ to find the corresponding PDF.
 
 
 \subsection{Importance sampling the longitudinal M function}
 \label{sec_importance_sampling_M}
 
-To importance sample the longitudinal scattering function, we need a way to sample a Gaussian distribution. The essence here is that we are given the outgoing direction $\omega_o = (\theta_o, \phi_o)$ and we need to find the incident longitudinal angle $\theta_i$. The incident $\phi_i$ is determined in the next section (when importance sampling the azimuthal scattering function $M$).
+To importance sample the longitudinal scattering function, we need a way to sample a gaussian distribution. The essence here is that we are given the outgoing direction $\omega_o = (\theta_o, \phi_o)$ and we need to find the incident longitudinal angle $\theta_i$. The incident $\phi_i$ is determined in the next section (when importance sampling the azimuthal scattering function $M$).
 
-There is a problem with the Gaussian distribution of the Marschner model. First of all it is not energy conserving as has been explained before in section~\ref{marschner_longitudinal_scattering_function}. Part of this can be solved by multiplying the half angle $\theta_h$ by two. Another problem is that especially at glancing angles, part of the energy falls outside of the boundary $\theta \in \{ -\pi/2, \pi/2 \}$, thereby losing energy. This is a problem for importance sampling. When energy is outside of the allowed range, we must somehow compensate this loss of energy in the remaining part of the Gaussian distribution. This is pretty difficult to achieve, at least with the simple normalized gaussian distribution ranging from $\theta \in \{ -\infty, \infty \}$.
+There is a problem with the gaussian distribution of the Marschner model. First of all it is not energy conserving as has been explained before in section~\ref{marschner_longitudinal_scattering_function}. Part of this can be solved by multiplying the half angle $\theta_h$ by two. Another problem is that especially at glancing angles, part of the energy falls outside of the boundary $\theta \in \{ -\pi/2, \pi/2 \}$, thereby losing energy. This is a problem for importance sampling. When energy is outside of the allowed range, we must somehow compensate this loss of energy in the remaining part of the gaussian distribution. This is pretty difficult to achieve, at least with the simple normalized gaussian distribution ranging from $\theta \in \{ -\infty, \infty \}$.
 
-d'Eon et al.~\cite{eon2011} proposes a different energy-conserving longitudinal scattering function $M_p$. This function conservatively redistributes reflected radiance amongst directions on the sphere by employing spherical Gaussian convolution. This function is energy conserving and makes sampling a lot easier. The newly used energy conserving scattering function $M$ is as follows:
+d'Eon et al.~\cite{eon2011} proposes a different energy-conserving longitudinal scattering function $M_p$. This function conservatively redistributes reflected radiance amongst directions on the sphere by employing spherical gaussian convolution. This function is energy conserving and makes sampling a lot easier. The newly used energy conserving scattering function $M$ is as follows:
 
 \begin{equation}
 M_p(v, \theta_i, \theta_r) = \frac{\textnormal{csch}(1/v)}{2v} e^{\frac{\sin(-\theta_i)\sin\theta_r}{v}} I_0 \Big [ \frac{\cos(-\theta_i) \cos \theta_r}{v} \Big ]
@@ -847,7 +881,7 @@ M_p(v, \theta_i, \theta_r) = \frac{\textnormal{csch}(1/v)}{2v} e^{\frac{\sin(-\t
 
 where $v$ is the longitudinal scattering variance ($\beta_p^2$) and $I_0$ is the modified Bessel function of the first kind. It is no problem to use a different scattering function to sample from, instead of the Marschner function itself. This is the power of importance sampling, to be able to sample an arbitrary complex function using a simpler and easier to sample function. As long as the function is a good fit, variance will be reduced. More information about the derivation of this function and why it works can be found in the paper by d'Eon et al.~\cite{eon2011}.\\
 
-Sampling a spherical Gaussian can be done with two random numbers $\xi_1$ and $\xi_2$ each within $[0, 1)$. Using the Box-Muller transform gives us a sample for the normalized
+Sampling a spherical gaussian can be done with two random numbers $\xi_1$ and $\xi_2$ each within $[0, 1)$. Using the Box-Muller transform gives us a sample for the normalized
 
 
 \begin{align}
@@ -890,7 +924,7 @@ The dual scattering method proposes different ways to gather global illumination
 
 The implementation in this thesis uses a combination of the above approaches. In this thesis a voxel grid is used together with a two pass approach. The first pass is the voxel grid generation process and the second pass is during rendering when the transmittance and spread values are determined. 
 
-Each hair fiber is represented as a collection of curve segments, where each curve segment is made up of a collection of three dimensional points. In the generation pass, curve segments are stepped through by small increments, thereby linearly interpolating between consecutive points of the curve segment. Each step represents a specific distance. This distance is simply the distance between the current step position and the previous step position. At every step increment the corresponding voxel grid cell is updated with the distance the step is representing. After processing all curve segments, the voxel grid will consist of voxel cells containing the accumulated distances. By relating the accumulated sum of distances with the voxel cell volume, the density of the voxel cell is obtained. The orientations of the individual hair fibers are ignored in the generation process. 
+Each hair fiber is represented as a collection of curve segments, where each curve segment is made up of a collection of three-dimensional points. In the generation pass, curve segments are stepped through by small increments, thereby linearly interpolating between consecutive points of the curve segment. Each step represents a specific distance. This distance is simply the distance between the current step position and the previous step position. At every step increment the corresponding voxel grid cell is updated with the distance the step is representing. After processing all curve segments, the voxel grid will consist of voxel cells containing the accumulated distances. By relating the accumulated sum of distances with the voxel cell volume, the density of the voxel cell is obtained. The orientations of the individual hair fibers are ignored in the generation process. 
 
 In the rendering pass, the voxel grid is used to find the amount of global multiple scattering at point $x$ from direction $\omega_d$. This is done by integrating from position $x$ in direction $\omega_d$ up to the light position (for an area light) or up to a specifioc limit (in case of directional lights). At each step along the ray, the density is obtained and accumulated so that in the end the complete density is obtained which is treated as the number of hair strands between the light source and the position $x$.
 
@@ -1088,7 +1122,7 @@ With this data it is difficult to do a hard comparison. In the next section the 
 \end{tabular}
 \egroup
 \end{center}
-\caption{Comparison of the image quality between uniform sampling and importance sampling for various pixels per sample, indicated in the top left corner. As the pixels per sample increase the noise of the image becomes smaller.}
+\caption{Comparison of the image quality between uniform sampling and importance sampling for various pixels per sample, indicated in the bottom left corner. As the pixels per sample increase the noise of the image becomes smaller.}
 \label{fig_side_by_side}
 \end{figure}
 
@@ -1099,7 +1133,7 @@ With this data it is difficult to do a hard comparison. In the next section the 
 
 One of the most important requirements for an importance sampling strategy is that it converges to the same result as uniform sampling. As discussed in the previous section it appears that the uniform sampling renderings are converged at 512 samples per pixel, so we will use the result of 512 samples per pixel as the ground truth. Importance sampling results can then be compared with the ground truth by computing the distance with the ground truth (expressed as the average variance per pixel).
 
-Figure~\ref{fig_sidebyside_converged} shows a side by side comparison of 512 samples per pixel, assuming that both images have been converged. The importance sampled version is a bit darker compared to the uniform sampling version. This is not expected. It could indicate that the probability density function is not integrating to 1 for all configurations. A possible explanation could comes from the work by d'Eon et al.~\cite{eon2011} in which he explains that the Marschner model is not energy conserving. Doubling the half angles as we have done in this thesis solves part of the problem. Still deflection near grazing angles moves considerably into angles outside the range of possible angles, thereby losing energy.
+Figure~\ref{fig_sidebyside_converged} shows a side by side comparison of 512 samples per pixel, assuming that both images have been converged. The importance sampled version is a bit darker compared to the uniform sampling version. This is not expected. It could indicate that the probability density function is not integrating to 1 for all configurations. A possible explanation could comes from the work by d'Eon et al.~\cite{eon2011} in which they explain that the Marschner model is not energy conserving. Doubling the half angles as we have done in this thesis solves part of the problem. Still deflection near grazing angles moves considerably into angles outside the range of possible angles, thereby losing energy.
 
 Figure~\ref{fig_side_by_side} shows an even more detailed side by side comparison. Here a region is displayed to better see the noise for various samples per pixel for both uniform and importance sampling. Table~\ref{table_variance_to_groundtruth} shows the variance of different renderings compared to the ground truth and figure~\ref{fig_variance_plot} displays the measurement data in a plot.
 
@@ -1195,7 +1229,7 @@ There are a couple of obervations to be made:
 
 \chapter{Conclusion}
 
-The importance sampling strategy proposed in this thesis is actually proposed for the method by d'Eon et al.~\cite{2011}, but is applicable to all Marschner related hair models. Dual scattering is an extension to the Marschner model (but could equally be applied to any other Marschner related hair model). It turns out that importance sampling leads more efficient renderings, but in such a small amount that it is hardly noticable. One of the reasons that I can think of is the fact that the dual scattering method smoothens out the global illumination, essentially meaning that light is coming from almost anywhere around the hemisphere (for outside fibers) or sphere (for inside fibers). Sampling specific directions that are likely to contribute a lot to the Marschner model are not so significant anymore to the dual scattering method. This suggests that more work can be done in finding a way to importance sample the dual scattering method.
+The importance sampling strategy proposed in this thesis is actually proposed for the method by d'Eon et al.~\cite{eon2011}, but is applicable to all Marschner related hair models. Dual scattering is an extension to the Marschner model (but could equally be applied to any other Marschner related hair model). It turns out that importance sampling leads to more efficient renderings, but in such a small amount that it is hardly noticable. One of the reasons that I can think of is the fact that the dual scattering method smoothens out the global illumination, essentially meaning that light is coming from almost anywhere around the hemisphere (for outside fibers) or sphere (for inside fibers). Sampling specific directions that are likely to contribute a lot to the Marschner model are not so significant anymore to the dual scattering method. This suggests that more work can be done in finding a way to importance sample the dual scattering method.
 
 One of the problematic issues when using the Marschner model in combination with the dual scattering method is the fact that the parameters used to change the appearance of the model are not intuitive. Also the root finding process is quite complex and d'Eon et al.~\cite{deon2011} proposed a simpler and energy conserving model which produce similar results. Also Sadeghi et al.~\cite{sadeghi2010} proposed a less physically based artist friendly hair shading system, where physical properties are replaced by intuitive controls to color the hair, especially useful for artists for animation moview.
 
