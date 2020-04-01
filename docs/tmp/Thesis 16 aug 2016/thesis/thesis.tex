@@ -827,39 +827,29 @@ The only caveat is that the Marschner model is not fully energy conserving at th
 
 
 
-\section{Problem 2: How to measure or compare the results between multiple importance sampling and uniform sampling?}
+\section{Problem 2: How to evaluate rendered images using multiple importance sampling?}
 
-There has not been an evaluation of the application of importance sampling to the dual scattering method. The contribution of this report is to perform this evaluation. The central question becomes whether multiple importance sampling applied to the dual scattering method leads to a significant improvement to the noise in the rendered image. To evaluate whether importance sampling leads to significant rendering improvements, a comparison is performed between two sampling strategies:
-
-\begin{itemize}
-\item Hair models rendered using uniform sampling. This corresponds to rendering via the original dual scattering method by Zinke et al.~\cite{zinke}.
-\item Hair models rendered using multiple importance sampling. This method is a contribution of this report.
-\end{itemize}
-
-To evaluate whether importance sampling works significantly better, two comparisons are performed.
+The main goal of this thesis is to find out if multiple importance sampling applied to the dual scattering method leads to a significant reduction of noise in the rendered image. In order to come to a conclusion, evaluation criteria need to be set up. This is a challenge since there is no reference image to compare with. There are three criteria to take into account:
 
 \begin{itemize}
-
-\item First of all a comparison is made by comparing the visual appearance of the image. Is the result obtained with importance sampling looking appropriate for different scenarios? Such as when the model is backlit or frontlit, or when the amount of reflection is high? This comparison is rather subjective, so there needs to be another unbiased way to measure the performance between uniform and importance sampling.
-
-\item Second of all, a comparison is performed between the variance in the rendered result. It is important to only compute the variance for the hair volume and not for the background image. This could otherwise give us a false sense of conversion if the hair model covers only a small region of the image. To prevent this from happening, only a specific rectangular region of the image is taken into account that is fully covered by the hair model. The variance is then only computed for this specific region. Figure~\ref{variance-for-region} visualizes this concept.
-
+    \item Which sampling technique to use to render the reference material?
+    \item How many samples per pixel to use for comparing rendered results?
+    \item How to evaluate the reference image with the multiple scattered image?
 \end{itemize}
 
-\section{Evaluation against ground truth}
+The reference image will from now on be named the ground truth. In this thesis the ground truth image is rendered using the same dual scattering implementation as the multiple importance sampled results. The difference is only in the way of sampling, where the ground truth is rendered using uniform sampling. Uniform sampling can be considered a typical way of sampling when the distribution is unknown, and therefore a valid way to compare the multiple importance sampled results with. By changing only the sampling strategy, the resulting noise can be compared pixel by pixel. 
 
-Uniform sampling is the least error prone sampling method that does not need any knowledge about the mathematical model being used. Therefore it is useful to be used for generating the ground truth. The ground truth can be defined as the result obtained by rendering the dual scattering method with uniform sampling by taking a very high amount of samples per pixel for which we can assume that conversion has been reached (for example 1024 samples per pixel).  Any sampling strategy should eventually converge to the same result. We do expect that the importance sampling strategy is converging faster to the ground truth compared to uniform sampling.
+The idea behind unbiased sampling strategies is that they all converge to the same result. Using this property, the expectation is that by taking a lot of samples, the result of uniform sampling and importance sampling should be equivalent. For this thesis, the ground truth is rendered up to 512 pixels per sample. This does not completely remove the noise from the ground truth, but it is sufficient to perform a comparison. Especially with importance sampling, you should see the impact clearly for a low amount of samples. Also, taking more samples drastically increased rendering times. 
 
+At last an evaluation needs to be performed. In this thesis, the rendered results are compared for an incremental number of samples per pixel, from 1 up to 512 samples per pixel. To evaluate whether importance sampling reduces noise, two comparisons are performed.
 
-\section{Evaluating the conversion rate in terms of variance}
-
-Another way to evaluate the results is to express the variance of the sampling strategy with results of the same sampling strategy, but by using different pixels per sample. By comparing the variance between consecutive results for 1, 2, 4, 8, etc. pixels per samples, we can compute the relative variance as we increase the pixels per samples. You would expect that at some point conversion has been reached. Conversion can be defined as the first image (by increasing the samples per pixel) for which comparing the variance with the previous result is below a threshold variance. We would expect that importance sampling converges faster than uniform sampling.
+\begin{itemize}
+    \item First of all a comparison is made by comparing the visual appearance of the image. Is the result obtained with importance sampling looking as we expect for different scenarios? Such as when the model is backlit or frontlit, or when the amount of reflection is high? This comparison is rather subjective, so there needs to be another unbiased way to measure the performance between uniform and importance sampling.
+    \item Second of all, a comparison is performed between the variance in the rendered result. It is important to only compute the variance for the hair volume and not for the background image. This could otherwise give us a false sense of conversion if the hair model covers only a small region of the image. To prevent this from happening, only a specific rectangular region of the image is taken into account that is fully covered by the hair model. The variance is then only computed for this specific region. Figure~\ref{variance-for-region} visualizes this the comparison region.
+\end{itemize}
 
 
 \section{Theoretical details about importance sampling for dual scattering method}
-
-The following sections go deeper in the application of multiple importance sampling to the dual scattering method. Next chapter specifically deals with the implementation aspect.
-
 
 In this section I will describe the workings of the physically based importance sampling strategy and how it is applied to the Dual scattering method. The importance sampling strategy is proposed by d'Eon et al.~\cite{eon2013} for the energy conserving improvement of the Marschner model.~\cite{eon2011}.
 
@@ -868,8 +858,8 @@ The usual question with importance sampling is to find an incoming light directi
 For implementation purposes PBRT is used, which is an open source physics based ray-tracing framework. In general there are two situations that need to be handled when implementing an importance sampling strategy.
 
 \begin{itemize}
-\item Given an outgoing direction $\omega_o$, sample an incident direction $\omega_i$ according to the probability distribution that ideally should be close fit to the shape of the response of the hair rendering model. Besides the incident direction $\omega_i$, also the corresponding PDF should be computed.
-\item Given two directions $\omega_i$ and $\omega_o$, what is the probability of sampling $\omega_i$, given $\omega_o$. This is similar to the previous point, except that the output is now only a PDF value.
+    \item Given an outgoing direction $\omega_o$, sample an incident direction $\omega_i$ according to the probability distribution that ideally should be close fit to the shape of the response of the hair rendering model. Besides the incident direction $\omega_i$, also the corresponding PDF should be computed.
+    \item Given two directions $\omega_i$ and $\omega_o$, what is the probability of sampling $\omega_i$, given $\omega_o$. This is similar to the previous point, except that the output is now only a PDF value.
 \end{itemize}
 
 In equation~\ref{marschner_model_scatterfunction} the scattering function for the Marschner model is given. The method by d'Eon et al.~\cite{eon2011} simplifies the equation so that the longitudinal scattering function $M$ is only dependent on longitudinal angles and the azimuthal scattering function $N$ is only dependent on the azimuthal angles. Also the inclination dependent factors, such as the $\cos^2 \theta_d$ term present in the Marschner model are included in the $M_p$ term. This leads to the following equation:
@@ -927,7 +917,6 @@ This is done by solving for roots as has been explained in Marschner related wor
 
 This is done in a similar way to sampling a lobe by using the relative attenuation for each of the roots $h$. Since the TRT component can have three roots, it means that this scattering mode actually has three paths to generate the sampled direction. They are summed together to represent the attenuation for the TRT mode. The relative attenuations are then used as the sample weights when evaluating the model $S$ to find the corresponding PDF.
 
-
 \subsection{Importance sampling the longitudinal M function}
 \label{sec_importance_sampling_M}
 
@@ -955,7 +944,6 @@ u(\xi_1) &= v \log \Big (e^{1/v} - 2\xi_1 \sinh \frac{1}{v} \Big ) \\
 \end{align}
 
 At last we end up with the sampled $\theta_i$. The probability of sampling this value is equal to the longitudinal scattering function (assuming it is energy conserving and integrates to 1), therby the PDF is $M \cos^2 \theta_i$.
-
 
 \subsection{Importance sampling the azimuthal N function}
 

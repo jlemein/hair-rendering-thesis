@@ -1,15 +1,15 @@
 # Fdb version 3
-["bibtex thesis"] 1585766488 "thesis.aux" "thesis.bbl" "thesis" 1585766488
+["bibtex thesis"] 1585777746 "thesis.aux" "thesis.bbl" "thesis" 1585777746
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
-  "thesis.aux" 1585766488 20160 36353aa8d17a1b9853e2595133a7f425 ""
+  "thesis.aux" 1585777745 19902 b76b99bb7670896f0daedf23f0518cf5 ""
   "thesis.bcf" 0 -1 0 ""
   "thesis.bib" 1569009029 13721 728c494a0585a0a5abe530fe2b7d1913 ""
   (generated)
   "thesis.bbl"
-["pdflatex"] 1585766486 "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex" "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf" "thesis" 1585766486
+["pdflatex"] 1585777744 "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex" "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf" "thesis" 1585777744
   "/etc/texmf/web2c/texmf.cnf" 1561022633 1101 af7716885e081ab43982cab7b4672c1a ""
-  "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux" 1585766486 8 a94a2480d3289e625eea47cd1b285758 ""
-  "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex" 1585766483 121377 c65a4118159bc2d714a489cb53729ad7 ""
+  "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux" 1585777744 8 a94a2480d3289e625eea47cd1b285758 ""
+  "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex" 1585777741 120965 e527a4e0ecd7dd84e5cdeaa698338747 ""
   "/usr/share/texlive/texmf-dist/fonts/map/fontname/texfonts.map" 1272929888 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1095.tfm" 1136768653 3584 21b378cca2e40816b0e6d74a4dc98f04 ""
   "/usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm" 1136768653 3584 402da0b29eafbad07963b1224b222f18 ""
@@ -188,7 +188,7 @@
   "solidangle.png" 1568998383 82490 5ffc1fb09eabe6a236cecc15518b6700 ""
   "thesis.aux" 0 -1 0 ""
   "thesis.bbl" 0 -1 0 "bibtex thesis"
-  "thesis.tex" 1585766483 121377 c65a4118159bc2d714a489cb53729ad7 ""
+  "thesis.tex" 1585777741 120965 e527a4e0ecd7dd84e5cdeaa698338747 ""
   "thesis.toc" 0 -1 0 ""
   "variance-results/deon512.png" 1568575817 1551807 a4e195e013c779e430eefd909b451da0 ""
   "variance-results/is1.png" 1568583393 70077 b256510c86e4f890ba9dcf8ce112c6eb ""
@@ -216,8 +216,8 @@
   "variance-results/variance-plot.png" 1568617336 69228 ba7206fbbe89272e6354308ba07d25b0 ""
   (generated)
   "thesis.aux"
-  "thesis.log"
   "thesis.pdf"
-  "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf"
   "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.log"
+  "thesis.log"
   "thesis.toc"
+  "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf"
