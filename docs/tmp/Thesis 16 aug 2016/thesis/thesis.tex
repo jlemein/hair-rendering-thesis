@@ -91,18 +91,19 @@ Prof. Remco \textsc{Veltkamp} \\ % Supervisor's Name
 %
 \begin{abstract}
 
-Rendering hair fibers is a challenging task because of the extensive amount of hair fibers required to render a realistic human hair model. Moreover hair fibers are very thin, requiring a lot of rays to be traced to produce noise-free images. Marschner et al.~\cite{marschner} proposed a physically based single fiber scattering model to render realistic human hair fibers. 
+Rendering human hair models using individual hair fibers is a challenging task. It is challenging because of the extensive amount of hair fibers required to render a realistic model. Moreover hair fibers are very thin, resulting in noise in the renderings. To reduce this noise in a physically accurate way, more samples need to be taken. Marschner et al. (2003) proposed a physically based single fiber scattering model to render realistic human hair fibers. It is considered the founding work on current approach to physically based rendering human hair fibers.
+%~\cite{marschner}
 
-When rendering light colored hair, multiple fiber scattering is essential for the hair color. Zinke et al.~\cite{zinke} extended the work of Marschner by splitting multiple scattering up into two components: global multiple scattering and local multiple scattering. Global multiple scattering approximates the multiple scattering contribution, thereby reducing the rendering time considerably. Local multiple scattering resembles the Marschner model to keep the single fiber scattering characteristics.
+%~\cite{zinke}
+When rendering light colored hair, multiple fiber scattering is essential for the appearance of the hair color. Zinke et al. (2008) extended the work of Marschner by splitting multiple scattering up into two components: global multiple scattering and local multiple scattering. Global multiple scattering approximates the multiple scattering contribution, thereby reducing the rendering time considerably. Local multiple scattering resembles the Marschner model to keep the single fiber scattering characteristics. This approach is known as the dual-scattering method. 
 
-This thesis applies the importance sampling strategy of d'Eon et al.~\cite{eon2013} on the dual scattering approximation.
+%~\cite{eon2013}
+Importance sampling is a widely used noise-reduction technique to speed up renderings. By applying importance sampling, samples are not taken randomly (as is the case for uniform sampling), but are sampled according to a probability density distribution that favors samples that contribute more to the output rendering. This reduces noise faster and thus reduces the amount of samples that are required to produce noise-free renderings. Both uniform and importance sampling should eventually converge to the same result, with importance sampling reaching it faster.
 
+%~\cite{eon2013}
+d'Eon et al. (2013) proposed an importance sampling strategy that works particularly well for the Marschner model. This importance sampling strategy can also be applied to the dual scattering method. It is therefore very interesting to evaluate whether applying importance sampling to the dual-scattering method reduces the noise as well. This comparison forms the contribution of this report. 
 
-When rendering with uniform sampling, samples are generated randomly around a sphere with no prior knowledge of the scattering behavior of the hair model. Importance sampling tries to place samples in an informed way and use the scattering characteristics of the hair model. By applying importance sampling you expect that the noise (or variance) of the image reduces compared to a rendered image with uniform samples. Or in a different perspective: you expect an importance sampled rendering to contain less noise compared to the same number of samples with uniform sampling. Both uniform and importance sampling should eventually converge to the same result, with importance sampling reaching it faster.
-
-The importance sampling strategy proposed by d'Eon et al.~\cite{eon2013} works particularly well for the Marschner model. In this thesis the same importance sampling strategy is applied to the dual scattering method to see if sampling can be optimized which leads to better quality renderings. Results are evaluated by comparing the variance measurements between uniform sampling and importance sampling. This report concludes that importance sampling does not significantly increase the quality of the renderings compared to uniform sampling. This means that the effort of sample placement does not reduce the variance in the images.
-
-This report concludes  by visual inspection it can be shown that importance sampling does not significantly show better results compared to uniform sampling. This 
+This report concludes by measurement and visual inspection that importance sampling for the dual-scattering method does not significantly increase the quality of the renderings compared to uniform sampling. Such a small increase in quality is not what was expected. A possible explanation is that the effect of multiple scattering is less dependent on specific sampling directions. It essentially smoothens the contribution from any direction and therefore, importance sampling does not significantly outperform uniform sampling.
 
 \end{abstract}
 
@@ -156,16 +157,17 @@ The work in this thesis is primarily concerned around the work of three publicat
 
 \subsection*{Goals}
 % b. State your goal (what problems you really want to solve)
-In this thesis project the goal is to extend the dual scattering model from Zinke et al.~\cite{zinke} with the importance sampling strategy proposed by d'Eon et al.~\cite{eon2013}. Importance sampling is a variance reduction technique that works very well together with Monte-Carlo integration. The focus will be on the importance sampling strategy. There are in general two problems to be solved.
+In this thesis project the goal is to extend the dual scattering model from Zinke et al.~\cite{zinke} with the importance sampling strategy proposed by d'Eon et al.~\cite{eon2013}. Importance sampling is a variance reduction technique that works very well together with Monte-Carlo integration. The focus will be on the importance sampling strategy. There are in general two problems that need to be tackled.
 
-One of the problems is that this importance sampling strategy is created for the energy conserving hair model by d'Eon et al.~\cite{eon2011}, which is in fact an optimized Marschner model where minor glitches relating to energy conservance are corrected. Also this model simplifies the Marschner model by using gaussian quadratures, which are more convenient to work with and removes the need for solving cubic equations. However, both the method devised by d'Eon et al.~\cite{eon2011} and the Marschner model~\cite{marschner} are similar in behavior and thus can use the same importance sampling method.
+\begin{itemize}
 
-One of the problems is that this importance sampling strategy is created for the energy conserving hair model by d'Eon et al.~\cite{eon2011}. The problem is that the energy conserving , which is in fact an optimized Marschner model where minor glitches relating to energy conservance are corrected. Also this model simplifies the Marschner model by using gaussian quadratures, which are more convenient to work with and removes the need for solving cubic equations. However, both the method devised by d'Eon et al.~\cite{eon2011} and the Marschner model~\cite{marschner} are similar in behavior and thus can use the same importance sampling method.
+\item[1] The method in this report is based on the traditional Marschner model, which is not strictly energy conserving. The improved approach by d'Eon et al.~\cite{eon2011} fixes the shortcomings and they also provided an importance sampling method in their follow up paper~\cite{eon2013}. This importance sampling strategy is used in this report to importance sample the dual scattering method. Since the dual scattering method is based on the "flawed" Marschner model, this can lead to a slightly darker or lighter image. The goal is to see whether the results are still acceptable.
 
+\item[2] A second problem is the global illumination computation, given a direction through the hair volume. There are different ways to gather this and in this report a  voxel grid is used to store the density of the hair model at specific locations in three-dimensional space. This provides some issues with aliasing at edges of voxel cells, that need to be solved.
 
-A second problem is the fact that we are working with the Dual-Scattering method, which is an extension to the Marschner model by taking into account global illumination without the need to do extensive path tracing. There are different ways to gather the global illumination and in this work I will use a voxel grid to store the density of the hair model at specific locations in three-dimensional space.
+\end{itemize}
 
-The ultimate goal is to see whether the importance sampling method proposed by d'Eon et al.~\cite{eon2013} can be used efficiently for the Dual-Scattering approximation model by Zinke et al.~\cite{zinke}.
+The ultimate goal is to see whether the importance sampling method proposed by d'Eon et al.~\cite{eon2013} can be used efficiently for the dual scattering approximation model by Zinke et al.~\cite{zinke} and thereby speed up the rendering time.
 
 \subsection*{Approach}
 % e. State how you want to approach the problem
@@ -367,25 +369,28 @@ A nice thing about radiance is that it remains constant along rays as long as th
 
 \subsection{Bidirectional Reflection Distribution Function (BRDF)}
 
-When a surface is lit by a light source, part of it will scatter back into the environment. The distribution at which light is scattered back can be described by a bidirectional scattering distribution function (BSDF). If the surface is opaque and we are only taking into account reflection inside the hemisphere, then the reflection behaviour can be described by a bidirectional reflectance distribution function (BRDF). At some point $p$ on the surface, the BRDF function $f_r$ describes the relation between the amount of incoming radiance from direction $w_i$, written as $L_i(\omega_i)$, and the amount of reflected outgoing radiance in direction $w_o$, written as $L_o(\omega_o)$.
+When a surface is lit by a light source, part of it will scatter back into the environment. The distribution at which light is scattered back is described by a bidirectional scattering distribution function (BSDF). It is named bidirectional, because the distribution is dependent on the incident and outgoing light direction. If the surface is opaque, which means there is no subsurface light transport or refraction, then the BSDF is described by surface reflection only. In that case the BSDF is called a bidirectional reflectance distribution function (BRDF). A BRDF function is denoted as $f_r(p, \omega_i, \omega_o)$ where $p$ is the surface position, $\omega_i$ is the incident light direction and $\omega_o$ the outgoing light direction.
 
-Physically based BRDFs have two important characteristics~\cite{pharr2017}:
-
-\begin{itemize}
-\item Reciprocity: the incoming and outgoing directions can be swapped and still have the same reflection behaviour: $f_r(p, \omega_i, \omega_o) = f_r(p, \omega_o, \omega_i)$.
-\item Energy conservation: the total amount of energy that is reflected will always be less or equal than the amount of energy that is incident to the surface.
-\end{itemize}
-
-Physically, a BRDF describes the relation between the amount of differentiated irradiance $dE(p, \omega_i)$ and the differentiated outgoing radiance $dL_o(p, \omega_o)$. 
+A BRDF can be expressed as a ratio between the outgoing radiance $L_o$ in direction $\omega_o$ and an incident irradiance $E_i$ from direction $\omega_i$. Since we are dealing with a continuous flow of energy transport (there is no snapshot of light), the BRDF ratio is expressed as a differential, as shown in equation~\ref{eq_brdf}.
 
 \begin{equation}
 f_r(p, \omega_o, \omega_i) = \frac{dL_o(p, \omega_o)}{dE(p,\omega_i)} = \frac{dL_o(p, \omega_o)}{L_i(p, \omega_i) \cos \theta_i d\omega_i}
+\label{eq_brdf}
 \end{equation}
+
+The rewritten form of irradiance in the equation above comes from the definition of irradiance as has been explained in section~\ref{radiance_irradiance}.
+
+BRDF's have two important characteristics~\cite{pharr2017}:
+
+\begin{itemize}
+\item Reciprocity: the incoming and outgoing directions can be swapped and still have the same reflection behavior: $f_r(p, \omega_i, \omega_o) = f_r(p, \omega_o, \omega_i)$.
+\item Energy conservation: the total amount of energy that is reflected will always be less or equal than the amount of energy that is incident to the surface.
+\end{itemize}
 
 \subsection{Bidirectional Curve Scattering Distribution Function (BCDSF)}
 \label{sec_bcsdf}
 
-As discussed in the previous section, a BRDF describes the ratio between outgoing surface radiance in direction $\omega_o$, to incident surface irradiance from a differential solid angle $\omega_i$~\cite{ward}. Fibers are usually treated as one-dimensional curves. Therefore, scattering from fibers need to be described in terms of the length of the fiber. 
+As discussed in the previous section, a BRDF describes the ratio between outgoing surface radiance in direction $\omega_o$, to incident surface irradiance from a differential solid angle $\omega_i$~\cite{ward}. Fibers are usually treated as one-dimensional curves. Curves have no area and therefore, scattering from fibers need to be described in terms of the length of a fiber.
 
 Scattering from a fiber is thus represented by a bidirectional curve scattering distribution function (BCSDF) $S(\omega_i, \omega_o)$ that describes the ratio between the outgoing curve radiance $L_o$ in direction $\omega_o$ to the incident curve irradiance $E_i$ from a differential solid angle $\omega_i$. It shares the same physical units as a BRDF, but the concept is a little different.
 
@@ -787,17 +792,74 @@ The Marschner hair model focuses on single fiber scattering and to render realis
 
 \chapter{Approach}
 
-In this thesis the contribution comes from comparing the results for dual scattering method between uniform sampling and the multiple importance sampling strategy by d'Eon et al.~\ref{deon-IS}. This importance sampling strategy has been developed for a hair rendering model by d'Eon and Marschner~\ref{deon}. This model is a continuation of the Marschner model in this report, where they managed to make the model more efficient by removing the root-solving process (explain better).
+The central problem in this thesis, and for rendering in general, is to improve rendering speed. Either by requiring less samples per pixel for the same quality image, or by increasing the quality of the image with the same amount of pixels. In both cases, it boils down to the same problem and this problem is usually solved by careful sample placement. Increasing the rendering speed is relevant for several applications, such as for the animation movie industry that wants to generate physically accurate movies, and for rendering real-time hair simulations for the cosmetic industry. In this thesis the choice is made to apply multiple importance sampling to the dual scattering method.
 
-First of all a comparison is made by comparing the visual appearance of the image. Is the result obtained with importance sampling looking appropriate for different scenarios, such as when the model is backlit or frontlit, or when the amount of reflection is high. This comparison is rather subjective and to feeling, so we need another way to measure the performance between uniform and importance sampling.
+In this chapter the theoretical approach discusses the theoretical challenges involved in rendering hair models using importance sampling. Based on the literature provided in the background, there is no official approach on how to apply importance sampling to the dual scattering method. This is where this chapter kicks in. In this chapter I will elaborate on how to importance sampling the dual scattering method of Zinke et al.~\cite{zinke}.
 
-Two ways to evaluate the performance between uniform and importance sampling is by using the variance compared to ground truth and the variance compared to an increasing amount of pixels per samples.
+The theoretical challenges are as follows:
 
-It is important to only compute the variance for the hair volume and not for the background image. This could otherwise give us a false sense of conversion if the hair model covers only a small region of the image. To prevent this from happening, only a specific rectangular region of the image is taken into account that is fully covered by the hair model. The variance is then only computed for this specific region. Figure~\ref{variance-for-region} explains the concept in a graphical way.
+\begin{itemize}
+    \item How to apply multiple importance sampling to the dual scattering method? The multiple importance sampling algorithm that is applied to the dual scattering method has been created for the improved Marschner model. The challenge is that the dual scattering method forms a different basis to the importance sampling algorithm. It could work less optimal if the probability distribution for the importance sampling algorithm does not match accurately with the distribution of the dual scattering method. In section~\ref{approach_problem1} the design decisions are explained and in section~\ref{approach_details_mis} the multiple importance scattering algorithm is explained in depth.
+    \item How to measure or compare the results for multiple importance sampling? Rendering images using multiple importance sampling can look nice, or more visually pleasing when more samples are taken, but it is important to be clear on how to evaluate rendered images. In section~\ref{approach_problem2} the evaluation criteria are expressed.
+\end{itemize}
 
-(add picture)
+In the following chapter 'Implementation', the practical challenges are discussed that occurred when implementing a physics based hair rendering algorithm.
 
-\section{Importance sampling for dual scattering method}
+
+
+\section{Problem 1: How to apply multiple importance scattering to the dual scattering method?}
+\label{approach_problem1}
+
+Creating a multiple importance sampling strategy is a mathematical involved process. Except for the most simple mathematical distributions, it usually requires quite a lot of mathematical background theory in order to solve the complex integrals that follow from complex scattering distributions. This is one of the reasons why it is difficult to find an importance sampling strategy for the original Marschner model. This is also the reason why so much effort has been put in expressing the Marschner model using more simple mathemtical equations. This is to make importance sampling possible as has eventually been accomplished by d'Eon et al.~\ref{eon2013}.
+
+The current status in hair rendering can be summarized by the following two points.
+
+\begin{itemize}
+    \item The dual scattering method provides an approximation to rendering multiple scattered hair by breaking up the computations for single scattering and multiple scattering. Single scattering resembles the original Marschner model, but the more expensive multiple scattering has been replaced by a volume scattering approximation. It provides a speed up compared to the traditional Marschner model, where extensive path tracing is needed to compute the effects of multiple scattering through the hair volume.
+    \item The original Marschner model has been extensively analyzed and improved. One of the improvements is that the expensive root-solving process is removed. Eventually d'Eon et al.~\cite{eon2013} improved the algorithm even further by proposing an importance sampling algorithm on top of the already improved Marschner model.
+\end{itemize}
+
+One of the observations made in d'Eon et al.~\cite{eon2013} is that the importance sampling strategy should work for the original Marschner model, as well as for all models that approximate the Marschner model. The observation behind this is that all approximated solutions to the Marschner model in essence are modeling the same scattering distribution. If the scattering distribution would be different, then the hair rendering would look different compared to the Marschner model. This means that the importance sampling should be able to be applied to the dual scattering method, since the dual scattering method approximates the Marschner model.
+
+The only caveat is that the Marschner model is not fully energy conserving at the edge-cases, such as glancing angles. This problem is applicable to the dual scattering method as well. The expectation is that these edge-cases can be ignored and therefore the choice has been made that it is possible to apply the importance sampling strategy by d'Eon et al.~\cite{eon2013} to the dual scattering method of Zinke et al.~\cite{zinke}. The details on the multiple importance sampling strategy are elaborated in section~\ref{approach_details_mis}.
+
+
+
+
+
+\section{Problem 2: How to measure or compare the results between multiple importance sampling and uniform sampling?}
+
+There has not been an evaluation of the application of importance sampling to the dual scattering method. The contribution of this report is to perform this evaluation. The central question becomes whether multiple importance sampling applied to the dual scattering method leads to a significant improvement to the noise in the rendered image. To evaluate whether importance sampling leads to significant rendering improvements, a comparison is performed between two sampling strategies:
+
+\begin{itemize}
+\item Hair models rendered using uniform sampling. This corresponds to rendering via the original dual scattering method by Zinke et al.~\cite{zinke}.
+\item Hair models rendered using multiple importance sampling. This method is a contribution of this report.
+\end{itemize}
+
+To evaluate whether importance sampling works significantly better, two comparisons are performed.
+
+\begin{itemize}
+
+\item First of all a comparison is made by comparing the visual appearance of the image. Is the result obtained with importance sampling looking appropriate for different scenarios? Such as when the model is backlit or frontlit, or when the amount of reflection is high? This comparison is rather subjective, so there needs to be another unbiased way to measure the performance between uniform and importance sampling.
+
+\item Second of all, a comparison is performed between the variance in the rendered result. It is important to only compute the variance for the hair volume and not for the background image. This could otherwise give us a false sense of conversion if the hair model covers only a small region of the image. To prevent this from happening, only a specific rectangular region of the image is taken into account that is fully covered by the hair model. The variance is then only computed for this specific region. Figure~\ref{variance-for-region} visualizes this concept.
+
+\end{itemize}
+
+\section{Evaluation against ground truth}
+
+Uniform sampling is the least error prone sampling method that does not need any knowledge about the mathematical model being used. Therefore it is useful to be used for generating the ground truth. The ground truth can be defined as the result obtained by rendering the dual scattering method with uniform sampling by taking a very high amount of samples per pixel for which we can assume that conversion has been reached (for example 1024 samples per pixel).  Any sampling strategy should eventually converge to the same result. We do expect that the importance sampling strategy is converging faster to the ground truth compared to uniform sampling.
+
+
+\section{Evaluating the conversion rate in terms of variance}
+
+Another way to evaluate the results is to express the variance of the sampling strategy with results of the same sampling strategy, but by using different pixels per sample. By comparing the variance between consecutive results for 1, 2, 4, 8, etc. pixels per samples, we can compute the relative variance as we increase the pixels per samples. You would expect that at some point conversion has been reached. Conversion can be defined as the first image (by increasing the samples per pixel) for which comparing the variance with the previous result is below a threshold variance. We would expect that importance sampling converges faster than uniform sampling.
+
+
+\section{Theoretical details about importance sampling for dual scattering method}
+
+The following sections go deeper in the application of multiple importance sampling to the dual scattering method. Next chapter specifically deals with the implementation aspect.
+
 
 In this section I will describe the workings of the physically based importance sampling strategy and how it is applied to the Dual scattering method. The importance sampling strategy is proposed by d'Eon et al.~\cite{eon2013} for the energy conserving improvement of the Marschner model.~\cite{eon2011}.
 
@@ -912,6 +974,37 @@ For rough fibers, the relative change in azimuth is offset by a gaussian distrib
 
 Take into account that the spherical direction wraps around in the range $\{ -\pi, \pi \}$.
 
+
+\chapter{Implementation}
+
+This chapter deals with the implementation details to implement the importance sampling strategy for the dual scattering method. The approach on how this is done is described in the previous chapter. 
+
+
+\section{Problem 1: Which framework to use to render physics based?}
+
+For implementation purposes the PBRT raytracing framework is used. PBRT stands for Physics Based Ray Tracing and is used a lot to explore and experiment with raytracing algorithms. It is developed by Matt Phar et al. and freely available, open source from their website~\footnotetext{http://www.pbrt.org}] and described in their corresponding book~\cite{pbrt}. Within PBRT, it is possible to create your own BSDF's. A BSDF is applied to a surface, but for hair rendering we are using curve representations. Consequently instead of a BSDF, for implementation purposes we are implementing a BCSDF, which stands for "bidirectional curve scattering distribution function".
+
+Implementing the dual scattering algorithm required the following implementations.
+
+\begin{itemize}
+\item Implementation of the voxel grid algorithm.
+\item Implement the importance sampling algorithm for Marschner et al and apply it to the dual scattering algorithm.
+\end{itemize}
+
+\section{Problem 2: How to write code for voel grid?}
+\section{The voxel grid}
+
+Tracing a ray through the voxel . When the shadow ray is shot towards the light source, this can give false results. In PBRT I overridden the case for a ray that is show, to not find an intersection shadow....
+
+\section{Importance sampling}
+
+One of the struggles in the implementation is that the dual scattering algorithm is not following the ideal physics based path tracing example. Usually a ray bounces against a surface, then the BSDF is evaluated and another ray is created which follows in the reflected or refracted direction. Along the way the path contribution is collected, giving a physically accurate result.
+
+The dual scattering algoritm approximates the global illumination. When a ray intersects with the hair volume, instead of reflecting or refracting the ray, the voxel grid is used to collect the global illumination. For this to work
+
+
+
+
 \section{The voxel grid}
 
 The dual scattering method proposes different ways to gather global illumination needed for the global multiple scattering component. Among those are ray shooting and forward scattering maps, as explained in Zinke et al.~\cite{zinke}:
@@ -933,15 +1026,6 @@ The orientation of the point being shaded is used to compute the spread of light
 There is one edge-case worth mentioning. Hair fibers observed at the boundary of the hair volume, which are directly lit by a light source should have a direct illumination fraction set to 1. However, since this hair fiber is using the density value from the voxel cell, this gives wrong result for directly illuminated hair fibers. To prevent this from happening a shadow ray is traced to check whether the fiber is in shadow. If the fiber is in shadow, the density value of the voxel grid is used and integration happens as described. If the fiber is directly lit by the light source, then the voxel grid is ignored and a direct illumination is set to 1.
 
 For the voxel grid I made use of the openvdb library. To smoothen the density values I used a box sampler to smooth out the sampled density values from the voxel grid. The box sampler trilinearly interpolates samples taken from the voxel grid.
-
-\section{Evaluation against ground truth}
-
-Uniform sampling is the least error prone sampling method that does not need any knowledge about the mathematical model being used. Therefore it is useful to be used for generating the ground truth. The ground truth can be defined as the result obtained by rendering the dual scattering method with uniform sampling by taking a very high amount of samples per pixel for which we can assume that conversion has been reached (for example 1024 samples per pixel).  Any sampling strategy should eventually converge to the same result. We do expect that the importance sampling strategy is converging faster to the ground truth compared to uniform sampling.
-
-
-\section{Evaluating the conversion rate in terms of variance}
-
-Another way to evaluate the results is to express the variance of the sampling strategy with results of the same sampling strategy, but by using different pixels per sample. By comparing the variance between consecutive results for 1, 2, 4, 8, etc. pixels per samples, we can compute the relative variance as we increase the pixels per samples. You would expect that at some point conversion has been reached. Conversion can be defined as the first image (by increasing the samples per pixel) for which comparing the variance with the previous result is below a threshold variance. We would expect that importance sampling converges faster than uniform sampling.
 
 
 \chapter{Results}
