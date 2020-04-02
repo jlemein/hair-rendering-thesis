@@ -13,12 +13,13 @@
 \contentsline {subsection}{\numberline {2.2.3}Irradiance}{10}
 \contentsline {subsection}{\numberline {2.2.4}Radiance}{13}
 \contentsline {subsection}{\numberline {2.2.5}Bidirectional Reflection Distribution Function (BRDF)}{13}
-\contentsline {subsection}{\numberline {2.2.6}Bidirectional Curve Scattering Distribution Function (BCDSF)}{14}
-\contentsline {subsection}{\numberline {2.2.7}Rendering Equation}{14}
-\contentsline {section}{\numberline {2.3}Importance Sampling}{15}
-\contentsline {subsection}{\numberline {2.3.1}Monte-Carlo integration}{15}
-\contentsline {subsection}{\numberline {2.3.2}Importance sampling}{16}
-\contentsline {subsection}{\numberline {2.3.3}Multiple importance sampling}{16}
+\contentsline {section}{\numberline {2.3}sec_bsdf}{13}
+\contentsline {subsection}{\numberline {2.3.1}Bidirectional Curve Scattering Distribution Function (BCDSF)}{14}
+\contentsline {subsection}{\numberline {2.3.2}Rendering Equation}{14}
+\contentsline {section}{\numberline {2.4}Importance Sampling}{15}
+\contentsline {subsection}{\numberline {2.4.1}Monte-Carlo integration}{15}
+\contentsline {subsection}{\numberline {2.4.2}Importance sampling}{16}
+\contentsline {subsection}{\numberline {2.4.3}Multiple importance sampling}{16}
 \contentsline {chapter}{\numberline {3}Related Work}{18}
 \contentsline {section}{\numberline {3.1}Hair Rendering Overview}{18}
 \contentsline {subsection}{\numberline {3.1.1}Single fiber scattering}{18}
@@ -54,15 +55,15 @@
 \contentsline {subsection}{\numberline {4.3.4}Importance sampling the azimuthal N function}{43}
 \contentsline {chapter}{\numberline {5}Implementation}{45}
 \contentsline {section}{\numberline {5.1}Problem 1: Which framework to use to render physics based?}{45}
-\contentsline {section}{\numberline {5.2}Problem 2: How to write code for voel grid?}{46}
-\contentsline {section}{\numberline {5.3}The voxel grid}{46}
-\contentsline {section}{\numberline {5.4}Importance sampling}{46}
-\contentsline {section}{\numberline {5.5}The voxel grid}{46}
-\contentsline {chapter}{\numberline {6}Results}{48}
-\contentsline {section}{\numberline {6.1}Dual scattering in real-world situations}{48}
-\contentsline {subsubsection}{Observations}{49}
-\contentsline {section}{\numberline {6.2}Variation of the forward and backward density factors}{49}
-\contentsline {section}{\numberline {6.3}Theoretical Results}{49}
-\contentsline {subsection}{\numberline {6.3.1}Relative variance for increasing samples per pixel}{50}
-\contentsline {subsection}{\numberline {6.3.2}Variance compared to ground truth}{51}
-\contentsline {chapter}{\numberline {7}Conclusion}{60}
+\contentsline {section}{\numberline {5.2}Problem 2: How to write code for voxel grid?}{46}
+\contentsline {section}{\numberline {5.3}Problem 3: How to deal with memory and speed requirements}{48}
+\contentsline {section}{\numberline {5.4}Importance sampling}{48}
+\contentsline {section}{\numberline {5.5}The voxel grid}{48}
+\contentsline {chapter}{\numberline {6}Results}{51}
+\contentsline {section}{\numberline {6.1}Dual scattering in real-world situations}{51}
+\contentsline {subsubsection}{Observations}{52}
+\contentsline {section}{\numberline {6.2}Variation of the forward and backward density factors}{52}
+\contentsline {section}{\numberline {6.3}Theoretical Results}{52}
+\contentsline {subsection}{\numberline {6.3.1}Relative variance for increasing samples per pixel}{53}
+\contentsline {subsection}{\numberline {6.3.2}Variance compared to ground truth}{54}
+\contentsline {chapter}{\numberline {7}Conclusion}{63}

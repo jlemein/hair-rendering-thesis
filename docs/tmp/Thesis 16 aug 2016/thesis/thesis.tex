@@ -239,7 +239,7 @@ Implicit hair is usually modelled as a volume or polygonal boundary representati
 The downside of implicit representations is that it is not physically based and it is not flexible. Scattering behavior are usually simplified to work only for specific viewing directions. For physically based rendering, the explicit representation is the only way to go.
 
 \subsection{Geometric complexity}
-
+\ref{sec_geometric_complexity}
 A human scalp may consist of over 200.000 hair strands. Some animals, such as bears might realistically be rendered with millions of hair strands. It is clear that the amount of hair fibers lead to a geometric complex challenge. 
 
 A hair fiber is naturally represented as a curved cylinder. For rendering, these cylinders are usually approximated to make computing intersections more efficient. There are strategies to render curves. Curves can be treated as:
@@ -368,6 +368,7 @@ Radiance $L$ measures the light intensity per unit area on a surface. It measure
 A nice thing about radiance is that it remains constant along rays as long as the ray moves through a vacuum. This makes it very useful in rendering applications.
 
 \subsection{Bidirectional Reflection Distribution Function (BRDF)}
+\section{sec_bsdf}
 
 When a surface is lit by a light source, part of it will scatter back into the environment. The distribution at which light is scattered back is described by a bidirectional scattering distribution function (BSDF). It is named bidirectional, because the distribution is dependent on the incident and outgoing light direction. If the surface is opaque, which means there is no subsurface light transport or refraction, then the BSDF is described by surface reflection only. In that case the BSDF is called a bidirectional reflectance distribution function (BRDF). A BRDF function is denoted as $f_r(p, \omega_i, \omega_o)$ where $p$ is the surface position, $\omega_i$ is the incident light direction and $\omega_o$ the outgoing light direction.
 
@@ -965,24 +966,51 @@ Take into account that the spherical direction wraps around in the range $\{ -\p
 
 \chapter{Implementation}
 
-This chapter deals with the implementation details to implement the importance sampling strategy for the dual scattering method. The approach on how this is done is described in the previous chapter. 
+Aside from the theoretical challenges, there are also practical challenges in implementing physics based rendering algorithms, especially when dealing with hair models that often consist of hundreds of thousands of hair fibers. These hair fibers which are huge in amount, are also very thin, especially compared to the projected area on a pixels.
+
+This chapter deals with the implementation details to implement the importance sampling strategy for the dual scattering method. The theoretical approach is described in the previous chapter. The practical challenges can be summarized as follows.
+
+\begin{itemize}
+    \item Framework to render physics based algorithms in combination with the representation of hair strands.
+    \item How to represent the voxel grid
+    \item How to deal with memory and speed requirements
+\end{itemize}
+
+The next sections will address these challenges on how these are tackled in this thesis.
 
 
 \section{Problem 1: Which framework to use to render physics based?}
 
-For implementation purposes the PBRT raytracing framework is used. PBRT stands for Physics Based Ray Tracing and is used a lot to explore and experiment with raytracing algorithms. It is developed by Matt Phar et al. and freely available, open source from their website~\footnotetext{http://www.pbrt.org}] and described in their corresponding book~\cite{pbrt}. Within PBRT, it is possible to create your own BSDF's. A BSDF is applied to a surface, but for hair rendering we are using curve representations. Consequently instead of a BSDF, for implementation purposes we are implementing a BCSDF, which stands for "bidirectional curve scattering distribution function".
+The first challenge is to find a proper ray tracing framework, which offers the possibility to write your own BSDF materials. There is a lot of choice between different renderers, but one that is extremely useful is PBRT. PBRT stands for Physics Based Ray Tracing and is used a lot to explore and experiment with physics based raytracing algorithms. It is developed by Matt Phar et al. and freely available, open source from their website~\footnotetext{http://www.pbrt.org}] and described in their corresponding book~\cite{pbrt}. The rendered images in this thesis are created using PBRT.
 
-Implementing the dual scattering algorithm required the following implementations.
+Within PBRT, it is possible to create your own BSDF's. A BSDF is usually applied to a surface as has been discussed in section~\ref{sec_bsdf}, but for hair rendering we are using curve representations. The curve variant of a BSDF is called a "bidirectional curve scattering distribution function", abbreviated as BCSDF. PBRT provides a generic solution using BxDF classes in which it is possible to represent BCSDF materials.
+
+The representation of hair fibers can be done in a variety of ways as has been discussed in section~\ref{sec_geometric_complexity}. The possibilities were to represent them as connected triangle strips, cylindrical primitives, trigonal prisms or ribbons. Within PBRT hair fibers are specified as curves, which are a sequence of cubic Bezier splines represented by 3D points. For every cubic spline segment, the width is specified. PBRT has support for three types of curves: flat, cylindrical or ribbons. Flat corresponds to triangle strips, and the other curve types are self-explanatory. For the rendered results in this thesis cylindrical curves are used, which correspond to the most realistic representation.
+
+\section{Problem 2: How to write code for voxel grid?}
+
+Voxel grid implementations are not that trivial as they might seem at first. Yes, you can use a three-dimensional array, but this is not efficient for rendering purposes. One of the problems with voxel grids are the hard edges they produce in the renderings. Making the voxel cells very small leads to memory issues, or even precision issues because of their small size.
+
+The dual scattering approximation requires a way to efficiently approximate the global multiple scattering. The global multiple scattering can be computed in a number of ways. Zinke et al.~\cite{zinke} proposed the following methods:
 
 \begin{itemize}
-\item Implementation of the voxel grid algorithm.
-\item Implement the importance sampling algorithm for Marschner et al and apply it to the dual scattering algorithm.
+    \item Ray-shooting: with ray-shooting a shadow ray is shot through the hair volume, calculating the number of intersections with the hair fibers, together with the angle the ray makes with the direction of the fiber. In this way the density can be approximated using the formulas as explained in the background theory on dual scattering ~\ref{sec_dualscattering}. This strategy is the simplest but most expensive one to compute, because of the number of intersections being computed. Also this strategy is a little tedious to implement in PBRT. The reason for this, is that PBRT is build on the fact that every intersection is a material intersection. Tracing a shadow ray through a volume, just to count the number of intersections, is actually something non-physical and therefore not supported out of the box.
+    \item Forward-scattering maps: with forward scattering maps a two-pass approach is made. First a voxel grid is precomputed in which every voxel cell contains containing the average values for the forward transmittance $T_f$ and forward longitudinal spread $\sigma^2_f$. During the second pass, linear interpolation is used to integrate along the ray through the voxel grid.
+    \item GPU rendering using deep-opacity maps: this solution is very fast, but contains some tricks using deep opacity maps and a preprocessing step where depth maps are calculated. This thesis primarily focuses on physics based approaches and therefore didn't went in this direction.
 \end{itemize}
 
-\section{Problem 2: How to write code for voel grid?}
-\section{The voxel grid}
+The most plausible approach for this thesis is the second option: a two pass approach in which a voxel grid is precomputed. From the explanation it follows that the voxel grid should contain a possibility to do linear interpolation along a path. Also from a practical perspective, the voxel grid should not consume too much memory. For this thesis, an open-source software package OpenVdb is used~\footnote{http://www.openvdb.org}. OpenVDB is developed at Dreamworks Animation and is especially suited to be used when rendering volumetric effects. It is able to store sparse voxel grids without consuming much memory and with support for different ways of sampling: point, box and quadratic sampling that correspond to averaging out the sample based on the value in the neighboring voxel cells.
 
-Tracing a ray through the voxel . When the shadow ray is shot towards the light source, this can give false results. In PBRT I overridden the case for a ray that is show, to not find an intersection shadow....
+In this thesis the preprocessing step works as follows. For every hair fiber that is represented as a curve, loop through the curve by a specific offset, and for each position, find the corresponding voxel cell. This voxel cell is incremented with the length of the curve segment. In this way, all voxel cells, contain the relative lengths that have been traversed in that voxel cell. These lengths do not necessarily correspond to absolute density values, but are relative density values. When rendering a hair model, the density can be scaled to adjust the rendered result. In this thesis I decided not to store the orientations per voxel cell, since after a couple of scattering effects, I do expect that the orientation becomes less and less important for the end result.
+
+In the second pass the hair model is rendered. If the ray intersects with the first hair fiber at the surface of the hair volume, a lookup is performed in the voxel grid. The voxel grid, based on 3D location and orientation is traversing through all voxel cells along this "shadow" ray, integrating the results using box sampling. The choice for box sampling is arbitrarily, because the results were nice enough. It could be worth to do further research on choosing different sampling algorithms and on determining the best possible voxel size for different types of hair models such as straight hair versus curvy hair.
+
+\section{Problem 3: How to deal with memory and speed requirements}
+
+Rendering hair models is very slow. The system settings that I used for rendering is an Intel Core i7-3770K processor with 8 GB of RAM. Rendering times for 512 samples per pixel could lead up to hours, and the curvy hair model was not possible to render at all, because it consumed more memory than the 8 GB of available RAM. The reason why memory usage is so high, is because some bookkeeping structure is set up by PBRT to improve ray intersections.
+
+One of the tricks that is performed in this thesis is to do the preprocessing step, computing the voxel grid, with the full hair model. The rendering step is then performed by using half the hair model, where the 'cutted' half of the hair model is viewing away from the camera. In this way, it is not visible that actually half the hair model is used during rendering.
+
 
 \section{Importance sampling}
 
