@@ -57,13 +57,11 @@
 \contentsline {section}{\numberline {5.1}Problem 1: Which framework to use to render physics based?}{45}
 \contentsline {section}{\numberline {5.2}Problem 2: How to write code for voxel grid?}{46}
 \contentsline {section}{\numberline {5.3}Problem 3: How to deal with memory and speed requirements}{48}
-\contentsline {section}{\numberline {5.4}Importance sampling}{48}
-\contentsline {section}{\numberline {5.5}The voxel grid}{48}
-\contentsline {chapter}{\numberline {6}Results}{51}
-\contentsline {section}{\numberline {6.1}Dual scattering in real-world situations}{51}
-\contentsline {subsubsection}{Observations}{52}
-\contentsline {section}{\numberline {6.2}Variation of the forward and backward density factors}{52}
-\contentsline {section}{\numberline {6.3}Theoretical Results}{52}
-\contentsline {subsection}{\numberline {6.3.1}Relative variance for increasing samples per pixel}{53}
-\contentsline {subsection}{\numberline {6.3.2}Variance compared to ground truth}{54}
-\contentsline {chapter}{\numberline {7}Conclusion}{63}
+\contentsline {chapter}{\numberline {6}Results}{49}
+\contentsline {section}{\numberline {6.1}Dual scattering in real-world situations}{49}
+\contentsline {subsubsection}{Observations}{50}
+\contentsline {section}{\numberline {6.2}Variation of the forward and backward density factors}{50}
+\contentsline {section}{\numberline {6.3}Theoretical Results}{50}
+\contentsline {subsection}{\numberline {6.3.1}Relative variance for increasing samples per pixel}{51}
+\contentsline {subsection}{\numberline {6.3.2}Variance compared to ground truth}{52}
+\contentsline {chapter}{\numberline {7}Conclusion}{61}
