@@ -1,10 +1,10 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  2 APR 2020 23:52
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  13 APR 2020 23:56
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
  %&-line parsing enabled.
-**"/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex"
-(/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex
+**"/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex"
+(/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex
 LaTeX2e <2016/02/01>
 Babel <3.9q> and hyphenation patterns for 81 language(s) loaded.
 (/usr/share/texlive/texmf-dist/tex/latex/base/report.cls
@@ -574,7 +574,7 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 ))
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
-) (/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux)
+) (/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux)
 \openout1 = `thesis.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
@@ -770,7 +770,7 @@ LaTeX Warning: Citation `marschner' on page 6 undefined on input line 214.
 
 LaTeX Warning: Citation `ward' on page 6 undefined on input line 218.
 
-[6 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/hair_structure.jpeg> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/hair-core.png>]
+[6 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/hair_structure.jpeg> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/hair-core.png>]
 
 LaTeX Warning: Reference `sec_geometric_complexity' on page 7 undefined on input line 242.
 
@@ -803,7 +803,7 @@ LaTeX Warning: Citation `marschner' on page 9 undefined on input line 295.
 
 LaTeX Warning: Citation `marschner' on page 9 undefined on input line 295.
 
-[9 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/axes.jpeg>]
+[9 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/axes.jpeg>]
 
 LaTeX Warning: Reference `fig_solidangle' on page 10 undefined on input line 314.
 
@@ -820,7 +820,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 326--327
 
  []
 
-[10] [11 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png>]
+[10] [11 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png>]
 
 LaTeX Warning: Reference `cosine_term_visualization' on page 12 undefined on input line 340.
 
@@ -839,12 +839,12 @@ Package pdftex.def Info: images/svg/irradiance_radiance.jpg used on input line 3
 
 LaTeX Warning: Citation `pharr2017' on page 12 undefined on input line 360.
 
-[12 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg>]
+[12 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg>]
 Overfull \hbox (0.93117pt too wide) in paragraph at lines 370--370
 []\T1/cmr/bx/n/12 Bidirectional Re-flec-tion Dis-tri-bu-tion Func-tion (BRDF) 
  []
 
-/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex:371: Missing $ inserted.
+/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex:371: Missing $ inserted.
 <inserted text> 
                 $
 l.371 \section{sec_bsdf}
@@ -852,7 +852,7 @@ l.371 \section{sec_bsdf}
 I've inserted a begin-math/end-math symbol since I think
 you left one out. Proceed, with fingers crossed.
 
-/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex:371: Missing $ inserted.
+/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex:371: Missing $ inserted.
 <inserted text> 
                 $
 l.371 \section{sec_bsdf}
@@ -958,7 +958,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 545--546
 
  []
 
-[19 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/kajiya.png>]
+[19 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/kajiya.png>]
 
 LaTeX Warning: Citation `ward' on page 20 undefined on input line 547.
 
@@ -1048,7 +1048,7 @@ LaTeX Warning: Citation `marschner' on page 22 undefined on input line 614.
 
 LaTeX Warning: Reference `fig_azimuthal_marschner' on page 22 undefined on input line 616.
 
-[22 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/longitudinal_response.jpeg>]
+[22 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/longitudinal_response.jpeg>]
 
 LaTeX Warning: Citation `marschner' on page 23 undefined on input line 624.
 
@@ -1082,7 +1082,7 @@ LaTeX Warning: Citation `adler1998' on page 23 undefined on input line 636.
 
 LaTeX Warning: Citation `mount1998' on page 23 undefined on input line 636.
 
-[23 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/azimuthal_measurement.jpeg>] [24 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/female_marschner.jpeg>]
+[23 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/azimuthal_measurement.jpeg>] [24 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/female_marschner.jpeg>]
 
 LaTeX Warning: Reference `sec_mathematical_notation' on page 25 undefined on input line 651.
 
@@ -1154,7 +1154,7 @@ LaTeX Warning: Citation `marschner' on page 27 undefined on input line 733.
 LaTeX Font Info:    Try loading font information for T1+cmss on input line 736.
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 File: t1cmss.fd 2014/09/29 v2.5h Standard LaTeX font definitions
-) [27 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png>]
+) [27 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png>]
 
 LaTeX Warning: Reference `azimuthal_marschner' on page 28 undefined on input line 739.
 
@@ -1164,7 +1164,7 @@ LaTeX Warning: Citation `marschner' on page 28 undefined on input line 756.
 
 LaTeX Warning: Citation `marschner' on page 28 undefined on input line 756.
 
-[28 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png>]
+[28 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png>]
 
 LaTeX Warning: Citation `marschner' on page 29 undefined on input line 760.
 
@@ -1177,7 +1177,7 @@ LaTeX Warning: Citation `eon2011' on page 29 undefined on input line 781.
 
 LaTeX Warning: Citation `zinke' on page 29 undefined on input line 783.
 
-[29] (/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering.tex
+[29] (/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering.tex
 
 LaTeX Warning: Citation `zinke' on page 30 undefined on input line 5.
 
@@ -1219,7 +1219,7 @@ LaTeX Warning: Citation `zinke' on page 32 undefined on input line 77.
 
 LaTeX Warning: Citation `sadeghi' on page 32 undefined on input line 77.
 
-[32 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png>]
+[32 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png>]
 
 LaTeX Warning: Reference `dualscattering_Tf' on page 33 undefined on input line 79.
 
@@ -1261,512 +1261,524 @@ LaTeX Warning: Reference `approach_problem2' on page 36 undefined on input line 
 
 ]
 
-LaTeX Warning: Reference `eon2013' on page 37 undefined on input line 814.
+LaTeX Warning: Reference `eon2013' on page 37 undefined on input line 815.
 
 
-LaTeX Warning: Citation `eon2013' on page 37 undefined on input line 820.
+LaTeX Warning: Citation `eon2013' on page 37 undefined on input line 821.
 
 
-LaTeX Warning: Citation `eon2013' on page 37 undefined on input line 823.
+LaTeX Warning: Citation `eon2013' on page 37 undefined on input line 824.
 
 [37]
 
-LaTeX Warning: Citation `eon2013' on page 38 undefined on input line 825.
+LaTeX Warning: Citation `eon2013' on page 38 undefined on input line 826.
 
 
-LaTeX Warning: Citation `zinke' on page 38 undefined on input line 825.
+LaTeX Warning: Citation `zinke' on page 38 undefined on input line 826.
 
 
-LaTeX Warning: Reference `approach_details_mis' on page 38 undefined on input line 825.
+LaTeX Warning: Reference `approach_details_mis' on page 38 undefined on input line 826.
 
 [38]
 
-LaTeX Warning: Reference `variance-for-region' on page 39 undefined on input line 849.
+LaTeX Warning: Reference `variance-for-region' on page 39 undefined on input line 850.
 
 
-LaTeX Warning: Citation `eon2013' on page 39 undefined on input line 855.
+LaTeX Warning: Citation `eon2013' on page 39 undefined on input line 856.
 
 
-LaTeX Warning: Citation `eon2011' on page 39 undefined on input line 855.
+LaTeX Warning: Citation `eon2011' on page 39 undefined on input line 856.
 
 
-LaTeX Warning: Reference `section_importance_sampling' on page 39 undefined on input line 857.
-
-
-LaTeX Warning: Reference `marschner_model_scatterfunction' on page 39 undefined on input line 866.
-
-
-LaTeX Warning: Citation `eon2011' on page 39 undefined on input line 866.
+LaTeX Warning: Reference `section_importance_sampling' on page 39 undefined on input line 858.
 
 [39]
 
-LaTeX Warning: Citation `eon2013' on page 40 undefined on input line 874.
+LaTeX Warning: Reference `marschner_model_scatterfunction' on page 40 undefined on input line 868.
 
 
-LaTeX Warning: Citation `eon2013' on page 40 undefined on input line 890.
+LaTeX Warning: Citation `eon2011' on page 40 undefined on input line 868.
+
+
+LaTeX Warning: Citation `eon2013' on page 40 undefined on input line 877.
 
 [40]
 
-LaTeX Warning: Citation `eon2013' on page 41 undefined on input line 908.
+LaTeX Warning: Citation `eon2013' on page 41 undefined on input line 897.
 
 [41]
 
-LaTeX Warning: Reference `sec_marschner' on page 42 undefined on input line 917.
+LaTeX Warning: Reference `eq_model_S' on page 42 undefined on input line 915.
 
 
-LaTeX Warning: Reference `marschner_longitudinal_scattering_function' on page 42 undefined on input line 926.
-
-
-LaTeX Warning: Citation `eon2011' on page 42 undefined on input line 928.
-
-
-LaTeX Warning: Citation `eon2011' on page 42 undefined on input line 934.
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 934--935
-
- []
+LaTeX Warning: Reference `sec_marschner' on page 42 undefined on input line 924.
 
 [42]
 
-LaTeX Warning: Reference `sec_lobe_selection' on page 43 undefined on input line 951.
+LaTeX Warning: Reference `marschner_longitudinal_scattering_function' on page 43 undefined on input line 933.
 
 
-LaTeX Warning: Reference `eq_relative_azimuth_change' on page 43 undefined on input line 951.
+LaTeX Warning: Citation `eon2011' on page 43 undefined on input line 935.
 
-[43] [44]
+
+LaTeX Warning: Citation `eon2011' on page 43 undefined on input line 943.
+
+
+Overfull \hbox (2.96912pt too wide) in paragraph at lines 943--944
+[]\T1/cmr/m/n/10.95 Using the con-serv-ing scat-ter-ing func-tion, in-stead of the orig-i-nal Marschner
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 943--944
+
+ []
+
+
+LaTeX Warning: Citation `eon2013' on page 43 undefined on input line 945.
+
+[43]
+
+LaTeX Warning: Reference `sec_lobe_selection' on page 44 undefined on input line 959.
+
+
+LaTeX Warning: Reference `eq_relative_azimuth_change' on page 44 undefined on input line 959.
+
+[44]
 Chapter 5.
 
-LaTeX Warning: Citation `pbrt' on page 45 undefined on input line 984.
+LaTeX Warning: Citation `pbrt' on page 45 undefined on input line 992.
 
 [45
 
 ]
 
-LaTeX Warning: Reference `sec_bsdf' on page 46 undefined on input line 986.
+LaTeX Warning: Reference `sec_bsdf' on page 46 undefined on input line 994.
 
 
-LaTeX Warning: Reference `sec_geometric_complexity' on page 46 undefined on input line 988.
+LaTeX Warning: Reference `sec_geometric_complexity' on page 46 undefined on input line 996.
 
 
-LaTeX Warning: Citation `zinke' on page 46 undefined on input line 994.
+LaTeX Warning: Citation `zinke' on page 46 undefined on input line 1002.
 
 
-LaTeX Warning: Reference `sec_dualscattering' on page 46 undefined on input line 997.
+LaTeX Warning: Reference `sec_dualscattering' on page 46 undefined on input line 1005.
 
 [46] [47]
-Overfull \hbox (2.91264pt too wide) in paragraph at lines 1010--1010
+Overfull \hbox (2.91264pt too wide) in paragraph at lines 1018--1018
 []\T1/cmr/bx/n/14.4 Problem 3: How to deal with mem-ory and speed
  []
 
 [48]
 Chapter 6.
 
-LaTeX Warning: Reference `fig_officesquare' on page 49 undefined on input line 1035.
+LaTeX Warning: Reference `fig_officesquare' on page 49 undefined on input line 1043.
 
 <realworld/officesquare/deon_blonde1_32.png, id=210, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/deon_blonde1_32.png Graphic file (type png)
  <use realworld/officesquare/deon_blonde1_32.png>
-Package pdftex.def Info: realworld/officesquare/deon_blonde1_32.png used on input line 1041.
+Package pdftex.def Info: realworld/officesquare/deon_blonde1_32.png used on input line 1049.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/officesquare/uniform_blonde1_32.png, id=211, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/uniform_blonde1_32.png Graphic file (type png)
  <use realworld/officesquare/uniform_blonde1_32.png>
-Package pdftex.def Info: realworld/officesquare/uniform_blonde1_32.png used on input line 1042.
+Package pdftex.def Info: realworld/officesquare/uniform_blonde1_32.png used on input line 1050.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/officesquare/deon_black1_32.png, id=212, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/deon_black1_32.png Graphic file (type png)
  <use realworld/officesquare/deon_black1_32.png>
-Package pdftex.def Info: realworld/officesquare/deon_black1_32.png used on input line 1043.
+Package pdftex.def Info: realworld/officesquare/deon_black1_32.png used on input line 1051.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/officesquare/uniform_black1_32.png, id=213, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/uniform_black1_32.png Graphic file (type png)
  <use realworld/officesquare/uniform_black1_32.png>
-Package pdftex.def Info: realworld/officesquare/uniform_black1_32.png used on input line 1044.
+Package pdftex.def Info: realworld/officesquare/uniform_black1_32.png used on input line 1052.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/officesquare/deon_brown2_32.png, id=214, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/deon_brown2_32.png Graphic file (type png)
  <use realworld/officesquare/deon_brown2_32.png>
-Package pdftex.def Info: realworld/officesquare/deon_brown2_32.png used on input line 1045.
+Package pdftex.def Info: realworld/officesquare/deon_brown2_32.png used on input line 1053.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/officesquare/uniform_brown2_32.png, id=215, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/uniform_brown2_32.png Graphic file (type png)
  <use realworld/officesquare/uniform_brown2_32.png>
-Package pdftex.def Info: realworld/officesquare/uniform_brown2_32.png used on input line 1046.
+Package pdftex.def Info: realworld/officesquare/uniform_brown2_32.png used on input line 1054.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: Reference `fig_venice' on page 49 undefined on input line 1057.
+LaTeX Warning: Reference `fig_venice' on page 49 undefined on input line 1065.
 
 <realworld/venice/deon_blonde1_32.png, id=216, 1027.84pt x 1027.84pt>
 File: realworld/venice/deon_blonde1_32.png Graphic file (type png)
  <use realworld/venice/deon_blonde1_32.png>
-Package pdftex.def Info: realworld/venice/deon_blonde1_32.png used on input line 1063.
+Package pdftex.def Info: realworld/venice/deon_blonde1_32.png used on input line 1071.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/venice/uniform_blonde1_32.png, id=217, 1027.84pt x 1027.84pt>
 File: realworld/venice/uniform_blonde1_32.png Graphic file (type png)
  <use realworld/venice/uniform_blonde1_32.png>
-Package pdftex.def Info: realworld/venice/uniform_blonde1_32.png used on input line 1064.
+Package pdftex.def Info: realworld/venice/uniform_blonde1_32.png used on input line 1072.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/venice/deon_black1_32.png, id=218, 1027.84pt x 1027.84pt>
 File: realworld/venice/deon_black1_32.png Graphic file (type png)
  <use realworld/venice/deon_black1_32.png>
-Package pdftex.def Info: realworld/venice/deon_black1_32.png used on input line 1065.
+Package pdftex.def Info: realworld/venice/deon_black1_32.png used on input line 1073.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/venice/uniform_black1_32.png, id=219, 1027.84pt x 1027.84pt>
 File: realworld/venice/uniform_black1_32.png Graphic file (type png)
  <use realworld/venice/uniform_black1_32.png>
-Package pdftex.def Info: realworld/venice/uniform_black1_32.png used on input line 1066.
+Package pdftex.def Info: realworld/venice/uniform_black1_32.png used on input line 1074.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/venice/deon_brown2_32.png, id=220, 1027.84pt x 1027.84pt>
 File: realworld/venice/deon_brown2_32.png Graphic file (type png)
  <use realworld/venice/deon_brown2_32.png>
-Package pdftex.def Info: realworld/venice/deon_brown2_32.png used on input line 1067.
+Package pdftex.def Info: realworld/venice/deon_brown2_32.png used on input line 1075.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/venice/uniform_brown2_32.png, id=221, 1027.84pt x 1027.84pt>
 File: realworld/venice/uniform_brown2_32.png Graphic file (type png)
  <use realworld/venice/uniform_brown2_32.png>
-Package pdftex.def Info: realworld/venice/uniform_brown2_32.png used on input line 1068.
+Package pdftex.def Info: realworld/venice/uniform_brown2_32.png used on input line 1076.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: Reference `fig_subway' on page 49 undefined on input line 1080.
+LaTeX Warning: Reference `fig_subway' on page 49 undefined on input line 1088.
 
 <realworld/subway/deon_blonde1_32.png, id=222, 1027.84pt x 1027.84pt>
 File: realworld/subway/deon_blonde1_32.png Graphic file (type png)
  <use realworld/subway/deon_blonde1_32.png>
-Package pdftex.def Info: realworld/subway/deon_blonde1_32.png used on input line 1086.
+Package pdftex.def Info: realworld/subway/deon_blonde1_32.png used on input line 1094.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/subway/uniform_blonde1_32.png, id=223, 1027.84pt x 1027.84pt>
 File: realworld/subway/uniform_blonde1_32.png Graphic file (type png)
  <use realworld/subway/uniform_blonde1_32.png>
-Package pdftex.def Info: realworld/subway/uniform_blonde1_32.png used on input line 1087.
+Package pdftex.def Info: realworld/subway/uniform_blonde1_32.png used on input line 1095.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/subway/deon_black1_32.png, id=224, 1027.84pt x 1027.84pt>
 File: realworld/subway/deon_black1_32.png Graphic file (type png)
  <use realworld/subway/deon_black1_32.png>
-Package pdftex.def Info: realworld/subway/deon_black1_32.png used on input line 1088.
+Package pdftex.def Info: realworld/subway/deon_black1_32.png used on input line 1096.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/subway/uniform_black1_32.png, id=225, 1027.84pt x 1027.84pt>
 File: realworld/subway/uniform_black1_32.png Graphic file (type png)
  <use realworld/subway/uniform_black1_32.png>
-Package pdftex.def Info: realworld/subway/uniform_black1_32.png used on input line 1089.
+Package pdftex.def Info: realworld/subway/uniform_black1_32.png used on input line 1097.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/subway/deon_brown2_32.png, id=226, 1027.84pt x 1027.84pt>
 File: realworld/subway/deon_brown2_32.png Graphic file (type png)
  <use realworld/subway/deon_brown2_32.png>
-Package pdftex.def Info: realworld/subway/deon_brown2_32.png used on input line 1090.
+Package pdftex.def Info: realworld/subway/deon_brown2_32.png used on input line 1098.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
  <realworld/subway/uniform_brown2_32.png, id=227, 1027.84pt x 1027.84pt>
 File: realworld/subway/uniform_brown2_32.png Graphic file (type png)
  <use realworld/subway/uniform_brown2_32.png>
-Package pdftex.def Info: realworld/subway/uniform_brown2_32.png used on input line 1091.
+Package pdftex.def Info: realworld/subway/uniform_brown2_32.png used on input line 1099.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: Reference `fig_subway' on page 49 undefined on input line 1101.
+LaTeX Warning: Reference `fig_subway' on page 49 undefined on input line 1109.
 
 [49
 
 ]
 
-LaTeX Warning: Reference `fig_results_df' on page 50 undefined on input line 1107.
+LaTeX Warning: Reference `fig_results_df' on page 50 undefined on input line 1115.
 
 
-LaTeX Warning: Reference `fig_df' on page 50 undefined on input line 1107.
+LaTeX Warning: Reference `fig_df' on page 50 undefined on input line 1115.
 
 <dbdf-results/brown_dbdf_0_00.png, id=231, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_0_00.png Graphic file (type png)
  <use dbdf-results/brown_dbdf_0_00.png>
-Package pdftex.def Info: dbdf-results/brown_dbdf_0_00.png used on input line 1119.
+Package pdftex.def Info: dbdf-results/brown_dbdf_0_00.png used on input line 1127.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/blonde_dbdf_0_00.png, id=232, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_0_00.png Graphic file (type png)
  <use dbdf-results/blonde_dbdf_0_00.png>
-Package pdftex.def Info: dbdf-results/blonde_dbdf_0_00.png used on input line 1119.
+Package pdftex.def Info: dbdf-results/blonde_dbdf_0_00.png used on input line 1127.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/black_dbdf_0_00.png, id=233, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_0_00.png Graphic file (type png)
  <use dbdf-results/black_dbdf_0_00.png>
-Package pdftex.def Info: dbdf-results/black_dbdf_0_00.png used on input line 1119.
+Package pdftex.def Info: dbdf-results/black_dbdf_0_00.png used on input line 1127.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/brown_dbdf_0_25.png, id=234, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_0_25.png Graphic file (type png)
  <use dbdf-results/brown_dbdf_0_25.png>
-Package pdftex.def Info: dbdf-results/brown_dbdf_0_25.png used on input line 1120.
+Package pdftex.def Info: dbdf-results/brown_dbdf_0_25.png used on input line 1128.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/blonde_dbdf_0_25.png, id=235, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_0_25.png Graphic file (type png)
  <use dbdf-results/blonde_dbdf_0_25.png>
-Package pdftex.def Info: dbdf-results/blonde_dbdf_0_25.png used on input line 1120.
+Package pdftex.def Info: dbdf-results/blonde_dbdf_0_25.png used on input line 1128.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/black_dbdf_0_25.png, id=236, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_0_25.png Graphic file (type png)
  <use dbdf-results/black_dbdf_0_25.png>
-Package pdftex.def Info: dbdf-results/black_dbdf_0_25.png used on input line 1120.
+Package pdftex.def Info: dbdf-results/black_dbdf_0_25.png used on input line 1128.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/brown_dbdf_0_50.png, id=237, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_0_50.png Graphic file (type png)
  <use dbdf-results/brown_dbdf_0_50.png>
-Package pdftex.def Info: dbdf-results/brown_dbdf_0_50.png used on input line 1121.
+Package pdftex.def Info: dbdf-results/brown_dbdf_0_50.png used on input line 1129.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/blonde_dbdf_0_50.png, id=238, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_0_50.png Graphic file (type png)
  <use dbdf-results/blonde_dbdf_0_50.png>
-Package pdftex.def Info: dbdf-results/blonde_dbdf_0_50.png used on input line 1121.
+Package pdftex.def Info: dbdf-results/blonde_dbdf_0_50.png used on input line 1129.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/black_dbdf_0_50.png, id=239, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_0_50.png Graphic file (type png)
  <use dbdf-results/black_dbdf_0_50.png>
-Package pdftex.def Info: dbdf-results/black_dbdf_0_50.png used on input line 1121.
+Package pdftex.def Info: dbdf-results/black_dbdf_0_50.png used on input line 1129.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/brown_dbdf_0_75.png, id=240, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_0_75.png Graphic file (type png)
  <use dbdf-results/brown_dbdf_0_75.png>
-Package pdftex.def Info: dbdf-results/brown_dbdf_0_75.png used on input line 1122.
+Package pdftex.def Info: dbdf-results/brown_dbdf_0_75.png used on input line 1130.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/blonde_dbdf_0_75.png, id=241, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_0_75.png Graphic file (type png)
  <use dbdf-results/blonde_dbdf_0_75.png>
-Package pdftex.def Info: dbdf-results/blonde_dbdf_0_75.png used on input line 1122.
+Package pdftex.def Info: dbdf-results/blonde_dbdf_0_75.png used on input line 1130.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/black_dbdf_0_75.png, id=242, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_0_75.png Graphic file (type png)
  <use dbdf-results/black_dbdf_0_75.png>
-Package pdftex.def Info: dbdf-results/black_dbdf_0_75.png used on input line 1122.
+Package pdftex.def Info: dbdf-results/black_dbdf_0_75.png used on input line 1130.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/brown_dbdf_1_00.png, id=243, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_1_00.png Graphic file (type png)
  <use dbdf-results/brown_dbdf_1_00.png>
-Package pdftex.def Info: dbdf-results/brown_dbdf_1_00.png used on input line 1123.
+Package pdftex.def Info: dbdf-results/brown_dbdf_1_00.png used on input line 1131.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/blonde_dbdf_1_00.png, id=244, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_1_00.png Graphic file (type png)
  <use dbdf-results/blonde_dbdf_1_00.png>
-Package pdftex.def Info: dbdf-results/blonde_dbdf_1_00.png used on input line 1123.
+Package pdftex.def Info: dbdf-results/blonde_dbdf_1_00.png used on input line 1131.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
  <dbdf-results/black_dbdf_1_00.png, id=245, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_1_00.png Graphic file (type png)
  <use dbdf-results/black_dbdf_1_00.png>
-Package pdftex.def Info: dbdf-results/black_dbdf_1_00.png used on input line 1123.
+Package pdftex.def Info: dbdf-results/black_dbdf_1_00.png used on input line 1131.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-Overfull \hbox (29.36435pt too wide) in paragraph at lines 1118--1126
+Overfull \hbox (29.36435pt too wide) in paragraph at lines 1126--1134
 [][] 
  []
 
 
-LaTeX Warning: Float too large for page by 82.40994pt on input line 1128.
+LaTeX Warning: Float too large for page by 82.40994pt on input line 1136.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: Reference `fig_variance_outline' on page 50 undefined on input line 1134.
+LaTeX Warning: Reference `fig_variance_outline' on page 50 undefined on input line 1142.
 
 <variance-results/outline_hint.png, id=246, 1027.84pt x 1027.84pt>
 File: variance-results/outline_hint.png Graphic file (type png)
  <use variance-results/outline_hint.png>
-Package pdftex.def Info: variance-results/outline_hint.png used on input line 1138.
+Package pdftex.def Info: variance-results/outline_hint.png used on input line 1146.
 (pdftex.def)             Requested size: 205.56436pt x 205.56436pt.
 
 
-LaTeX Warning: Reference `table_relative_variance' on page 50 undefined on input line 1146.
+LaTeX Warning: Reference `table_relative_variance' on page 50 undefined on input line 1154.
 
 [50]
 
-LaTeX Warning: Reference `fig_side_by_side' on page 51 undefined on input line 1171.
+LaTeX Warning: Reference `fig_side_by_side' on page 51 undefined on input line 1179.
 
 <variance-results/un1.png, id=250, 301.125pt x 100.375pt>
 File: variance-results/un1.png Graphic file (type png)
  <use variance-results/un1.png>
-Package pdftex.def Info: variance-results/un1.png used on input line 1182.
+Package pdftex.def Info: variance-results/un1.png used on input line 1190.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is1.png, id=251, 301.125pt x 100.375pt>
 File: variance-results/is1.png Graphic file (type png)
  <use variance-results/is1.png>
-Package pdftex.def Info: variance-results/is1.png used on input line 1182.
+Package pdftex.def Info: variance-results/is1.png used on input line 1190.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un2.png, id=252, 301.125pt x 100.375pt>
 File: variance-results/un2.png Graphic file (type png)
  <use variance-results/un2.png>
-Package pdftex.def Info: variance-results/un2.png used on input line 1182.
+Package pdftex.def Info: variance-results/un2.png used on input line 1190.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is2.png, id=253, 301.125pt x 100.375pt>
 File: variance-results/is2.png Graphic file (type png)
  <use variance-results/is2.png>
-Package pdftex.def Info: variance-results/is2.png used on input line 1182.
+Package pdftex.def Info: variance-results/is2.png used on input line 1190.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un4.png, id=254, 301.125pt x 100.375pt>
 File: variance-results/un4.png Graphic file (type png)
  <use variance-results/un4.png>
-Package pdftex.def Info: variance-results/un4.png used on input line 1183.
+Package pdftex.def Info: variance-results/un4.png used on input line 1191.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is4.png, id=255, 301.125pt x 100.375pt>
 File: variance-results/is4.png Graphic file (type png)
  <use variance-results/is4.png>
-Package pdftex.def Info: variance-results/is4.png used on input line 1183.
+Package pdftex.def Info: variance-results/is4.png used on input line 1191.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un8.png, id=256, 301.125pt x 100.375pt>
 File: variance-results/un8.png Graphic file (type png)
  <use variance-results/un8.png>
-Package pdftex.def Info: variance-results/un8.png used on input line 1184.
+Package pdftex.def Info: variance-results/un8.png used on input line 1192.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is8.png, id=257, 301.125pt x 100.375pt>
 File: variance-results/is8.png Graphic file (type png)
  <use variance-results/is8.png>
-Package pdftex.def Info: variance-results/is8.png used on input line 1184.
+Package pdftex.def Info: variance-results/is8.png used on input line 1192.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un16.png, id=258, 301.125pt x 100.375pt>
 File: variance-results/un16.png Graphic file (type png)
  <use variance-results/un16.png>
-Package pdftex.def Info: variance-results/un16.png used on input line 1185.
+Package pdftex.def Info: variance-results/un16.png used on input line 1193.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is16.png, id=259, 301.125pt x 100.375pt>
 File: variance-results/is16.png Graphic file (type png)
  <use variance-results/is16.png>
-Package pdftex.def Info: variance-results/is16.png used on input line 1185.
+Package pdftex.def Info: variance-results/is16.png used on input line 1193.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un32.png, id=260, 301.125pt x 100.375pt>
 File: variance-results/un32.png Graphic file (type png)
  <use variance-results/un32.png>
-Package pdftex.def Info: variance-results/un32.png used on input line 1186.
+Package pdftex.def Info: variance-results/un32.png used on input line 1194.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is32.png, id=261, 301.125pt x 100.375pt>
 File: variance-results/is32.png Graphic file (type png)
  <use variance-results/is32.png>
-Package pdftex.def Info: variance-results/is32.png used on input line 1186.
+Package pdftex.def Info: variance-results/is32.png used on input line 1194.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un64.png, id=262, 301.125pt x 100.375pt>
 File: variance-results/un64.png Graphic file (type png)
  <use variance-results/un64.png>
-Package pdftex.def Info: variance-results/un64.png used on input line 1187.
+Package pdftex.def Info: variance-results/un64.png used on input line 1195.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is64.png, id=263, 301.125pt x 100.375pt>
 File: variance-results/is64.png Graphic file (type png)
  <use variance-results/is64.png>
-Package pdftex.def Info: variance-results/is64.png used on input line 1187.
+Package pdftex.def Info: variance-results/is64.png used on input line 1195.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un128.png, id=264, 301.125pt x 100.375pt>
 File: variance-results/un128.png Graphic file (type png)
  <use variance-results/un128.png>
-Package pdftex.def Info: variance-results/un128.png used on input line 1188.
+Package pdftex.def Info: variance-results/un128.png used on input line 1196.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is128.png, id=265, 301.125pt x 100.375pt>
 File: variance-results/is128.png Graphic file (type png)
  <use variance-results/is128.png>
-Package pdftex.def Info: variance-results/is128.png used on input line 1188.
+Package pdftex.def Info: variance-results/is128.png used on input line 1196.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un256.png, id=266, 301.125pt x 100.375pt>
 File: variance-results/un256.png Graphic file (type png)
  <use variance-results/un256.png>
-Package pdftex.def Info: variance-results/un256.png used on input line 1189.
+Package pdftex.def Info: variance-results/un256.png used on input line 1197.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is256.png, id=267, 301.125pt x 100.375pt>
 File: variance-results/is256.png Graphic file (type png)
  <use variance-results/is256.png>
-Package pdftex.def Info: variance-results/is256.png used on input line 1189.
+Package pdftex.def Info: variance-results/is256.png used on input line 1197.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/un512.png, id=268, 301.125pt x 100.375pt>
 File: variance-results/un512.png Graphic file (type png)
  <use variance-results/un512.png>
-Package pdftex.def Info: variance-results/un512.png used on input line 1190.
+Package pdftex.def Info: variance-results/un512.png used on input line 1198.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
  <variance-results/is512.png, id=269, 301.125pt x 100.375pt>
 File: variance-results/is512.png Graphic file (type png)
  <use variance-results/is512.png>
-Package pdftex.def Info: variance-results/is512.png used on input line 1190.
+Package pdftex.def Info: variance-results/is512.png used on input line 1198.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
 
-LaTeX Warning: Float too large for page by 55.84428pt on input line 1197.
+LaTeX Warning: Float too large for page by 55.84428pt on input line 1205.
 
 [51]
 
-LaTeX Warning: Reference `fig_sidebyside_converged' on page 52 undefined on input line 1206.
+LaTeX Warning: Reference `fig_sidebyside_converged' on page 52 undefined on input line 1214.
 
 
-LaTeX Warning: Citation `eon2011' on page 52 undefined on input line 1206.
+LaTeX Warning: Citation `eon2011' on page 52 undefined on input line 1214.
 
 
-LaTeX Warning: Reference `fig_side_by_side' on page 52 undefined on input line 1208.
+LaTeX Warning: Reference `fig_side_by_side' on page 52 undefined on input line 1216.
 
 
-LaTeX Warning: Reference `table_variance_to_groundtruth' on page 52 undefined on input line 1208.
+LaTeX Warning: Reference `table_variance_to_groundtruth' on page 52 undefined on input line 1216.
 
 
-LaTeX Warning: Reference `fig_variance_plot' on page 52 undefined on input line 1208.
+LaTeX Warning: Reference `fig_variance_plot' on page 52 undefined on input line 1216.
 
 <variance-results/uniform512.png, id=273, 1027.84pt x 1027.84pt>
 File: variance-results/uniform512.png Graphic file (type png)
  <use variance-results/uniform512.png>
-Package pdftex.def Info: variance-results/uniform512.png used on input line 1214.
+Package pdftex.def Info: variance-results/uniform512.png used on input line 1222.
 (pdftex.def)             Requested size: 174.73048pt x 174.73048pt.
  <variance-results/deon512.png, id=274, 1027.84pt x 1027.84pt>
 File: variance-results/deon512.png Graphic file (type png)
  <use variance-results/deon512.png>
-Package pdftex.def Info: variance-results/deon512.png used on input line 1214.
+Package pdftex.def Info: variance-results/deon512.png used on input line 1222.
 (pdftex.def)             Requested size: 174.73048pt x 174.73048pt.
 
-Overfull \hbox (13.46097pt too wide) in paragraph at lines 1213--1217
+Overfull \hbox (13.46097pt too wide) in paragraph at lines 1221--1225
  [] 
  []
 
 
-LaTeX Warning: Reference `fig_variance_plot' on page 52 undefined on input line 1238.
+LaTeX Warning: Reference `fig_variance_plot' on page 52 undefined on input line 1246.
 
 
-LaTeX Warning: Reference `fig_variance_plot' on page 52 undefined on input line 1238.
+LaTeX Warning: Reference `fig_variance_plot' on page 52 undefined on input line 1246.
 
 <variance-results/variance-plot.png, id=275, 882.4167pt x 572.3784pt>
 File: variance-results/variance-plot.png Graphic file (type png)
  <use variance-results/variance-plot.png>
-Package pdftex.def Info: variance-results/variance-plot.png used on input line 1280.
+Package pdftex.def Info: variance-results/variance-plot.png used on input line 1288.
 (pdftex.def)             Requested size: 352.96043pt x 228.9473pt.
 
 
-LaTeX Warning: Reference `table_variance_to_groundtruth' on page 52 undefined on input line 1282.
+LaTeX Warning: Reference `table_variance_to_groundtruth' on page 52 undefined on input line 1290.
 
 
-LaTeX Warning: Reference `table_variance_to_groundtruth' on page 52 undefined on input line 1282.
+LaTeX Warning: Reference `table_variance_to_groundtruth' on page 52 undefined on input line 1290.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
 
-LaTeX Warning: Reference `fig_side_by_side' on page 52 undefined on input line 1290.
+LaTeX Warning: Reference `fig_side_by_side' on page 52 undefined on input line 1298.
 
-[52] [53] [54 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_blonde1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_blonde1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_black1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_black1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_brown2_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_brown2_32.png (PNG copy)>] [55 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_blonde1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_blonde1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_black1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_black1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_brown2_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_brown2_32.png (PNG copy)>] [56 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_blonde1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_blonde1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_black1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_black1_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_brown2_32.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_brown2_32.png (PNG copy)>] [57 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_00.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_00.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_25.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_25.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_25.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_50.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_50.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_50.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_75.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_75.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_75.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_1_00.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_1_00.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_1_00.png (PNG copy)>] [58 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/outline_hint.png>] [59 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un1.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un2.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is2.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un4.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is4.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un8.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is8.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un16.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is16.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un32.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is32.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un64.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is64.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un128.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is128.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un256.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is256.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un512.png> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is512.png>] [60 </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/uniform512.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png (PNG copy)> </media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png>]
+[52] [53] [54 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_blonde1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_blonde1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_black1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_black1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_brown2_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_brown2_32.png (PNG copy)>] [55 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_blonde1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_blonde1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_black1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_black1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_brown2_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_brown2_32.png (PNG copy)>] [56 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_blonde1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_blonde1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_black1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_black1_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_brown2_32.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_brown2_32.png (PNG copy)>] [57 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_00.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_00.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_25.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_25.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_25.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_50.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_50.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_50.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_75.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_75.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_75.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_1_00.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_1_00.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_1_00.png (PNG copy)>] [58 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/outline_hint.png>] [59 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un1.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un2.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is2.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un4.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is4.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un8.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is8.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un16.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is16.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un32.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is32.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un64.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is64.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un128.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is128.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un256.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is256.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un512.png> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is512.png>] [60 </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/uniform512.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png (PNG copy)> </home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png>]
 Chapter 7.
 
-LaTeX Warning: Citation `eon2011' on page 61 undefined on input line 1302.
+LaTeX Warning: Citation `eon2011' on page 61 undefined on input line 1310.
 
 
-LaTeX Warning: Citation `deon2011' on page 61 undefined on input line 1304.
+LaTeX Warning: Citation `zinke' on page 61 undefined on input line 1310.
 
 
-LaTeX Warning: Citation `sadeghi2010' on page 61 undefined on input line 1304.
+LaTeX Warning: Citation `deon2011' on page 61 undefined on input line 1325.
 
 
-LaTeX Warning: Citation `zinke' on page 61 undefined on input line 1306.
+LaTeX Warning: Citation `sadeghi2010' on page 61 undefined on input line 1325.
 
 [61
 
 ]
 
-LaTeX Warning: Citation `eon2011' on page 62 undefined on input line 1308.
+LaTeX Warning: Citation `zinke' on page 62 undefined on input line 1327.
+
+
+LaTeX Warning: Citation `eon2011' on page 62 undefined on input line 1329.
 
 No file thesis.bbl.
-[62] (/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux)
+[62] (/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux)
 
 LaTeX Warning: There were undefined references.
 
@@ -1775,15 +1787,15 @@ LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
 
  ) 
 Here is how much of TeX's memory you used:
- 4002 strings out of 493029
- 58123 string characters out of 6136234
- 111300 words of memory out of 5000000
- 7366 multiletter control sequences out of 15000+600000
+ 4005 strings out of 493029
+ 58029 string characters out of 6136234
+ 112300 words of memory out of 5000000
+ 7369 multiletter control sequences out of 15000+600000
  34734 words of font info for 90 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,12n,24p,1090b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,12n,24p,1080b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx2074.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfbx2488.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1440.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfcc1728.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0600.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0800.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm0900.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on "/media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf" (64 pages, 47256916 bytes).
+Output written on "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf" (64 pages, 47260872 bytes).
 PDF statistics:
  426 PDF objects out of 1000 (max. 8388607)
  232 compressed objects within 3 object streams

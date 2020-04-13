@@ -3,8 +3,8 @@ INPUT /etc/texmf/web2c/texmf.cnf
 INPUT /usr/share/texmf/web2c/texmf.cnf
 INPUT /usr/share/texlive/texmf-dist/web2c/texmf.cnf
 INPUT /var/lib/texmf/web2c/pdftex/pdflatex.fmt
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex
-OUTPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.log
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex
+OUTPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.log
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/report.cls
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/report.cls
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/size11.clo
@@ -64,9 +64,9 @@ INPUT /usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
 INPUT /usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
 INPUT /usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
 INPUT /usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
-OUTPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
+OUTPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 INPUT /usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
@@ -123,30 +123,30 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1095.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm0800.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm0600.tfm
-OUTPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf
+OUTPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf
 INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1095.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm2488.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx2488.tfm
-OUTPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.toc
+OUTPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.toc
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm1440.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1440.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1200.tfm
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/hair_structure.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/hair_structure.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/hair_structure.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/hair-core.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/hair-core.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/hair-core.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/axes.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/axes.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/axes.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/hair_structure.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/hair_structure.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/hair_structure.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/hair-core.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/hair-core.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/hair-core.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/axes.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/axes.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/axes.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
@@ -165,24 +165,24 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm0800.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/eccc0800.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm0600.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/eccc0600.tfm
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/kajiya.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/kajiya.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/kajiya.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/longitudinal_response.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/longitudinal_response.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/longitudinal_response.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/azimuthal_measurement.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/azimuthal_measurement.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/azimuthal_measurement.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/female_marschner.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/female_marschner.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/female_marschner.jpeg
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/kajiya.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/kajiya.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/kajiya.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/longitudinal_response.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/longitudinal_response.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/longitudinal_response.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/azimuthal_measurement.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/azimuthal_measurement.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/azimuthal_measurement.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/female_marschner.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/female_marschner.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/female_marschner.jpeg
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 INPUT /usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecss1095.tfm
@@ -192,8 +192,8 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam5.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm5.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm0500.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecss0600.tfm
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering.tex
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering.tex
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering.tex
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering.tex
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
@@ -201,9 +201,9 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm0900.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm
@@ -212,178 +212,178 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex9.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm0900.tfm
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_blonde1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_black1_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_brown2_32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_25.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_50.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_75.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_1_00.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/outline_hint.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/outline_hint.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/outline_hint.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un1.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un1.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un1.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un2.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un2.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un2.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is2.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is2.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is2.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un4.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un4.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un4.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is4.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is4.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is4.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un8.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un8.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un8.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is8.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is8.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is8.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un16.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un16.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un16.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is16.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is16.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is16.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is32.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un64.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un64.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un64.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is64.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is64.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is64.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un128.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un128.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un128.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is128.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is128.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is128.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un256.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un256.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un256.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is256.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is256.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is256.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/uniform512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/uniform512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/uniform512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
-INPUT /media/jeffrey/hdd1/dev/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/officesquare/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/venice/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_blonde1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_black1_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/deon_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/realworld/subway/uniform_brown2_32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_25.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_50.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_75.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/brown_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/blonde_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_1_00.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/outline_hint.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/outline_hint.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/outline_hint.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un2.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un2.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un2.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is2.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is2.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is2.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un4.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un4.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un4.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is4.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is4.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is4.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un8.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un8.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un8.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is8.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is8.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is8.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un16.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un16.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un16.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is16.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is16.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is16.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is32.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un64.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un64.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un64.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is64.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is64.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is64.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un128.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un128.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un128.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is128.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is128.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is128.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un256.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un256.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un256.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is256.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is256.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is256.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/un512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/uniform512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/uniform512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/uniform512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
 INPUT /usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb

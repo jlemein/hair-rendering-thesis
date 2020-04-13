@@ -49,14 +49,14 @@
 \contentsline {section}{\numberline {4.2}Problem 2: How to evaluate rendered images using multiple importance sampling?}{38}
 \contentsline {section}{\numberline {4.3}Theoretical details about importance sampling for dual scattering method}{39}
 \contentsline {subsection}{\numberline {4.3.1}Strategy outline}{40}
-\contentsline {subsection}{\numberline {4.3.2}Lobe selection}{40}
-\contentsline {subsubsection}{Finding the PDF when directions $\omega _o$ and $\omega _i$ are known}{41}
-\contentsline {subsection}{\numberline {4.3.3}Importance sampling the longitudinal M function}{42}
-\contentsline {subsection}{\numberline {4.3.4}Importance sampling the azimuthal N function}{43}
+\contentsline {subsection}{\numberline {4.3.2}Lobe selection}{41}
+\contentsline {subsubsection}{Finding the PDF when directions $\omega _o$ and $\omega _i$ are known}{42}
+\contentsline {subsection}{\numberline {4.3.3}Importance sampling the longitudinal M function}{43}
+\contentsline {subsection}{\numberline {4.3.4}Importance sampling the azimuthal N function}{44}
 \contentsline {chapter}{\numberline {5}Implementation}{45}
 \contentsline {section}{\numberline {5.1}Problem 1: Which framework to use to render physics based?}{45}
 \contentsline {section}{\numberline {5.2}Problem 2: How to write code for voxel grid?}{46}
-\contentsline {section}{\numberline {5.3}Problem 3: How to deal with memory and speed requirements}{48}
+\contentsline {section}{\numberline {5.3}Problem 3: How to deal with memory and speed requirements?}{48}
 \contentsline {chapter}{\numberline {6}Results}{49}
 \contentsline {section}{\numberline {6.1}Dual scattering in real-world situations}{49}
 \contentsline {subsubsection}{Observations}{50}

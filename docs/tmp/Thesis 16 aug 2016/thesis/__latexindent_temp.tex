@@ -802,16 +802,17 @@ The theoretical challenges are as follows:
 \begin{itemize}
     \item How to apply multiple importance sampling to the dual scattering method? The multiple importance sampling algorithm that is applied to the dual scattering method has been created for the improved Marschner model. The challenge is that the dual scattering method forms a different basis to the importance sampling algorithm. It could work less optimal if the probability distribution for the importance sampling algorithm does not match accurately with the distribution of the dual scattering method. In section~\ref{approach_problem1} the design decisions are explained and in section~\ref{approach_details_mis} the multiple importance scattering algorithm is explained in depth.
     \item How to measure or compare the results for multiple importance sampling? Rendering images using multiple importance sampling can look nice, or more visually pleasing when more samples are taken, but it is important to be clear on how to evaluate rendered images. In section~\ref{approach_problem2} the evaluation criteria are expressed.
+    \item The theoretical approach to implement the multiple scattering function in the PBRT framework. Although PBRT is about the implementation of the algorithm, the framework requires an importance sampling function to be implemented in a specific way. This way has an impact on the theoretical approach.
 \end{itemize}
 
-In the following chapter 'Implementation', the practical challenges are discussed that occurred when implementing a physics based hair rendering algorithm.
+In the following chapter \'Implementation\', the practical challenges are discussed that occurred when implementing a physics based hair rendering algorithm.
 
 
 
 \section{Problem 1: How to apply multiple importance scattering to the dual scattering method?}
 \label{approach_problem1}
 
-Creating a multiple importance sampling strategy is a mathematical involved process. Except for the most simple mathematical distributions, it usually requires quite a lot of mathematical background theory in order to solve the complex integrals that follow from complex scattering distributions. This is one of the reasons why it is difficult to find an importance sampling strategy for the original Marschner model. This is also the reason why so much effort has been put in expressing the Marschner model using more simple mathemtical equations. This is to make importance sampling possible as has eventually been accomplished by d'Eon et al.~\ref{eon2013}.
+Creating a multiple importance sampling strategy is a mathematical involved process. Except for the most simple mathematical distributions, it usually requires quite a lot of mathematical background theory in order to solve the complex integrals that follow from complex scattering distributions. This is one of the reasons why it is difficult to find an importance sampling strategy for the original Marschner model. This is also the reason why so much effort has been put in expressing the Marschner model using more simple mathematical equations. This is to make importance sampling possible as has eventually been accomplished by d'Eon et al.~\ref{eon2013}.
 
 The current status in hair rendering can be summarized by the following two points.
 
@@ -852,42 +853,48 @@ At last an evaluation needs to be performed. In this thesis, the rendered result
 
 \section{Theoretical details about importance sampling for dual scattering method}
 
-In this section I will describe the workings of the physically based importance sampling strategy and how it is applied to the Dual scattering method. The importance sampling strategy is proposed by d'Eon et al.~\cite{eon2013} for the energy conserving improvement of the Marschner model.~\cite{eon2011}.
+As mentioned a couple of times before in this report, d'Eon et al.~\cite{eon2013} proposed a physically based importance strategy for the improved Marschner model (alo by d'Eon et al.~\cite{eon2011}). This strategy should work for the original Marschner model as well. In this section the theoretical details of this physically based importance sampling strategy is explained and how it is applied to the dual scattering method. 
 
-The usual question with importance sampling is to find an incoming light direction $\omega_i$, given an outgoing direction $\omega_o$. The simple solution, will be to just randomly choose directions and integrate the result. As has been explained in section~\ref{section_importance_sampling} faster convergence can be obtained by specifically selecting an orientation that has more effect on the contributed result.
+As has been explained in section~\ref{section_importance_sampling} faster convergence can be obtained by using importance sampling over uniform sampling. The challenge with importance sampling is to sample an incoming light direction $\omega_i$, given an outgoing direction $\omega_o$. This is how it works in PBRT and most physics based system. The outgoing direction could be treated as the direction to the viewer or camera (at least for the first ray). The challenge is two fold: find a sampling distribution that matches the scattering behavior, and subsequently find an efficient way to sample the scattering distribution. If you are lucky, the scattering distribution is not complex and a sampling algorithm is trivial to find. If the distribution is too specific or complex, it might actually be impossible to analytically come to a sampling strategy.
 
-For implementation purposes PBRT is used, which is an open source physics based ray-tracing framework. In general there are two situations that need to be handled when implementing an importance sampling strategy.
+The reason why the theoretical details are explained in the approach chapter is that the translation from the algorithm to code is rather challenging. The challenge comes from the way what PBRT expects an importance sampling algorithm to be provided. In general there are two situations that need to be handled when implementing an importance sampling strategy in PBRT.
 
 \begin{itemize}
-    \item Given an outgoing direction $\omega_o$, sample an incident direction $\omega_i$ according to the probability distribution that ideally should be close fit to the shape of the response of the hair rendering model. Besides the incident direction $\omega_i$, also the corresponding PDF should be computed.
-    \item Given two directions $\omega_i$ and $\omega_o$, what is the probability of sampling $\omega_i$, given $\omega_o$. This is similar to the previous point, except that the output is now only a PDF value.
+    \item Sampling an incident (light) direction $\omega_i$, given an outgoing (viewing) direction $\omega_o$. The used probability distribution function should ideally be a close fit to the scattering distribution of the hair rendering model. Also the corresponding PDF should be computed, which is the likelihood of the sample being drawn.
+
+    \item Compute the PDF for two given directions $\omega_i$ and $\omega_o$, This is similar to the previous point, except that the output is now only a PDF value.
 \end{itemize}
 
-In equation~\ref{marschner_model_scatterfunction} the scattering function for the Marschner model is given. The method by d'Eon et al.~\cite{eon2011} simplifies the equation so that the longitudinal scattering function $M$ is only dependent on longitudinal angles and the azimuthal scattering function $N$ is only dependent on the azimuthal angles. Also the inclination dependent factors, such as the $\cos^2 \theta_d$ term present in the Marschner model are included in the $M_p$ term. This leads to the following equation:
+The scattering function for the Marschner model is given in equation~\ref{marschner_model_scatterfunction}. D'Eon et al.~\cite{eon2011} simplified this equation so that the longitudinal scattering function $M$ is only dependent on longitudinal angles, and the azimuthal scattering function $N$ is only dependent on the azimuthal angles. Also the inclination dependent factors, such as the $\cos^2 \theta_d$ term, present in the original Marschner model are included in the $M_p$ term. This leads to the following simplified equation:
 
 \begin{equation}
-S_p(\omega_i, \omega_r) = M_p(\theta_i, \theta_o) N_p(\theta_i, \theta_o, \phi)
+    \label{eq_model_S}
+    S_p(\omega_i, \omega_r) = M_p(\theta_i, \theta_o) N_p(\theta_i, \theta_o, \phi)
 \end{equation}
 
 \subsection{Strategy outline}
 
-The idea behind the importance sampling strategy of d'Eon et al.~\cite{eon2013} is to seperate the importance sampling for the longitudinal scattering function and for the azimuthal scattering function. The basic outline of the strategy is as follows.
+In this section the multiple importance sampling strategy for the Marschner model is explained. The strategy comes from d'Eon et al.~\cite{eon2013} and is summarized here.
+
+The idea behind the importance sampling strategy is to seperate the sampling for the longitudinal scattering function and for the azimuthal scattering function, hence we do have multiple importance sampling. Multiple importance sampling is nothing more than a combination of two or more importance sampling strategies combined into a single \"multiple\" importance strategy.
+
+The basic outline of the strategy is as follows.
 
 \begin{itemize}
 \item Select a lobe $p \in \{ \textnormal{R}, \textnormal{TT}, \textnormal{TRT} \}$ dependent on the relative contribution of energy reflected. This depends on the Fresnel equation and the absorption coefficient $\sigma$.
-\item Given a selected lobe $p$, compute the longitudinal direction by sampling the longitudinal scattering function $M_p$.
+\item Given a selected lobe $p$, compute the longitudinal angle by sampling the longitudinal scattering function $M_p$.
 \item An outgoing direction $\omega_o$ is given, so we know the spherical angles $\theta_o$ and $\phi_o$.
 \item Choose a random offset $h \in [-1, 1]$ along the fiber cross section.
 \end{itemize}
 
-The first thing that has to be done is lobe selection.
+The following subsections delve deeper into the items mentioned above.
 
 \subsection{Lobe selection}
 \label{sec_lobe_selection}
 
-When importance sampling incident directions, we want to take into account the relative contribution of the different lobes in the model. For example, the R component has a stronger influence when viewing hairs from glancing angles compared to the other reflection modes. Hair strands that are backlit do have more contribution from the TT component. It is important to take this into account, because for importance sampling we prefer to sample directions that have more impact on the rendered result than just random sampling.
+When importance sampling incident directions, we want to take into account the relative contribution of the different lobes in the model. For example, the R component has a stronger influence when viewing hairs from glancing angles compared to the other reflection modes. In that case you want to prefer sampling an incident direction based on the reflection component. Likewise, hair strands that are backlit do have more contribution from the TT component. It is important to take this into account, because for importance sampling we prefer to sample directions that have more impact (or weight) on the rendered result than just random sampling. With random sampling a lot of samples could be wasted, for example by taking into account the TRT component when the R reflection is much more dominant in the rendered result.
 
-d'Eon et al.~\cite{eon2013} proposes a way to select lobes by taking into account the attenuations through a smooth, ideally specular fiber $A_{\textnormal{spec}}(p, h)$. The strategy is to first select a random cross-section offset $h = 2\xi_h - 1$,  where $\xi_h \in [0, 1)$ is a uniformly distributed random number. Once the random cross-section offset is known, we can compute the relative contributions for each of the scattering modes.
+d'Eon et al.~\cite{eon2013} proposes a way to select lobes by taking into account the attenuations through a smooth, ideally specular fiber $A_{\textnormal{spec}}(p, h)$. The strategy is to first select a random cross-section offset $h = 2\xi_h - 1$,  where $\xi_h \in [0, 1)$ is a uniformly distributed random number. Once the random cross-section offset is known, we can compute the relative contributions for each of the scattering modes. The relative contributions for the scattering modes are as follows, where 0 corresonds to R, 1 corresponds to TT and 2 corresponds to the TRT scattering mode.
 
 \begin{align}
 A_{\textnormal{spec}}(0, h) &= F(\eta, \gamma_i) \\
@@ -895,7 +902,7 @@ A_{\textnormal{spec}}(1, h) &= (1 - F(\eta, \gamma_i))^2 \, T(\sigma_a, h) \\
 A_{\textnormal{spec}}(2, h) &= (1 - F(\eta, \gamma_i))^2 \, F(\frac{1}{\eta}, \gamma_t) \, T(\sigma_a, h)^2
 \end{align}
 
-These values describe the amount of energy transmitted through or reflected against hair fibers for each of the scattering modes. We do not yet take into account rough fibers, so all energy is concentrated in the specular direction. To sample a lobe, these absolute values should be related to the sum of energy reflected to find the relative weights $w_p$.
+These values describe the relative amount of energy transmitted through or reflected against hair fibers for each of the scattering modes. We do not yet take into account rough fibers, so all energy is concentrated in the specular direction. To sample a lobe these contributions should be related to the sum of all contributions to find the relative weights $w_p$.
 
 \begin{align}
 w_{\textnormal{R}} &= \frac{A_{\textnormal{spec}}(0, \gamma_i)}{\sum_p A_{\textnormal{spec}}(p, \gamma_i)} \\
@@ -903,25 +910,25 @@ w_{\textnormal{TT}} &= \frac{A_{\textnormal{spec}}(1, \gamma_i)}{\sum_p A_{\text
 w_{\textnormal{TRT}} &= \frac{A_{\textnormal{spec}}(2, \gamma_i)}{\sum_p A_{\textnormal{spec}}(p, \gamma_i)}
 \end{align}
 
-with the relative weights a lobe can be sampled by taking a random uniform variable $h \in [0, 1)$ and selecting a lobe proportional to the relative attenuation of each component. Once the lobe is known, importance sampling the longitudinal and azimuthal scattering functions become relatively straightforward.
+Given the relative weights, a lobe can be sampled by taking a random uniform variable $h \in [0, 1)$ and selecting a lobe proportional to the relative attenuation of each component. Once the lobe is selected, importance sampling the longitudinal and azimuthal scattering functions becomes relatively straightforward.
 
-The PDF of the sampling scheme are exactly analogous to evaluation of the model $S$, but with the attenuations $A$ replaced by the selection weights $w_p$~\cite{eon2013}. This makes sense. If the original attenuation factors were to be used, instead of the sample weights, then for all hair models that are not 100 percent transmissive energy will be lost and the PDF will not integrate to 1 anymore. By replacing the attenuations with the sample weights, the PDF is always integrating to 1 irrespective of the hair color.
+The PDF of the sampling scheme is exactly analogous to evaluation of the model $S$ in equation~\ref{eq_model_S}, but with the attenuations $A$ replaced by the selection weights $w_p$. By replacing the attenuations with the sample weights, the PDF is always integrating to 1 irrespective of the hair color.
 
 
 \subsubsection{Finding the PDF when directions $\omega_o$ and $\omega_i$ are known}
 
-The PBRT framework also requires a function to compute the PDF given two directions $\omega_o$ and $\omega_i$. As stated in the previous section the PDF is analogous to the evaluation of the model $S$, but with the attenuations replaced by the selection weights $w_p$.
+The PBRT framework requires a function to compute the PDF given two directions $\omega_o$ and $\omega_i$. As stated in the previous section the PDF is analogous to the evaluation of the model $S$, but with the attenuations replaced by the selection weights $w_p$. The selection weights were determined before by sampling a cross section, giving us the relative contribution per scattering component and thus eventually the relative direction to be sampled.
 
-The selection weights were determined before by sampling a cross section, giving us the relative contribution per scattering component and thus eventually the relative direction to be sampled. In this case the directions are already known, which means that the relative direction is known. The process is inverse and instead we should now take into account the likelihood of each scattering component to sample the given incident direction.
+When $\omega_o$ and $\omega_i$ are known, the PDF cannot be found by sampling from a cross section. In this case, the relative direction between the angles is used. All scattering modes could produce the difference angle, although for some scattering modes it would be more likely. In this case the process is inverse and instead of selecting a lobe given the outgoing direction, now we should take into account the likelihood of each scattering component sampling the given incident direction.
 
-This is done by solving for roots as has been explained in Marschner related work section~\ref{sec_marschner}. The R and TT components have exactly one root and the TRT component results in one or three roots. This means that any scattering mode could have been selected that would result in the incident direction being sampled. In other words, we need to know the relative probability of a root $h$ to be selected, giving $\omega_i$ as a sampled direction.
+This is done by solving for roots as has been explained in the related work section~\ref{sec_marschner}. The R and TT components have exactly one root and the TRT component results in one or three roots. This means that any scattering mode could have been selected that would result in the incident direction being sampled. In other words, we need to know the relative probability of a root $h$ to be selected for each of the R, TT and TRT scattering modes, given $\omega_i$ as a sampled direction.
 
 This is done in a similar way to sampling a lobe by using the relative attenuation for each of the roots $h$. Since the TRT component can have three roots, it means that this scattering mode actually has three paths to generate the sampled direction. They are summed together to represent the attenuation for the TRT mode. The relative attenuations are then used as the sample weights when evaluating the model $S$ to find the corresponding PDF.
 
 \subsection{Importance sampling the longitudinal M function}
 \label{sec_importance_sampling_M}
 
-To importance sample the longitudinal scattering function, we need a way to sample a gaussian distribution. The essence here is that we are given the outgoing direction $\omega_o = (\theta_o, \phi_o)$ and we need to find the incident longitudinal angle $\theta_i$. The incident $\phi_i$ is determined in the next section (when importance sampling the azimuthal scattering function $M$).
+To importance sample the longitudinal scattering function $M$, we need a way to sample a gaussian distribution. The essence here is that we are given the outgoing direction $\omega_o = (\theta_o, \phi_o)$ and we need to find the incident longitudinal angle $\theta_i$. The incident $\phi_i$ is determined in the next section (when importance sampling the azimuthal scattering function $N$).
 
 There is a problem with the gaussian distribution of the Marschner model. First of all it is not energy conserving as has been explained before in section~\ref{marschner_longitudinal_scattering_function}. Part of this can be solved by multiplying the half angle $\theta_h$ by two. Another problem is that especially at glancing angles, part of the energy falls outside of the boundary $\theta \in \{ -\pi/2, \pi/2 \}$, thereby losing energy. This is a problem for importance sampling. When energy is outside of the allowed range, we must somehow compensate this loss of energy in the remaining part of the gaussian distribution. This is pretty difficult to achieve, at least with the simple normalized gaussian distribution ranging from $\theta \in \{ -\infty, \infty \}$.
 
@@ -931,10 +938,11 @@ d'Eon et al.~\cite{eon2011} proposes a different energy-conserving longitudinal 
 M_p(v, \theta_i, \theta_r) = \frac{\textnormal{csch}(1/v)}{2v} e^{\frac{\sin(-\theta_i)\sin\theta_r}{v}} I_0 \Big [ \frac{\cos(-\theta_i) \cos \theta_r}{v} \Big ]
 \end{equation}
 
-where $v$ is the longitudinal scattering variance ($\beta_p^2$) and $I_0$ is the modified Bessel function of the first kind. It is no problem to use a different scattering function to sample from, instead of the Marschner function itself. This is the power of importance sampling, to be able to sample an arbitrary complex function using a simpler and easier to sample function. As long as the function is a good fit, variance will be reduced. More information about the derivation of this function and why it works can be found in the paper by d'Eon et al.~\cite{eon2011}.\\
+where $v$ is the longitudinal scattering variance ($\beta_p^2$) and $I_0$ is the modified Bessel function of the first kind. In the implementation, the Bessel function is available in the Boost library. Another option is to use the Python scientific programming library (scipy) and store the results in a lookup table.
 
-Sampling a spherical gaussian can be done with two random numbers $\xi_1$ and $\xi_2$ each within $[0, 1)$. Using the Box-Muller transform gives us a sample for the normalized
+Using the conserving scattering function, instead of the original Marschner scattering function is not an issue. This is the power of importance sampling, to be able to sample an arbitrary complex function (the marschner model) using a simpler and easier to sample function (the conserving scattering function). As long as the function is a good fit, variance will be reduced. More information about the derivation of this function and why it works can be found in the paper by d'Eon et al.~\cite{eon2011}.\\
 
+Sampling a spherical gaussian can be done with two random numbers $\xi_1$ and $\xi_2$ each within $[0, 1)$. Using the Box-Muller transform gives us a sample for the normalized spherical gaussian function. The computation requires a lot of mathematics, which is explained in the paper by d'Eon et al~\cite{eon2013}. The strategy to find the sampled $\theta_i$ is as follows.
 
 \begin{align}
 u(\xi_1) &= v \log \Big (e^{1/v} - 2\xi_1 \sinh \frac{1}{v} \Big ) \\
@@ -944,18 +952,18 @@ u(\xi_1) &= v \log \Big (e^{1/v} - 2\xi_1 \sinh \frac{1}{v} \Big ) \\
 & \arcsin(u(\xi_1) \cos \theta' + \sqrt{1 - u(\xi_1)^2} \cos(2\pi \xi_2) \sin \theta')
 \end{align}
 
-At last we end up with the sampled $\theta_i$. The probability of sampling this value is equal to the longitudinal scattering function (assuming it is energy conserving and integrates to 1), therby the PDF is $M \cos^2 \theta_i$.
+The probability of sampling this value is equal to the longitudinal scattering function $M$, assuming that the scattering distribution is energy conserving and integrates to 1, so the the PDF is $M \cos^2 \theta_i$.
 
 \subsection{Importance sampling the azimuthal N function}
 
-Importance sampling the azimuthal $N$ function is rather trivial if we know the selected lobe $p$ and the offset $h$ from the scattering cross section (see section~\ref{sec_lobe_selection}). In that case it is a matter of evaluating the relative change in azimuth $\Phi(p, h)$ (see equation~\ref{eq_relative_azimuth_change}), to find the incident azimuth direction $\phi_i$.
+Importance sampling the azimuthal $N$ function is trivial if we know the selected lobe $p$ and the offset $h$ from the scattering cross section (see section~\ref{sec_lobe_selection}). In that case it is a matter of evaluating the relative change in azimuth $\Phi(p, h)$ (see equation~\ref{eq_relative_azimuth_change}). To find the incident azimuth direction $\phi_i$.
 
 \begin{align}
 \label{phi_func}
 \phi_i^{\textnormal{smooth}} &= \phi_o + \Phi(p, h)
 \end{align}
 
-For rough fibers, the relative change in azimuth is offset by a gaussian distributed random variable $g$ with standard deviation 1, multiplied by the width $\beta_p$ corresponding to the selected lobe $p$. Sampling a gaussian distribution can be performed using the Box-Muller transform, that takes two random numbers in the range $[0, 1)$ and samples the normalized gaussian distribution. The direction $\phi_i$ to be importance sampled can thus be found as follows:
+For rough fibers, the relative change in azimuth is offset by a gaussian distributed random variable $g$ with standard deviation 1, multiplied by the width $\beta_p$ corresponding to the selected lobe $p$. Sampling a gaussian distribution can be performed using the Box-Muller transform as explained in the previous subsection. The direction $\phi_i$ to be importance sampled can then be found as follows:
 
 \begin{align}
 \phi_i &= \phi_o + \Phi(p, h) + g | \beta_p | 
@@ -1007,7 +1015,7 @@ In the second pass the hair model is rendered. If the ray intersects with the fi
 
 One experienced side effect of integrating the density through the voxel grid, is for intersections at the hair volume boundary. The first fiber hit is not in shadow. This is evident, since it's located at the boundary edge. However, looking up the density value gives an indication that the fiber is in shadow. This is solved by tracing an additional shadow ray to the light source to decide whether it has a clear path to the light source. If that is the case, no lookup is performed and it is assumed the hair fiber is fully lit without strands covering it.
 
-\section{Problem 3: How to deal with memory and speed requirements}
+\section{Problem 3: How to deal with memory and speed requirements?}
 
 Rendering hair models is very slow. The system settings that I used for rendering is an Intel Core i7-3770K processor with 8 GB of RAM. Rendering times for 512 samples per pixel could lead up to hours, and the curvy hair model was not possible to render at all, because it consumed more memory than the 8 GB of available RAM. The reason why memory usage is so high, is because some bookkeeping structure is set up by PBRT to improve ray intersections.
 
@@ -1299,7 +1307,20 @@ There are a couple of obervations to be made:
 
 \chapter{Conclusion}
 
-The importance sampling strategy proposed in this thesis is actually proposed for the method by d'Eon et al.~\cite{eon2011}, but is applicable to all Marschner related hair models. Dual scattering is an extension to the Marschner model (but could equally be applied to any other Marschner related hair model). It turns out that importance sampling leads to more efficient renderings, but in such a small amount that it is hardly noticable. One of the reasons that I can think of is the fact that the dual scattering method smoothens out the global illumination, essentially meaning that light is coming from almost anywhere around the hemisphere (for outside fibers) or sphere (for inside fibers). Sampling specific directions that are likely to contribute a lot to the Marschner model are not so significant anymore to the dual scattering method. This suggests that more work can be done in finding a way to importance sample the dual scattering method.
+The goal of this report is to evaluate the multiple importance sampling strategy proposed by d'Eon et al.~\cite{eon2011} for the dual scattering method proposed by Zinke et al.~\cite{zinke}. In this report a couple of challenges were mentioned.
+
+First of all, the dual scattering method is based on the original Marschner model which is not energy conserving. This makes it difficult to find an importance sampling strategy. Several improvements have been proposed over time to fix the issues with the Marschner model, making it possible to importance sample the Marschner model. Since the dual scattering method in this report is based on the original Marschner model, it is not an accurate fit. This could be one of the reasons why the rendered results look a tad darker when comparing the uniform sampled with multiple importance sampled rendering results.
+
+Second of all, ... How to evaluate rendered images using multiple importance sampling?
+Theoretical Approach: How to prepare for PBRT.
+
+Implementation
+Problem 1: Which framework to use to render physics based?
+Problem 2: How to write code for voxel grid?
+Problem 3: How to deal with memory and speed requirements?
+
+
+It turns out that importance sampling leads to more efficient renderings, but in such a small amount that it is hardly noticable. One of the reasons that I can think of is the fact that the dual scattering method smoothens out the global illumination, essentially meaning that light is coming from almost anywhere around the hemisphere (for outside fibers) or sphere (for inside fibers). Sampling specific directions that are likely to contribute a lot to the Marschner model are not so significant anymore to the dual scattering method. This suggests that more work can be done in finding a way to importance sample the dual scattering method.
 
 One of the problematic issues when using the Marschner model in combination with the dual scattering method is the fact that the parameters used to change the appearance of the model are not intuitive. Also the root finding process is quite complex and d'Eon et al.~\cite{deon2011} proposed a simpler and energy conserving model which produce similar results. Also Sadeghi et al.~\cite{sadeghi2010} proposed a less physically based artist friendly hair shading system, where physical properties are replaced by intuitive controls to color the hair, especially useful for artists for animation moview.
 
