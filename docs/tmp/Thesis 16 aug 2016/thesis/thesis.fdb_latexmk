@@ -1,12 +1,12 @@
 # Fdb version 3
 ["bibtex /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis"] 0 "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux" "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.bbl" "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis" 0
-  "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux" 1586814988 19907 d24e0d12e056d3515d2d5955f43ea911 ""
+  "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux" 1586870321 20314 8886845627fbbfd6197e13d135855a39 ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.bcf" 0 -1 0 ""
   "/usr/share/texlive/texmf-dist/bibtex/bst/base/plain.bst" 1292289607 20613 bd3fbfa9f64872b81ac57a0dd2ed855f ""
   "thesis.bib" 1569009029 13721 728c494a0585a0a5abe530fe2b7d1913 ""
   (generated)
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.bbl"
-["pdflatex"] 1586814986 "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex" "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf" "thesis" 1586814986
+["pdflatex"] 1586870319 "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex" "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf" "thesis" 1586870319
   "/etc/texmf/web2c/texmf.cnf" 1561022633 1101 af7716885e081ab43982cab7b4672c1a ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/circularcross.png" 1569578374 177071 3edffe93cf98138536f2c5d8c668b8aa ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/dbdf-results/black_dbdf_0_00.png" 1568401143 595618 849c977b286b3cbced1538004ac80db7 ""
@@ -54,9 +54,9 @@
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png" 1568298436 415593 4c0fc415330c855e1c5a0d8f2045f90b ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/rootfinding.png" 1569585468 93064 f66ddd166a4ab012ee4cefbe32cb0532 ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/solidangle.png" 1568998383 82490 5ffc1fb09eabe6a236cecc15518b6700 ""
-  "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux" 1586814986 8 a94a2480d3289e625eea47cd1b285758 ""
+  "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux" 1586870319 8 a94a2480d3289e625eea47cd1b285758 ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.bbl" 0 -1 0 "bibtex /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis"
-  "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex" 1586814985 126368 94a5db8ed69235986245b738432c5371 ""
+  "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.tex" 1586870318 130724 f77261c1a42050fc2e1484393b81f535 ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.toc" 0 -1 0 ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/deon512.png" 1568575817 1551807 a4e195e013c779e430eefd909b451da0 ""
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/is1.png" 1568583393 70077 b256510c86e4f890ba9dcf8ce112c6eb ""
@@ -286,7 +286,7 @@
   "variance-results/uniform512.png" 1568581830 1576758 5ad18c3beec0156b65b9aa2e1a602203 ""
   "variance-results/variance-plot.png" 1568617336 69228 ba7206fbbe89272e6354308ba07d25b0 ""
   (generated)
+  "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.toc"
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux"
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.pdf"
-  "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.toc"
   "/home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.log"

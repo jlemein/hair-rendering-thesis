@@ -830,6 +830,7 @@ The only caveat is that the Marschner model is not fully energy conserving at th
 
 
 \section{Problem 2: How to evaluate rendered images using multiple importance sampling?}
+\label{approach_problem2}
 
 The main goal of this thesis is to find out if multiple importance sampling applied to the dual scattering method leads to a significant reduction of noise in the rendered image. In order to come to a conclusion, evaluation criteria need to be set up. This is a challenge since there is no reference image to compare with. There are three criteria to take into account:
 
@@ -852,6 +853,7 @@ At last an evaluation needs to be performed. In this thesis, the rendered result
 
 
 \section{Theoretical details about importance sampling for dual scattering method}
+\label{approach_problem3}
 
 As mentioned a couple of times before in this report, d'Eon et al.~\cite{eon2013} proposed a physically based importance strategy for the improved Marschner model (alo by d'Eon et al.~\cite{eon2011}). This strategy should work for the original Marschner model as well. In this section the theoretical details of this physically based importance sampling strategy is explained and how it is applied to the dual scattering method. 
 
@@ -979,15 +981,17 @@ Aside from the theoretical challenges, there are also practical challenges in im
 This chapter deals with the implementation details to implement the importance sampling strategy for the dual scattering method. The theoretical approach is described in the previous chapter. The practical challenges can be summarized as follows.
 
 \begin{itemize}
-    \item Framework to render physics based algorithms in combination with the representation of hair strands.
-    \item How to represent the voxel grid
-    \item How to deal with memory and speed requirements
+    \item The choice of the framework to render physics based algorithms in combination with the representation of hair strands.
+    \item How to represent the voxel grid?
+    \item How to deal with memory and speed requirements?
+    \item The non-intuitiveness of the Marschner model parameters.
 \end{itemize}
 
 The next sections will address these challenges on how these are tackled in this thesis.
 
 
 \section{Problem 1: Which framework to use to render physics based?}
+\label{sec_which_framework}
 
 The first challenge is to find a proper ray tracing framework, which offers the possibility to write your own BSDF materials. There is a lot of choice between different renderers, but one that is extremely useful is PBRT. PBRT stands for Physics Based Ray Tracing and is used a lot to explore and experiment with physics based raytracing algorithms. It is developed by Matt Phar et al. and freely available, open source from their website~\footnotetext{http://www.pbrt.org}] and described in their corresponding book~\cite{pbrt}. The rendered images in this thesis are created using PBRT.
 
@@ -996,6 +1000,7 @@ Within PBRT, it is possible to create your own BSDF's. A BSDF is usually applied
 The representation of hair fibers can be done in a variety of ways as has been discussed in section~\ref{sec_geometric_complexity}. The possibilities were to represent them as connected triangle strips, cylindrical primitives, trigonal prisms or ribbons. Within PBRT hair fibers are specified as curves, which are a sequence of cubic Bezier splines represented by 3D points. For every cubic spline segment, the width is specified. PBRT has support for three types of curves: flat, cylindrical or ribbons. Flat corresponds to triangle strips, and the other curve types are self-explanatory. For the rendered results in this thesis cylindrical curves are used, which correspond to the most realistic representation.
 
 \section{Problem 2: How to write code for voxel grid?}
+\label{sec_voxel_grid}
 
 Voxel grid implementations are not that trivial as they might seem at first. Yes, you can use a three-dimensional array, but this is not efficient for rendering purposes. One of the problems with voxel grids are the hard edges they produce in the renderings. Making the voxel cells very small leads to memory issues, or even precision issues because of their small size.
 
@@ -1011,28 +1016,27 @@ The most plausible approach for this thesis is the second option: a two pass app
 
 In this thesis the preprocessing step works as follows. For every hair fiber that is represented as a curve, loop through the curve by a specific offset, and for each position, find the corresponding voxel cell. This voxel cell is incremented with the length of the curve segment. In this way, all voxel cells, contain the relative lengths that have been traversed in that voxel cell. These lengths do not necessarily correspond to absolute density values, but are relative density values. When rendering a hair model, the density can be scaled to adjust the rendered result. In this thesis I decided not to store the orientations per voxel cell. This is a simplification. The reason I chose for this simplification is that hair fibers are usually similar in orientation in their local neighbourhood. Also it makes the voxel generation process less complex. For more realistic behavior that is applicable to more complex hair models, the orientations of the fibers should be taken into account.
 
-In the second pass the hair model is rendered. If the ray intersects with the first hair fiber at the surface of the hair volume, a lookup is performed in the voxel grid. The voxel grid, based on 3D location and orientation, is used to traverse through all voxel cells along this "shadow" ray, integrating the results using box sampling. The choice for box sampling is arbitrarily, because the results were nice enough. It could be worth to do further research on choosing different sampling algorithms and on determining the best possible voxel size for different types of hair models such as straight hair versus curvy hair.
+In the second pass the hair model is rendered. If the ray intersects with the first hair fiber at the surface of the hair volume, a lookup is performed in the voxel grid. The voxel grid, based on 3D location and orientation, is used to traverse through all voxel cells along this \"shadow\" ray, integrating the results using box sampling. The choice for box sampling is arbitrarily, because the results were nice enough. It could be worth to do further research on choosing different sampling algorithms and on determining the best possible voxel size for different types of hair models such as straight hair versus curvy hair.
 
 One experienced side effect of integrating the density through the voxel grid, is for intersections at the hair volume boundary. The first fiber hit is not in shadow. This is evident, since it's located at the boundary edge. However, looking up the density value gives an indication that the fiber is in shadow. This is solved by tracing an additional shadow ray to the light source to decide whether it has a clear path to the light source. If that is the case, no lookup is performed and it is assumed the hair fiber is fully lit without strands covering it.
 
 \section{Problem 3: How to deal with memory and speed requirements?}
+\label{sec_memory_requirements}
 
-Rendering hair models is very slow. The system settings that I used for rendering is an Intel Core i7-3770K processor with 8 GB of RAM. Rendering times for 512 samples per pixel could lead up to hours, and the curvy hair model was not possible to render at all, because it consumed more memory than the 8 GB of available RAM. The reason why memory usage is so high, is because some bookkeeping structure is set up by PBRT to improve ray intersections.
+Rendering hair models is very slow. The system configuration that I used for rendering is a quad core Intel Core i7-3770K processor with 8 gigabytes of RAM. Rendering times for 512 samples per pixel would lead to a couple of hours. The curvy hair model was not possible to render at all, because it consumed more memory than the 8 GB of available RAM. The system therefore resorted to virtual memory, practically stalling the rendering process. The reason why memory usage is so high, is because bookkeeping structures are needed by PBRT to improve ray intersections.
 
-One of the tricks that is performed in this thesis is to do the preprocessing step, computing the voxel grid, with the full hair model. The rendering step is then performed by using half the hair model, where the 'cutted' half of the hair model is viewing away from the camera. In this way, it is not visible that actually half the hair model is used during rendering. This doesn 
+One of the tricks that is performed in this thesis is to render only half of the hair model, where the \'removed\' half of the hair model is pointing away from the camera. In this way, it is not visible that actually half the hair model is used during rendering. The voxel generation process is still using the full hair model to reflect that the density is still there, even though half the hair volume is actually removed. Another way to speed up the rendering during debug times is to render only a subframe of the image, so that quick feedback loops are possible after only half a minute of rendering.
+
+\section{Problem 4: The non-intuitiveness of the Marschner model parameters}
+\label{sec_nonintuitiveness_marschner}
+
+The Marschner model is a physically based hair rendering model. It is based on physical properties, such as the absorption of light propagating through the core of the hair fibers, the curvature of the hair cylinder, the width and shift of the scattering lobes and many more. These parameters are non-intuitive from the perspective of an artist wanting to achieve the perfect look. They are also non-intuitive for me to be able to render distinct effects of the Marschner model, such as the TRT component which is hard to visualize clearly. This was a challenge when creating rendered results.
 
 
 \chapter{Results}
 
 In this chapter results are presented. First the dual scattering model is presented in a variety of settings. Then the effect of the average forward and backward density factors are shown, followed by a numerical analysis by using variance to compare the noise between uniform sampling and importance sampling.
 
-%\subsection{Marschner results}
-
-%In this section the marschner model is presented with renderings from different orientations to show the three scattering %modes so characteristic for the Marschner model.
-
-%
-% Marschner model (brunette, blonde, black hair) with highlighted R, TT and TRT modes
-%
 
 \section{Dual scattering in real-world situations}
 
@@ -1309,24 +1313,30 @@ There are a couple of obervations to be made:
 
 The goal of this report is to evaluate the multiple importance sampling strategy proposed by d'Eon et al.~\cite{eon2011} for the dual scattering method proposed by Zinke et al.~\cite{zinke}. In this report a couple of challenges were mentioned.
 
-First of all, the dual scattering method is based on the original Marschner model which is not energy conserving. This makes it difficult to find an importance sampling strategy. Several improvements have been proposed over time to fix the issues with the Marschner model, making it possible to importance sample the Marschner model. Since the dual scattering method in this report is based on the original Marschner model, it is not an accurate fit. This could be one of the reasons why the rendered results look a tad darker when comparing the uniform sampled with multiple importance sampled rendering results.
+First of all, the dual scattering method is based on the original Marschner model which is not energy conserving (see section~\ref{approach_problem1}). This makes it difficult to find an importance sampling strategy. Several improvements have been proposed over time to fix the issues with the Marschner model, making it possible to importance sample the Marschner model. Since the dual scattering method in this report is based on the original Marschner model, the scattering distribution is not an accurate fit. This could be one of the reasons why the rendered results look a tad darker when comparing the uniform sampled with multiple importance sampled rendering results.
+It would be beneficial to use the dual scattering method based on the energy conserving Marschner model proposed by d'Eon et al.~\cite{eon2011}. In that way there is a 100 percent energy conserving model that might lead to better results, so that importance and uniform sampling are converging to exactly the same result.
 
-Second of all, ... How to evaluate rendered images using multiple importance sampling?
-Theoretical Approach: How to prepare for PBRT.
+Second of all, the challenge was to evaluate rendered images using multiple importance sampling (see section~\ref{approach_problem2}). A decision has been made to compare uniform sampling with importance sampling at 512 samples per pixel. Also the comparison is performed using visual inspection and a comparison based on the noise, or variance, between the images in a selected rectangle boundary. Results show that variance is reducing faster for importance sampling. However, the decrease in noise is present in such a small amount that it is hardly noticable. One of the reasons that I can think of is that the dual scattering method smoothens out the global illumination, turning the scattering distribution more into a uniform scattering distribution. Since global illumination is the biggest contributor for light colored hair volumes, the effect of importance sampling has a small impact.
 
-Implementation
-Problem 1: Which framework to use to render physics based?
-Problem 2: How to write code for voxel grid?
-Problem 3: How to deal with memory and speed requirements?
+Also, there was a theoretical challenge in applying the multiple importance sampling strategy to the dual scattering method by using PBRT (see section~\ref{approach_problem3}). PBRT for example, requested to sample the incident direction, based on the outgoing direction. Additionally the PDF value needed to be computed. Also a second variant where both incident and outgoing directions are known required a computation to be performed for the PDF value.
 
+The practical implementation was a challenge as well. One of the practical challenges is the choice for the rendering framework to use (see section~\ref{sec_which_framework}). The thesis started out using the rendering framework Renderman by Pixar. This presented challenges, such as compiling C++ files as shared libraries for Pixar's renderman. Although the Renderman software is good, the open-source alternative PBRT was more suited for the job. One of the benefits of PBRT is that the source code is open-source and could be altered and inspected which has been an enormous benefit in debugging the rendering algorithms.
 
-It turns out that importance sampling leads to more efficient renderings, but in such a small amount that it is hardly noticable. One of the reasons that I can think of is the fact that the dual scattering method smoothens out the global illumination, essentially meaning that light is coming from almost anywhere around the hemisphere (for outside fibers) or sphere (for inside fibers). Sampling specific directions that are likely to contribute a lot to the Marschner model are not so significant anymore to the dual scattering method. This suggests that more work can be done in finding a way to importance sample the dual scattering method.
-
-One of the problematic issues when using the Marschner model in combination with the dual scattering method is the fact that the parameters used to change the appearance of the model are not intuitive. Also the root finding process is quite complex and d'Eon et al.~\cite{deon2011} proposed a simpler and energy conserving model which produce similar results. Also Sadeghi et al.~\cite{sadeghi2010} proposed a less physically based artist friendly hair shading system, where physical properties are replaced by intuitive controls to color the hair, especially useful for artists for animation moview.
+The second practical implementation issue is the voxel grid. In section~\ref{sec_voxel_grid} it is explained that the voxel grid is not so trivial as it seems. For this report, the OpenVdb library is used to represent voxel grids as sparse data and to enable linear interpolation with neighboring voxel cells. In this report the choice is made to compute the voxel grid with hair densities using a two pass approach: first traverse through all hair fibers and storing the density information in the voxel cells, followed by the rendering itself that uses the voxel grid data to compute the amount of global illumination passing through the voxel grid for a specific ray.
 
 The simplifications used, such as assuming that the orientations of hair strands are the same when determining the global multiple scattering contribution, leads to similar appearance for neighboring hair strands. These appearances seem unnatural because of the washed out look. More work could be done by taking into account the different orientations for hair fibers in the local neighborhood. Also the use of the voxel grid could lead to less optimal results, since all positions in a voxel cell are using the same data (smoothened by trilinear filtering). Experimentation with voxel cell sizes could be performed, but a better idea is to use deep opacity maps (as originally proposed by Zinke et al.~\cite{zinke}).
 
-Also it would be beneficial to try to apply dual scattering method to the solution proposed by d'Eon et al.~\cite{eon2011}. In that way there is a proven 100 percent energy conserving model that might lead to better results, so that importance and uniform sampling are converging to exactly the same result.
+The third practical implementation issue has to do with memory and speed requirements discussed in~\ref{sec_memory_requirements}. Rendering physics based implementations is a huge undertaking for memory and processor. The computer used for this thesis was a 8GB RAM and a quad-core Intel i7-3770K 3,50 GHz processor. For complex hair models 8 GB of RAM was not enough, thereby using virtual memory which more or less stalls the rendering process. Solutions performed were rendering a small subframe to have quick feedback loops, and another option was to hide half of the hair model to consume less memory.
+
+The last practical challenge with the dual scattering method is that it is based on the Marschner model. The Marschner model uses non-intuitive physical parameters to tweak the model as mentioned in section~\ref{sec_nonintuitiveness_marschner}. It is therefore difficult to achieve the look or the distinct effects you are looking for. Future work could be to base the dual scattering method on the improved Marschner model by d'Eon et al.~\cite{eon2011}. In the improved model the root finding process is removed with less complex parameters. Also Sadeghi et al.~\cite{sadeghi2010} proposed a less physically based artist friendly hair shading system, where physical properties are replaced by intuitive controls to color the hair, especially useful for artists for animation movies.
+
+To conclude the main goal of thesis: to evaluate the multiple importance sampling strategy proposed by d'Eon et al.~\cite{eon2011}, the following conclusion is found, which was not known before:
+
+\begin{itemize}
+\item Applying importance sampling for the dual scattering method does not significantly reduce the noise compared to rendering using uniform sampling.
+\end{itemize}
+
+This thesis brought me a lot of mathematical and physical knowledge, it put me in the never-ending cycle of challenges related to precision errors and complex software. It taught me to write unit tests for even the simplest of calculations to in the end be sure that the algorithm is implemented correctly. I lost the hope a lot of times, and many thanks to my supervisor Remco Veltkamp for having the patience to keep supervising me.
 
 
 %\chapter{Appendix}
