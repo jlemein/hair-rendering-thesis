@@ -184,7 +184,7 @@ The rest of this report is divided into a background section, where the basics a
 
 \chapter{Background}
 
-Hair comes in different styles. According to Ward et al.~\cite{ward} hair can be smooth, jagged, wavy or curly depending on the ethnic group. Three different ethnic groups are distinguished: Asian, African and Caucasian hair. A hair fiber can either have a circular or elliptical cross section. Asian hair tends to be very smooth and regular with a circular cross section, whereas African hair is very irregular and has an elliptical cross section. Caucasian hair is in between and can be a mixture of both properties.
+Hair comes in different styles. According to Ward et al.~\cite{ward} hair can be smooth, jagged, wavy or curly depending on the ethnic group. Three different ethnic groups are distinguished: Asian, African and Caucasian hair. A hair fiber can either have a circular or elliptical cross section. Asian hair tends to be very smooth and regular with a circular cross section, whereas African hair is very irregular and has an elliptical cross section. Caucasian hair is inbetween and can be a mixture of both properties.
 
 The follicle is the active part of hair under the skin and produces keratin proteins that compose the hair material~\cite{hadap}. The visible part of the hair is called the hair shaft. Hair has an almost uniform cross section, natural twist and natural curvatures all along~\cite{hadap}. It makes the hair appear curly, straight, fuzzy, smooth, etcetera. These parameters are characteristic for the ethnic group.
 
@@ -239,19 +239,20 @@ Implicit hair is usually modelled as a volume or polygonal boundary representati
 The downside of implicit representations is that it is not physically based and it is not flexible. Scattering behavior are usually simplified to work only for specific viewing directions. For physically based rendering, the explicit representation is the only way to go.
 
 \subsection{Geometric complexity}
-\ref{sec_geometric_complexity}
+\label{sec_geometric_complexity}
+
 A human scalp may consist of over 200.000 hair strands. Some animals, such as bears might realistically be rendered with millions of hair strands. It is clear that the amount of hair fibers lead to a geometric complex challenge. 
 
 A hair fiber is naturally represented as a curved cylinder. For rendering, these cylinders are usually approximated to make computing intersections more efficient. There are strategies to render curves. Curves can be treated as:
 
 \begin{itemize}
-\item Connected triangle strips facing the camera. Triangles are easy to intersect and a strip that always faces the camera will always be intersectable.
+\item \textbf{Connected triangle strips} facing the camera. Triangles are easy to intersect and a strip that always faces the camera will always be intersectable.
 
-\item Cylindrical primitive. This is the most realistic solution, because it comes closest to how a hair fiber is physically represented. It is similar to the previous approach, except that the normal is now adjusted to account for a cylindrical shape.
+\item \textbf{Cylindrical primitives}. This is the most realistic solution, because it comes closest to how a hair fiber is physically represented. It is similar to the previous approach, except that the normal is now adjusted to account for a cylindrical shape.
 
-\item Trigonal prisms. This is an extension to camera facing triangle strips, making three ribbons and attaching the ends together to form a trigonal prism.
+\item \textbf{Trigonal prisms}. This is an extension to camera facing triangle strips, making three ribbons and attaching the ends together to form a trigonal prism.
 
-\item Ribbons, in which a triangle strip is constructed following the curvature of the three-dimensional curve. This triangle strip is not necessarily camera facing.
+\item \textbf{Ribbons}, in which a triangle strip is constructed following the curvature of the three-dimensional curve. This triangle strip is not necessarily camera facing.
 
 \end{itemize}
 
@@ -343,7 +344,7 @@ As the angle with the surface normal $\vec{n}$ increases, the direction from whi
 
 \begin{equation}
 E = \frac{\Phi \cos \theta_i}{A}
-\label{eq_irradiance1}
+\label{eq_irradiance2}
 \end{equation}
 
 \begin{figure}
@@ -368,7 +369,7 @@ Radiance $L$ measures the light intensity per unit area on a surface. It measure
 A nice thing about radiance is that it remains constant along rays as long as the ray moves through a vacuum. This makes it very useful in rendering applications.
 
 \subsection{Bidirectional Reflection Distribution Function (BRDF)}
-\section{sec_bsdf}
+\label{sec_bsdf}
 
 When a surface is lit by a light source, part of it will scatter back into the environment. The distribution at which light is scattered back is described by a bidirectional scattering distribution function (BSDF). It is named bidirectional, because the distribution is dependent on the incident and outgoing light direction. If the surface is opaque, which means there is no subsurface light transport or refraction, then the BSDF is described by surface reflection only. In that case the BSDF is called a bidirectional reflectance distribution function (BRDF). A BRDF function is denoted as $f_r(p, \omega_i, \omega_o)$ where $p$ is the surface position, $\omega_i$ is the incident light direction and $\omega_o$ the outgoing light direction.
 
@@ -800,19 +801,20 @@ In this chapter the theoretical approach discusses the theoretical challenges in
 The theoretical challenges are as follows:
 
 \begin{itemize}
-    \item How to apply multiple importance sampling to the dual scattering method? The multiple importance sampling algorithm that is applied to the dual scattering method has been created for the improved Marschner model. The challenge is that the dual scattering method forms a different basis to the importance sampling algorithm. It could work less optimal if the probability distribution for the importance sampling algorithm does not match accurately with the distribution of the dual scattering method. In section~\ref{approach_problem1} the design decisions are explained and in section~\ref{approach_details_mis} the multiple importance scattering algorithm is explained in depth.
-    \item How to measure or compare the results for multiple importance sampling? Rendering images using multiple importance sampling can look nice, or more visually pleasing when more samples are taken, but it is important to be clear on how to evaluate rendered images. In section~\ref{approach_problem2} the evaluation criteria are expressed.
-    \item The theoretical approach to implement the multiple scattering function in the PBRT framework. Although PBRT is about the implementation of the algorithm, the framework requires an importance sampling function to be implemented in a specific way. This way has an impact on the theoretical approach.
+    \item[1] \textbf{How to apply multiple importance sampling to the dual scattering method?} 
+    The multiple importance sampling algorithm that is applied to the dual scattering method has been created for the improved Marschner model. The challenge is that the dual scattering method forms a different basis to the importance sampling algorithm. It could work less optimal if the probability distribution for the importance sampling algorithm does not match accurately with the distribution of the dual scattering method. In section~\ref{approach_problem1} the design decisions are explained and in section~\ref{approach_problem3} the multiple importance scattering algorithm is explained in depth.
+    \item[2] \textbf{How to measure or compare the results for multiple importance sampling?} Rendering images using multiple importance sampling can look nice, or more visually pleasing when more samples are taken, but it is important to be clear on how to evaluate rendered images. In section~\ref{approach_problem2} the evaluation criteria are expressed.
+    \item[3] \textbf{The theoretical approach to implement multiple importance sampling in the PBRT framework.} Although PBRT is about the implementation of the algorithm, the framework requires an importance sampling function to be implemented in a specific way. This way has an impact on the theoretical approach.
 \end{itemize}
 
-In the following chapter \'Implementation\', the practical challenges are discussed that occurred when implementing a physics based hair rendering algorithm.
+In chapter~\ref{chapter_implementation}: 'Implementation', the practical challenges are discussed that occurred when implementing a physics based hair rendering algorithm.
 
 
 
-\section{Problem 1: How to apply multiple importance scattering to the dual scattering method?}
+\section{Application of multiple importance scattering to the dual scattering method}
 \label{approach_problem1}
 
-Creating a multiple importance sampling strategy is a mathematical involved process. Except for the most simple mathematical distributions, it usually requires quite a lot of mathematical background theory in order to solve the complex integrals that follow from complex scattering distributions. This is one of the reasons why it is difficult to find an importance sampling strategy for the original Marschner model. This is also the reason why so much effort has been put in expressing the Marschner model using more simple mathematical equations. This is to make importance sampling possible as has eventually been accomplished by d'Eon et al.~\ref{eon2013}.
+Creating a multiple importance sampling strategy is a mathematical involved process. Except for the most simple mathematical distributions, it usually requires quite a lot of mathematical background theory in order to solve the complex integrals that follow from complex scattering distributions. This is one of the reasons why it is difficult to find an importance sampling strategy for the original Marschner model. This is also the reason why so much effort has been put in expressing the Marschner model using more simple mathematical equations. This is to make importance sampling possible as has eventually been accomplished by d'Eon et al.~\cite{eon2013}.
 
 The current status in hair rendering can be summarized by the following two points.
 
@@ -823,13 +825,13 @@ The current status in hair rendering can be summarized by the following two poin
 
 One of the observations made in d'Eon et al.~\cite{eon2013} is that the importance sampling strategy should work for the original Marschner model, as well as for all models that approximate the Marschner model. The observation behind this is that all approximated solutions to the Marschner model in essence are modeling the same scattering distribution. If the scattering distribution would be different, then the hair rendering would look different compared to the Marschner model. This means that the importance sampling should be able to be applied to the dual scattering method, since the dual scattering method approximates the Marschner model.
 
-The only caveat is that the Marschner model is not fully energy conserving at the edge-cases, such as glancing angles. This problem is applicable to the dual scattering method as well. The expectation is that these edge-cases can be ignored and therefore the choice has been made that it is possible to apply the importance sampling strategy by d'Eon et al.~\cite{eon2013} to the dual scattering method of Zinke et al.~\cite{zinke}. The details on the multiple importance sampling strategy are elaborated in section~\ref{approach_details_mis}.
+The only caveat is that the Marschner model is not fully energy conserving at the edge-cases, such as glancing angles. This problem is applicable to the dual scattering method as well. The expectation is that these edge-cases can be ignored and therefore the choice has been made that it is possible to apply the importance sampling strategy by d'Eon et al.~\cite{eon2013} to the dual scattering method of Zinke et al.~\cite{zinke}. The details on the multiple importance sampling strategy are elaborated in section~\ref{approach_problem3}.
 
 
 
 
 
-\section{Problem 2: How to evaluate rendered images using multiple importance sampling?}
+\section{Evaluation of rendered images generated by multiple importance sampling}
 \label{approach_problem2}
 
 The main goal of this thesis is to find out if multiple importance sampling applied to the dual scattering method leads to a significant reduction of noise in the rendered image. In order to come to a conclusion, evaluation criteria need to be set up. This is a challenge since there is no reference image to compare with. There are three criteria to take into account:
@@ -848,14 +850,14 @@ At last an evaluation needs to be performed. In this thesis, the rendered result
 
 \begin{itemize}
     \item First of all a comparison is made by comparing the visual appearance of the image. Is the result obtained with importance sampling looking as we expect for different scenarios? Such as when the model is backlit or frontlit, or when the amount of reflection is high? This comparison is rather subjective, so there needs to be another unbiased way to measure the performance between uniform and importance sampling.
-    \item Second of all, a comparison is performed between the variance in the rendered result. It is important to only compute the variance for the hair volume and not for the background image. This could otherwise give us a false sense of conversion if the hair model covers only a small region of the image. To prevent this from happening, only a specific rectangular region of the image is taken into account that is fully covered by the hair model. The variance is then only computed for this specific region. Figure~\ref{variance-for-region} visualizes this the comparison region.
+    \item Second of all, a comparison is performed between the variance in the rendered result. It is important to only compute the variance for the hair volume and not for the background image. This could otherwise give us a false sense of conversion if the hair model covers only a small region of the image. To prevent this from happening, only a specific rectangular region of the image is taken into account that is fully covered by the hair model. The variance is then only computed for this specific region. Figure~\ref{fig_variance_outline} visualizes the comparison region.
 \end{itemize}
 
 
-\section{Theoretical details about importance sampling for dual scattering method}
+\section{Theoretical approach to multiple importance sampling for the dual scattering method}
 \label{approach_problem3}
 
-As mentioned a couple of times before in this report, d'Eon et al.~\cite{eon2013} proposed a physically based importance strategy for the improved Marschner model (alo by d'Eon et al.~\cite{eon2011}). This strategy should work for the original Marschner model as well. In this section the theoretical details of this physically based importance sampling strategy is explained and how it is applied to the dual scattering method. 
+As mentioned a couple of times before in this report, d'Eon et al.~\cite{eon2013} proposed a physically based importance strategy for the improved Marschner model (also by d'Eon et al.~\cite{eon2011}). This strategy should work for the original Marschner model as well. In this section the theoretical details of this physically based importance sampling strategy is explained and how it is applied to the dual scattering method. 
 
 As has been explained in section~\ref{section_importance_sampling} faster convergence can be obtained by using importance sampling over uniform sampling. The challenge with importance sampling is to sample an incoming light direction $\omega_i$, given an outgoing direction $\omega_o$. This is how it works in PBRT and most physics based system. The outgoing direction could be treated as the direction to the viewer or camera (at least for the first ray). The challenge is two fold: find a sampling distribution that matches the scattering behavior, and subsequently find an efficient way to sample the scattering distribution. If you are lucky, the scattering distribution is not complex and a sampling algorithm is trivial to find. If the distribution is too specific or complex, it might actually be impossible to analytically come to a sampling strategy.
 
@@ -975,22 +977,23 @@ Take into account that the spherical direction wraps around in the range $\{ -\p
 
 
 \chapter{Implementation}
+\label{chapter_implementation}
 
 Aside from the theoretical challenges, there are also practical challenges in implementing physics based rendering algorithms, especially when dealing with hair models that often consist of hundreds of thousands of hair fibers. These hair fibers which are huge in amount, are also very thin, especially compared to the projected area on a pixels.
 
 This chapter deals with the implementation details to implement the importance sampling strategy for the dual scattering method. The theoretical approach is described in the previous chapter. The practical challenges can be summarized as follows.
 
 \begin{itemize}
-    \item The choice of the framework to render physics based algorithms in combination with the representation of hair strands.
-    \item How to represent the voxel grid?
-    \item How to deal with memory and speed requirements?
-    \item The non-intuitiveness of the Marschner model parameters.
+    \item[1] The choice of the framework to render physics based algorithms in combination with the representation of hair strands (section~\ref{sec_which_framework}).
+    \item[2] Representation of the voxel grid (section~\ref{sec_voxel_grid}).
+    \item[3] Dealing with memory and speed requirements (section~\ref{sec_memory_requirements}).
+    \item[4] The non-intuitiveness of the Marschner model parameters (section~\ref{sec_nonintuitiveness_marschner}).
 \end{itemize}
 
 The next sections will address these challenges on how these are tackled in this thesis.
 
 
-\section{Problem 1: Which framework to use to render physics based?}
+\section{The choice of the physics based rendering framework}
 \label{sec_which_framework}
 
 The first challenge is to find a proper ray tracing framework, which offers the possibility to write your own BSDF materials. There is a lot of choice between different renderers, but one that is extremely useful is PBRT. PBRT stands for Physics Based Ray Tracing and is used a lot to explore and experiment with physics based raytracing algorithms. It is developed by Matt Phar et al. and freely available, open source from their website~\footnotetext{http://www.pbrt.org}] and described in their corresponding book~\cite{pbrt}. The rendered images in this thesis are created using PBRT.
@@ -999,7 +1002,7 @@ Within PBRT, it is possible to create your own BSDF's. A BSDF is usually applied
 
 The representation of hair fibers can be done in a variety of ways as has been discussed in section~\ref{sec_geometric_complexity}. The possibilities were to represent them as connected triangle strips, cylindrical primitives, trigonal prisms or ribbons. Within PBRT hair fibers are specified as curves, which are a sequence of cubic Bezier splines represented by 3D points. For every cubic spline segment, the width is specified. PBRT has support for three types of curves: flat, cylindrical or ribbons. Flat corresponds to triangle strips, and the other curve types are self-explanatory. For the rendered results in this thesis cylindrical curves are used, which correspond to the most realistic representation.
 
-\section{Problem 2: How to write code for voxel grid?}
+\section{Representation of the voxel grid}
 \label{sec_voxel_grid}
 
 Voxel grid implementations are not that trivial as they might seem at first. Yes, you can use a three-dimensional array, but this is not efficient for rendering purposes. One of the problems with voxel grids are the hard edges they produce in the renderings. Making the voxel cells very small leads to memory issues, or even precision issues because of their small size.
@@ -1020,14 +1023,14 @@ In the second pass the hair model is rendered. If the ray intersects with the fi
 
 One experienced side effect of integrating the density through the voxel grid, is for intersections at the hair volume boundary. The first fiber hit is not in shadow. This is evident, since it's located at the boundary edge. However, looking up the density value gives an indication that the fiber is in shadow. This is solved by tracing an additional shadow ray to the light source to decide whether it has a clear path to the light source. If that is the case, no lookup is performed and it is assumed the hair fiber is fully lit without strands covering it.
 
-\section{Problem 3: How to deal with memory and speed requirements?}
+\section{Dealing with memory and speed requirements}
 \label{sec_memory_requirements}
 
 Rendering hair models is very slow. The system configuration that I used for rendering is a quad core Intel Core i7-3770K processor with 8 gigabytes of RAM. Rendering times for 512 samples per pixel would lead to a couple of hours. The curvy hair model was not possible to render at all, because it consumed more memory than the 8 GB of available RAM. The system therefore resorted to virtual memory, practically stalling the rendering process. The reason why memory usage is so high, is because bookkeeping structures are needed by PBRT to improve ray intersections.
 
 One of the tricks that is performed in this thesis is to render only half of the hair model, where the \'removed\' half of the hair model is pointing away from the camera. In this way, it is not visible that actually half the hair model is used during rendering. The voxel generation process is still using the full hair model to reflect that the density is still there, even though half the hair volume is actually removed. Another way to speed up the rendering during debug times is to render only a subframe of the image, so that quick feedback loops are possible after only half a minute of rendering.
 
-\section{Problem 4: The non-intuitiveness of the Marschner model parameters}
+\section{The non-intuitiveness of the Marschner model parameters}
 \label{sec_nonintuitiveness_marschner}
 
 The Marschner model is a physically based hair rendering model. It is based on physical properties, such as the absorption of light propagating through the core of the hair fibers, the curvature of the hair cylinder, the width and shift of the scattering lobes and many more. These parameters are non-intuitive from the perspective of an artist wanting to achieve the perfect look. They are also non-intuitive for me to be able to render distinct effects of the Marschner model, such as the TRT component which is hard to visualize clearly. This was a challenge when creating rendered results.
@@ -1044,7 +1047,7 @@ Usually when rendering, multiple importance sampling is performed to take sample
 
 The results presented in this section compares results from uniform sampling with results from importance sampling. The models are placed in a global illuminated scene, where global illumination is accomplished by using HDR spherical environment maps.
 
-In figure~\ref{fig_officesquare} results are presented for a daytime setting between office buildings. Here the daylight is abundant but in general no direct sunlight shining on the hair models. 
+In figure~\ref{fig_officesquare},~\ref{fig_venice} and~\ref{fig_subway} results are presented for different real world scenarios. The images are presented to give a realistic impression on how the dual scattering method performs between uniform and importance sampling for 32 samples per pixel. The scenarios are presented in full daylight with the sun shining on the hair model, in a daylight setting where there is no direct impact of sunlight and an indoor setting in a subway station that lacks a lot of light. Especially in daylight scenerios it is clear that the color of the hair model is apparent. In darker situations, only the blond hair distinguishes itself from the colored hair types. This is expected, because colored hair types absorb much more light than blonde hair.
 
 
 \begin{figure}[h]
@@ -1058,15 +1061,13 @@ Importance Sampling (32 samples) & Uniform Sampling (32 samples) \\
 \includegraphics[scale=0.16]{realworld/officesquare/uniform_brown2_32.png} \\
 
 \end{tabular}
-\caption{Comparison between importance sampling and uniform sampling in an office square setting. The images are rendered using 32 samples per pixel.}
+\caption{Comparison between importance sampling and uniform sampling in an office square setting. There is a lot of daylight, but no direct sunlight on the hair models. The reflection of the glass windows is clearly visible in the hair volumes. The images are rendered using 32 samples per pixel.}
 \label{fig_officesquare}
 \end{figure}
 
 %
 % Venice square
 %
-
-In figure~\ref{fig_venice} results are presented for an outside square in Venice.
 
 \begin{figure}[h]
 \begin{center}
@@ -1080,7 +1081,7 @@ Importance Sampling (32 samples) & Uniform Sampling (32 samples) \\
 \includegraphics[scale=0.16]{realworld/venice/uniform_brown2_32.png} \\
 
 \end{tabular}
-\caption{Comparison between importance sampling and uniform sampling in an office square setting. The samples are rendered using 32 samples per pixel.}
+\caption{Comparison between importance sampling and uniform sampling in a bright daylight setting. The samples are rendered using 32 samples per pixel.}
 \label{fig_venice}
 \end{center}
 \end{figure}
@@ -1088,8 +1089,6 @@ Importance Sampling (32 samples) & Uniform Sampling (32 samples) \\
 %
 % Interior dark setting
 %
-
-In figure~\ref{fig_subway} results are presented for a dark setting. The scene is a subway station platform, where the lights in the station provide the direct lighting (and reflections from the walls and floor the indirect lighting). The models likewise appear very dark. Since the absorption inside blonde hair is relatively low, this model still clearly shows resemblence to a blond hair color, while the brown and black hair models are actually very dark.
 
 \begin{figure}[h]
 \begin{center}
@@ -1103,7 +1102,7 @@ Importance Sampling (32 samples) & Uniform Sampling (32 samples) \\
 \includegraphics[scale=0.16]{realworld/subway/uniform_brown2_32.png} \\
 
 \end{tabular}
-\caption{Comparison between importance sampling and uniform sampling in an office square setting. The samples are rendered using 32 samples per pixel.}
+\caption{Comparison between importance sampling and uniform sampling in a dark subway setting. This is a subway station platform, where the lights in the station are the direct lighting, and reflections from the walls and floor the indirect lighting. Since the absorption in blonde hair is relatively low, this model clearly stands out compared to the colored hair models that appear very dark. The images are rendered using 32 samples per pixel.}
 \label{fig_subway}
 \end{center}
 \end{figure}
@@ -1215,9 +1214,9 @@ With this data it is difficult to do a hard comparison. In the next section the 
 
 One of the most important requirements for an importance sampling strategy is that it converges to the same result as uniform sampling. As discussed in the previous section it appears that the uniform sampling renderings are converged at 512 samples per pixel, so we will use the result of 512 samples per pixel as the ground truth. Importance sampling results can then be compared with the ground truth by computing the distance with the ground truth (expressed as the average variance per pixel).
 
-Figure~\ref{fig_sidebyside_converged} shows a side by side comparison of 512 samples per pixel, assuming that both images have been converged. The importance sampled version is a bit darker compared to the uniform sampling version. This is not expected. It could indicate that the probability density function is not integrating to 1 for all configurations. A possible explanation could comes from the work by d'Eon et al.~\cite{eon2011} in which they explain that the Marschner model is not energy conserving. Doubling the half angles as we have done in this thesis solves part of the problem. Still deflection near grazing angles moves considerably into angles outside the range of possible angles, thereby losing energy.
+Figure~\ref{fig_sidebyside_converged} shows a side by side comparison of 512 samples per pixel, assuming that both images have been converged. The importance sampled version is a bit darker compared to the uniform sampling version. This is not expected and a sign there is a flaw in the importance sampling strategy. It could be that the probability density function is not integrating to 1 for all configurations. A possible explanation could come from the work by d'Eon et al.~\cite{eon2011} in which they explain that the Marschner model is not energy conserving. Doubling the half angles as we have done in this thesis solves part of the problem. Still deflection near grazing angles moves a considerably amount of energy into angles outside the range of possible angles.
 
-Figure~\ref{fig_side_by_side} shows an even more detailed side by side comparison. Here a region is displayed to better see the noise for various samples per pixel for both uniform and importance sampling. Table~\ref{table_variance_to_groundtruth} shows the variance of different renderings compared to the ground truth and figure~\ref{fig_variance_plot} displays the measurement data in a plot.
+Figure~\ref{fig_side_by_side} shows an even more detailed side by side comparison. Here a region is displayed to better visualize the noise for various samples per pixel between both uniform and importance sampling. Table~\ref{table_variance_to_groundtruth} shows the variance of different renderings compared to the ground truth and figure~\ref{fig_variance_plot} displays the measurement data in a plot.
 
 
 \begin{figure}

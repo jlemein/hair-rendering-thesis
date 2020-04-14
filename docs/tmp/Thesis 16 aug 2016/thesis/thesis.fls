@@ -128,6 +128,8 @@ INPUT /var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1095.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm2488.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx2488.tfm
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.toc
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.toc
 OUTPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.toc
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm1440.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecbx1440.tfm
@@ -147,20 +149,6 @@ INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/sol
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/images/svg/irradiance_radiance.jpg
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr12.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi12.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmsy10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmex10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1440.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm
-INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm0700.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm0800.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/eccc0800.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm0600.tfm
@@ -204,6 +192,12 @@ INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/relatedwork/dualscattering_df.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/avg_backscatter_1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/avg_backscatter_1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/avg_backscatter_1.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/avg_backscatter_3.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/avg_backscatter_3.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/avg_backscatter_3.png
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecrm0900.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmr9.tfm
 INPUT /usr/share/texlive/texmf-dist/fonts/tfm/public/cm/cmmi9.tfm
@@ -383,12 +377,14 @@ INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/var
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/variance-results/variance-plot.png
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.bbl
+INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.bbl
+INPUT /usr/share/texlive/texmf-dist/fonts/tfm/jknappen/ec/ecti1095.tfm
 INPUT /home/jeffrey/hair-rendering-thesis/docs/tmp/Thesis 16 aug 2016/thesis/thesis.aux
 INPUT /usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-t1.enc
 INPUT /usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb
-INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
 INPUT /usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb
@@ -413,4 +409,5 @@ INPUT /usr/share/texmf/fonts/type1/public/cm-super/sfrm0900.pfb
 INPUT /usr/share/texmf/fonts/type1/public/cm-super/sfrm1095.pfb
 INPUT /usr/share/texmf/fonts/type1/public/cm-super/sfrm1200.pfb
 INPUT /usr/share/texmf/fonts/type1/public/cm-super/sfss1095.pfb
+INPUT /usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb
 INPUT /usr/share/texmf/fonts/type1/public/cm-super/sfti1200.pfb

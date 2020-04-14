@@ -128,12 +128,21 @@ If we denote $a_b(\theta_d)$ as the average backscattering attenuation and $a_f(
 \begin{align}
 A_1(\theta_d) &= a_b \sum_{i=1}^{\infty} a_f^{2i} = \frac{a_b a_f^2}{1 - a_f^2} \\
 A_3(\theta_d) &= a_b^3 \sum_{i=1}^{\infty}  \sum_{j=0}^{i-1} \sum_{k=j+1}^{\infty} a_f^{2(i-j-1+k)} = \frac{a_b^3 a_f^2}{(1 - a_f^2)^3} \\
-A_b(\theta_d) = A_1(\theta_d) + A_3(\theta_d)
+A_b(\theta_d) &= A_1(\theta_d) + A_3(\theta_d)
+\label{avg_backscatter_series}
 \end{align}
 
 where $A_b$ is the average backscattering attenuation for 1 and 3 backscattering events. Figure~\ref{avg_backscatter_attenuation} provides a graphics representation of the backscattering events and how they are directed with respect to position $x$.
 
-(picture here)
+\begin{figure}
+    \begin{tabular}{c}
+    \includegraphics[scale=0.25]{avg_backscatter_1.png} \\
+    \includegraphics[scale=0.25]{avg_backscatter_3.png}
+    \end{tabular}
+    \caption{Visualization of the average backscattering attenuation $A_b$. The circles represent the cross section of the hair fibers. The color coded half circles represent the scattering event taking place, with red being a backward scattering event and green a forward scattering event, also indicated by B and F respectively. The orange ray correspond to the incident light from the light source. It represent the global illumination passing through the hair volume reaching the local neighborhood. The dual scattering method takes into account only one or three backscatter events. All permutations of one backscatter event ($A_1(\theta)$) is displayed in the top figure and all permutations for three backscatter events ($A_3(\theta)$) is displayed in the bottom figure. It is clear to see that the amount of
+    forward scattering events may go to infinity, but that the amount of backscattering events is limited to one or three. This leads to the infinite series that can be written as shown in equation~\ref{avg_backscatter_series}.}
+    \label{avg_backscatter_attenuation}
+\end{figure}
 
 \subsubsection{Average Backscattering Spread}
 
