@@ -1,0 +1,131 @@
+\begin{thebibliography}{10}
+
+\bibitem{adler1998}
+Charles~L. Adler, James~A. Lock, and Bradley~R. Stone.
+\newblock Rainbow scattering by a cylinder with a nearly elliptical cross
+  section.
+\newblock {\em Appl. Opt.}, 37(9):1540--1550, Mar 1998.
+
+\bibitem{bustard1991}
+Helen~K. Bustard and Robin~W. Smith.
+\newblock Investigation into the scattering of light by human hair.
+\newblock {\em Appl. Opt.}, 30(24):3485--3491, Aug 1991.
+
+\bibitem{eon2011}
+Eugene d'Eon, Guillaume Francois, Martin Hill, Joe Letteri, and Jean-Marie
+  Aubry.
+\newblock An energy-conserving hair reflectance model.
+\newblock In {\em Proceedings of the Twenty-second Eurographics Conference on
+  Rendering}, EGSR '11, pages 1181--1187, Aire-la-Ville, Switzerland,
+  Switzerland, 2011. Eurographics Association.
+
+\bibitem{eon2013}
+Eugene d'Eon, Steve Marschner, and Johannes Hanika.
+\newblock Importance sampling for physically-based hair fiber models.
+\newblock In {\em SIGGRAPH Asia 2013 Technical Briefs}, SA '13, pages
+  25:1--25:4, New York, NY, USA, 2013. ACM.
+
+\bibitem{goldman}
+Dan~B. Goldman.
+\newblock Fake fur rendering.
+\newblock In {\em Proceedings of the 24th Annual Conference on Computer
+  Graphics and Interactive Techniques}, SIGGRAPH '97, pages 127--134, New York,
+  NY, USA, 1997. ACM Press/Addison-Wesley Publishing Co.
+
+\bibitem{gray}
+J.~Gray, R.P.R. Dawber, C.~Gummer, Hairdressing~Training Board, and Procter \&
+  Gamble Haircare~Research Centre.
+\newblock {\em The World of Hair: A Scientific Companion}.
+\newblock Hairdressing Training Board. Macmillan Publishers Limited, 1997.
+
+\bibitem{hadap}
+Sunil Hadap, Marie-Paule Cani, Florence Bertails, Ming Lin, Kelly Ward,
+  Stephen~R. Marschner, Tae-Yong Kim, and Zoran Kacic-Alesic.
+\newblock {\em Strands and Hair: Modeling, Animation, and Rendering},
+  volume~33.
+\newblock ACM SIGGRAPH Course Notes, August 2007.
+\newblock Award: Best Course Notes for a New Course.
+
+\bibitem{jensen}
+Henrik~Wann Jensen.
+\newblock Global illumination using photon maps.
+\newblock In {\em Proceedings of the Eurographics Workshop on Rendering
+  Techniques '96}, pages 21--30, London, UK, UK, 1996. Springer-Verlag.
+
+\bibitem{kajiya}
+J.~T. Kajiya and T.~L. Kay.
+\newblock Rendering fur with three dimensional textures.
+\newblock {\em SIGGRAPH Comput. Graph.}, 23(3):271--280, July 1989.
+
+\bibitem{marcuse1974}
+D.~Marcuse.
+\newblock Light scattering from elliptical fibers.
+\newblock {\em Applied Optics}, 13(8):1903--1905, Aug 1974.
+
+\bibitem{marschner}
+Stephen~R. Marschner, Henrik~Wann Jensen, Mike Cammarano, Steve Worley, and Pat
+  Hanrahan.
+\newblock Light scattering from human hair fibers.
+\newblock {\em ACM Trans. Graph.}, 22(3):780--791, July 2003.
+
+\bibitem{moon}
+Jonathan~T. Moon and Stephen~R. Marschner.
+\newblock Simulating multiple scattering in hair using a photon mapping
+  approach.
+\newblock {\em ACM Trans. Graph.}, 25(3):1067--1074, July 2006.
+
+\bibitem{morganti2015}
+Pierfrancesco Morganti and Hong Li.
+\newblock Innovation in cosmetic and medical science. the role of chitin
+  nanofibrils composites.
+\newblock {\em Journal of Applied Cosmetology}, 33:9--24, 06 2015.
+
+\bibitem{mount1998}
+Catherine~M. Mount, David~B. Thiessen, and Philip~L. Marston.
+\newblock Scattering observations for tilted transparent fibers: evolution of
+  airy caustics with cylinder tilt and the caustic merging transition.
+\newblock {\em Appl. Opt.}, 37(9):1534--1539, Mar 1998.
+
+\bibitem{pbrt}
+Matt Pharr, Wenzel Jakob, Greg Humphreys, and Jakob Wenzel.
+\newblock {\em Physically Based Rendering: From Theory to Implementation}.
+\newblock Morgan Kaufmann Publishers Inc., San Francisco, CA, USA, 3rd edition,
+  2016.
+
+\bibitem{pharr2017}
+Matt Pharr, Jakob Wenzel, and Greg Humphreys.
+\newblock {\em Physically Based Rendering, Third Edition: From Theory To
+  Implementation}.
+\newblock Morgan Kaufmann Publishers Inc., Cambridge, MA, USA, 3rd edition,
+  2017.
+
+\bibitem{sadeghi2010}
+Iman Sadeghi, Heather Pritchett, Henrik~Wann Jensen, and Rasmus Tamstorf.
+\newblock An artist friendly hair shading system.
+\newblock {\em ACM Trans. Graph.}, 29(4):56:1--56:10, July 2010.
+
+\bibitem{sadeghi}
+Iman Sadeghi and Rasmus Tamstorf.
+\newblock Efficient implementation of the dual scattering model in renderman.
+\newblock Technical report, Walt Disney Animation Studions, 2010.
+
+\bibitem{stamm1977}
+R.~F. Stamm, M.~L. Garcia, and J.~J. Fuchs.
+\newblock The optical properties of human hair i. fundamental considerations
+  and goniophotometer curves.
+\newblock In {\em The Official Journal of the Society of Cosmetic Chemists},
+  volume~28, pages 571--600. JOURNAL OF COSMETIC SCIENCE, 1977.
+
+\bibitem{ward}
+Kelly Ward, Florence Bertails, Tae yong Kim, Stephen~R. Marschner, Marie paule
+  Cani, and Ming~C. Lin.
+\newblock A survey on hair modeling: styling, simulation, and rendering.
+\newblock In {\em IEEE TRANSACTION ON VISUALIZATION AND COMPUTER GRAPHICS},
+  pages 213--234, 2006.
+
+\bibitem{zinke}
+Arno Zinke, Cem Yuksel, Andreas Weber, and John Keyser.
+\newblock Dual scattering approximation for fast multiple scattering in hair.
+\newblock {\em ACM Trans. Graph.}, 27(3):32:1--32:10, August 2008.
+
+\end{thebibliography}
