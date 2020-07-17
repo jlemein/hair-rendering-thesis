@@ -1,4 +1,4 @@
-\section{Dualscattering Approximation}
+\section{Dualscattering approximation}
 \label{sec_dualscattering}
 %Summarize introduction
 
@@ -40,7 +40,7 @@ The global multiple scattering is thus responsible for gathering the irradiance 
 
 The local multiple scattering is more in line with the Marschner model: given the irradiance at point $x$, calculate the scattering effect of the local neighbourhood. For a neighborhood consisting of a single fiber, it boils down to evaluation of the Marschner model.
 
-\subsection{Global Multiple Scattering Function $\Psi^G$}
+\subsection{Global multiple scattering function $\Psi^G$}
 
 The global multiple scattering function $\Psi^G$ gathers the irradiance from outside the hair volume, approximating the amount of irradiance arriving at a point $x$ inside the hair volume. The global multiple scattering is defined as follows by Zinke et al.~\cite{zinke}:
 
@@ -50,7 +50,7 @@ The global multiple scattering function $\Psi^G$ gathers the irradiance from out
 
 The global multiple scattering $\Psi^G$ is the multiplication of forward transmittance $T_f$ and the average forward scattering spread $S_f$. The transmittance accounts for the amount of hairs in between the light source and the point to be shaded. The average forward scattering spread takes into account the loss of energy due to spreading of the light after each scattering event.
 
-\subsubsection{Forward Scattering Transmittance}
+\subsubsection{Forward scattering transmittance}
 
 In this thesis the forward scattering transmittance is computed by using a combination of ray shooting together with a voxel grid. Before rendering, a voxel grid is generated based on the hair model. Each voxel cell contains the density of the hairs in question. This is computed by traversing each hair fiber and storing the distance of the hair fiber segment in the voxel cell. In this way, cells that contain a lot of hair fibers, do have a higher density value.
 
@@ -83,7 +83,7 @@ T_f(x, \omega_d) = d_f(x, \omega_d) a_f(\theta_d)^n
 \label{forwardscattering}
 \end{equation}
 
-\subsubsection{Forward Scattering Spread}
+\subsubsection{Forward scattering spread}
 
 The spread function approximates the final angular distribution of front scattering light to find the probability of radiance coming to the point $x$ from direction $\omega_i$~\cite{zinke}. Because of the wide azimuthal scattering property of hair fibers, front scattered radiance quickly becomes isotropic in the azimuthal direction after only a few scattering events. For longitudinal scattering front scattered light is still anisotropic. The spread function is therefore split up into an isotropic azimuthal component ($1/\pi$) and an anisotropic longitudinal component described by a gaussian function $g$.
 
@@ -99,7 +99,7 @@ where $s_f$ is $1/\pi$ for forward scattering directions and zero for backward s
 \end{equation}
 
 
-\subsection{Local Multiple Scattering}
+\subsection{Local multiple scattering}
 
 The local multiple scattering function $\Psi^L$ accounts for the multiple scattering events within the neighborhood of the point $x$. Since light paths that go through only forward scattering are included in the global multiple scattering function, light paths of the local multiple scattering function must include at least one backward scattering.
 
@@ -119,7 +119,7 @@ The backscattering is approximated with a material function $f_{back}$
 f_{\textnormal{back}}(\omega_i, \omega_o) = \frac{2}{\cos \theta_d}A_b(\theta_d) S_b(\omega_i, \omega_o)
 \end{equation}
 
-\subsubsection{Average Backscattering Attenuation}
+\subsubsection{Average backscattering attenuation}
 
 The average backscattering attenuation takes into account the attenuation in the local neighborhood of a point $x$. Since the global multiple scattering component already takes into account the forward scattering (meaning no backscatter events), we only need to deal with at least one backscatter event. Light coming from a light source, passing through the fiber at point $x$, needs an odd number of backscattering events for light to travel back to point $x$. The even number of backscattering events are ignored, since they are not directed to point $x$. Also, the dual scattering method ignores the contribution for more than three backscattering events, because their contribution becomes negligible low to the rendering result. 
 
@@ -144,7 +144,7 @@ where $A_b$ is the average backscattering attenuation for 1 and 3 backscattering
     \label{avg_backscatter_attenuation}
 \end{figure}
 
-\subsubsection{Average Backscattering Spread}
+\subsubsection{Average backscattering spread}
 
 The average backscattering spread takes into account the loss of intensity, due to spreading of the light after backscattering events occur. This is similar to forward scattering events. The dual scattering method~\cite{zinke} presents the average backscattering spread $S_b(\omega_i, \omega_o)$ as
 

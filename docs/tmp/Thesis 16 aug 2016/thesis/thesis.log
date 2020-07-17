@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  14 APR 2020 22:45
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  17 JUL 2020 21:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -600,52 +600,60 @@ Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
 \Gin@req@height=\dimen112
 \Gin@req@width=\dimen113
 )
-(./thesis.aux)
+(/usr/share/texlive/texmf-dist/tex/latex/float/float.sty
+Package: float 2001/11/08 v1.3d Float enhancements (AL)
+\c@float@type=\count101
+\float@exts=\toks22
+\float@box=\box28
+\@float@everytoks=\toks23
+\@floatcapt=\box29
+) (./thesis.aux)
 \openout1 = `thesis.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 11.
-LaTeX Font Info:    ... okay on input line 11.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 11.
-LaTeX Font Info:    Try loading font information for TS1+cmr on input line 11.
- (/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 12.
+LaTeX Font Info:    ... okay on input line 12.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 12.
+LaTeX Font Info:    Try loading font information for TS1+cmr on input line 12.
+
+(/usr/share/texlive/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2014/09/29 v2.5h Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 11.
+LaTeX Font Info:    ... okay on input line 12.
 \symgns@font=\mathgroup6
 LaTeX Font Info:    Overwriting symbol font `gns@font' in version `bold'
-(Font)                  TS1/cmr/m/n --> TS1/cmr/bx/n on input line 11.
-Package gensymb Info: Math companion symbols declared on input line 11.
-LaTeX Info: Redefining \degree on input line 11.
-LaTeX Info: Redefining \celsius on input line 11.
+(Font)                  TS1/cmr/m/n --> TS1/cmr/bx/n on input line 12.
+Package gensymb Info: Math companion symbols declared on input line 12.
+LaTeX Info: Redefining \degree on input line 12.
+LaTeX Info: Redefining \celsius on input line 12.
 Package gensymb Info: Using text companion symbols for \degree, \celsius and \p
-erthousand on input line 11.
-LaTeX Info: Redefining \ohm on input line 11.
-Package gensymb Info: Using \textohm for \ohm on input line 11.
-Package gensymb Info: Using \textmu for \micro on input line 11.
+erthousand on input line 12.
+LaTeX Info: Redefining \ohm on input line 12.
+Package gensymb Info: Using \textohm for \ohm on input line 12.
+Package gensymb Info: Using \textmu for \micro on input line 12.
 
 (/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count101
+\scratchcounter=\count102
 \scratchdimen=\dimen114
-\scratchbox=\box28
-\nofMPsegments=\count102
-\nofMParguments=\count103
-\everyMPshowfont=\toks22
-\MPscratchCnt=\count104
+\scratchbox=\box30
+\nofMPsegments=\count103
+\nofMParguments=\count104
+\everyMPshowfont=\toks24
+\MPscratchCnt=\count105
 \MPscratchDim=\dimen115
-\MPnumerator=\count105
-\makeMPintoPDFobject=\count106
-\everyMPtoPDFconversion=\toks23
+\MPnumerator=\count106
+\makeMPintoPDFobject=\count107
+\everyMPtoPDFconversion=\toks25
 ) (/usr/share/texlive/texmf-dist/tex/generic/oberdiek/pdftexcmds.sty
 Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
 )
@@ -694,18 +702,24 @@ G,.JBIG2,.JB2,.eps]
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
 e
 ))
-LaTeX Font Info:    Try loading font information for U+msa on input line 44.
+LaTeX Font Info:    Try loading font information for U+msa on input line 45.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 44.
+LaTeX Font Info:    Try loading font information for U+msb on input line 45.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1] (./thesis.toc [1
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [1] (./thesis.toc
+Overfull \hbox (18.43669pt too wide) in paragraph at lines 16--16
+ [][] []\T1/cmr/m/n/10.95 Bidirectional curve scat-ter-ing dis-tri-bu-tion func
+-tion (BCDSF) []  
+ []
+
+[1
 
 ])
 \tf@toc=\write3
@@ -714,14 +728,14 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
  [2]
 Chapter 1.
 
-Underfull \hbox (badness 10000) in paragraph at lines 138--139
+Underfull \hbox (badness 10000) in paragraph at lines 117--118
 
  []
 
 [3
 
 ] [4]
-Underfull \hbox (badness 10000) in paragraph at lines 177--178
+Underfull \hbox (badness 10000) in paragraph at lines 157--158
 
  []
 
@@ -731,13 +745,13 @@ Chapter 2.
 File: images/hair_structure.jpeg Graphic file (type jpg)
 
 <use images/hair_structure.jpeg>
-Package pdftex.def Info: images/hair_structure.jpeg used on input line 203.
+Package pdftex.def Info: images/hair_structure.jpeg used on input line 183.
 (pdftex.def)             Requested size: 179.32132pt x 110.89012pt.
 
 <hair-core.png, id=40, 563.10374pt x 462.72874pt>
 File: hair-core.png Graphic file (type png)
  <use hair-core.png>
-Package pdftex.def Info: hair-core.png used on input line 203.
+Package pdftex.def Info: hair-core.png used on input line 183.
 (pdftex.def)             Requested size: 152.04004pt x 124.93843pt.
  [6
 
@@ -746,17 +760,17 @@ Package pdftex.def Info: hair-core.png used on input line 203.
 <images/axes.jpeg, id=55, 870.25125pt x 517.935pt>
 File: images/axes.jpeg Graphic file (type jpg)
  <use images/axes.jpeg>
-Package pdftex.def Info: images/axes.jpeg used on input line 294.
+Package pdftex.def Info: images/axes.jpeg used on input line 274.
 (pdftex.def)             Requested size: 348.09433pt x 207.17032pt.
 
 [10 <./images/axes.jpeg>] <solidangle.png, id=60, 1474.00688pt x 1746.525pt>
 File: solidangle.png Graphic file (type png)
 
 <use solidangle.png>
-Package pdftex.def Info: solidangle.png used on input line 321.
+Package pdftex.def Info: solidangle.png used on input line 301.
 (pdftex.def)             Requested size: 235.84592pt x 279.4497pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 327--328
+Underfull \hbox (badness 10000) in paragraph at lines 307--308
 
  []
 
@@ -766,34 +780,35 @@ File: images/svg/irradiance_radiance.jpg Graphic file (type jpg)
 
 <use images/svg/irradiance_radiance.jpg>
 Package pdftex.def Info: images/svg/irradiance_radiance.jpg used on input line 
-352.
+332.
 (pdftex.def)             Requested size: 265.21036pt x 156.14258pt.
- [13 <./images/svg/irradiance_radiance.jpg>]
-Overfull \hbox (0.93117pt too wide) in paragraph at lines 371--371
-[]\T1/cmr/bx/n/12 Bidirectional Re-flec-tion Dis-tri-bu-tion Func-tion (BRDF) 
+ [13 <./images/svg/irradiance_radiance.jpg>] [14]
+Overfull \hbox (35.86568pt too wide) in paragraph at lines 372--372
+[]\T1/cmr/bx/n/12 Bidirectional curve scat-ter-ing dis-tri-bu-tion func-tion (B
+CDSF) 
  []
 
-[14] [15] [16] [17] [18]
+[15] [16] [17] [18]
 Chapter 3.
 
-Underfull \hbox (badness 10000) in paragraph at lines 527--528
+Underfull \hbox (badness 10000) in paragraph at lines 507--508
 
  []
 
 [19
 
 ]
-Underfull \hbox (badness 10000) in paragraph at lines 529--530
+Underfull \hbox (badness 10000) in paragraph at lines 509--510
 
  []
 
 <kajiya.png, id=97, 1812.7725pt x 685.56125pt>
 File: kajiya.png Graphic file (type png)
  <use kajiya.png>
-Package pdftex.def Info: kajiya.png used on input line 535.
+Package pdftex.def Info: kajiya.png used on input line 515.
 (pdftex.def)             Requested size: 271.90414pt x 102.82974pt.
 
-Underfull \hbox (badness 10000) in paragraph at lines 546--547
+Underfull \hbox (badness 10000) in paragraph at lines 526--527
 
  []
 
@@ -803,10 +818,10 @@ File: images/longitudinal_response.jpeg Graphic file (type jpg)
 
 <use images/longitudinal_response.jpeg>
 Package pdftex.def Info: images/longitudinal_response.jpeg used on input line 5
-88.
+68.
 (pdftex.def)             Requested size: 402.87364pt x 155.98508pt.
 
-Overfull \hbox (42.87364pt too wide) in paragraph at lines 588--589
+Overfull \hbox (42.87364pt too wide) in paragraph at lines 568--569
  [] 
  []
 
@@ -817,8 +832,8 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: images/azimuthal_measurement.jpeg Graphic file (type jpg)
 
 <use images/azimuthal_measurement.jpeg>
-Package pdftex.def Info: images/azimuthal_measurement.jpeg used on input line 6
-04.
+Package pdftex.def Info: images/azimuthal_measurement.jpeg used on input line 5
+84.
 (pdftex.def)             Requested size: 267.69537pt x 252.03716pt.
 
 
@@ -829,7 +844,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: images/female_marschner.jpeg Graphic file (type jpg)
 
 <use images/female_marschner.jpeg>
-Package pdftex.def Info: images/female_marschner.jpeg used on input line 629.
+Package pdftex.def Info: images/female_marschner.jpeg used on input line 609.
 (pdftex.def)             Requested size: 249.32709pt x 292.28682pt.
 
 
@@ -844,7 +859,7 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: circularcross.png Graphic file (type png)
 
 <use circularcross.png>
-Package pdftex.def Info: circularcross.png used on input line 692.
+Package pdftex.def Info: circularcross.png used on input line 672.
 (pdftex.def)             Requested size: 320.19058pt x 224.23378pt.
 
 
@@ -854,10 +869,10 @@ LaTeX Warning: `h' float specifier changed to `ht'.
 File: rootfinding.png Graphic file (type png)
 
 <use rootfinding.png>
-Package pdftex.def Info: rootfinding.png used on input line 724.
+Package pdftex.def Info: rootfinding.png used on input line 704.
 (pdftex.def)             Requested size: 202.58313pt x 142.54794pt.
  [28 <./circularcross.png>]
-LaTeX Font Info:    Try loading font information for T1+cmss on input line 737.
+LaTeX Font Info:    Try loading font information for T1+cmss on input line 717.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/t1cmss.fd
@@ -889,25 +904,25 @@ Chapter 4.
 [38
 
 ] [39]
-Overfull \hbox (7.41602pt too wide) in paragraph at lines 834--834
+Overfull \hbox (7.41602pt too wide) in paragraph at lines 814--814
 []\T1/cmr/bx/n/14.4 Evaluation of ren-dered im-ages gen-er-ated by mul-
  []
 
 [40] [41] [42] [43] [44]
-Overfull \hbox (2.96912pt too wide) in paragraph at lines 947--948
+Overfull \hbox (2.96912pt too wide) in paragraph at lines 927--928
 []\T1/cmr/m/n/10.95 Using the con-serv-ing scat-ter-ing func-tion, in-stead of 
 the orig-i-nal Marschner
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 947--948
+Underfull \hbox (badness 10000) in paragraph at lines 927--928
 
  []
 
 [45] [46]
 Chapter 5.
 
-Overfull \hbox (3.81409pt too wide) in paragraph at lines 996--996
+Overfull \hbox (3.81409pt too wide) in paragraph at lines 976--976
 []\T1/cmr/bx/n/14.4 The choice of the physics based ren-der-ing frame-
  []
 
@@ -915,521 +930,511 @@ Overfull \hbox (3.81409pt too wide) in paragraph at lines 996--996
 
 ] [48] [49] [50]
 Chapter 6.
-<realworld/officesquare/deon_blonde1_32.png, id=219, 1027.84pt x 1027.84pt>
-File: realworld/officesquare/deon_blonde1_32.png Graphic file (type png)
+[51
 
-<use realworld/officesquare/deon_blonde1_32.png>
-Package pdftex.def Info: realworld/officesquare/deon_blonde1_32.png used on inp
-ut line 1056.
-(pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
-
-<realworld/officesquare/uniform_blonde1_32.png, id=220, 1027.84pt x 1027.84pt>
+]
+<realworld/officesquare/uniform_blonde1_32.png, id=222, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/uniform_blonde1_32.png Graphic file (type png)
 
 <use realworld/officesquare/uniform_blonde1_32.png>
 Package pdftex.def Info: realworld/officesquare/uniform_blonde1_32.png used on 
-input line 1057.
+input line 1039.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/officesquare/deon_black1_32.png, id=221, 1027.84pt x 1027.84pt>
-File: realworld/officesquare/deon_black1_32.png Graphic file (type png)
+<realworld/officesquare/deon_blonde1_32.png, id=223, 1027.84pt x 1027.84pt>
+File: realworld/officesquare/deon_blonde1_32.png Graphic file (type png)
 
-<use realworld/officesquare/deon_black1_32.png>
-Package pdftex.def Info: realworld/officesquare/deon_black1_32.png used on inpu
-t line 1058.
+<use realworld/officesquare/deon_blonde1_32.png>
+Package pdftex.def Info: realworld/officesquare/deon_blonde1_32.png used on inp
+ut line 1039.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/officesquare/uniform_black1_32.png, id=222, 1027.84pt x 1027.84pt>
+<realworld/officesquare/uniform_black1_32.png, id=224, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/uniform_black1_32.png Graphic file (type png)
 
 <use realworld/officesquare/uniform_black1_32.png>
 Package pdftex.def Info: realworld/officesquare/uniform_black1_32.png used on i
-nput line 1059.
+nput line 1040.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/officesquare/deon_brown2_32.png, id=223, 1027.84pt x 1027.84pt>
-File: realworld/officesquare/deon_brown2_32.png Graphic file (type png)
+<realworld/officesquare/deon_black1_32.png, id=225, 1027.84pt x 1027.84pt>
+File: realworld/officesquare/deon_black1_32.png Graphic file (type png)
 
-<use realworld/officesquare/deon_brown2_32.png>
-Package pdftex.def Info: realworld/officesquare/deon_brown2_32.png used on inpu
-t line 1060.
+<use realworld/officesquare/deon_black1_32.png>
+Package pdftex.def Info: realworld/officesquare/deon_black1_32.png used on inpu
+t line 1040.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/officesquare/uniform_brown2_32.png, id=224, 1027.84pt x 1027.84pt>
+<realworld/officesquare/uniform_brown2_32.png, id=226, 1027.84pt x 1027.84pt>
 File: realworld/officesquare/uniform_brown2_32.png Graphic file (type png)
 
 <use realworld/officesquare/uniform_brown2_32.png>
 Package pdftex.def Info: realworld/officesquare/uniform_brown2_32.png used on i
-nput line 1061.
+nput line 1041.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
+<realworld/officesquare/deon_brown2_32.png, id=227, 1027.84pt x 1027.84pt>
+File: realworld/officesquare/deon_brown2_32.png Graphic file (type png)
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<realworld/venice/deon_blonde1_32.png, id=225, 1027.84pt x 1027.84pt>
-File: realworld/venice/deon_blonde1_32.png Graphic file (type png)
-
-<use realworld/venice/deon_blonde1_32.png>
-Package pdftex.def Info: realworld/venice/deon_blonde1_32.png used on input lin
-e 1076.
+<use realworld/officesquare/deon_brown2_32.png>
+Package pdftex.def Info: realworld/officesquare/deon_brown2_32.png used on inpu
+t line 1041.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
-
-<realworld/venice/uniform_blonde1_32.png, id=226, 1027.84pt x 1027.84pt>
+ [52]
+<realworld/venice/uniform_blonde1_32.png, id=231, 1027.84pt x 1027.84pt>
 File: realworld/venice/uniform_blonde1_32.png Graphic file (type png)
 
 <use realworld/venice/uniform_blonde1_32.png>
 Package pdftex.def Info: realworld/venice/uniform_blonde1_32.png used on input 
-line 1077.
+line 1056.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/venice/deon_black1_32.png, id=227, 1027.84pt x 1027.84pt>
-File: realworld/venice/deon_black1_32.png Graphic file (type png)
+<realworld/venice/deon_blonde1_32.png, id=232, 1027.84pt x 1027.84pt>
+File: realworld/venice/deon_blonde1_32.png Graphic file (type png)
 
-<use realworld/venice/deon_black1_32.png>
-Package pdftex.def Info: realworld/venice/deon_black1_32.png used on input line
- 1078.
+<use realworld/venice/deon_blonde1_32.png>
+Package pdftex.def Info: realworld/venice/deon_blonde1_32.png used on input lin
+e 1056.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/venice/uniform_black1_32.png, id=228, 1027.84pt x 1027.84pt>
+<realworld/venice/uniform_black1_32.png, id=233, 1027.84pt x 1027.84pt>
 File: realworld/venice/uniform_black1_32.png Graphic file (type png)
 
 <use realworld/venice/uniform_black1_32.png>
 Package pdftex.def Info: realworld/venice/uniform_black1_32.png used on input l
-ine 1079.
+ine 1057.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/venice/deon_brown2_32.png, id=229, 1027.84pt x 1027.84pt>
-File: realworld/venice/deon_brown2_32.png Graphic file (type png)
+<realworld/venice/deon_black1_32.png, id=234, 1027.84pt x 1027.84pt>
+File: realworld/venice/deon_black1_32.png Graphic file (type png)
 
-<use realworld/venice/deon_brown2_32.png>
-Package pdftex.def Info: realworld/venice/deon_brown2_32.png used on input line
- 1080.
+<use realworld/venice/deon_black1_32.png>
+Package pdftex.def Info: realworld/venice/deon_black1_32.png used on input line
+ 1057.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/venice/uniform_brown2_32.png, id=230, 1027.84pt x 1027.84pt>
+<realworld/venice/uniform_brown2_32.png, id=235, 1027.84pt x 1027.84pt>
 File: realworld/venice/uniform_brown2_32.png Graphic file (type png)
 
 <use realworld/venice/uniform_brown2_32.png>
 Package pdftex.def Info: realworld/venice/uniform_brown2_32.png used on input l
-ine 1081.
+ine 1058.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
+<realworld/venice/deon_brown2_32.png, id=236, 1027.84pt x 1027.84pt>
+File: realworld/venice/deon_brown2_32.png Graphic file (type png)
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<realworld/subway/deon_blonde1_32.png, id=231, 1027.84pt x 1027.84pt>
-File: realworld/subway/deon_blonde1_32.png Graphic file (type png)
-
-<use realworld/subway/deon_blonde1_32.png>
-Package pdftex.def Info: realworld/subway/deon_blonde1_32.png used on input lin
-e 1097.
+<use realworld/venice/deon_brown2_32.png>
+Package pdftex.def Info: realworld/venice/deon_brown2_32.png used on input line
+ 1058.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
-
-<realworld/subway/uniform_blonde1_32.png, id=232, 1027.84pt x 1027.84pt>
+ [53 <./realworld/officesquare/uniform_blonde1_32.png (PNG copy)> <./realworld/
+officesquare/deon_blonde1_32.png (PNG copy)> <./realworld/officesquare/uniform_
+black1_32.png (PNG copy)> <./realworld/officesquare/deon_black1_32.png (PNG cop
+y)> <./realworld/officesquare/uniform_brown2_32.png (PNG copy)> <./realworld/of
+ficesquare/deon_brown2_32.png (PNG copy)>] <realworld/subway/uniform_blonde1_32
+.png, id=241, 1027.84pt x 1027.84pt>
 File: realworld/subway/uniform_blonde1_32.png Graphic file (type png)
 
 <use realworld/subway/uniform_blonde1_32.png>
 Package pdftex.def Info: realworld/subway/uniform_blonde1_32.png used on input 
-line 1098.
+line 1073.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/subway/deon_black1_32.png, id=233, 1027.84pt x 1027.84pt>
-File: realworld/subway/deon_black1_32.png Graphic file (type png)
+<realworld/subway/deon_blonde1_32.png, id=242, 1027.84pt x 1027.84pt>
+File: realworld/subway/deon_blonde1_32.png Graphic file (type png)
 
-<use realworld/subway/deon_black1_32.png>
-Package pdftex.def Info: realworld/subway/deon_black1_32.png used on input line
- 1099.
+<use realworld/subway/deon_blonde1_32.png>
+Package pdftex.def Info: realworld/subway/deon_blonde1_32.png used on input lin
+e 1073.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/subway/uniform_black1_32.png, id=234, 1027.84pt x 1027.84pt>
+<realworld/subway/uniform_black1_32.png, id=243, 1027.84pt x 1027.84pt>
 File: realworld/subway/uniform_black1_32.png Graphic file (type png)
 
 <use realworld/subway/uniform_black1_32.png>
 Package pdftex.def Info: realworld/subway/uniform_black1_32.png used on input l
-ine 1100.
+ine 1074.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/subway/deon_brown2_32.png, id=235, 1027.84pt x 1027.84pt>
-File: realworld/subway/deon_brown2_32.png Graphic file (type png)
+<realworld/subway/deon_black1_32.png, id=244, 1027.84pt x 1027.84pt>
+File: realworld/subway/deon_black1_32.png Graphic file (type png)
 
-<use realworld/subway/deon_brown2_32.png>
-Package pdftex.def Info: realworld/subway/deon_brown2_32.png used on input line
- 1101.
+<use realworld/subway/deon_black1_32.png>
+Package pdftex.def Info: realworld/subway/deon_black1_32.png used on input line
+ 1074.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
-<realworld/subway/uniform_brown2_32.png, id=236, 1027.84pt x 1027.84pt>
+<realworld/subway/uniform_brown2_32.png, id=245, 1027.84pt x 1027.84pt>
 File: realworld/subway/uniform_brown2_32.png Graphic file (type png)
 
 <use realworld/subway/uniform_brown2_32.png>
 Package pdftex.def Info: realworld/subway/uniform_brown2_32.png used on input l
-ine 1102.
+ine 1075.
 (pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
 
+<realworld/subway/deon_brown2_32.png, id=246, 1027.84pt x 1027.84pt>
+File: realworld/subway/deon_brown2_32.png Graphic file (type png)
 
-LaTeX Warning: Float too large for page by 24.08322pt on input line 1108.
+<use realworld/subway/deon_brown2_32.png>
+Package pdftex.def Info: realworld/subway/deon_brown2_32.png used on input line
+ 1075.
+(pdftex.def)             Requested size: 164.45775pt x 164.45775pt.
+ [54 <./realworld/venice/uniform_blonde1_32.png (PNG copy)> <./realworld/venice
+/deon_blonde1_32.png (PNG copy)> <./realworld/venice/uniform_black1_32.png (PNG
+ copy)> <./realworld/venice/deon_black1_32.png (PNG copy)> <./realworld/venice/
+uniform_brown2_32.png (PNG copy)> <./realworld/venice/deon_brown2_32.png (PNG c
+opy)>]
+Overfull \vbox (12.08322pt too high) has occurred while \output is active []
 
 
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-[51
-
-] <dbdf-results/brown_dbdf_0_00.png, id=240, 1027.84pt x 1027.84pt>
+[55 <./realworld/subway/uniform_blonde1_32.png (PNG copy)> <./realworld/subway/
+deon_blonde1_32.png (PNG copy)> <./realworld/subway/uniform_black1_32.png (PNG 
+copy)> <./realworld/subway/deon_black1_32.png (PNG copy)> <./realworld/subway/u
+niform_brown2_32.png (PNG copy)> <./realworld/subway/deon_brown2_32.png (PNG co
+py)>] <dbdf-results/brown_dbdf_0_00.png, id=253, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_0_00.png Graphic file (type png)
 
 <use dbdf-results/brown_dbdf_0_00.png>
 Package pdftex.def Info: dbdf-results/brown_dbdf_0_00.png used on input line 11
-30.
+02.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/blonde_dbdf_0_00.png, id=241, 1027.84pt x 1027.84pt>
+<dbdf-results/blonde_dbdf_0_00.png, id=254, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_0_00.png Graphic file (type png)
 
 <use dbdf-results/blonde_dbdf_0_00.png>
 Package pdftex.def Info: dbdf-results/blonde_dbdf_0_00.png used on input line 1
-130.
+102.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/black_dbdf_0_00.png, id=242, 1027.84pt x 1027.84pt>
+<dbdf-results/black_dbdf_0_00.png, id=255, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_0_00.png Graphic file (type png)
 
 <use dbdf-results/black_dbdf_0_00.png>
 Package pdftex.def Info: dbdf-results/black_dbdf_0_00.png used on input line 11
-30.
+02.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/brown_dbdf_0_25.png, id=243, 1027.84pt x 1027.84pt>
+<dbdf-results/brown_dbdf_0_25.png, id=256, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_0_25.png Graphic file (type png)
 
 <use dbdf-results/brown_dbdf_0_25.png>
 Package pdftex.def Info: dbdf-results/brown_dbdf_0_25.png used on input line 11
-31.
+03.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/blonde_dbdf_0_25.png, id=244, 1027.84pt x 1027.84pt>
+<dbdf-results/blonde_dbdf_0_25.png, id=257, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_0_25.png Graphic file (type png)
 
 <use dbdf-results/blonde_dbdf_0_25.png>
 Package pdftex.def Info: dbdf-results/blonde_dbdf_0_25.png used on input line 1
-131.
+103.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/black_dbdf_0_25.png, id=245, 1027.84pt x 1027.84pt>
+<dbdf-results/black_dbdf_0_25.png, id=258, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_0_25.png Graphic file (type png)
 
 <use dbdf-results/black_dbdf_0_25.png>
 Package pdftex.def Info: dbdf-results/black_dbdf_0_25.png used on input line 11
-31.
+03.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/brown_dbdf_0_50.png, id=246, 1027.84pt x 1027.84pt>
+<dbdf-results/brown_dbdf_0_50.png, id=259, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_0_50.png Graphic file (type png)
 
 <use dbdf-results/brown_dbdf_0_50.png>
 Package pdftex.def Info: dbdf-results/brown_dbdf_0_50.png used on input line 11
-32.
+04.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/blonde_dbdf_0_50.png, id=247, 1027.84pt x 1027.84pt>
+<dbdf-results/blonde_dbdf_0_50.png, id=260, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_0_50.png Graphic file (type png)
 
 <use dbdf-results/blonde_dbdf_0_50.png>
 Package pdftex.def Info: dbdf-results/blonde_dbdf_0_50.png used on input line 1
-132.
+104.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/black_dbdf_0_50.png, id=248, 1027.84pt x 1027.84pt>
+<dbdf-results/black_dbdf_0_50.png, id=261, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_0_50.png Graphic file (type png)
 
 <use dbdf-results/black_dbdf_0_50.png>
 Package pdftex.def Info: dbdf-results/black_dbdf_0_50.png used on input line 11
-32.
+04.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/brown_dbdf_0_75.png, id=249, 1027.84pt x 1027.84pt>
+<dbdf-results/brown_dbdf_0_75.png, id=262, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_0_75.png Graphic file (type png)
 
 <use dbdf-results/brown_dbdf_0_75.png>
 Package pdftex.def Info: dbdf-results/brown_dbdf_0_75.png used on input line 11
-33.
+05.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/blonde_dbdf_0_75.png, id=250, 1027.84pt x 1027.84pt>
+<dbdf-results/blonde_dbdf_0_75.png, id=263, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_0_75.png Graphic file (type png)
 
 <use dbdf-results/blonde_dbdf_0_75.png>
 Package pdftex.def Info: dbdf-results/blonde_dbdf_0_75.png used on input line 1
-133.
+105.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/black_dbdf_0_75.png, id=251, 1027.84pt x 1027.84pt>
+<dbdf-results/black_dbdf_0_75.png, id=264, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_0_75.png Graphic file (type png)
 
 <use dbdf-results/black_dbdf_0_75.png>
 Package pdftex.def Info: dbdf-results/black_dbdf_0_75.png used on input line 11
-33.
+05.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/brown_dbdf_1_00.png, id=252, 1027.84pt x 1027.84pt>
+<dbdf-results/brown_dbdf_1_00.png, id=265, 1027.84pt x 1027.84pt>
 File: dbdf-results/brown_dbdf_1_00.png Graphic file (type png)
 
 <use dbdf-results/brown_dbdf_1_00.png>
 Package pdftex.def Info: dbdf-results/brown_dbdf_1_00.png used on input line 11
-34.
+06.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/blonde_dbdf_1_00.png, id=253, 1027.84pt x 1027.84pt>
+<dbdf-results/blonde_dbdf_1_00.png, id=266, 1027.84pt x 1027.84pt>
 File: dbdf-results/blonde_dbdf_1_00.png Graphic file (type png)
 
 <use dbdf-results/blonde_dbdf_1_00.png>
 Package pdftex.def Info: dbdf-results/blonde_dbdf_1_00.png used on input line 1
-134.
+106.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-<dbdf-results/black_dbdf_1_00.png, id=254, 1027.84pt x 1027.84pt>
+<dbdf-results/black_dbdf_1_00.png, id=267, 1027.84pt x 1027.84pt>
 File: dbdf-results/black_dbdf_1_00.png Graphic file (type png)
 
 <use dbdf-results/black_dbdf_1_00.png>
 Package pdftex.def Info: dbdf-results/black_dbdf_1_00.png used on input line 11
-34.
+06.
 (pdftex.def)             Requested size: 123.33548pt x 123.33548pt.
 
-Overfull \hbox (29.36435pt too wide) in paragraph at lines 1129--1137
+Overfull \hbox (29.36435pt too wide) in paragraph at lines 1101--1109
 [][] 
  []
 
+[56]
+Overfull \vbox (82.40994pt too high) has occurred while \output is active []
 
-LaTeX Warning: Float too large for page by 82.40994pt on input line 1139.
 
-
-LaTeX Warning: `h' float specifier changed to `ht'.
-
-<variance-results/outline_hint.png, id=255, 1027.84pt x 1027.84pt>
+[57 <./dbdf-results/brown_dbdf_0_00.png (PNG copy)> <./dbdf-results/blonde_dbdf
+_0_00.png (PNG copy)> <./dbdf-results/black_dbdf_0_00.png (PNG copy)> <./dbdf-r
+esults/brown_dbdf_0_25.png (PNG copy)> <./dbdf-results/blonde_dbdf_0_25.png (PN
+G copy)> <./dbdf-results/black_dbdf_0_25.png (PNG copy)> <./dbdf-results/brown_
+dbdf_0_50.png (PNG copy)> <./dbdf-results/blonde_dbdf_0_50.png (PNG copy)> <./d
+bdf-results/black_dbdf_0_50.png (PNG copy)> <./dbdf-results/brown_dbdf_0_75.png
+ (PNG copy)> <./dbdf-results/blonde_dbdf_0_75.png (PNG copy)> <./dbdf-results/b
+lack_dbdf_0_75.png (PNG copy)> <./dbdf-results/brown_dbdf_1_00.png (PNG copy)> 
+<./dbdf-results/blonde_dbdf_1_00.png (PNG copy)> <./dbdf-results/black_dbdf_1_0
+0.png (PNG copy)>]
+<variance-results/outline_hint.png, id=274, 1027.84pt x 1027.84pt>
 File: variance-results/outline_hint.png Graphic file (type png)
 
 <use variance-results/outline_hint.png>
 Package pdftex.def Info: variance-results/outline_hint.png used on input line 1
-149.
+121.
 (pdftex.def)             Requested size: 205.56436pt x 205.56436pt.
- [52]
-<variance-results/un1.png, id=259, 301.125pt x 100.375pt>
+ [58 <./variance-results/outline_hint.png>] <variance-results/un1.png, id=279, 
+301.125pt x 100.375pt>
 File: variance-results/un1.png Graphic file (type png)
 
 <use variance-results/un1.png>
-Package pdftex.def Info: variance-results/un1.png used on input line 1193.
+Package pdftex.def Info: variance-results/un1.png used on input line 1165.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is1.png, id=260, 301.125pt x 100.375pt>
+<variance-results/is1.png, id=280, 301.125pt x 100.375pt>
 File: variance-results/is1.png Graphic file (type png)
 
 <use variance-results/is1.png>
-Package pdftex.def Info: variance-results/is1.png used on input line 1193.
+Package pdftex.def Info: variance-results/is1.png used on input line 1165.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un2.png, id=261, 301.125pt x 100.375pt>
+<variance-results/un2.png, id=281, 301.125pt x 100.375pt>
 File: variance-results/un2.png Graphic file (type png)
 
 <use variance-results/un2.png>
-Package pdftex.def Info: variance-results/un2.png used on input line 1193.
+Package pdftex.def Info: variance-results/un2.png used on input line 1166.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is2.png, id=262, 301.125pt x 100.375pt>
+<variance-results/is2.png, id=282, 301.125pt x 100.375pt>
 File: variance-results/is2.png Graphic file (type png)
 
 <use variance-results/is2.png>
-Package pdftex.def Info: variance-results/is2.png used on input line 1193.
+Package pdftex.def Info: variance-results/is2.png used on input line 1166.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un4.png, id=263, 301.125pt x 100.375pt>
+<variance-results/un4.png, id=283, 301.125pt x 100.375pt>
 File: variance-results/un4.png Graphic file (type png)
 
 <use variance-results/un4.png>
-Package pdftex.def Info: variance-results/un4.png used on input line 1194.
+Package pdftex.def Info: variance-results/un4.png used on input line 1167.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is4.png, id=264, 301.125pt x 100.375pt>
+<variance-results/is4.png, id=284, 301.125pt x 100.375pt>
 File: variance-results/is4.png Graphic file (type png)
 
 <use variance-results/is4.png>
-Package pdftex.def Info: variance-results/is4.png used on input line 1194.
+Package pdftex.def Info: variance-results/is4.png used on input line 1167.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un8.png, id=265, 301.125pt x 100.375pt>
+<variance-results/un8.png, id=285, 301.125pt x 100.375pt>
 File: variance-results/un8.png Graphic file (type png)
 
 <use variance-results/un8.png>
-Package pdftex.def Info: variance-results/un8.png used on input line 1195.
+Package pdftex.def Info: variance-results/un8.png used on input line 1168.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is8.png, id=266, 301.125pt x 100.375pt>
+<variance-results/is8.png, id=286, 301.125pt x 100.375pt>
 File: variance-results/is8.png Graphic file (type png)
 
 <use variance-results/is8.png>
-Package pdftex.def Info: variance-results/is8.png used on input line 1195.
+Package pdftex.def Info: variance-results/is8.png used on input line 1168.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un16.png, id=267, 301.125pt x 100.375pt>
+<variance-results/un16.png, id=287, 301.125pt x 100.375pt>
 File: variance-results/un16.png Graphic file (type png)
 
 <use variance-results/un16.png>
-Package pdftex.def Info: variance-results/un16.png used on input line 1196.
+Package pdftex.def Info: variance-results/un16.png used on input line 1169.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is16.png, id=268, 301.125pt x 100.375pt>
+<variance-results/is16.png, id=288, 301.125pt x 100.375pt>
 File: variance-results/is16.png Graphic file (type png)
 
 <use variance-results/is16.png>
-Package pdftex.def Info: variance-results/is16.png used on input line 1196.
+Package pdftex.def Info: variance-results/is16.png used on input line 1169.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un32.png, id=269, 301.125pt x 100.375pt>
+<variance-results/un32.png, id=289, 301.125pt x 100.375pt>
 File: variance-results/un32.png Graphic file (type png)
 
 <use variance-results/un32.png>
-Package pdftex.def Info: variance-results/un32.png used on input line 1197.
+Package pdftex.def Info: variance-results/un32.png used on input line 1170.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is32.png, id=270, 301.125pt x 100.375pt>
+<variance-results/is32.png, id=290, 301.125pt x 100.375pt>
 File: variance-results/is32.png Graphic file (type png)
 
 <use variance-results/is32.png>
-Package pdftex.def Info: variance-results/is32.png used on input line 1197.
+Package pdftex.def Info: variance-results/is32.png used on input line 1170.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un64.png, id=271, 301.125pt x 100.375pt>
+<variance-results/un64.png, id=291, 301.125pt x 100.375pt>
 File: variance-results/un64.png Graphic file (type png)
 
 <use variance-results/un64.png>
-Package pdftex.def Info: variance-results/un64.png used on input line 1198.
+Package pdftex.def Info: variance-results/un64.png used on input line 1171.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is64.png, id=272, 301.125pt x 100.375pt>
+<variance-results/is64.png, id=292, 301.125pt x 100.375pt>
 File: variance-results/is64.png Graphic file (type png)
 
 <use variance-results/is64.png>
-Package pdftex.def Info: variance-results/is64.png used on input line 1198.
+Package pdftex.def Info: variance-results/is64.png used on input line 1171.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un128.png, id=273, 301.125pt x 100.375pt>
+<variance-results/un128.png, id=293, 301.125pt x 100.375pt>
 File: variance-results/un128.png Graphic file (type png)
 
 <use variance-results/un128.png>
-Package pdftex.def Info: variance-results/un128.png used on input line 1199.
+Package pdftex.def Info: variance-results/un128.png used on input line 1172.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is128.png, id=274, 301.125pt x 100.375pt>
+<variance-results/is128.png, id=294, 301.125pt x 100.375pt>
 File: variance-results/is128.png Graphic file (type png)
 
 <use variance-results/is128.png>
-Package pdftex.def Info: variance-results/is128.png used on input line 1199.
+Package pdftex.def Info: variance-results/is128.png used on input line 1172.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un256.png, id=275, 301.125pt x 100.375pt>
+<variance-results/un256.png, id=295, 301.125pt x 100.375pt>
 File: variance-results/un256.png Graphic file (type png)
 
 <use variance-results/un256.png>
-Package pdftex.def Info: variance-results/un256.png used on input line 1200.
+Package pdftex.def Info: variance-results/un256.png used on input line 1173.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is256.png, id=276, 301.125pt x 100.375pt>
+<variance-results/is256.png, id=296, 301.125pt x 100.375pt>
 File: variance-results/is256.png Graphic file (type png)
 
 <use variance-results/is256.png>
-Package pdftex.def Info: variance-results/is256.png used on input line 1200.
+Package pdftex.def Info: variance-results/is256.png used on input line 1173.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/un512.png, id=277, 301.125pt x 100.375pt>
+<variance-results/un512.png, id=297, 301.125pt x 100.375pt>
 File: variance-results/un512.png Graphic file (type png)
 
 <use variance-results/un512.png>
-Package pdftex.def Info: variance-results/un512.png used on input line 1201.
+Package pdftex.def Info: variance-results/un512.png used on input line 1174.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
 
-<variance-results/is512.png, id=278, 301.125pt x 100.375pt>
+<variance-results/is512.png, id=298, 301.125pt x 100.375pt>
 File: variance-results/is512.png Graphic file (type png)
 
 <use variance-results/is512.png>
-Package pdftex.def Info: variance-results/is512.png used on input line 1201.
+Package pdftex.def Info: variance-results/is512.png used on input line 1174.
 (pdftex.def)             Requested size: 171.64302pt x 57.21432pt.
+ [59]
+Overfull \vbox (43.84428pt too high) has occurred while \output is active []
 
 
-LaTeX Warning: Float too large for page by 55.84428pt on input line 1208.
-
-[53] <variance-results/uniform512.png, id=283, 1027.84pt x 1027.84pt>
+[60 <./variance-results/un1.png> <./variance-results/is1.png> <./variance-resul
+ts/un2.png> <./variance-results/is2.png> <./variance-results/un4.png> <./varian
+ce-results/is4.png> <./variance-results/un8.png> <./variance-results/is8.png> <
+./variance-results/un16.png> <./variance-results/is16.png> <./variance-results/
+un32.png> <./variance-results/is32.png> <./variance-results/un64.png> <./varian
+ce-results/is64.png> <./variance-results/un128.png> <./variance-results/is128.p
+ng> <./variance-results/un256.png> <./variance-results/is256.png> <./variance-r
+esults/un512.png> <./variance-results/is512.png>]
+<variance-results/uniform512.png, id=326, 1027.84pt x 1027.84pt>
 File: variance-results/uniform512.png Graphic file (type png)
 
 <use variance-results/uniform512.png>
-Package pdftex.def Info: variance-results/uniform512.png used on input line 122
-5.
+Package pdftex.def Info: variance-results/uniform512.png used on input line 119
+7.
 (pdftex.def)             Requested size: 174.73048pt x 174.73048pt.
 
-<variance-results/deon512.png, id=284, 1027.84pt x 1027.84pt>
+<variance-results/deon512.png, id=327, 1027.84pt x 1027.84pt>
 File: variance-results/deon512.png Graphic file (type png)
 
 <use variance-results/deon512.png>
-Package pdftex.def Info: variance-results/deon512.png used on input line 1225.
+Package pdftex.def Info: variance-results/deon512.png used on input line 1197.
 (pdftex.def)             Requested size: 174.73048pt x 174.73048pt.
 
-Overfull \hbox (13.46097pt too wide) in paragraph at lines 1224--1228
+Overfull \hbox (13.46097pt too wide) in paragraph at lines 1196--1200
  [] 
  []
 
-<variance-results/variance-plot.png, id=285, 882.4167pt x 572.3784pt>
+<variance-results/variance-plot.png, id=328, 882.4167pt x 572.3784pt>
 File: variance-results/variance-plot.png Graphic file (type png)
 
 <use variance-results/variance-plot.png>
 Package pdftex.def Info: variance-results/variance-plot.png used on input line 
-1291.
+1227.
 (pdftex.def)             Requested size: 352.96043pt x 228.9473pt.
 
 
 LaTeX Warning: `h' float specifier changed to `ht'.
 
-[54] [55] [56 <./realworld/officesquare/deon_blonde1_32.png (PNG copy)> <./real
-world/officesquare/uniform_blonde1_32.png (PNG copy)> <./realworld/officesquare
-/deon_black1_32.png (PNG copy)> <./realworld/officesquare/uniform_black1_32.png
- (PNG copy)> <./realworld/officesquare/deon_brown2_32.png (PNG copy)> <./realwo
-rld/officesquare/uniform_brown2_32.png (PNG copy)>] [57 <./realworld/venice/deo
-n_blonde1_32.png (PNG copy)> <./realworld/venice/uniform_blonde1_32.png (PNG co
-py)> <./realworld/venice/deon_black1_32.png (PNG copy)> <./realworld/venice/uni
-form_black1_32.png (PNG copy)> <./realworld/venice/deon_brown2_32.png (PNG copy
-)> <./realworld/venice/uniform_brown2_32.png (PNG copy)>] [58 <./realworld/subw
-ay/deon_blonde1_32.png (PNG copy)> <./realworld/subway/uniform_blonde1_32.png (
-PNG copy)> <./realworld/subway/deon_black1_32.png (PNG copy)> <./realworld/subw
-ay/uniform_black1_32.png (PNG copy)> <./realworld/subway/deon_brown2_32.png (PN
-G copy)> <./realworld/subway/uniform_brown2_32.png (PNG copy)>] [59 <./dbdf-res
-ults/brown_dbdf_0_00.png (PNG copy)> <./dbdf-results/blonde_dbdf_0_00.png (PNG 
-copy)> <./dbdf-results/black_dbdf_0_00.png (PNG copy)> <./dbdf-results/brown_db
-df_0_25.png (PNG copy)> <./dbdf-results/blonde_dbdf_0_25.png (PNG copy)> <./dbd
-f-results/black_dbdf_0_25.png (PNG copy)> <./dbdf-results/brown_dbdf_0_50.png (
-PNG copy)> <./dbdf-results/blonde_dbdf_0_50.png (PNG copy)> <./dbdf-results/bla
-ck_dbdf_0_50.png (PNG copy)> <./dbdf-results/brown_dbdf_0_75.png (PNG copy)> <.
-/dbdf-results/blonde_dbdf_0_75.png (PNG copy)> <./dbdf-results/black_dbdf_0_75.
-png (PNG copy)> <./dbdf-results/brown_dbdf_1_00.png (PNG copy)> <./dbdf-results
-/blonde_dbdf_1_00.png (PNG copy)> <./dbdf-results/black_dbdf_1_00.png (PNG copy
-)>] [60 <./variance-results/outline_hint.png>] [61 <./variance-results/un1.png>
- <./variance-results/is1.png> <./variance-results/un2.png> <./variance-results/
-is2.png> <./variance-results/un4.png> <./variance-results/is4.png> <./variance-
-results/un8.png> <./variance-results/is8.png> <./variance-results/un16.png> <./
-variance-results/is16.png> <./variance-results/un32.png> <./variance-results/is
-32.png> <./variance-results/un64.png> <./variance-results/is64.png> <./variance
--results/un128.png> <./variance-results/is128.png> <./variance-results/un256.pn
-g> <./variance-results/is256.png> <./variance-results/un512.png> <./variance-re
-sults/is512.png>] [62 <./variance-results/uniform512.png (PNG copy)> <./varianc
-e-results/deon512.png (PNG copy)> <./variance-results/variance-plot.png>]
+[61] [62 <./variance-results/uniform512.png (PNG copy)> <./variance-results/deo
+n512.png (PNG copy)>] [63 <./variance-results/variance-plot.png>]
 Chapter 7.
-[63
+[64
 
-] [64] (./thesis.bbl [65] [66
+] [65] (./thesis.bbl [66] [67
 
-] [67]) [68] (./thesis.aux) ) 
+] [68]) [69] (./thesis.aux) ) 
 Here is how much of TeX's memory you used:
- 4008 strings out of 493029
- 57393 string characters out of 6136234
- 113466 words of memory out of 5000000
- 7370 multiletter control sequences out of 15000+600000
+ 4067 strings out of 493029
+ 58169 string characters out of 6136234
+ 106446 words of memory out of 5000000
+ 7425 multiletter control sequences out of 15000+600000
  31809 words of font info for 77 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 37i,12n,24p,1142b,354s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 37i,12n,24p,1142b,350s stack positions out of 5000i,500n,10000p,200000b,80000s
 {/usr/share/texmf/fonts/enc/dvips/cm-super/cm-supe
 r-t1.enc}{/usr/share/texmf/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texl
@@ -1455,10 +1460,10 @@ e/texmf/fonts/type1/public/cm-super/sfrm1095.pfb></usr/share/texmf/fonts/type1/
 public/cm-super/sfrm1200.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfss
 1095.pfb></usr/share/texmf/fonts/type1/public/cm-super/sfti1095.pfb></usr/share
 /texmf/fonts/type1/public/cm-super/sfti1200.pfb>
-Output written on thesis.pdf (70 pages, 47588923 bytes).
+Output written on thesis.pdf (71 pages, 47601595 bytes).
 PDF statistics:
- 449 PDF objects out of 1000 (max. 8388607)
- 245 compressed objects within 3 object streams
+ 452 PDF objects out of 1000 (max. 8388607)
+ 247 compressed objects within 3 object streams
  0 named destinations out of 1000 (max. 500000)
  356 words of extra memory for PDF output out of 10000 (max. 10000000)
 
