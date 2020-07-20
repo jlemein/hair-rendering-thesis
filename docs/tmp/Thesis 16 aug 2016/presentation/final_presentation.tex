@@ -7,26 +7,47 @@
     \frametitle{Background}
 	\framesubtitle{Rendering hair}
 	
-	Sectin
+	Important for variety of industries
+	\begin{itemize}
+	\item Animation movie industry: to render realistic hairs in a physically accurate way.
+	\item Game industry: enhance realism and visual effects.
+	\item Clothes manufacturing industry: to render custom fabrics and to compare appearance in different lighting conditions.
+	\item Hair styling: render hair styling products applied to the hair.
+	\end{itemize}
   \end{frame}
   
   \begin{frame}
     \frametitle{Rendering hair}
 	\framesubtitle{Hair fiber representation}
+	Explicit representation vs. Implicit representation
+	
+	\begin{itemize}
+	\item Explicit representation represents each fiber by geometric primitives (e.g. triangles)
+	\item Implicit representation represents fiber
+	\end{itemize}
+	
+	There are a couple of ways to represent hair fibers:
+	\begin{itemize}
+	\item Connected triangle strips
+	\item Cylindrical primitives
+	\item Trigonal prisms
+	\item Ribbons
+	\end{itemize}
 	
 
   \end{frame}
   
   \begin{frame}
     \frametitle{Rendering hair}
-	\framesubtitle{Geometric complexity}
+	\framesubtitle{Rendering challenges}
 	
-
-  \end{frame}
-  
-  \begin{frame}
-    \frametitle{Rendering hair}
-	\framesubtitle{Aliasing}
+	Human hair consists of over hundreds of thousands of hair strands.
+	Leads to rendering challenges:
+	\begin{itemize}
+	\item Memory consumption: to store all fibers in memory.
+	\item Time: rendering realistic scattering effects requires tracing many samples through the hair volume.
+	\item Aliasing: Hair fibers are very thin, requiring additional samples to be drawn to prevent aliasing.
+	\end{itemize}
 	
 
   \end{frame}
@@ -36,14 +57,62 @@
   \begin{frame}
     \frametitle{Mathematical notation}
 	\framesubtitle{Radiometry}
+	\begin{itemize}
+	\item Power (Watts): energy in Joules per second.
+	\item Radiant intensity (steradians): power divided by the solid angle.
+	\item Irradiance (Watts per $m^2$): power per unit area.
+	\item Radiance : Irradiance per solid angle, where solid angle goes to zero (becoming a ray instead of a cone).
+	\end{itemize}
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{Mathematical notation}
+	\framesubtitle{Scattering equations}
 	
+	Scattering is represented by a bidirectional reflection distribution function (BRDF):
+	
+	\begin{equation}
+	f_r(p, \omega_o, \omega_i) = \frac{dL_o(p, \omega_o)}{dE(p, \omega_i)} = \frac{dL_o(p, \omega_o)}{L_i(p, \omega_i) \cos \theta_i d\omega_i}
+	\end{equation}
+	
+	The BRDF is the fraction of outgoing radiance in direction $\omega_o$ related to the incident irradiance from direction $\omega_i$.
 
   \end{frame}
   
   \begin{frame}
     \frametitle{Mathematical notation}
 	\framesubtitle{Hair fibers}
+	
+	\begin{itemize}
+	\item Hair fibers do have cuticle scales oriented at approximately 7 degrees.
+	\item The core of the fiber (medulla and cortex) consist of pigment which absorbs specific wavelengths in the light.
+	\end{itemize}
+	
+	\begin{figure}
+	\includegraphics[scale=0.3]{../thesis/images/hair_structure.jpeg}
+	\includegraphics[scale=0.25]{../thesis/hair-core.png}
+	\end{figure}
+	
   \end{frame}
+  
+  
+\begin{frame}
+    \frametitle{Mathematical notation}
+	\framesubtitle{Curve scattering equation}
+	
+	\begin{itemize}
+	\item Hair fibers are rendered implicitly by 3D curves.
+	\item Curves have no surface area. They have a length, requiring a change to the BRDF formulation.
+	\end{itemize}
+	
+	\begin{equation}
+	f_r(p, \omega_o, \omega_i) = \frac{dL_o(p, \omega_o)}{dE(p, \omega_i)} = \frac{dL_o(p, \omega_o)}{L_i(p, \omega_i) \cos \theta_i d\omega_i}
+	\end{equation}
+	
+	The BRDF is the fraction of outgoing radiance in direction $\omega_o$ related to the incident irradiance from direction $\omega_i$.
+
+  \end{frame}  
+  
   
 % end mathematical notation  
   
