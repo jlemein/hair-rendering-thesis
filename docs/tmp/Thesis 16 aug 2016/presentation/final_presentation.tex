@@ -83,22 +83,14 @@
     \frametitle{Mathematical notation}
 	\framesubtitle{Hair fibers}
 	
-	\begin{itemize}
-	\item Hair fibers do have cuticle scales oriented at approximately 7 degrees.
-	\item The core of the fiber (medulla and cortex) consist of pigment which absorbs specific wavelengths in the light.
-	\end{itemize}
 	
-	\begin{figure}
-	\includegraphics[scale=0.3]{../thesis/images/hair_structure.jpeg}
-	\includegraphics[scale=0.25]{../thesis/hair-core.png}
-	\end{figure}
 	
   \end{frame}
   
   
 \begin{frame}
     \frametitle{Mathematical notation}
-	\framesubtitle{Curve scattering equation}
+	\framesubtitle{Bidirectional curve scattering distribution function (BCSDF)}
 	
 	\begin{itemize}
 	\item Hair fibers are rendered implicitly by 3D curves.
@@ -106,10 +98,12 @@
 	\end{itemize}
 	
 	\begin{equation}
-	f_r(p, \omega_o, \omega_i) = \frac{dL_o(p, \omega_o)}{dE(p, \omega_i)} = \frac{dL_o(p, \omega_o)}{L_i(p, \omega_i) \cos \theta_i d\omega_i}
+	S_r(\omega_o, \omega_i) = \frac{dL_o(\omega_o)}{dE_i(\omega_i)} = \frac{dL_o(\omega_o)}{DL_i(\omega_i) \cos \theta_i d\omega_i}
 	\end{equation}
 	
-	The BRDF is the fraction of outgoing radiance in direction $\omega_o$ related to the incident irradiance from direction $\omega_i$.
+	\begin{equation}
+	L_o(\omega_o) = D \int S(\omega_i, \omega_o) L_i(\omega_i) \cos \theta_i d\omega_i
+	\end{equation}
 
   \end{frame}  
   
@@ -129,12 +123,56 @@
   \begin{frame}
     \frametitle{Related work}
 	\framesubtitle{Structure of hair}
+	
+	\begin{itemize}
+	\item Hair fibers do have cuticle scales oriented at approximately 7 degrees.
+	\item The core of the fiber (medulla and cortex) consist of pigment which absorbs specific wavelengths in the light.
+	\end{itemize}
+	
+	\begin{figure}
+	\includegraphics[scale=0.3]{../thesis/images/hair_structure.jpeg}
+	\includegraphics[scale=0.25]{../thesis/hair-core.png}
+	\end{figure}
   \end{frame}
   
   
   \begin{frame}
     \frametitle{Related work}
+    \framesubtitle{Measured scattering data}
+    Single fiber scattering model that models three visible scattering components:
+    
+    \begin{figure}
+    \centering
+    \includegraphics[scale=0.25]{../thesis/images/longitudinal_response.jpeg}
+    \end{figure}
+  \end{frame}
+  
+    \begin{frame}
+    \frametitle{Related work}
     \framesubtitle{Marschner model}
+    Single fiber scattering model that models three visible scattering components.
+    \begin{itemize}
+    \centering
+    \item[R] reflection,
+    \item[TT] double transmission,
+    \item[TRT] transmission, reflection, transmission
+    \end{itemize}
+    
+    \begin{columns}[onlytextwidth]
+    \begin{column}{.45\textwidth}
+    \begin{figure}
+    	\includegraphics[scale=0.20]{../thesis/images/marschner_model_longitudinal.png}
+    	\caption{Longitudinal scattering}
+    \end{figure}
+    \end{column}
+    \hfill
+    \begin{column}{.45\textwidth}
+    \begin{figure}
+    	\includegraphics[scale=0.09]{../thesis/circularcross.png}
+    	\caption{Azimuthal scattering}
+    \end{figure}
+    \end{column}
+    \end{columns}
   \end{frame}
   
   \begin{frame}
