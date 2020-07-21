@@ -1,6 +1,7 @@
 \documentclass{beamer}
 \usecolortheme{beaver}
 \usetheme{CambridgeUS}
+\usepackage[export]{adjustbox}
 
 \begin{document}
   \begin{frame}
@@ -213,16 +214,206 @@
     \framesubtitle{Memory and speed requirements}
   \end{frame}
   
+  \begin{frame}
+    \frametitle{Results}
+    \framesubtitle{Dual scattering approximation IS 512 samples per pixel}
+    \centering
+	\includegraphics[scale=0.18]{../thesis/variance-results/deon512.png}    
+  \end{frame}
   
+  \begin{frame}
+    \frametitle{Results}
+    \framesubtitle{Importance sampling results}
+    \centering
+    
+    \begin{columns}
+    \begin{column}{0.5\textwidth}
+    \includegraphics[width=.6\textwidth,right]{../thesis/realworld/officesquare/deon_brown2_32.png} 
+    \end{column}
+    \begin{column}{0.5\textwidth}
+    \includegraphics[width=.6\textwidth,left]{../thesis/realworld/subway/deon_blonde1_32.png} 
+    \end{column}
+    \end{columns}
+    
+    \begin{columns}
+    \begin{column}{0.5\textwidth}
+    \includegraphics[width=.6\textwidth,right]{../thesis/realworld/venice/deon_blonde2_32.png} 
+    \end{column}
+    \begin{column}{0.5\textwidth}
+    \includegraphics[width=.6\textwidth,left]{../thesis/realworld/venice/deon_black2_32.png} 
+    \end{column}
+    \end{columns}
+       
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{Results}
+    \framesubtitle{Real world scenarios (Venice)}
+    \centering
+    
+    \begin{columns}
+    \begin{column}{0.5\textwidth}
+    \centering
+    Uniform Sampling (32 spp) 
+    \end{column}
+	\begin{column}{0.5\textwidth}
+	\centering
+	Importance Sampling (32 spp)
+	\end{column}
+	\end{columns}  
+    
+	\includegraphics[scale=0.165]{../thesis/realworld/venice/uniform_brown1_32.png}  
+	\includegraphics[scale=0.165]{../thesis/realworld/venice/deon_brown1_32.png}   
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{Results}
+    \framesubtitle{Real world scenarios (Office Square)}
+    \centering
+    
+    \begin{columns}
+    \begin{column}{0.5\textwidth}
+    \centering
+    Uniform Sampling (32 spp) 
+    \end{column}
+	\begin{column}{0.5\textwidth}
+	\centering
+	Importance Sampling (32 spp)
+	\end{column}
+	\end{columns}  
+    
+	\includegraphics[scale=0.165]{../thesis/realworld/officesquare/uniform_blonde1_32.png}  
+	\includegraphics[scale=0.165]{../thesis/realworld/officesquare/deon_blonde1_32.png}   
+  \end{frame}
+  
+    \begin{frame}
+    \frametitle{Results}
+    \framesubtitle{Real world scenarios (Subway Station)}
+    \centering
+    
+    \begin{columns}
+    \begin{column}{0.5\textwidth}
+    \centering
+    Uniform Sampling (32 spp) 
+    \end{column}
+	\begin{column}{0.5\textwidth}
+	\centering
+	Importance Sampling (32 spp)
+	\end{column}
+	\end{columns}  
+    
+	\includegraphics[scale=0.165]{../thesis/realworld/subway2/uniform_black1_32.png}  
+	\includegraphics[scale=0.165]{../thesis/realworld/subway2/deon_black1_32.png}   
+  \end{frame}
+  
+  %
+  % Variance comparison
+  %
+   
+   \begin{frame}
+    \frametitle{Results}
+    \framesubtitle{Variance computation}
+
+	\begin{itemize}
+    \item Variance $V$ is computed for a region $(w,h)$ of the image .
+	\item Variance is computed by taking the average distance squared between the image to be analyzed $X$ with the ground truth $X'$.
+	\item Ground truth is assumed to be uniform sampling at 512 spp.
+	\end{itemize}
+	
+	\begin{columns}
+    \begin{column}{0.65\textwidth}
+	\begin{equation}
+	V = \frac{1}{w\cdot h} \sum_{x=0}^w \sum_{y=0}^h (X_{x,y} - X'_{x,y})^2
+	\end{equation}		
+	\end{column}
+	\begin{column}{0.35\textwidth}
+	\includegraphics[scale=0.1]{../thesis/_variance-results/outline_hint.png}
+	\end{column}
+	\end{columns}
+    
+    \end{frame}
   
   
   
   \begin{frame}
     \frametitle{Results}
+    \framesubtitle{Variance comparison}
+    \centering
+    
+    \includegraphics[scale=0.5]{../thesis/variance-results/un1.png} 
+    \includegraphics[scale=0.5]{../thesis/variance-results/is1.png}
+    
+    \includegraphics[scale=0.5]{../thesis/variance-results/un2.png} 
+    \includegraphics[scale=0.5]{../thesis/variance-results/is2.png}
+    
+    \includegraphics[scale=0.5]{../thesis/variance-results/un4.png} 
+    \includegraphics[scale=0.5]{../thesis/variance-results/is4.png}
+    
+    \includegraphics[scale=0.5]{../thesis/variance-results/un8.png} 
+    \includegraphics[scale=0.5]{../thesis/variance-results/is8.png}
+   
+
+  \end{frame}
+  
+  \begin{frame}
+    \frametitle{Results}
+    \framesubtitle{Variance comparison}
+    \centering
+
+    \includegraphics[scale=0.5]{../thesis/variance-results/un16.png} 
+    \includegraphics[scale=0.5]{../thesis/variance-results/is16.png}
+        
+    \includegraphics[scale=0.5]{../thesis/variance-results/un32.png} 
+    \includegraphics[scale=0.5]{../thesis/variance-results/is32.png}
+    
+    \includegraphics[scale=0.5]{../thesis/variance-results/un64.png} 
+    \includegraphics[scale=0.5]{../thesis/variance-results/is64.png}
+    
+    \includegraphics[scale=0.5]{../thesis/variance-results/un128.png} 
+    \includegraphics[scale=0.5]{../thesis/variance-results/is128.png}
+    
+  \end{frame}
+  
+\begin{frame}
+    \frametitle{Results}
+    \framesubtitle{Variance plot}
+    
+    \begin{figure}
+    \centering
+    \includegraphics[scale=0.28]{../thesis/variance-results/variance-plot.png} 
+    \caption{Logarithmic scale of variance that is reduced as the samples per pixel increase.}
+    \end{figure}
+  \end{frame}
+  
+  
+  \begin{frame}
+    \frametitle{Conclusion}
+    \framesubtitle{Theoretical Challenges}
+	
+	\begin{itemize}
+	\item Dual scattering model for this thesis is not fully energy conserving.
+	\item Variance is lower for importance sampling, but not by the extend that it is clearly noticeable.
+	\item Challenge to implement the dualscattering method in PBRT, because dual scattering makes use of an approximated volume (which does not fit a pure ray tracer).
+	\item Involved physics and mathematical knowledge required. That was challenging to understand.
+	\end{itemize}
   \end{frame}
   
   \begin{frame}
     \frametitle{Conclusion}
+    \framesubtitle{Practical Challenges}
+	
+	\begin{itemize}
+	\item Choice of rendering framework. Started from scratch, then Pixar Renderman, finally PBRT.
+	\item Voxel grid implementation (OpenVdb) where hair fibers are assumed to be oriented in the same direction.
+	\item Memory and speed requirements. Physics based rendering can take a long time. Feedback cycle is long.
+	\item Non intuitiveness of Marschner model parameters.
+	\end{itemize}
+  \end{frame}
+  
+  \begin{frame}
+  \frametitle{Conclusion}
+  
+  Applying importance sampling for the dual scattering method does not significantly reduce the noise compared to rendering using uniform sampling.
   \end{frame}
   
 % etc
