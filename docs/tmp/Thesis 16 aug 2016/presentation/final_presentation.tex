@@ -88,6 +88,23 @@
 	
   \end{frame}
   
+  \begin{frame}
+    \frametitle{Mathematical notation}
+	\framesubtitle{Coordinates axes for hair fibers}
+
+\includegraphics[width=0.5\textwidth,center]{../thesis/images/axes.png}
+
+\begin{itemize}
+\item Coordinate axis are represented using $uvw$ axes, with $u$ pointing from base to tip of hair strand and $vw$ forms the orthogonal plane.
+	
+\item Longitudinal angles $\theta$ are with respect to $u$, where 0 degrees is perpendicular to the fiber, -90 towards base, and 90 towards tip.
+	
+\item Azimuthal angles $\phi$ are formed with respect to the orthogonal plane.
+	
+	\item $\omega_i = (\theta_i, \phi_i)$ incident direction, $\omega_o = (\theta_o, \phi_o)$ outgoing direction.
+\end{itemize}	
+	
+	\end{frame}
   
 \begin{frame}
     \frametitle{Mathematical notation}
@@ -114,20 +131,64 @@
   \begin{frame}
     \frametitle{Monte-Carlo integration}
     
-    Numerical integration technique based on random numbers \\
-    Possible to integrate any definite higher dimensional integrals.
+    Let's say we want to integrate $f(x)$ which is a  1D formula from $a$ to $b$.
+    
+    \begin{equation}
+    \int_a^b f(x) dx
+    \end{equation}
+    
+	This can be evaluated by drawing $N$ uniform samples for $X_i \in [a, b]$.
     
     \begin{equation}
     F_N = \frac{b-a}{N} \sum^N_{i=1} f(X_i)
     \end{equation}
     
-    \begin{equation}
-    F_N = \frac{1}{N} \sum^N_{i=1} \frac{f(X_i)}{p(X_i)}
-    \end{equation}
+    The Monte-Carlo estimator says that the expected value $E[F_N]$ is equal to the integral.
+    
+    Possible to integrate any definite higher dimensional integrals.
+    
   \end{frame}
   
   \begin{frame}
+    \frametitle{Importance sampling}
+    
+    \begin{itemize}
+    \item Importance sampling prefers to sample high-value contributions.
+    
+    \item The estimator can be rewritten by taking into consideration the probability density function $p(X_i)$
+    
+    \item Samples need to be generated from $p(x)$, by processes such as the inversion method or rejection method.
+    
+    \end{itemize}
+    
+     \begin{equation}
+    F_N = \frac{1}{N} \sum^N_{i=1} \frac{f(X_i)}{p(X_i)}
+    \end{equation}
+    
+  \end{frame}
+  
+    
+  \begin{frame}
     \frametitle{Multiple importance sampling}
+    
+    \begin{itemize}
+    \item Scattering distributions cannot always be represented by closed formulas, or be inverted at all.
+    
+    \item A solution is to match the scattering distribution with multiple functions $f(x)$ and $g(x)$
+    \end{itemize}
+    
+        \includegraphics[width=0.8\textwidth,center]{importance_sampling_px.png}
+    
+    \begin{equation}
+\frac{1}{n_f} \sum_{i=1}^{n_f} \frac{f(X_i)g(X_i) w_f(X_i)}{p_f(X_i)} + 
+\frac{1}{n_g} \sum_{j=1}^{n_g} \frac{f(Y_j)g(Y_j) w_g(Y_j)}{p_g(Y_j)} 
+\end{equation}
+
+\begin{equation}
+w_s(x) = \frac{n_sp_s(x)}{\sum_i n_i p_i(x)}
+\end{equation}
+
+    
   \end{frame}
 
 	% end Importance sampling
@@ -137,7 +198,7 @@
 	\framesubtitle{Structure of hair}
 	
 	\begin{itemize}
-	\item Hair fibers do have cuticle scales oriented at approximately 7 degrees.
+	\item Hair fibers do have cuticle scales tilted by approximately 3 degrees toward the root.
 	\item The core of the fiber (medulla and cortex) consist of pigment which absorbs specific wavelengths in the light.
 	\end{itemize}
 	
@@ -190,8 +251,65 @@
   \begin{frame}
     \frametitle{Related work}
     \framesubtitle{Dualscattering Approximation}
+
+\begin{itemize}
+\item Marschner model deals with rendering a single fiber.
+	
+\item Path-tracing have to be performed to render globally illuminated hair volumes.
+
+\begin{itemize}
+\item Very costly, takes a lot of time.
+\item Requires a lot of samples to reduce noise.
+\end{itemize}
+\end{itemize}
+  \end{frame}  
+  
+  \begin{frame}
+    \frametitle{Related work}
+    \framesubtitle{Dualscattering Approximation}
+    Dualscattering approximation breaks the scattering computation up into two components
+    \begin{itemize}
+    \item Global scattering: Computes the irradiance arriving at a point $x$ in the hair volume.
+        \item Local scattering: Accounts for the multiple scattering within the neighborhood of point $x$
+    \end{itemize}
   \end{frame}
   
+  
+    \begin{frame}
+    \frametitle{Related work}
+    \framesubtitle{Dualscattering: global scattering}
+    
+    Global scattering is computed by taking into account:
+    
+    \begin{itemize}
+    \item Transmittance $T_f$ through the volume from direction $\omega_d$
+    \item Spread $S_f$ when scattering through hair strands.
+    \end{itemize}
+    
+    \begin{equation}
+\Psi^G(x, \omega_d, \omega_i) \approx T_f(x, \omega_d)\,S_f(x, \omega_d, \omega_i)
+\end{equation}
+
+\begin{columns}
+\begin{column}{0.4\textwidth}
+
+\begin{align*}
+T_f(x, \omega_d) &= d_f \cdot \prod_{k=1}^{n} a_f(\theta_d^k) \\
+S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos \theta_d}  \\
+\sigma_f^2(x, \omega_d) &= \sum_{k=1}^{n} \beta_f^2(\theta_d^k) \approx n \cdot \beta_f^2(\theta_d) \\
+\end{align*}
+
+\end{column}
+\begin{column}{0.4\textwidth}
+   \includegraphics[width=0.85\textwidth, right]{../thesis/relatedwork/dualscattering_df.png}
+   \end{column}
+   \end{columns}
+  \end{frame}
+  
+   \begin{frame}
+    \frametitle{Related work}
+    \framesubtitle{Dualscattering: local scattering}
+  \end{frame}
   
   \begin{frame}
     \frametitle{Approach}
