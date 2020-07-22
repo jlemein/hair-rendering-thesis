@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  21 JUL 2020 22:25
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015/Debian) (preloaded format=pdflatex 2019.6.20)  23 JUL 2020 00:10
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -948,379 +948,631 @@ LaTeX Info: Redefining \includegraphics on input line 6.
 
 (./final_presentation.nav)
 
+Package hyperref Warning: Option `pdfauthor' has already been used,
+(hyperref)                setting the option has no effect on input line 10.
+
+
 LaTeX Font Warning: Font shape `OT1/cmss/m/n' in size <4> not available
-(Font)              size <5> substituted on input line 18.
+(Font)              size <5> substituted on input line 16.
+
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
 
 [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
 
-] [3
+[2
 
 ]
-LaTeX Font Info:    Try loading font information for U+msa on input line 67.
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
 
-(/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
+[3
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[4
+
+]
+LaTeX Font Info:    Try loading font information for U+msa on input line 78.
+ (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Try loading font information for U+msb on input line 67.
+LaTeX Font Info:    Try loading font information for U+msb on input line 78.
 
 (/usr/share/texlive/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    Try loading font information for OT1+mathkerncmss on input 
-line 67.
+line 78.
 
 (/usr/share/texlive/texmf-dist/tex/latex/sansmathaccent/ot1mathkerncmss.fd
 File: ot1mathkerncmss.fd 2013/03/27 Fontinst v1.933 font definitions for OT1/ma
 thkerncmss.
 )
-[4
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
 
-] [5
-
-] [6
-
-] [7
-
-] [8
-
-] [9
+[5
 
 ]
-<../thesis/images/hair_structure.jpeg, id=265, 597.73312pt x 369.63094pt>
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[6
+
+] <../thesis/images/axes.png, id=189, 870.25125pt x 517.935pt>
+File: ../thesis/images/axes.png Graphic file (type png)
+
+<use ../thesis/images/axes.png>
+Package pdftex.def Info: ../thesis/images/axes.png used on input line 111.
+(pdftex.def)             Requested size: 171.14764pt x 101.85439pt.
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[7
+
+ <../thesis/images/axes.png>]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[8
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[9
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[10
+
+] <importance_sampling_px.png, id=300, 451.08525pt x 96.96225pt>
+File: importance_sampling_px.png Graphic file (type png)
+
+<use importance_sampling_px.png>
+Package pdftex.def Info: importance_sampling_px.png used on input line 196.
+(pdftex.def)             Requested size: 273.83728pt x 58.86429pt.
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[11
+
+ <./importance_sampling_px.png>]
+<../thesis/images/hair_structure.jpeg, id=328, 597.73312pt x 369.63094pt>
 File: ../thesis/images/hair_structure.jpeg Graphic file (type jpg)
 
 <use ../thesis/images/hair_structure.jpeg>
 Package pdftex.def Info: ../thesis/images/hair_structure.jpeg used on input lin
-e 148.
+e 213.
 (pdftex.def)             Requested size: 179.32132pt x 110.89012pt.
 
-<../thesis/hair-core.png, id=266, 563.10374pt x 462.72874pt>
+<../thesis/hair-core.png, id=329, 563.10374pt x 462.72874pt>
 File: ../thesis/hair-core.png Graphic file (type png)
 
 <use ../thesis/hair-core.png>
-Package pdftex.def Info: ../thesis/hair-core.png used on input line 148.
+Package pdftex.def Info: ../thesis/hair-core.png used on input line 213.
 (pdftex.def)             Requested size: 140.77559pt x 115.6819pt.
- [10
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[12
 
  <../thesis/images/hair_structure.jpeg> <../thesis/hair-core.png>]
-<../thesis/images/longitudinal_response.jpeg, id=294, 1151.05031pt x 445.665pt>
+<../thesis/images/longitudinal_response.jpeg, id=358, 1151.05031pt x 445.665pt>
 File: ../thesis/images/longitudinal_response.jpeg Graphic file (type jpg)
 <use ../thesis/images/longitudinal_response.jpeg>
 Package pdftex.def Info: ../thesis/images/longitudinal_response.jpeg used on in
-put line 160.
+put line 225.
 (pdftex.def)             Requested size: 287.76187pt x 111.41597pt.
- [11
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[13
 
  <../thesis/images/longitudinal_response.jpeg>]
-<../thesis/images/marschner_model_longitudinal.png, id=321, 607.26875pt x 468.7
+<../thesis/images/marschner_model_longitudinal.png, id=386, 607.26875pt x 468.7
 5125pt>
 File: ../thesis/images/marschner_model_longitudinal.png Graphic file (type png)
 
  <use ../thesis/images/marschner_model_longitudinal.png>
 Package pdftex.def Info: ../thesis/images/marschner_model_longitudinal.png used
- on input line 188.
+ on input line 253.
 (pdftex.def)             Requested size: 121.4516pt x 93.74858pt.
 
-<../thesis/circularcross.png, id=323, 1600.98125pt x 1121.18875pt>
+<../thesis/circularcross.png, id=387, 1600.98125pt x 1121.18875pt>
 File: ../thesis/circularcross.png Graphic file (type png)
 
 <use ../thesis/circularcross.png>
-Package pdftex.def Info: ../thesis/circularcross.png used on input line 188.
+Package pdftex.def Info: ../thesis/circularcross.png used on input line 253.
 (pdftex.def)             Requested size: 144.08209pt x 100.90263pt.
 
-Overfull \vbox (7.81187pt too high) detected at line 188
+Overfull \vbox (7.81187pt too high) detected at line 253
  []
 
-[12
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[14
 
  <../thesis/images/marschner_model_longitudinal.png> <../thesis/circularcross.p
-ng>] [13
+ng>]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
 
-] [14
-
-] [15
-
-] [16
-
-] [17
+[15
 
 ]
-<../thesis/variance-results/deon512.png, id=485, 1027.84pt x 1027.84pt>
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[16
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[17
+
+]
+Overfull \hbox (68.37245pt too wide) in paragraph at lines 339--339
+[]  
+ []
+
+
+<../thesis/relatedwork/dualscattering_df.png, id=497, 728.7225pt x 530.98375pt>
+File: ../thesis/relatedwork/dualscattering_df.png Graphic file (type png)
+<use ../thesis/relatedwork/dualscattering_df.png>
+Package pdftex.def Info: ../thesis/relatedwork/dualscattering_df.png used on in
+put line 339.
+(pdftex.def)             Requested size: 116.37946pt x 84.79709pt.
+
+Overfull \vbox (16.229pt too high) detected at line 339
+ []
+
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[18
+
+ <../thesis/relatedwork/dualscattering_df.png>]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[19
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[20
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[21
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[22
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[23
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[24
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[25
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[26
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[27
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[28
+
+] <../thesis/variance-results/deon512.png, id=794, 1027.84pt x 1027.84pt>
 File: ../thesis/variance-results/deon512.png Graphic file (type png)
 
 <use ../thesis/variance-results/deon512.png>
 Package pdftex.def Info: ../thesis/variance-results/deon512.png used on input l
-ine 222.
+ine 509.
 (pdftex.def)             Requested size: 185.00322pt x 185.00322pt.
- [18
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[29
 
  <../thesis/variance-results/deon512.png (PNG copy)>]
-<../thesis/realworld/officesquare/deon_brown2_32.png, id=512, 1027.84pt x 1027.
+<../thesis/realworld/officesquare/deon_brown2_32.png, id=821, 1027.84pt x 1027.
 84pt>
 File: ../thesis/realworld/officesquare/deon_brown2_32.png Graphic file (type pn
 g)
  <use ../thesis/realworld/officesquare/deon_brown2_32.png>
 Package pdftex.def Info: ../thesis/realworld/officesquare/deon_brown2_32.png us
-ed on input line 247.
+ed on input line 534.
 (pdftex.def)             Requested size: 102.68962pt x 102.68024pt.
 
-<../thesis/realworld/subway/deon_blonde1_32.png, id=513, 1027.84pt x 1027.84pt>
+<../thesis/realworld/subway/deon_blonde1_32.png, id=822, 1027.84pt x 1027.84pt>
 File: ../thesis/realworld/subway/deon_blonde1_32.png Graphic file (type png)
 <use ../thesis/realworld/subway/deon_blonde1_32.png>
 Package pdftex.def Info: ../thesis/realworld/subway/deon_blonde1_32.png used on
- input line 247.
+ input line 534.
 (pdftex.def)             Requested size: 102.68962pt x 102.68024pt.
 
-<../thesis/realworld/venice/deon_blonde2_32.png, id=514, 1027.84pt x 1027.84pt>
+<../thesis/realworld/venice/deon_blonde2_32.png, id=823, 1027.84pt x 1027.84pt>
 File: ../thesis/realworld/venice/deon_blonde2_32.png Graphic file (type png)
 <use ../thesis/realworld/venice/deon_blonde2_32.png>
 Package pdftex.def Info: ../thesis/realworld/venice/deon_blonde2_32.png used on
- input line 247.
+ input line 534.
 (pdftex.def)             Requested size: 102.68962pt x 102.68024pt.
 
-<../thesis/realworld/venice/deon_black2_32.png, id=515, 1027.84pt x 1027.84pt>
+<../thesis/realworld/venice/deon_black2_32.png, id=824, 1027.84pt x 1027.84pt>
 File: ../thesis/realworld/venice/deon_black2_32.png Graphic file (type png)
 
 <use ../thesis/realworld/venice/deon_black2_32.png>
 Package pdftex.def Info: ../thesis/realworld/venice/deon_black2_32.png used on 
-input line 247.
+input line 534.
 (pdftex.def)             Requested size: 102.68962pt x 102.68024pt.
 
-Overfull \vbox (0.35649pt too high) detected at line 247
+Overfull \vbox (0.35649pt too high) detected at line 534
  []
 
-[19
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[30
 
  <../thesis/realworld/officesquare/deon_brown2_32.png (PNG copy)> <../thesis/re
 alworld/subway/deon_blonde1_32.png (PNG copy)> <../thesis/realworld/venice/deon
 _blonde2_32.png (PNG copy)> <../thesis/realworld/venice/deon_black2_32.png (PNG
  copy)>]
-<../thesis/realworld/venice/uniform_brown1_32.png, id=543, 1027.84pt x 1027.84p
+<../thesis/realworld/venice/uniform_brown1_32.png, id=851, 1027.84pt x 1027.84p
 t>
 File: ../thesis/realworld/venice/uniform_brown1_32.png Graphic file (type png)
  <use ../thesis/realworld/venice/uniform_brown1_32.png>
 Package pdftex.def Info: ../thesis/realworld/venice/uniform_brown1_32.png used 
-on input line 267.
+on input line 554.
 (pdftex.def)             Requested size: 169.58627pt x 169.58627pt.
 
-<../thesis/realworld/venice/deon_brown1_32.png, id=544, 1027.84pt x 1027.84pt>
+<../thesis/realworld/venice/deon_brown1_32.png, id=852, 1027.84pt x 1027.84pt>
 File: ../thesis/realworld/venice/deon_brown1_32.png Graphic file (type png)
 
 <use ../thesis/realworld/venice/deon_brown1_32.png>
 Package pdftex.def Info: ../thesis/realworld/venice/deon_brown1_32.png used on 
-input line 267.
+input line 554.
 (pdftex.def)             Requested size: 169.58627pt x 169.58627pt.
- [20
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[31
 
  <../thesis/realworld/venice/uniform_brown1_32.png (PNG copy)> <../thesis/realw
 orld/venice/deon_brown1_32.png (PNG copy)>]
-<../thesis/realworld/officesquare/uniform_blonde1_32.png, id=572, 1027.84pt x 1
+<../thesis/realworld/officesquare/uniform_blonde1_32.png, id=880, 1027.84pt x 1
 027.84pt>
 File: ../thesis/realworld/officesquare/uniform_blonde1_32.png Graphic file (typ
 e png)
  <use ../thesis/realworld/officesquare/uniform_blonde1_32.png>
 Package pdftex.def Info: ../thesis/realworld/officesquare/uniform_blonde1_32.pn
-g used on input line 287.
+g used on input line 574.
 (pdftex.def)             Requested size: 169.58627pt x 169.58627pt.
 
-<../thesis/realworld/officesquare/deon_blonde1_32.png, id=573, 1027.84pt x 1027
+<../thesis/realworld/officesquare/deon_blonde1_32.png, id=881, 1027.84pt x 1027
 .84pt>
 File: ../thesis/realworld/officesquare/deon_blonde1_32.png Graphic file (type p
 ng)
  <use ../thesis/realworld/officesquare/deon_blonde1_32.png>
 Package pdftex.def Info: ../thesis/realworld/officesquare/deon_blonde1_32.png u
-sed on input line 287.
+sed on input line 574.
 (pdftex.def)             Requested size: 169.58627pt x 169.58627pt.
- [21
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[32
 
  <../thesis/realworld/officesquare/uniform_blonde1_32.png (PNG copy)> <../thesi
 s/realworld/officesquare/deon_blonde1_32.png (PNG copy)>]
-<../thesis/realworld/subway2/uniform_black1_32.png, id=600, 1027.84pt x 1027.84
+<../thesis/realworld/subway2/uniform_black1_32.png, id=909, 1027.84pt x 1027.84
 pt>
 File: ../thesis/realworld/subway2/uniform_black1_32.png Graphic file (type png)
 
  <use ../thesis/realworld/subway2/uniform_black1_32.png>
 Package pdftex.def Info: ../thesis/realworld/subway2/uniform_black1_32.png used
- on input line 307.
+ on input line 594.
 (pdftex.def)             Requested size: 169.58627pt x 169.58627pt.
 
-<../thesis/realworld/subway2/deon_black1_32.png, id=601, 1027.84pt x 1027.84pt>
+<../thesis/realworld/subway2/deon_black1_32.png, id=910, 1027.84pt x 1027.84pt>
 File: ../thesis/realworld/subway2/deon_black1_32.png Graphic file (type png)
 <use ../thesis/realworld/subway2/deon_black1_32.png>
 Package pdftex.def Info: ../thesis/realworld/subway2/deon_black1_32.png used on
- input line 307.
+ input line 594.
 (pdftex.def)             Requested size: 169.58627pt x 169.58627pt.
- [22
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[33
 
  <../thesis/realworld/subway2/uniform_black1_32.png (PNG copy)> <../thesis/real
 world/subway2/deon_black1_32.png (PNG copy)>]
-<../thesis/_variance-results/outline_hint.png, id=628, 1027.84pt x 1027.84pt>
+<../thesis/_variance-results/outline_hint.png, id=937, 1027.84pt x 1027.84pt>
 File: ../thesis/_variance-results/outline_hint.png Graphic file (type png)
 
 <use ../thesis/_variance-results/outline_hint.png>
 Package pdftex.def Info: ../thesis/_variance-results/outline_hint.png used on i
-nput line 334.
+nput line 621.
 (pdftex.def)             Requested size: 102.79001pt x 102.79001pt.
- [23
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[34
 
  <../thesis/_variance-results/outline_hint.png>]
-<../thesis/variance-results/un1.png, id=658, 301.125pt x 100.375pt>
+<../thesis/variance-results/un1.png, id=966, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/un1.png Graphic file (type png)
 
 <use ../thesis/variance-results/un1.png>
 Package pdftex.def Info: ../thesis/variance-results/un1.png used on input line 
-356.
+643.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/is1.png, id=659, 301.125pt x 100.375pt>
+<../thesis/variance-results/is1.png, id=967, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/is1.png Graphic file (type png)
 
 <use ../thesis/variance-results/is1.png>
 Package pdftex.def Info: ../thesis/variance-results/is1.png used on input line 
-356.
+643.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/un2.png, id=660, 301.125pt x 100.375pt>
+<../thesis/variance-results/un2.png, id=968, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/un2.png Graphic file (type png)
 
 <use ../thesis/variance-results/un2.png>
 Package pdftex.def Info: ../thesis/variance-results/un2.png used on input line 
-356.
+643.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/is2.png, id=661, 301.125pt x 100.375pt>
+<../thesis/variance-results/is2.png, id=969, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/is2.png Graphic file (type png)
 
 <use ../thesis/variance-results/is2.png>
 Package pdftex.def Info: ../thesis/variance-results/is2.png used on input line 
-356.
+643.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/un4.png, id=662, 301.125pt x 100.375pt>
+<../thesis/variance-results/un4.png, id=970, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/un4.png Graphic file (type png)
 
 <use ../thesis/variance-results/un4.png>
 Package pdftex.def Info: ../thesis/variance-results/un4.png used on input line 
-356.
+643.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/is4.png, id=663, 301.125pt x 100.375pt>
+<../thesis/variance-results/is4.png, id=971, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/is4.png Graphic file (type png)
 
 <use ../thesis/variance-results/is4.png>
 Package pdftex.def Info: ../thesis/variance-results/is4.png used on input line 
-356.
+643.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/un8.png, id=664, 301.125pt x 100.375pt>
+<../thesis/variance-results/un8.png, id=972, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/un8.png Graphic file (type png)
 
 <use ../thesis/variance-results/un8.png>
 Package pdftex.def Info: ../thesis/variance-results/un8.png used on input line 
-356.
+643.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/is8.png, id=665, 301.125pt x 100.375pt>
+<../thesis/variance-results/is8.png, id=973, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/is8.png Graphic file (type png)
 
 <use ../thesis/variance-results/is8.png>
 Package pdftex.def Info: ../thesis/variance-results/is8.png used on input line 
-356.
+643.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
- [24
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[35
 
  <../thesis/variance-results/un1.png> <../thesis/variance-results/is1.png> <../
 thesis/variance-results/un2.png> <../thesis/variance-results/is2.png> <../thesi
 s/variance-results/un4.png> <../thesis/variance-results/is4.png> <../thesis/var
 iance-results/un8.png> <../thesis/variance-results/is8.png>]
-<../thesis/variance-results/un16.png, id=701, 301.125pt x 100.375pt>
+<../thesis/variance-results/un16.png, id=1008, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/un16.png Graphic file (type png)
 
 <use ../thesis/variance-results/un16.png>
 Package pdftex.def Info: ../thesis/variance-results/un16.png used on input line
- 375.
+ 662.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/is16.png, id=702, 301.125pt x 100.375pt>
+<../thesis/variance-results/is16.png, id=1009, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/is16.png Graphic file (type png)
 
 <use ../thesis/variance-results/is16.png>
 Package pdftex.def Info: ../thesis/variance-results/is16.png used on input line
- 375.
+ 662.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/un32.png, id=703, 301.125pt x 100.375pt>
+<../thesis/variance-results/un32.png, id=1010, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/un32.png Graphic file (type png)
 
 <use ../thesis/variance-results/un32.png>
 Package pdftex.def Info: ../thesis/variance-results/un32.png used on input line
- 375.
+ 662.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/is32.png, id=704, 301.125pt x 100.375pt>
+<../thesis/variance-results/is32.png, id=1011, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/is32.png Graphic file (type png)
 
 <use ../thesis/variance-results/is32.png>
 Package pdftex.def Info: ../thesis/variance-results/is32.png used on input line
- 375.
+ 662.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/un64.png, id=705, 301.125pt x 100.375pt>
+<../thesis/variance-results/un64.png, id=1012, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/un64.png Graphic file (type png)
 
 <use ../thesis/variance-results/un64.png>
 Package pdftex.def Info: ../thesis/variance-results/un64.png used on input line
- 375.
+ 662.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/is64.png, id=706, 301.125pt x 100.375pt>
+<../thesis/variance-results/is64.png, id=1013, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/is64.png Graphic file (type png)
 
 <use ../thesis/variance-results/is64.png>
 Package pdftex.def Info: ../thesis/variance-results/is64.png used on input line
- 375.
+ 662.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/un128.png, id=707, 301.125pt x 100.375pt>
+<../thesis/variance-results/un128.png, id=1014, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/un128.png Graphic file (type png)
 
 <use ../thesis/variance-results/un128.png>
 Package pdftex.def Info: ../thesis/variance-results/un128.png used on input lin
-e 375.
+e 662.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
 
-<../thesis/variance-results/is128.png, id=708, 301.125pt x 100.375pt>
+<../thesis/variance-results/is128.png, id=1015, 301.125pt x 100.375pt>
 File: ../thesis/variance-results/is128.png Graphic file (type png)
 
 <use ../thesis/variance-results/is128.png>
 Package pdftex.def Info: ../thesis/variance-results/is128.png used on input lin
-e 375.
+e 662.
 (pdftex.def)             Requested size: 150.56212pt x 50.18736pt.
- [25
+
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[36
 
  <../thesis/variance-results/un16.png> <../thesis/variance-results/is16.png> <.
 ./thesis/variance-results/un32.png> <../thesis/variance-results/is32.png> <../t
 hesis/variance-results/un64.png> <../thesis/variance-results/is64.png> <../thes
 is/variance-results/un128.png> <../thesis/variance-results/is128.png>]
-<../thesis/variance-results/variance-plot.png, id=744, 882.4167pt x 572.3784pt>
+<../thesis/variance-results/variance-plot.png, id=1051, 882.4167pt x 572.3784pt
+>
 File: ../thesis/variance-results/variance-plot.png Graphic file (type png)
-<use ../thesis/variance-results/variance-plot.png>
+ <use ../thesis/variance-results/variance-plot.png>
 Package pdftex.def Info: ../thesis/variance-results/variance-plot.png used on i
-nput line 386.
+nput line 673.
 (pdftex.def)             Requested size: 247.075pt x 160.26485pt.
 
-Overfull \vbox (4.26086pt too high) detected at line 386
+Overfull \vbox (4.26086pt too high) detected at line 673
  []
 
-[26
 
- <../thesis/variance-results/variance-plot.png>] [27
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
 
-] [28
+[37
 
-] [29
+ <../thesis/variance-results/variance-plot.png>]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[38
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[39
+
+]
+Overfull \hbox (99.28105pt too wide) has occurred while \output is active
+ [][]  \OT1/cmss/m/n/6 ([])  
+ []
+
+[40
 
 ]
 \tf@nav=\write6
@@ -1332,12 +1584,11 @@ Overfull \vbox (4.26086pt too high) detected at line 386
 \tf@snm=\write8
 \openout8 = `final_presentation.snm'.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 420.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 420.
-
-(./final_presentation.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 420.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 420.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 712.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 712.
+ (./final_presentation.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 712.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 712.
 Package rerunfilecheck Info: File `final_presentation.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
 
@@ -1345,31 +1596,32 @@ Package rerunfilecheck Info: File `final_presentation.out' has not changed.
 LaTeX Font Warning: Size substitutions with differences
 (Font)              up to 1.0pt have occurred.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 420.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 712.
  ) 
 Here is how much of TeX's memory you used:
- 17645 strings out of 493029
- 339791 string characters out of 6136234
- 406270 words of memory out of 5000000
- 20651 multiletter control sequences out of 15000+600000
- 11001 words of font info for 40 fonts, out of 8000000 for 9000
+ 17855 strings out of 493029
+ 344276 string characters out of 6136234
+ 409268 words of memory out of 5000000
+ 20826 multiletter control sequences out of 15000+600000
+ 14644 words of font info for 53 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 56i,17n,57p,420b,749s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 56i,17n,57p,420b,748s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/shar
 e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/tex
-mf-dist/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts
-/type1/public/amsfonts/cm/cmss9.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmssi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/publi
-c/amsfonts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsf
-onts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
-m/cmsy8.pfb>
-Output written on final_presentation.pdf (29 pages, 20927003 bytes).
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmss10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmss12.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmss8.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/cm/cmss9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/
+amsfonts/cm/cmssi10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfo
+nts/cm/cmssi8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmssi9.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy1
+0.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb>
+Output written on final_presentation.pdf (40 pages, 21761407 bytes).
 PDF statistics:
- 899 PDF objects out of 1000 (max. 8388607)
- 786 compressed objects within 8 object streams
- 59 named destinations out of 1000 (max. 500000)
- 219 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1221 PDF objects out of 1440 (max. 8388607)
+ 1082 compressed objects within 11 object streams
+ 81 named destinations out of 1000 (max. 500000)
+ 258 words of extra memory for PDF output out of 10000 (max. 10000000)
 

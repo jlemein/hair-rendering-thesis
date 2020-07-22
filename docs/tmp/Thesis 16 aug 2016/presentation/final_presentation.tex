@@ -4,6 +4,17 @@
 \usepackage[export]{adjustbox}
 
 \begin{document}
+\title[Short Title]{Hair Rendering:\\ Importance
+Sampling of Dual Scattering
+Approximation}
+\author[Lastname]{Jeffrey Lemein\\\small Supervisor: Prof. Remco Veltkamp \\ \hspace{18mm}}
+\institute{Department of Information and Computing Sciences\\Utrecht University}
+\date{\today}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
   \begin{frame}
     \frametitle{Background}
 	\framesubtitle{Rendering hair}
@@ -80,13 +91,6 @@
 
   \end{frame}
   
-  \begin{frame}
-    \frametitle{Mathematical notation}
-	\framesubtitle{Hair fibers}
-	
-	
-	
-  \end{frame}
   
   \begin{frame}
     \frametitle{Mathematical notation}
@@ -249,6 +253,31 @@ w_s(x) = \frac{n_sp_s(x)}{\sum_i n_i p_i(x)}
   \end{frame}
   
   \begin{frame}
+  The Marschner model scattering equation can be written as:
+  
+  \begin{equation}
+  S(\omega_i, \omega_o) = \sum_p M_p(\theta_i, \theta_o) N_p(\eta(\theta_d); \phi_i, \phi_o) / \cos^2 \theta_d
+  \end{equation}
+  
+  For longitudinal scattering
+  \begin{equation}
+  M_p(\theta_h) = g(\beta_p; \theta_h-\alpha_p)
+  \end{equation}  
+  
+  For azimuthal scattering
+  \begin{equation}
+  N_p(\theta_h) = \sum_r A(p, h) | 2 \frac{d\phi}{dh}(p, h)|
+  \end{equation}  
+  
+  \begin{itemize}
+  \item $p$ is the scattering mode with $p \in {R, TT, TRT}$
+  \item where $\theta_h$ is the half angle between $\theta_i$ and $\theta_r$
+  \item where $\eta$ is the index of refraction.
+  \item $r$ is the number of roots.
+  \end{itemize}
+  \end{frame}
+  
+  \begin{frame}
     \frametitle{Related work}
     \framesubtitle{Dualscattering Approximation}
 
@@ -262,15 +291,18 @@ w_s(x) = \frac{n_sp_s(x)}{\sum_i n_i p_i(x)}
 \item Requires a lot of samples to reduce noise.
 \end{itemize}
 \end{itemize}
+
+Dualscattering approximation by Zinke et al.(2008) proposes a dual approach to overcome the extensive path tracing.
+
   \end{frame}  
   
   \begin{frame}
     \frametitle{Related work}
-    \framesubtitle{Dualscattering Approximation}
+    \framesubtitle{Dualscattering approximation}
     Dualscattering approximation breaks the scattering computation up into two components
     \begin{itemize}
-    \item Global scattering: Computes the irradiance arriving at a point $x$ in the hair volume.
-        \item Local scattering: Accounts for the multiple scattering within the neighborhood of point $x$
+    \item Global scattering $\Psi^G$: Computes the irradiance arriving at a point $x$ in the hair volume.
+        \item Local scattering $\Psi^L$: Accounts for the multiple scattering within the neighborhood of point $x$
     \end{itemize}
   \end{frame}
   
@@ -279,7 +311,7 @@ w_s(x) = \frac{n_sp_s(x)}{\sum_i n_i p_i(x)}
     \frametitle{Related work}
     \framesubtitle{Dualscattering: global scattering}
     
-    Global scattering is computed by taking into account:
+    Global scattering $\Psi^G$ is computed by taking into account:
     
     \begin{itemize}
     \item Transmittance $T_f$ through the volume from direction $\omega_d$
@@ -294,7 +326,7 @@ w_s(x) = \frac{n_sp_s(x)}{\sum_i n_i p_i(x)}
 \begin{column}{0.4\textwidth}
 
 \begin{align*}
-T_f(x, \omega_d) &= d_f \cdot \prod_{k=1}^{n} a_f(\theta_d^k) \\
+T_f(x, \omega_d) &= d_f \cdot \prod_{k=1}^{n} a_f(\theta_d^k) \approx d_f \cdot a_f(\theta_d)^n \\
 S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos \theta_d}  \\
 \sigma_f^2(x, \omega_d) &= \sum_{k=1}^{n} \beta_f^2(\theta_d^k) \approx n \cdot \beta_f^2(\theta_d) \\
 \end{align*}
@@ -309,28 +341,165 @@ S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos
    \begin{frame}
     \frametitle{Related work}
     \framesubtitle{Dualscattering: local scattering}
+
+\begin{itemize}    
+\item Local scattering deals with local neighborhood by rendering them using the Marschner model $f_s$.
+\item Forward scattering events are dealt with by global scatter component.
+\item Local scattering needs to deal with at least one backscatter event
+\end{itemize}
+
+\begin{equation}
+\Psi^L(x, \omega_d, \omega_i) f_s(\omega_i,\omega_o) \approx d_b \cdot f_{back}(\omega_i, \omega_o)
+\end{equation}
+
+\begin{equation}
+f_{back}(\omega_i, \omega_o) = \frac{2}{\cos \theta_d} A_b(\theta_d) \cdot S_b(\omega_i, \omega_o)
+\end{equation}
+
+where $A_b$ is the average backscattering attenuation and $S_b$ the average backscattering spread.
+    
   \end{frame}
   
   \begin{frame}
     \frametitle{Approach}
-	Goals
+	Goal of thesis:
+	
+	\begin{center}
+	\textit{"To evaluate whether multiple importance sampling (MIS) the dualscattering method leads to a significant reduction of variance in the rendered results".}
+	\end{center}
+	
+	Theoretical challenges:
+	\begin{itemize}
+	\item Application of MIS to the dualscattering method.
+	\item Measuring the results for MIS.
+	\end{itemize}
+	
+  \end{frame}
+  
+  \begin{frame}
+  \frametitle{Approach}
+  \framesubtitle{Application of MIS to the dualscattering method.}
+  
+  \begin{itemize}
+  \item Multiple importance sampling has been created for the improved Marschner model.
+  \item Applying the multiple importance sampling strategy to the dualscattering approximation might therefore not be a close fit.
+  \end{itemize}
+  \end{frame}
+  
+  \begin{frame}
+  \frametitle{Approach}
+  \framesubtitle{Measuring the results for MIS.}
+  
+  \begin{itemize}
+  \item Uniform sampling is compared with multiple importance sampling techniques.
+  \item 512 samples per pixel for uniform sampling is assumed as the ground truth to compare against.
+  \item Variance is calculated between the rendered result and the ground truth. Additionally, visual inspection is performed for the results.
+  \end{itemize}
+ 
+  \end{frame}
+  
+\begin{frame}
+    \frametitle{Implementation}
+    \framesubtitle{Multiple importance sampling approach}
+    
+    Multiple importance sampling method is based on the improved Marschner model, for which the equation is simplified as follows:
+    
+    \begin{equation}
+    S_p(\omega_i, \omega_o) = M_p(\theta_i, \theta_o) \cdot N_p(\theta_i, \theta_o, \phi)
+    \end{equation}
+    
+    To multiple importance sample this function, the approach is to:
+    \begin{itemize}
+    \item Sample the longitudinal scattering function $M_p$
+    \item Sample the azimuthal scattering function $N_p$
+    \end{itemize}
+        
+  \end{frame}  
+  
+  \begin{frame}
+    \frametitle{Implementation}
+    \framesubtitle{Multiple importance sampling approach}
+    
+    \begin{itemize}
+    \item Select a lobe $p \in {R, TT, TRT}$ dependent on the relative contribution of energy reflected.
+    \item Given a selected lobe $p$, compute the longitudinal angle $\theta$ by sampling $M_p$.
+    \item An outgoing direction $\omega_o$ is given, so we can compute the spherical angles $(\theta_o, \phi_o)$.
+    \item Choose a random offset $h \in [-1, 1]$ along the fiber cross section.
+    \end{itemize}
+    
   \end{frame}
   
   
   \begin{frame}
     \frametitle{Implementation}
-    \framesubtitle{PBRT}
+    \framesubtitle{1. Selecting a lobe}
+    
+    \begin{itemize}
+    \item Select a lobe $p \in {R, TT, TRT}$ dependent on the relative contribution of energy reflected.
+    \item d'Eon et al. (2013) proposes a way to select lobes by taking into account the attenuations $A$ through a smooth, ideally specular fiber.
+    \end{itemize}
+    
+    \begin{align*}
+    h &= 2\xi - 1 &\textrm{where $\xi_h \in [0,1]$} \\
+    A(R, h) &= F(\eta, \gamma_i) \\
+    A(TT, h) &= (1 - F(\eta, \gamma_i))^2 \cdot T(\sigma_a, h) \\
+    A(TRT, h) &= (1 - F(\eta, \gamma_i))^2 \cdot F(\frac{1}{\eta}, \gamma_t) \cdot T(\sigma_a, h)^2
+    \end{align*}
+    
+    $F$ stands for Fresnel and $T$ for Transmittance
+    
+  \end{frame}
+  
+  \begin{frame}
+  \frametitle{Implementation}
+  \framesubtitle{2. Sampling the longitudinal $M$ function}
+
+ \begin{itemize}
+  \item Original Marschner model longitudinal scattering function $M$ is based on a gaussian function that leaks energy outside the range $\theta \in [-\frac{\pi}{2}, \frac{\pi}{2}]$
+  \item d'Eon et al. employs spherical gaussian convolution to conservatively redistribute reflected radiance amongst directions on the sphere.
+  \item Sampling a spherical gaussian is performed using Box-Muller transform, giving us the incident longitudinal angle $\theta_i$.
+\end{itemize}
+
+
+  \end{frame}
+  
+   \begin{frame}
+  \frametitle{Implementation}
+  \framesubtitle{3. Sampling the azimuthal $N$ function}
+
+ \begin{itemize}
+  \item $\phi_i^{smooth}$ is trivial to find if we know the selected lobe $p$ and the offset $h$ from the scattering cross section.
+  \item $\phi_i^{rough}$ is then found by adding a gaussian offset, sampled again using the Box-Muller transform.
+\end{itemize}
+
+\begin{align}
+\phi_i^{smooth} &= \phi_o + \phi(p, h) \\
+\phi_i^{rough} &= \phi_o + \phi(p, h) + g|\beta_p| \\
+\phi(p,h) &= 2p\gamma_t - 2 \gamma_i + p\pi 
+\end{align}
+
+
+
   \end{frame}
   
   \begin{frame}
     \frametitle{Implementation}
     \framesubtitle{Voxel grid}
-  \end{frame}
-  
-  \begin{frame}
-    \frametitle{Implementation}
-    \framesubtitle{Memory and speed requirements}
-  \end{frame}
+    
+	Global scattering irradiance is approximated using ray-shooting with voxel grid lookups.
+	
+   \begin{itemize}
+    \item OpenVDB is used as the voxel grid library.
+    \item Voxel grid is generated in a pre-processing step, storing the densities in the voxel cells
+    \item Voxel grid is simplified by not storing orientation per voxel cell. Instead, the $\theta_d$ is used at position $x$
+    \end{itemize}
+
+\begin{align*}
+\Psi^G(x, \omega_d, \omega_i) &\approx T_f(x, \omega_d)\,S_f(x, \omega_d, \omega_i) \\
+T_f(x, \omega_d) &\approx d_f \cdot a_f(\theta_d)^n \\
+S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos \theta_d}  & \text{with $\sigma_f^2(x, \omega_d) \approx n \cdot \beta_f^2(\theta_d)$} 
+\end{align*}
+  \end{frame}  
   
   \begin{frame}
     \frametitle{Results}
@@ -530,6 +699,11 @@ S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos
   
   \begin{frame}
   \frametitle{Conclusion}
+  
+  \begin{center}
+	\textit{"To evaluate whether multiple importance sampling (MIS) the dualscattering method leads to a significant reduction of variance in the rendered results".}
+	\end{center}
+	
   
   Applying importance sampling for the dual scattering method does not significantly reduce the noise compared to rendering using uniform sampling.
   \end{frame}
