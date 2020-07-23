@@ -15,6 +15,14 @@ Approximation}
 \titlepage
 \end{frame}
 
+\begin{frame}
+\frametitle{Goal of thesis}
+\centering
+\textit{"To evaluate whether multiple importance sampling (MIS) the dualscattering method leads to a significant reduction of variance in the rendered results".}
+
+\end{frame}
+
+
   \begin{frame}
     \frametitle{Background}
 	\framesubtitle{Rendering hair}
@@ -40,8 +48,8 @@ Approximation}
 	
 	There are a couple of ways to represent hair fibers:
 	\begin{itemize}
-	\item Connected triangle strips
-	\item Cylindrical primitives
+	\item Camera-facing triangle strips
+	\item Cylindrical primitives (used in thesis)
 	\item Trigonal prisms
 	\item Ribbons
 	\end{itemize}
@@ -157,7 +165,7 @@ Approximation}
     \frametitle{Importance sampling}
     
     \begin{itemize}
-    \item Importance sampling prefers to sample high-value contributions.
+    \item Reduces noise faster by sampling high-value contributions.
     
     \item The estimator can be rewritten by taking into consideration the probability density function $p(X_i)$
     
@@ -178,7 +186,7 @@ Approximation}
     \begin{itemize}
     \item Scattering distributions cannot always be represented by closed formulas, or be inverted at all.
     
-    \item A solution is to match the scattering distribution with multiple functions $f(x)$ and $g(x)$
+    \item A solution is to match the scattering distribution with multiple simple functions $f(x)$ and $g(x)$
     \end{itemize}
     
         \includegraphics[width=0.8\textwidth,center]{importance_sampling_px.png}
@@ -227,7 +235,7 @@ w_s(x) = \frac{n_sp_s(x)}{\sum_i n_i p_i(x)}
     \begin{frame}
     \frametitle{Related work}
     \framesubtitle{Marschner model}
-    Single fiber scattering model that models three visible scattering components.
+    Marschner et al. (2003) proposed a single fiber scattering model for three visible scattering components.
     \begin{itemize}
     \centering
     \item[R] reflection,
@@ -235,46 +243,62 @@ w_s(x) = \frac{n_sp_s(x)}{\sum_i n_i p_i(x)}
     \item[TRT] transmission, reflection, transmission
     \end{itemize}
     
-    \begin{columns}[onlytextwidth]
-    \begin{column}{.45\textwidth}
-    \begin{figure}
-    	\includegraphics[scale=0.20]{../thesis/images/marschner_model_longitudinal.png}
-    	\caption{Longitudinal scattering}
-    \end{figure}
-    \end{column}
-    \hfill
-    \begin{column}{.45\textwidth}
-    \begin{figure}
-    	\includegraphics[scale=0.09]{../thesis/circularcross.png}
-    	\caption{Azimuthal scattering}
-    \end{figure}
-    \end{column}
-    \end{columns}
+    \includegraphics[width=0.3\textwidth, center]{../thesis/images/female_marschner.jpeg}
+    
   \end{frame}
   
   \begin{frame}
+  \frametitle{Related work}
+  \framesubtitle{Marschner model: longitudinal scattering M}
   The Marschner model scattering equation can be written as:
   
   \begin{equation}
   S(\omega_i, \omega_o) = \sum_p M_p(\theta_i, \theta_o) N_p(\eta(\theta_d); \phi_i, \phi_o) / \cos^2 \theta_d
   \end{equation}
   
-  For longitudinal scattering
-  \begin{equation}
+  \begin{columns}[onlytextwidth]
+    \begin{column}{.5\textwidth}
+    	\includegraphics[width=\textwidth,center]{../thesis/images/marschner_model_longitudinal.png}
+    \end{column}
+    \begin{column}{.5\textwidth}
+    \centering
+    \begin{equation}
   M_p(\theta_h) = g(\beta_p; \theta_h-\alpha_p)
   \end{equation}  
-  
-  For azimuthal scattering
-  \begin{equation}
-  N_p(\theta_h) = \sum_r A(p, h) | 2 \frac{d\phi}{dh}(p, h)|
-  \end{equation}  
-  
   \begin{itemize}
   \item $p$ is the scattering mode with $p \in {R, TT, TRT}$
-  \item where $\theta_h$ is the half angle between $\theta_i$ and $\theta_r$
-  \item where $\eta$ is the index of refraction.
-  \item $r$ is the number of roots.
+  \item where $\theta_h$ is the half angle between $\theta_i$ and $\theta_o$
   \end{itemize}
+    \end{column}
+    \end{columns}
+   
+  
+  
+  \end{frame}
+  
+  \begin{frame}
+  \frametitle{Related work}
+  \framesubtitle{Marschner model: azimuthal scattering N}
+  
+  \begin{columns}[onlytextwidth]
+    \begin{column}{.50\textwidth}
+    	\includegraphics[width=\textwidth,center]{../thesis/circularcross.png}
+    \end{column}
+
+    \begin{column}{.50\textwidth}
+    \begin{align*}
+  N(\phi) &= \sum_p N_p(p, \phi) \\
+  N_p(\theta_h) &= \sum_r A(p, h) \mid 2 \frac{d\phi}{dh}(p, h)\mid
+  \end{align*}
+   \begin{itemize}
+  \item $r$ is the number of roots $h$.
+  \item where $\eta$ is the index of refraction.
+  \item $A$ is the absorption coefficient
+  \end{itemize}
+    \end{column}
+    \end{columns}
+  
+ 
   \end{frame}
   
   \begin{frame}
@@ -343,7 +367,7 @@ S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos
     \framesubtitle{Dualscattering: local scattering}
 
 \begin{itemize}    
-\item Local scattering deals with local neighborhood by rendering them using the Marschner model $f_s$.
+\item Local scattering $\Psi^L$ deals with local neighborhood by rendering them using the Marschner model $f_s$.
 \item Forward scattering events are dealt with by global scatter component.
 \item Local scattering needs to deal with at least one backscatter event
 \end{itemize}
@@ -381,8 +405,9 @@ where $A_b$ is the average backscattering attenuation and $S_b$ the average back
   \framesubtitle{Application of MIS to the dualscattering method.}
   
   \begin{itemize}
-  \item Multiple importance sampling has been created for the improved Marschner model.
-  \item Applying the multiple importance sampling strategy to the dualscattering approximation might therefore not be a close fit.
+  \item Marschner model (2003) used in this thesis is not energy conserving
+  \item Multiple importance sampling strategy has been created for the improved model by d'Eon et al (2011).
+  \item Applying the multiple importance sampling strategy to the dualscattering method might therefore not be a close fit.
   \end{itemize}
   \end{frame}
   
@@ -456,7 +481,7 @@ where $A_b$ is the average backscattering attenuation and $S_b$ the average back
 
  \begin{itemize}
   \item Original Marschner model longitudinal scattering function $M$ is based on a gaussian function that leaks energy outside the range $\theta \in [-\frac{\pi}{2}, \frac{\pi}{2}]$
-  \item d'Eon et al. employs spherical gaussian convolution to conservatively redistribute reflected radiance amongst directions on the sphere.
+  \item d'Eon et al. (2013) employs spherical gaussian convolution to conservatively redistribute reflected radiance amongst directions on the sphere.
   \item Sampling a spherical gaussian is performed using Box-Muller transform, giving us the incident longitudinal angle $\theta_i$.
 \end{itemize}
 
@@ -549,8 +574,8 @@ S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos
 	\end{column}
 	\end{columns}  
     
-	\includegraphics[scale=0.165]{../thesis/realworld/venice/uniform_brown1_32.png}  
-	\includegraphics[scale=0.165]{../thesis/realworld/venice/deon_brown1_32.png}   
+	\includegraphics[scale=0.15]{../thesis/realworld/venice/uniform_brown1_32.png}  
+	\includegraphics[scale=0.15]{../thesis/realworld/venice/deon_brown1_32.png}   
   \end{frame}
   
   \begin{frame}
@@ -569,8 +594,8 @@ S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos
 	\end{column}
 	\end{columns}  
     
-	\includegraphics[scale=0.165]{../thesis/realworld/officesquare/uniform_blonde1_32.png}  
-	\includegraphics[scale=0.165]{../thesis/realworld/officesquare/deon_blonde1_32.png}   
+	\includegraphics[scale=0.15]{../thesis/realworld/officesquare/uniform_blonde1_32.png}  
+	\includegraphics[scale=0.15]{../thesis/realworld/officesquare/deon_blonde1_32.png}   
   \end{frame}
   
     \begin{frame}
@@ -589,8 +614,8 @@ S_f(x, \omega_d, \omega_i) &= \frac{g(\theta_d + \theta_i, \sigma_f^2)}{\pi \cos
 	\end{column}
 	\end{columns}  
     
-	\includegraphics[scale=0.165]{../thesis/realworld/subway2/uniform_black1_32.png}  
-	\includegraphics[scale=0.165]{../thesis/realworld/subway2/deon_black1_32.png}   
+	\includegraphics[scale=0.15]{../thesis/realworld/subway2/uniform_black1_32.png}  
+	\includegraphics[scale=0.15]{../thesis/realworld/subway2/deon_black1_32.png}   
   \end{frame}
   
   %
