@@ -104,7 +104,7 @@ Importance sampling is a widely used noise-reduction technique to speed up rende
 %~\cite{eon2013}
 d'Eon et al. (2013) proposed an importance sampling strategy that works particularly well for the Marschner model. This importance sampling strategy can also be applied to the dual scattering method. It is therefore very interesting to evaluate whether applying importance sampling to the dual-scattering method reduces the noise as well. This forms the main goal of this thesis: to find out if multiple importance sampling applied to the dual scattering method leads to a significant reduction of noise in the rendered image.
 
-This report concludes by measurement and visual inspection that importance sampling for the dual-scattering method does not significantly increase the quality of the renderings compared to uniform sampling. Such a small increase in quality is not what was expected. A possible explanation is that the effect of multiple scattering is less dependent on specific sampling directions. It essentially smoothens the contribution from any direction and therefore, importance sampling does not significantly outperform uniform sampling.
+This report concludes by measurement and visual inspection that importance sampling for the dual-scattering method leads to a significant increase in rendering quality compared to uniform sampling. Especially up to 32 samples per pixel the noise is reduced substantially. Such an increase in quality is expected when rendering using a small amount of samples per pixel. It then becomes more important to sample high-contributing directions to reduce noise. This is exactly what multiple importance sampling is doing.
 
 \end{abstract}
 
@@ -940,7 +940,7 @@ The probability of sampling this value is equal to the longitudinal scattering f
 
 \subsection{Importance sampling the azimuthal N function}
 
-Importance sampling the azimuthal $N$ function is trivial if we know the selected lobe $p$ and the offset $h$ from the scattering cross section (see section~\ref{sec_lobe_selection}). In that case it is a matter of evaluating the relative change in azimuth $\Phi(p, h)$ (see equation~\ref{eq_relative_azimuth_change}). To find the incident azimuth direction $\phi_i$.
+Importance sampling the azimuthal $N$ function is trivial if we know the selected lobe $p$ and the offset $h$ from the scattering cross section (see section~\ref{sec_lobe_selection}). In that case it is a matter of evaluating the relative change in azimuth $\phi(p, h)$ (see equation~\ref{eq_relative_azimuth_change}). To find the incident azimuth direction $\phi_i$.
 
 \begin{align}
 \label{phi_func}
@@ -950,7 +950,7 @@ Importance sampling the azimuthal $N$ function is trivial if we know the selecte
 For rough fibers, the relative change in azimuth is offset by a gaussian distributed random variable $g$ with standard deviation 1, multiplied by the width $\beta_p$ corresponding to the selected lobe $p$. Sampling a gaussian distribution can be performed using the Box-Muller transform as explained in the previous subsection. The direction $\phi_i$ to be importance sampled can then be found as follows:
 
 \begin{align}
-\phi_i &= \phi_o + \Phi(p, h) + g | \beta_p | 
+\phi_i &= \phi_o + \phi(p, h) + g | \beta_p | 
 \end{align}
 
 Take into account that the spherical direction wraps around in the range $\{ -\pi, \pi \}$.
@@ -1081,7 +1081,7 @@ Uniform Sampling (32 samples) & Importance Sampling (32 samples) \\
 
 \subsubsection{Observations}
 
-By observing the results uniform sampling seems to appear a bit more noisy, but not in such amount that you could call it a significant difference. Also it shows that the blonde hair model is the brightest of all. Especially in the subway setting (figure~\ref{fig_subway}) the blond hair still resembles blond hair, while the other two hair models are very dark. You can hardly see a distinction between black and brown hair.
+By observing the results at 32 samples per pixel, there is not much difference in noise between uniform sampling and multiple importance sampling. Also the blonde hair model is the brightest of all. Especially in the subway setting (figure~\ref{fig_subway}) the blond hair still resembles blond hair, while the other two hair models are very dark. You can hardly see a distinction between black and brown hair.
 Black hair in general has a minimal amount of global multiple scattering, because the absorption coefficient is so high. Light passes through this hair in minimal amount, therefore appearing black. The only effect visible in black hair is a direct reflection according to the reflection (R) component.
 
 
@@ -1162,20 +1162,20 @@ With this data it is difficult to do a hard comparison. In the next section the 
 \setlength{\tabcolsep}{0.04em} % for the horizontal padding
 \def\arraystretch{0.2}%  1 is the default, change whatever you need
 \begin{tabular}{ccc}
-\includegraphics[scale=0.57]{variance-results/un1.png} & \includegraphics[scale=0.57]{variance-results/is1.png} \\ 
-\includegraphics[scale=0.57]{variance-results/un2.png} & \includegraphics[scale=0.57]{variance-results/is2.png} \\
-\includegraphics[scale=0.57]{variance-results/un4.png} & \includegraphics[scale=0.57]{variance-results/is4.png} \\
-\includegraphics[scale=0.57]{variance-results/un8.png} & \includegraphics[scale=0.57]{variance-results/is8.png} \\
-\includegraphics[scale=0.57]{variance-results/un16.png} & \includegraphics[scale=0.57]{variance-results/is16.png} \\
-\includegraphics[scale=0.57]{variance-results/un32.png} & \includegraphics[scale=0.57]{variance-results/is32.png} \\
-\includegraphics[scale=0.57]{variance-results/un64.png} & \includegraphics[scale=0.57]{variance-results/is64.png} \\
-\includegraphics[scale=0.57]{variance-results/un128.png} & \includegraphics[scale=0.57]{variance-results/is128.png} \\
-\includegraphics[scale=0.57]{variance-results/un256.png} & \includegraphics[scale=0.57]{variance-results/is256.png} \\
-\includegraphics[scale=0.57]{variance-results/un512.png} & \includegraphics[scale=0.57]{variance-results/is512.png} \\
+\includegraphics[scale=0.55]{variance-results/un1.png} & \includegraphics[scale=0.55]{variance-results/is1.png} \\ 
+\includegraphics[scale=0.55]{variance-results/un2.png} & \includegraphics[scale=0.55]{variance-results/is2.png} \\
+\includegraphics[scale=0.55]{variance-results/un4.png} & \includegraphics[scale=0.55]{variance-results/is4.png} \\
+\includegraphics[scale=0.55]{variance-results/un8.png} & \includegraphics[scale=0.55]{variance-results/is8.png} \\
+\includegraphics[scale=0.55]{variance-results/un16.png} & \includegraphics[scale=0.55]{variance-results/is16.png} \\
+\includegraphics[scale=0.55]{variance-results/un32.png} & \includegraphics[scale=0.55]{variance-results/is32.png} \\
+\includegraphics[scale=0.55]{variance-results/un64.png} & \includegraphics[scale=0.55]{variance-results/is64.png} \\
+\includegraphics[scale=0.55]{variance-results/un128.png} & \includegraphics[scale=0.55]{variance-results/is128.png} \\
+\includegraphics[scale=0.55]{variance-results/un256.png} & \includegraphics[scale=0.55]{variance-results/is256.png} \\
+\includegraphics[scale=0.55]{variance-results/un512.png} & \includegraphics[scale=0.55]{variance-results/is512.png} \\
 
 \end{tabular}
 \egroup
-\caption{Comparison of the image quality between uniform sampling and importance sampling for various pixels per sample, indicated in the bottom left corner. As the pixels per sample increase the noise of the image becomes smaller.}
+\caption{Comparison of the image quality between uniform sampling and importance sampling for various pixels per sample, indicated in the bottom left corner. As the pixels per sample increase, the noise of the image becomes smaller.}
 \label{fig_side_by_side}
 \end{figure}
 
@@ -1234,9 +1234,9 @@ sample &  & (compared with uniform) \\%& (compared with self) \\
 There are a couple of obervations to be made:
 \begin{itemize}
 
-\item Initially the variance is decreasing rapidly. When the samples per pixel become sufficiently large, then the improvement in variance becomes less and less, both for uniform sampling and for importance sampling. This can also be seen from the side by side comparison in figure~\ref{fig_side_by_side}. This is expected as you come closer to the converged result.
+\item Initially the variance is decreasing rapidly. When the samples per pixel become sufficiently large, then the decrease in variance becomes less and less, both for uniform sampling and for importance sampling. This can also be seen from the side by side comparison in figure~\ref{fig_side_by_side}. This is expected as you come closer to the converged result.
 
-\item Importance sampling performs better for small samples per pixel. This is expected, because for smaller amount of samples importance sampling can do a better job at finding important samples. Eventually uniform sampling catches up as they both reach the converged image.
+\item Importance sampling performs better for small amounts of samples per pixel. This is expected, because for smaller amount of samples importance sampling can do a better job at finding important samples. Eventually uniform sampling catches up as they both reach the converged image.
 
 \item Importance sampling variance is crossing the uniform sampling variance at 32 samples per pixel. From that point on uniform sampling is closer to ground truth than importance sampling. This has to do with the fact that this importance sampling strategy does not converge to the ground truth (for reasons mentioned above).
 
@@ -1251,11 +1251,12 @@ The goal of this report is to evaluate the multiple importance sampling strategy
 First of all, the dual scattering method is based on the original Marschner model which is not energy conserving (see section~\ref{approach_problem1}). This makes it difficult to find an importance sampling strategy. Several improvements have been proposed over time to fix the issues with the Marschner model, making it possible to importance sample the Marschner model. Since the dual scattering method in this report is based on the original Marschner model, the scattering distribution is not an accurate fit. This could be one of the reasons why the rendered results look a tad darker when comparing the uniform sampled with multiple importance sampled rendering results.
 It would be beneficial to use the dual scattering method based on the energy conserving Marschner model proposed by d'Eon et al.~\cite{eon2011}. In that way there is a 100 percent energy conserving model that might lead to better results, so that importance and uniform sampling are converging to exactly the same result.
 
-Second, the challenge was to evaluate rendered images using multiple importance sampling (see section~\ref{approach_problem2}). A decision has been made to compare uniform sampling with importance sampling at 512 samples per pixel. Also the comparison is performed using visual inspection and a comparison based on the noise, or variance, between the images in a selected rectangle boundary. Results show that variance is reducing faster for importance sampling. However, the decrease in noise is present in such a small amount that it is hardly noticable. One of the reasons that I can think of is that the dual scattering method smoothens out the global illumination, turning the scattering distribution more into a uniform scattering distribution. Since global illumination is the biggest contributor for light colored hair volumes, the effect of importance sampling has a small impact.
+Second, the challenge was to evaluate rendered images using multiple importance sampling (see section~\ref{approach_problem2}). A decision has been made to compare uniform sampling with importance sampling at 512 samples per pixel. Also the comparison is performed using visual inspection and a comparison based on the noise, or variance, between the images in a selected rectangle boundary. Results show that variance is reducing faster for importance sampling. The decrease in noise is most obvious for renderings with less than 32 samples per pixel. 
+For larger amounts of samples per pixel, the effect is not clearly noticeable anymore. This could be because the dual scattering method smoothens out the global illumination, turning the scattering distribution into a uniform scattering distribution. Since global illumination is the biggest contributor for light colored hair volumes, the effect of importance sampling will then have a reduced impact.
 
 Third, there was a theoretical challenge in applying the multiple importance sampling strategy to the dual scattering method by using PBRT (see section~\ref{approach_problem3}). PBRT for example, requested to sample the incident direction, based on the outgoing direction. Additionally the PDF value needed to be computed. Also a second variant where both incident and outgoing directions are known required a computation to be performed for the PDF value.
 
-The practical implementation was a challenge as well. One of the practical challenges is the choice for the rendering framework to use (see section~\ref{sec_which_framework}). The thesis started out using the rendering framework Renderman by Pixar. This presented challenges, such as compiling C++ files as shared libraries for Pixar's renderman. Although the Renderman software is good, the open-source alternative PBRT was more suited for the job. One of the benefits of PBRT is that the source code is open-source and could be altered and inspected which has been an enormous benefit in debugging the rendering algorithms.
+The practical implementation was a challenge as well. One of the practical challenges is the choice for the rendering framework to use (see section~\ref{sec_which_framework}). The thesis started out using the rendering framework Renderman by Pixar. This presented challenges, such as compiling C++ files as shared libraries for Pixar's Renderman. Although the Renderman software is good, the open-source alternative PBRT was more suited for the job. One of the benefits of PBRT is that the source code is open-source and could be altered and inspected which has been an enormous benefit in debugging the rendering algorithms.
 
 The second practical implementation issue is the voxel grid. In section~\ref{sec_voxel_grid} it is explained that the voxel grid is not so trivial as it seems. For this report, the OpenVdb library is used to represent voxel grids as sparse data and to enable linear interpolation with neighboring voxel cells. In this report the choice is made to compute the voxel grid with hair densities using a two pass approach: first traverse through all hair fibers and storing the density information in the voxel cells, followed by the rendering itself that uses the voxel grid data to compute the amount of global illumination passing through the voxel grid for a specific ray.
 
@@ -1268,7 +1269,7 @@ The last practical challenge with the dual scattering method is that it is based
 To conclude the main goal of thesis: to evaluate the multiple importance sampling strategy proposed by d'Eon et al.~\cite{eon2011}, the following conclusion is found, which was not known before:
 
 \begin{itemize}
-\item Applying importance sampling for the dual scattering method does not significantly reduce the noise compared to rendering using uniform sampling.
+\item Applying importance sampling for the dual scattering method does substantially reduce the noise compared to rendering using uniform sampling.
 \end{itemize}
 
 This thesis required an extensive amount of background knowledge that I did not have from the beginning. It put me in the never-ending cycle of challenges related to precision errors and writing complex software. It taught me to write unit tests for even the simplest of calculations to be sure that the algorithm is implemented correctly. I lost the hope a lot of times. Many thanks to my supervisor Remco Veltkamp for having the patience to keep supervising me.
